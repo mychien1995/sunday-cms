@@ -9,6 +9,8 @@ using System.Xml;
 using System.Xml.Serialization;
 using System.Linq;
 using Microsoft.Extensions.Configuration;
+using Sunday.Core.Framework.Helpers;
+using System.Reflection;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -43,11 +45,45 @@ namespace Microsoft.Extensions.DependencyInjection
             return services;
         }
 
-        public static ISundayServicesConfiguration LoadServices(this ISundayServicesConfiguration services)
+        public static ISundayServicesConfiguration LoadServices(this ISundayServicesConfiguration serviceConf)
         {
-            //Load services here
-            ServiceActivator.Configure(services.Services.BuildServiceProvider());
-            return services;
+            var services = serviceConf.Services;
+            var assemblies = AssemblyHelper.GetAllAssemblies(x => (!x.StartsWith("Microsoft") && !x.StartsWith("System")) &&
+            (x.Contains("Sunday") || x.Contains("Plugin"))).ToArray();
+
+            var types = AssemblyHelper.GetClassesWithAttribute(assemblies, typeof(ServiceTypeOfAttribute));
+            foreach (var type in types)
+            {
+                var attr = ((ServiceTypeOfAttribute)type.GetCustomAttribute(typeof(ServiceTypeOfAttribute)));
+                var parentType = attr.ServiceType;
+                var scope = attr.LifetimeScope;
+                switch (scope)
+                {
+                    case LifetimeScope.Transient:
+                        if (parentType == type)
+                            services.AddTransient(type);
+                        else services.AddTransient(parentType, type);
+                        break;
+                    case LifetimeScope.Singleton:
+                        if (parentType == type)
+                            services.AddSingleton(type);
+                        else services.AddSingleton(parentType, type);
+                        break;
+                    case LifetimeScope.PerRequest:
+                        if (parentType == type)
+                            services.AddScoped(type);
+                        else services.AddScoped(parentType, type);
+                        break;
+                    default:
+                        if (parentType == type)
+                            services.AddTransient(type);
+                        else services.AddTransient(parentType, type);
+                        break;
+                }
+            }
+            var serviceProvider = services.BuildServiceProvider();
+            ServiceActivator.Configure(serviceProvider);
+            return serviceConf;
         }
 
         private static void AddSetting(ConfigurationNode configurationNode)

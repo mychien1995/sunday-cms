@@ -5,7 +5,26 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Entities\" />
+    <Compile Remove="Entities\**" />
+    <EmbeddedResource Remove="Entities\**" />
+    <None Remove="Entities\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Scripts\01.Create_schema.sql" />
+    <None Remove="Scripts\02.Clear_version.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Scripts\02.Clear_version.sql">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Scripts\01.Create_schema.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="dbup-core" Version="4.3.1" />
+    <PackageReference Include="dbup-sqlserver" Version="4.3.1" />
   </ItemGroup>
 
   <ItemGroup>

@@ -11,11 +11,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CMS", "CMS", "{DFFD1965-3AB
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sunday.CMS.Application", "Sunday.CMS.Application\Sunday.CMS.Application.csproj", "{40385F4E-800F-47D4-8AAF-058A7026E73E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sunday.CMS.Interface", "Sunday.CMS.Interface\Sunday.CMS.Interface.csproj", "{7256F59C-4EF1-4F8E-B4DF-8EABAD27ABB4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sunday.CMS.Interface", "Sunday.CMS.Interface\Sunday.CMS.Interface.csproj", "{7256F59C-4EF1-4F8E-B4DF-8EABAD27ABB4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sunday.Core.DataAccess", "Sunday.Core.DataAccess\Sunday.Core.DataAccess.csproj", "{7C4A6EF2-AD92-43F3-A5C0-07A4A4123D5B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sunday.Core.DataAccess", "Sunday.Core.DataAccess\Sunday.Core.DataAccess.csproj", "{7C4A6EF2-AD92-43F3-A5C0-07A4A4123D5B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sunday.Core.Framework", "Sunday.Core.Framework\Sunday.Core.Framework.csproj", "{B78EEE1C-84D0-4F65-B8DC-0827FC65BF06}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sunday.Core.Framework", "Sunday.Core.Framework\Sunday.Core.Framework.csproj", "{B78EEE1C-84D0-4F65-B8DC-0827FC65BF06}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
