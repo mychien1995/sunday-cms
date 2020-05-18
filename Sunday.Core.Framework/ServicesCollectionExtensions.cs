@@ -43,6 +43,13 @@ namespace Microsoft.Extensions.DependencyInjection
             return services;
         }
 
+        public static ISundayServicesConfiguration LoadServices(this ISundayServicesConfiguration services)
+        {
+            //Load services here
+            ServiceActivator.Configure(services.Services.BuildServiceProvider());
+            return services;
+        }
+
         private static void AddSetting(ConfigurationNode configurationNode)
         {
             if (configurationNode == null || configurationNode.Settings == null || !configurationNode.Settings.Any())

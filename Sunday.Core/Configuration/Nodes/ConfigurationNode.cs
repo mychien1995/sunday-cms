@@ -8,9 +8,11 @@ namespace Sunday.Core.Configuration
     [XmlRoot("configuration")]
     public class ConfigurationNode
     {
-        [XmlElement("pipelines")]
+        [XmlArray("pipelines")]
+        [XmlArrayItem("pipeline")]
         public List<PipelineNode> Pipelines { get; set; }
-        [XmlElement("settings")]
+        [XmlArray("settings")]
+        [XmlArrayItem("setting")]
         public List<SettingNode> Settings { get; set; }
     }
 }

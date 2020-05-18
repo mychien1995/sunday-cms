@@ -13,7 +13,7 @@ namespace Sunday.Core.Configuration
         }
         [XmlAttribute("name")]
         public string Name { get; set; }
-        [XmlElement("processors")]
+        [XmlElement("processor")]
         public List<ProcessorNode> Processors { get; set; }
     }
 }

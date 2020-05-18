@@ -1,4 +1,5 @@
-﻿using Sunday.Core.Configuration;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Sunday.Core.Configuration;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -26,18 +27,22 @@ namespace Sunday.Core
         }
         public static void Run(string pipelineName, PipelineArg arg)
         {
-            if (_pipelineExecutors.TryGetValue(pipelineName, out List<object> executors))
+            using (var scope = ServiceActivator.GetScope())
             {
-                foreach (var executor in executors)
+                if (_pipelineExecutors.TryGetValue(pipelineName, out List<object> executors))
                 {
-                    executor.GetType().GetMethod("Process").Invoke(executor, new object[1] { arg });
+                    foreach (var executor in executors)
+                    {
+                        executor.GetType().GetMethod("Process").Invoke(executor, new object[1] { arg });
+                        if (arg != null && arg.Aborted) break;
+                    }
                 }
-            }
-            else if (_pipelineDefinitions.TryGetValue(pipelineName, out List<string> definitions))
-            {
-                var executorObjs = definitions.Select(x => Type.GetType(x, true, true)).Select(x => Activator.CreateInstance(x)).ToList();
-                _pipelineExecutors.TryAdd(pipelineName, executorObjs);
-                Run(pipelineName, arg);
+                else if (_pipelineDefinitions.TryGetValue(pipelineName, out List<string> definitions))
+                {
+                    var executorObjs = definitions.Select(x => Type.GetType(x, true, true)).Select(x => ActivatorUtilities.CreateInstance(scope.ServiceProvider, x)).ToList();
+                    _pipelineExecutors.TryAdd(pipelineName, executorObjs);
+                    Run(pipelineName, arg);
+                }
             }
         }
     }

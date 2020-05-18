@@ -31,13 +31,13 @@ namespace Sunday.CMS.Interface
             services.AddControllers();
             services.Sunday()
                 .LoadConfiguration(Environment, Configuration)
+                .LoadServices()
                 .Initialize();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            ServiceActivator.Configure(app.ApplicationServices);
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
