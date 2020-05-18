@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Sunday.Core
+namespace Sunday.Core.DataAccess
 {
     public class Class1
     {

@@ -3,13 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sunday.Core", "Sunday.Core\Sunday.Core.csproj", "{E065E702-1CC6-4D03-AF04-6B6276604403}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sunday.Core", "Sunday.Core\Sunday.Core.csproj", "{E065E702-1CC6-4D03-AF04-6B6276604403}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{E3DCEA1C-29E4-4078-BBBA-246256C7395E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CMS", "CMS", "{DFFD1965-3AB5-4017-8A47-A0693BE1A7BD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sunday.CMS.Application", "Sunday.CMS.Application\Sunday.CMS.Application.csproj", "{40385F4E-800F-47D4-8AAF-058A7026E73E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sunday.CMS.Application", "Sunday.CMS.Application\Sunday.CMS.Application.csproj", "{40385F4E-800F-47D4-8AAF-058A7026E73E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sunday.CMS.Interface", "Sunday.CMS.Interface\Sunday.CMS.Interface.csproj", "{7256F59C-4EF1-4F8E-B4DF-8EABAD27ABB4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sunday.Core.DataAccess", "Sunday.Core.DataAccess\Sunday.Core.DataAccess.csproj", "{7C4A6EF2-AD92-43F3-A5C0-07A4A4123D5B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sunday.Core.Framework", "Sunday.Core.Framework\Sunday.Core.Framework.csproj", "{B78EEE1C-84D0-4F65-B8DC-0827FC65BF06}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,6 +31,18 @@ Global
 		{40385F4E-800F-47D4-8AAF-058A7026E73E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{40385F4E-800F-47D4-8AAF-058A7026E73E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{40385F4E-800F-47D4-8AAF-058A7026E73E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7256F59C-4EF1-4F8E-B4DF-8EABAD27ABB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7256F59C-4EF1-4F8E-B4DF-8EABAD27ABB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7256F59C-4EF1-4F8E-B4DF-8EABAD27ABB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7256F59C-4EF1-4F8E-B4DF-8EABAD27ABB4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C4A6EF2-AD92-43F3-A5C0-07A4A4123D5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C4A6EF2-AD92-43F3-A5C0-07A4A4123D5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C4A6EF2-AD92-43F3-A5C0-07A4A4123D5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C4A6EF2-AD92-43F3-A5C0-07A4A4123D5B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B78EEE1C-84D0-4F65-B8DC-0827FC65BF06}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B78EEE1C-84D0-4F65-B8DC-0827FC65BF06}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B78EEE1C-84D0-4F65-B8DC-0827FC65BF06}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B78EEE1C-84D0-4F65-B8DC-0827FC65BF06}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -32,6 +50,9 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{E065E702-1CC6-4D03-AF04-6B6276604403} = {E3DCEA1C-29E4-4078-BBBA-246256C7395E}
 		{40385F4E-800F-47D4-8AAF-058A7026E73E} = {DFFD1965-3AB5-4017-8A47-A0693BE1A7BD}
+		{7256F59C-4EF1-4F8E-B4DF-8EABAD27ABB4} = {DFFD1965-3AB5-4017-8A47-A0693BE1A7BD}
+		{7C4A6EF2-AD92-43F3-A5C0-07A4A4123D5B} = {E3DCEA1C-29E4-4078-BBBA-246256C7395E}
+		{B78EEE1C-84D0-4F65-B8DC-0827FC65BF06} = {E3DCEA1C-29E4-4078-BBBA-246256C7395E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B00775C3-EEF6-4883-A795-0C11DB15EC6E}
