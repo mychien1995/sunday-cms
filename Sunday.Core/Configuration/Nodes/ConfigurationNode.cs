@@ -14,5 +14,9 @@ namespace Sunday.Core.Configuration
         [XmlArray("settings")]
         [XmlArrayItem("setting")]
         public List<SettingNode> Settings { get; set; }
+
+        [XmlArray("services")]
+        [XmlArrayItem("services")]
+        public List<ServiceNode> Services { get; set; }
     }
 }

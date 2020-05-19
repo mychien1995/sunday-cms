@@ -1,9 +1,11 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Dapper;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Sunday.Core.DataAccess.Database
 {
@@ -25,7 +27,7 @@ namespace Sunday.Core.DataAccess.Database
                     connection.Open();
                 using (var cmd = new SqlCommand())
                 {
-                    foreach(var param in parameters)
+                    foreach (var param in parameters)
                     {
                         cmd.Parameters.Add(param);
                     }
@@ -34,6 +36,17 @@ namespace Sunday.Core.DataAccess.Database
                     cmd.CommandText = storeName;
                     cmd.ExecuteNonQuery();
                 }
+            }
+        }
+
+        public async Task<IEnumerable<T>> SelectAsync<T>(string storeName, object parameter)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                if (connection.State != ConnectionState.Open)
+                    connection.Open();
+                var result = await connection.QueryAsync<T>(storeName, parameter, commandType: CommandType.StoredProcedure);
+                return result;
             }
         }
     }

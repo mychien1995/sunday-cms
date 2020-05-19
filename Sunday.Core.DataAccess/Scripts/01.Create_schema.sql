@@ -5,7 +5,8 @@ BEGIN
 		ID integer primary key identity(1,1),
 		Domain varchar(100) NOT NULL,
 		Username nvarchar(100) NOT NULL,
-		SecurityStamp varchar(20),
+		FullName nvarchar(500),
+		SecurityStamp varchar(500),
 		PasswordHash nvarchar(MAX) NOT NULL,
 		Email nvarchar(500),
 		Phone nvarchar(500),
@@ -54,38 +55,82 @@ BEGIN
 	);
 END
 
-IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_database_seeding')
+IF (NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'dbo' AND  TABLE_NAME = 'Organizations'))
 BEGIN
-	EXEC('CREATE PROCEDURE [dbo].[sp_database_seeding] AS BEGIN SET NOCOUNT ON; END')
+	CREATE TABLE Organizations
+	(
+		ID integer primary key identity(1,1),
+		OrganizationName nvarchar(500),
+		[Description] nvarchar(MAX),
+		IsActive bit NOT NULL default(10),
+		CreatedDate datetime NOT NULL default(GETDATE()),
+		CreatedBy nvarchar(100),
+		UpdatedDate datetime NOT NULL default(GETDATE()),
+		UpdatedBy nvarchar(100),
+		IsDeleted bit NOT NULL default(0)
+	);
 END
-GO
-ALTER PROCEDURE [dbo].[sp_database_seeding]
-(
-	@PasswordHash nvarchar(MAX),
-	@SecurityStamp nvarchar(20),
-	@RoleType RoleType READONLY
-)
-AS
+
+IF (NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'dbo' AND  TABLE_NAME = 'OrganizationUsers'))
 BEGIN
-	DECLARE @UserExist bit = 1
-	DECLARE @UserId int
-	IF NOT EXISTS (select 1 from dbo.Users WHERE Username = 'admin' and Domain = 'CMS')
-	BEGIN
-		SET @UserExist = 0
-		INSERT INTO Users(Username, Domain, EmailConfirmed, CreatedBy, UpdatedBy, SecurityStamp, PasswordHash)
-		VALUES ('admin', 'CMS', 1, 'System' , 'System', @SecurityStamp, @PasswordHash)
-		SET @UserId = SCOPE_IDENTITY() 
-	END
-
-	IF NOT EXISTS (select TOP 1 * from dbo.Roles)
-	BEGIN
-		INSERT INTO dbo.Roles
-		SELECT * FROM @RoleType
-	END
-
-	IF (@UserExist = 0)
-	BEGIN
-		INSERT INTO UserRoles (UserId, RoleId) VALUES (@UserId, 1)
-	END
+	CREATE TABLE OrganizationUsers
+	(
+		ID integer primary key identity(1,1),
+		UserId integer NOT NULL,
+		OrganizationId integer NOT NULL,
+		CONSTRAINT FK_OrganizationUsers_Users FOREIGN KEY (UserId) REFERENCES Users(ID),
+		CONSTRAINT FK_OrganizationUsers_Organization FOREIGN KEY (OrganizationId) REFERENCES Organizations(ID),
+	);
 END
-GO
+
+IF (NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'dbo' AND  TABLE_NAME = 'OrganizationRoles'))
+BEGIN
+	CREATE TABLE OrganizationRoles
+	(
+		ID integer primary key identity(1,1),
+		RoleCode varchar(20),
+		RoleName nvarchar(500),
+		OrganizationId integer NOT NULL,
+		[Description] nvarchar(MAX),
+		CreatedDate datetime NOT NULL default(GETDATE()),
+		CreatedBy nvarchar(100),
+		UpdatedDate datetime NOT NULL default(GETDATE()),
+		UpdatedBy nvarchar(100),
+		CONSTRAINT FK_OrganizationRoles_Organization FOREIGN KEY (OrganizationId) REFERENCES Organizations(ID),
+	);
+END
+
+IF (NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'dbo' AND  TABLE_NAME = 'OrganizationUserRoles'))
+BEGIN
+	CREATE TABLE OrganizationUserRoles
+	(
+		ID integer primary key identity(1,1),
+		OrganizationUserId integer NOT NULL,
+		OrganizationRoleId integer NOT NULL,
+		CONSTRAINT FK_OrganizationUserRoles_OrganizationUser FOREIGN KEY (OrganizationUserId) REFERENCES OrganizationUsers(ID),
+		CONSTRAINT FK_OrganizationUserRoles_OrganizationRole FOREIGN KEY (OrganizationRoleId) REFERENCES OrganizationRoles(ID),
+	);
+END
+
+IF (NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'dbo' AND  TABLE_NAME = 'Features'))
+BEGIN
+	CREATE TABLE Features
+	(
+		ID integer primary key identity(1,1),
+		Code varchar(20),
+		[Name] nvarchar(500),
+		[Description] nvarchar(MAX)
+	);
+END
+
+IF (NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'dbo' AND  TABLE_NAME = 'OrganizationRolesMapping'))
+BEGIN
+	CREATE TABLE OrganizationRolesMapping
+	(
+		ID integer primary key identity(1,1),
+		OrganizationRoleId integer NOT NULL,
+		FeatureId integer NOT NULL,
+		CONSTRAINT FK_OrganizationRolesMapping_OrganizationRole FOREIGN KEY (OrganizationRoleId) REFERENCES OrganizationRoles(ID),
+		CONSTRAINT FK_OrganizationRolesMapping_Feature FOREIGN KEY (FeatureId) REFERENCES Features(ID),
+	);
+END

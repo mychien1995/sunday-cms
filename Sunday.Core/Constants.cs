@@ -19,4 +19,14 @@ namespace Sunday.Core
         public const string OrganizationAdmin = "AD";
         public const string OrganizationUser = "NOM";
     }
+
+    public class DomainNames
+    {
+        public const string Shell = "CMS";
+    }
+
+    public class PipelineNames
+    {
+        public const string AfterLoggedIn = "login:after";
+    }
 }

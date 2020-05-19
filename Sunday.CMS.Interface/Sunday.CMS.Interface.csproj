@@ -1,11 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Sunday.CMS.Application\Sunday.CMS.Application.csproj" />
+    <ProjectReference Include="..\Sunday.CMS.Core\Sunday.CMS.Core.csproj" />
     <ProjectReference Include="..\Sunday.Core.DataAccess\Sunday.Core.DataAccess.csproj" />
     <ProjectReference Include="..\Sunday.Core.Framework\Sunday.Core.Framework.csproj" />
     <ProjectReference Include="..\Sunday.Core\Sunday.Core.csproj" />

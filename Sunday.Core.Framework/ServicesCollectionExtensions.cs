@@ -16,6 +16,7 @@ namespace Microsoft.Extensions.DependencyInjection
 {
     public static class ServicesCollectionExtensions
     {
+        private static ConfigurationNode _configuration = new ConfigurationNode();
         public static ISundayServicesConfiguration Sunday(this IServiceCollection services)
         {
             return new SundayServicesConfiguration(services);
@@ -32,6 +33,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 using (TextReader reader = new StringReader(configFileContent))
                 {
                     ConfigurationNode configurationNode = (ConfigurationNode)serializer.Deserialize(reader);
+                    _configuration = configurationNode;
                     AddSetting(configurationNode);
                     AddPipelines(configurationNode);
                 }
@@ -81,11 +83,34 @@ namespace Microsoft.Extensions.DependencyInjection
                         break;
                 }
             }
+            AddConfiguredServices(_configuration, services);
             var serviceProvider = services.BuildServiceProvider();
             ServiceActivator.Configure(serviceProvider);
             return serviceConf;
         }
 
+        public static void AddConfiguredServices(ConfigurationNode configurationNode, IServiceCollection serviceCollection)
+        {
+            if (configurationNode == null || configurationNode.Services == null || !configurationNode.Services.Any())
+                return;
+            foreach (var service in configurationNode.Services.Where(x => !string.IsNullOrEmpty(x?.ServiceType) || !string.IsNullOrEmpty(x?.ImplementationType)))
+            {
+                var serviceType = Type.GetType(service.ServiceType);
+                var implementType = Type.GetType(service.ImplementationType);
+                switch (service.LifetimeScope)
+                {
+                    case "Singleton":
+                        serviceCollection.AddSingleton(serviceType, implementType);
+                        break;
+                    case "Scope":
+                        serviceCollection.AddScoped(serviceType, implementType);
+                        break;
+                    default:
+                        serviceCollection.AddTransient(serviceType, implementType);
+                        break;
+                }
+            }
+        }
         private static void AddSetting(ConfigurationNode configurationNode)
         {
             if (configurationNode == null || configurationNode.Settings == null || !configurationNode.Settings.Any())
