@@ -33,6 +33,17 @@ namespace Sunday.CMS.Interface
                 .LoadConfiguration(Environment, Configuration)
                 .LoadServices()
                 .Initialize();
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll",
+                    builder =>
+                    {
+                        builder
+                        .AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader();
+                    });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,7 +55,7 @@ namespace Sunday.CMS.Interface
             }
 
             app.UseHttpsRedirection();
-
+            app.UseCors("AllowAll");
             app.UseRouting();
 
             app.UseAuthorization();

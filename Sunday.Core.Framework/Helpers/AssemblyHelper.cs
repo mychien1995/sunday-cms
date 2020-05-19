@@ -16,14 +16,23 @@ namespace Sunday.Core.Framework.Helpers
             var assemblyPath = System.Reflection.Assembly.GetEntryAssembly().Location;
             var directory = System.IO.Path.GetDirectoryName(assemblyPath);
             var compiled = predicate.Compile();
+            var result = new List<Assembly>();
             foreach (string dll in Directory.GetFiles(directory, "*.dll", SearchOption.TopDirectoryOnly))
             {
                 if (compiled.Invoke(dll))
                 {
-                    Assembly loadedAssembly = AssemblyLoadContext.Default.LoadFromAssemblyPath(dll);
-                    yield return loadedAssembly;
+                    try
+                    {
+                        Assembly loadedAssembly = AssemblyLoadContext.Default.LoadFromAssemblyPath(dll);
+                        result.Add(loadedAssembly);
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
                 }
             }
+            return result;
         }
         public static IEnumerable<Assembly> GetAssemblies(Expression<Func<AssemblyName, bool>> predicate)
         {

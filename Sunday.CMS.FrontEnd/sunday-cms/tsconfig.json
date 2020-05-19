@@ -11,6 +11,7 @@
     "typeRoots": [
       "node_modules/@types"
     ],
+    "baseUrl": "./src",
     "lib": [
       "es2017",
       "dom"

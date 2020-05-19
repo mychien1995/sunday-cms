@@ -50,7 +50,7 @@ namespace Microsoft.Extensions.DependencyInjection
         public static ISundayServicesConfiguration LoadServices(this ISundayServicesConfiguration serviceConf)
         {
             var services = serviceConf.Services;
-            var assemblies = AssemblyHelper.GetAllAssemblies(x => (!x.StartsWith("Microsoft") && !x.StartsWith("System")) &&
+            var assemblies = AssemblyHelper.GetAllAssemblies(x => (!x.StartsWith("api-") && !x.StartsWith("Microsoft") && !x.StartsWith("System")) &&
             (x.Contains("Sunday") || x.Contains("Plugin"))).ToArray();
 
             var types = AssemblyHelper.GetClassesWithAttribute(assemblies, typeof(ServiceTypeOfAttribute));
