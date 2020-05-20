@@ -1,4 +1,4 @@
-import { LoginComponent, DashboardComponent, LoadingStateComponent } from 'app/components';
+import { LoginComponent, DashboardComponent, LoadingStateComponent, ManageUsersComponent } from 'app/components';
 import {
   ApplicationLayoutComponent, AppHeaderComponent,
   AppHeaderLogoComponent, AppHeaderInfoComponent, AppHeaderQuickLinkComponent,
@@ -26,7 +26,8 @@ import { LoginService, ApiService, AuthenticationService, AuthGuard, ClientState
     AppSidebarComponent,
     AppNavigationComponent,
     DashboardComponent,
-    LoadingStateComponent
+    LoadingStateComponent,
+    ManageUsersComponent
   ],
   exports: [
     FormsModule,
@@ -40,7 +41,8 @@ import { LoginService, ApiService, AuthenticationService, AuthGuard, ClientState
     AppSidebarComponent,
     AppNavigationComponent,
     DashboardComponent,
-    LoadingStateComponent
+    LoadingStateComponent,
+    ManageUsersComponent
   ],
   providers: [
     ApiService,
