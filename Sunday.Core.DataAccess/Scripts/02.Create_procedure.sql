@@ -72,7 +72,8 @@ GO
 ALTER PROCEDURE [dbo].[sp_users_search]
 AS
 BEGIN
-	SELECT * FROM [Users]
+	SELECT COUNT(*) FROM [Users];
+	SELECT * FROM [Users];
 END
 GO
 

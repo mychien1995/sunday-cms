@@ -35,8 +35,9 @@ namespace Sunday.Core.DataAccess.Repositories
         public async Task<SearchResult<ApplicationUser>> QueryUsers(UserQuery query)
         {
             var result = new SearchResult<ApplicationUser>();
-            var searchResult = await _dbRunner.ExecuteAsync<ApplicationUser>(ProcedureNames.Users.Search);
-            result.Result = searchResult;
+            var searchResult = await _dbRunner.ExecuteMultiple(ProcedureNames.Users.Search, new Type[] { typeof(int), typeof(ApplicationUser) });
+            result.Total = searchResult[0].Select(x => (int)x).FirstOrDefault();
+            result.Result = searchResult[1].Select(x => (ApplicationUser)x);
             return result;
         }
 
