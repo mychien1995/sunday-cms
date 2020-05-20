@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace Sunday.CMS.Core.Implementation.Identity
 {
-    [ServiceTypeOf(typeof(ILoginRepository))]
-    public class LoginRepository : ILoginRepository
+    [ServiceTypeOf(typeof(ILoginManager))]
+    public class LoginManager : ILoginManager
     {
         private readonly IAuthenticationService _authenticationService;
-        public LoginRepository(IAuthenticationService authenticationService)
+        public LoginManager(IAuthenticationService authenticationService)
         {
             _authenticationService = authenticationService;
         }

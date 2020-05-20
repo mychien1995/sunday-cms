@@ -21,7 +21,7 @@ namespace Sunday.Core.DataAccess.Database
         }
         public void Execute(string storeName, params SqlParameter[] parameters)
         {
-            using (var connection = new SqlConnection(_connectionString))
+            using (var connection = GetConnection())
             {
                 if (connection.State != ConnectionState.Open)
                     connection.Open();
@@ -39,15 +39,31 @@ namespace Sunday.Core.DataAccess.Database
             }
         }
 
-        public async Task<IEnumerable<T>> SelectAsync<T>(string storeName, object parameter)
+        public async Task<IEnumerable<T>> ExecuteAsync<T>(string storeName, object parameter = null)
         {
-            using (var connection = new SqlConnection(_connectionString))
+            using (var connection = GetConnection())
             {
                 if (connection.State != ConnectionState.Open)
                     connection.Open();
                 var result = await connection.QueryAsync<T>(storeName, parameter, commandType: CommandType.StoredProcedure);
                 return result;
             }
+        }
+
+        public IEnumerable<T> Execute<T>(string storeName, object parameter = null)
+        {
+            using (var connection = GetConnection())
+            {
+                if (connection.State != ConnectionState.Open)
+                    connection.Open();
+                var result = connection.Query<T>(storeName, parameter, commandType: CommandType.StoredProcedure);
+                return result;
+            }
+        }
+
+        protected virtual SqlConnection GetConnection()
+        {
+            return new SqlConnection(_connectionString);
         }
     }
 }

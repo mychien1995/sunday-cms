@@ -27,17 +27,20 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             var environment = configuration.GetValue<string>("Environment");
             var configurationPath = string.IsNullOrEmpty(environment) ? $"\\config\\sunday.config" : $"\\config\\sunday.{environment.ToLower()}.config";
-            using (var serviceScope = ServiceActivator.GetScope())
+            var filePath = hostingEnv.WebRootPath + configurationPath;
+            if (!string.IsNullOrEmpty(environment) && !File.Exists(filePath))
             {
-                var configFileContent = File.ReadAllText(hostingEnv.WebRootPath + configurationPath);
-                var serializer = new XmlSerializer(typeof(ConfigurationNode));
-                using (TextReader reader = new StringReader(configFileContent))
-                {
-                    ConfigurationNode configurationNode = (ConfigurationNode)serializer.Deserialize(reader);
-                    _configuration = configurationNode;
-                    AddSetting(configurationNode);
-                    AddPipelines(configurationNode);
-                }
+                configurationPath = $"\\config\\sunday.config";
+                filePath = hostingEnv.WebRootPath + configurationPath;
+            }
+            var configFileContent = File.ReadAllText(filePath);
+            var serializer = new XmlSerializer(typeof(ConfigurationNode));
+            using (TextReader reader = new StringReader(configFileContent))
+            {
+                ConfigurationNode configurationNode = (ConfigurationNode)serializer.Deserialize(reader);
+                _configuration = configurationNode;
+                AddSetting(configurationNode);
+                AddPipelines(configurationNode);
             }
             return services;
         }

@@ -4,7 +4,8 @@ using System.Text;
 
 namespace Sunday.Core.Domain
 {
-    public interface IEntity : IChangeTrackable, IUniqueEntity
+    public interface IUniqueEntity
     {
+        public int ID { get; set; }
     }
 }

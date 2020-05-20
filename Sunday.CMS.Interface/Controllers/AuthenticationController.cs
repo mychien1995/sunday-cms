@@ -13,8 +13,8 @@ namespace Sunday.CMS.Interface.Controllers
     [Route("[controller]")]
     public class AuthenticationController : ControllerBase
     {
-        private readonly ILoginRepository _loginRepository;
-        public AuthenticationController(ILoginRepository loginRepository)
+        private readonly ILoginManager _loginRepository;
+        public AuthenticationController(ILoginManager loginRepository)
         {
             _loginRepository = loginRepository;
         }

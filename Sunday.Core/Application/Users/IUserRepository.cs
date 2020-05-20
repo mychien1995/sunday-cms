@@ -1,4 +1,6 @@
 ﻿using Sunday.Core.Domain.Users;
+using Sunday.Core.Models;
+using Sunday.Core.Models.Users;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,5 +11,11 @@ namespace Sunday.Core.Users
     public interface IUserRepository
     {
         Task<ApplicationUser> FindUserByNameAsync(string username);
+
+        Task<SearchResult<ApplicationUser>> QueryUsers(UserQuery query);
+
+        ApplicationUser GetUserById(int userId);
+
+        Task<ApplicationUser> CreateUser(ApplicationUser user);
     }
 }

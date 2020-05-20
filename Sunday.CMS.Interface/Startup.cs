@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Sunday.Core;
 
 namespace Sunday.CMS.Interface
@@ -29,6 +30,8 @@ namespace Sunday.CMS.Interface
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddHttpContextAccessor();
+            services.AddSingleton(typeof(ILogger<>), typeof(Logger<>));
             services.Sunday()
                 .LoadConfiguration(Environment, Configuration)
                 .LoadServices()
@@ -43,7 +46,6 @@ namespace Sunday.CMS.Interface
             {
                 app.UseDeveloperExceptionPage();
             }
-
             app.UseHttpsRedirection();
             app.UseCors("AllowAll");
             app.UseRouting();

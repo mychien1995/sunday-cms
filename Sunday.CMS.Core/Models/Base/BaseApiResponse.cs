@@ -20,6 +20,7 @@ namespace Sunday.CMS.Core.Models
         {
             if (Errors == null) Errors = new List<string>();
             Errors.Add(error);
+            Success = false;
         }
         public void AddMessage(string message)
         {

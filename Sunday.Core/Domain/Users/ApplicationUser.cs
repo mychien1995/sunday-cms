@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Sunday.Core.Domain.Users
 {
-    public class ApplicationUser : IChangeTrackable
+    public class ApplicationUser : IEntity
     {
         public int ID { get; set; }
         public string UserName { get; set; }
