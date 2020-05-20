@@ -1,25 +1,53 @@
-import { LoginComponent } from 'app/components';
+import { LoginComponent, DashboardComponent, LoadingStateComponent } from 'app/components';
+import {
+  ApplicationLayoutComponent, AppHeaderComponent,
+  AppHeaderLogoComponent, AppHeaderInfoComponent, AppHeaderQuickLinkComponent,
+  AppSidebarComponent, AppNavigationComponent
+} from 'app/components/_layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { LoginService, ApiService } from 'app/core';
+import { RouterModule } from '@angular/router';
+import { LoginService, ApiService, AuthenticationService, AuthGuard, ClientState } from '@services/index';
 
 @NgModule({
   imports: [
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RouterModule
   ],
   declarations: [
-    LoginComponent
+    LoginComponent,
+    ApplicationLayoutComponent,
+    AppHeaderComponent,
+    AppHeaderLogoComponent,
+    AppHeaderInfoComponent,
+    AppHeaderQuickLinkComponent,
+    AppSidebarComponent,
+    AppNavigationComponent,
+    DashboardComponent,
+    LoadingStateComponent
   ],
   exports: [
     FormsModule,
     ReactiveFormsModule,
-    LoginComponent
+    LoginComponent,
+    ApplicationLayoutComponent,
+    AppHeaderComponent,
+    AppHeaderLogoComponent,
+    AppHeaderInfoComponent,
+    AppHeaderQuickLinkComponent,
+    AppSidebarComponent,
+    AppNavigationComponent,
+    DashboardComponent,
+    LoadingStateComponent
   ],
   providers: [
     ApiService,
-    LoginService
+    LoginService,
+    AuthenticationService,
+    AuthGuard,
+    ClientState
   ]
 })
 

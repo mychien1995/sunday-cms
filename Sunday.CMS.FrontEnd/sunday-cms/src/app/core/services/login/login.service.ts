@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { _throw } from 'rxjs/observable/throw';
-import { LoginInputModel } from 'app/core/models';
-import { ApiService, ApiHelper } from 'app/core/services';
-import { ApiUrl } from 'app/core/constants';
+import { LoginInputModel } from '@models/index';
+import { ApiService, ApiHelper } from '@services/index';
+import { ApiUrl } from '@core/constants';
 import { map, catchError } from 'rxjs/operators';
 
 

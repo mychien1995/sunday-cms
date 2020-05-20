@@ -11,6 +11,7 @@ using System.Linq;
 using Microsoft.Extensions.Configuration;
 using Sunday.Core.Framework.Helpers;
 using System.Reflection;
+using Sunday.Core.Pipelines.Arguments;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -43,7 +44,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
         public static ISundayServicesConfiguration Initialize(this ISundayServicesConfiguration services)
         {
-            ApplicationPipelines.Run("initialize", null);
+            ApplicationPipelines.Run("initialize", new InitializationArg(services.Services));
             return services;
         }
 

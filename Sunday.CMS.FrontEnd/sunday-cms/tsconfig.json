@@ -12,6 +12,12 @@
       "node_modules/@types"
     ],
     "baseUrl": "./src",
+    "paths": {
+      "@services/*": [ "app/core/services/*" ],
+      "@models/*": [ "app/core/models/*" ],
+      "@core/*": [ "app/core/*" ],
+      "@components/*": [ "app/components/*" ]
+    },
     "lib": [
       "es2017",
       "dom"

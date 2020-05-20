@@ -5,6 +5,8 @@ import { AppRoutingModule } from 'app/app-routing.module';
 import { SharedModule } from 'app/shared/shared.module';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { JwtModule } from '@auth0/angular-jwt';
+import { StorageKey } from 'app/core/constants';
 
 
 @NgModule({
@@ -16,9 +18,24 @@ import { HttpClientModule } from '@angular/common/http';
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    SharedModule
+    SharedModule,
+    JwtModule.forRoot({
+      config: {
+        throwNoTokenError: false,
+        tokenGetter: GetToken,
+      }
+    }),
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+
+
+export function GetToken() {
+  var data = localStorage.getItem(StorageKey.UserData);
+  if (data) {
+    return JSON.parse(data).Token;
+  }
+  return null;
+}
