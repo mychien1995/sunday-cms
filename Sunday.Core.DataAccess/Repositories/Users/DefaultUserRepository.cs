@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using Sunday.Core.DataAccess.Database;
+using Sunday.Core.Domain.Roles;
 using Sunday.Core.Domain.Users;
 using Sunday.Core.Models;
 using Sunday.Core.Models.Users;
@@ -32,10 +33,31 @@ namespace Sunday.Core.DataAccess.Repositories
             return result.FirstOrDefault();
         }
 
+        public ApplicationUser GetUserWithOptions(int userId, GetUserOptions option = null)
+        {
+            ApplicationUser user = null;
+            if (option == null) option = new GetUserOptions();
+            var queryResult = _dbRunner.ExecuteMultiple(ProcedureNames.Users.GetByIdWithOptions, new Type[] { typeof(ApplicationUser), typeof(ApplicationRole) }, new
+            {
+                UserId = userId,
+                option.FetchRoles,
+                option.FetchOrganizations
+            });
+            if (queryResult.Count > 0)
+            {
+                user = queryResult[0].FirstOrDefault() as ApplicationUser;
+            }
+            if (queryResult.Count > 1)
+            {
+                user.Roles = queryResult[1].Select(x => x as ApplicationRole).ToList();
+            }
+            return user;
+        }
+
         public async Task<SearchResult<ApplicationUser>> QueryUsers(UserQuery query)
         {
             var result = new SearchResult<ApplicationUser>();
-            var searchResult = await _dbRunner.ExecuteMultiple(ProcedureNames.Users.Search, new Type[] { typeof(int), typeof(ApplicationUser) });
+            var searchResult = await _dbRunner.ExecuteMultipleAsync(ProcedureNames.Users.Search, new Type[] { typeof(int), typeof(ApplicationUser) });
             result.Total = searchResult[0].Select(x => (int)x).FirstOrDefault();
             result.Result = searchResult[1].Select(x => (ApplicationUser)x);
             return result;

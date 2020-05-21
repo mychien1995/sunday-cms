@@ -9,6 +9,10 @@ namespace Sunday.CMS.Core.Models.Users
     [MappedTo(typeof(ApplicationUser))]
     public class UserMutationModel
     {
+        public UserMutationModel()
+        {
+            RoleIds = new List<int>();
+        }
         public string Username { get; set; }
         public string Password { get; set; }
         public string Fullname { get; set; }
@@ -16,5 +20,7 @@ namespace Sunday.CMS.Core.Models.Users
         public string Phone { get; set; }
         public bool IsActive { get; set; }
         public string Domain { get; set; }
+
+        public List<int> RoleIds { get; set; }
     }
 }

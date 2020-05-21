@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Sunday.Core.Domain.Roles;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,6 +7,10 @@ namespace Sunday.Core.Domain.Users
 {
     public class ApplicationUser : IEntity
     {
+        public ApplicationUser()
+        {
+            Roles = new List<ApplicationRole>();
+        }
         public int ID { get; set; }
         public string UserName { get; set; }
         public DateTime CreatedDate { get; set; }
@@ -22,5 +27,7 @@ namespace Sunday.Core.Domain.Users
         public string Email { get; set; }
         public string Phone { get; set; }
         public string Fullname { get; set; }
+
+        public List<ApplicationRole> Roles { get; set; }
     }
 }

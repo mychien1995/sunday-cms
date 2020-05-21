@@ -41,7 +41,7 @@ namespace Sunday.CMS.Core.Implementation.Users
         public async Task<CreateUserJsonResult> CreateUser(UserMutationModel userData)
         {
             var applicationUser = userData.MapTo<ApplicationUser>();
-            ApplicationPipelines.Run("cms.users.beforeCreate", new BeforeCreateUserArg(applicationUser, userData));
+            await ApplicationPipelines.RunAsync("cms.users.beforeCreate", new BeforeCreateUserArg(applicationUser, userData));
             applicationUser.EmailConfirmed = true;
             var createResult = await _userRepository.CreateUser(applicationUser);
             var result = new CreateUserJsonResult(createResult.ID);

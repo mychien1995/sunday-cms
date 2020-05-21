@@ -1,0 +1,77 @@
+<app-page-heading [title]="'Create User'" [icon]="'bg-happy-itmeo'"></app-page-heading>
+<div class="row">
+    <div class="col-12">
+        <div class="main-card mb-3 card">
+            <div class="card-body">
+                <form (ngSubmit)="onSubmit(userForm.value)" [formGroup]="userForm" autocomplete="off">
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <div class="position-relative form-group">
+                                <label for="username" class="">Username</label>
+                                <input name="username" placeholder="Username here..." type="text" class="form-control"
+                                    formControlName="UserName" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="position-relative form-group">
+                                <label for="Fullname" class="">Full Name</label>
+                                <input name="Fullname" placeholder="Fullname here..." type="text" class="form-control"
+                                    formControlName="Fullname" autocomplete="off">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <div class="position-relative form-group">
+                                <label for="password" class="">Password</label>
+                                <input name="password" placeholder="Password here..." type="password"
+                                    class="form-control" formControlName="Password">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="position-relative form-group">
+                                <label for="confirm" class="">Confirm Password</label>
+                                <input name="confirm" placeholder="Confirm Password here..." type="password"
+                                    class="form-control" formControlName="ConfirmPassword">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <div class="position-relative form-group">
+                                <label for="Email" class="">Email</label>
+                                <input name="Email" placeholder="Email here..." type="text" class="form-control"
+                                    formControlName="Email" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="position-relative form-group">
+                                <label for="Phonenumber" class="">Phone</label>
+                                <input name="Phonenumber" placeholder="Phone number here..." type="text"
+                                    class="form-control" formControlName="Phone">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <div class="position-relative form-group">
+                                <label for="Domain" class="">Domain</label>
+                                <ng-select [items]="['CMS']" formControlName="Domain">
+                                </ng-select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="position-relative form-group">
+                                <label for="Roles" class="">Role</label>
+                                <ng-select [items]="roleLookup" bindValue="ID" bindLabel="RoleName" formControlName="RoleIds">
+                                </ng-select>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="mt-1 btn btn-primary">Submit</button>
+                    <button class="mt-1 ml-2 btn btn-light" [routerLink]="['/users']">Back</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

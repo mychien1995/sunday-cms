@@ -29,4 +29,12 @@ namespace Sunday.Core
     {
         public const string AfterLoggedIn = "login:after";
     }
+
+    public class RoleCodes
+    {
+        public const string SystemAdmin = "SA";
+        public const string Developer = "DEV";
+        public const string OrganizationAdmin = "AD";
+        public const string OrganizationUser = "NOM";
+    }
 }

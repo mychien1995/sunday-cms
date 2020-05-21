@@ -60,7 +60,7 @@ ALTER PROCEDURE [dbo].[sp_users_getById]
 )
 AS
 BEGIN
-	SELECT * FROM [Users] WHERE ID = @UserId
+	SELECT * FROM [Users] WHERE ID = @UserId AND IsDeleted = 0;
 END
 GO
 
@@ -103,5 +103,38 @@ BEGIN
 	VALUES (@UserName, @Fullname, @Email, @Phone , @Domain, @IsActive, @EmailConfirmed, @CreatedBy, @UpdatedBy, @SecurityStamp, @PasswordHash)
 	SET @UserId = SCOPE_IDENTITY() 
 	SELECT @UserId
+END
+GO
+
+IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_roles_getAll')
+BEGIN
+	EXEC('CREATE PROCEDURE [dbo].[sp_roles_getAll] AS BEGIN SET NOCOUNT ON; END')
+END
+GO
+ALTER PROCEDURE [dbo].[sp_roles_getAll]
+AS
+BEGIN
+	SELECT * FROM [Roles];
+END
+GO
+
+IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_users_getById_withOptions')
+BEGIN
+	EXEC('CREATE PROCEDURE [dbo].[sp_users_getById_withOptions] AS BEGIN SET NOCOUNT ON; END')
+END
+GO
+ALTER PROCEDURE [dbo].[sp_users_getById_withOptions]
+(
+	@UserId integer,
+	@FetchRoles bit = 0,
+	@FetchOrganizations bit = 0
+)
+AS
+BEGIN
+	SELECT * FROM Users WHERE ID = @UserId AND IsDeleted = 0;
+	IF @FetchRoles = 1
+	BEGIN
+		SELECT * FROM Roles WHERE ID IN (SELECT RoleId FROM UserRoles WHERE UserId = @UserId)
+	END
 END
 GO

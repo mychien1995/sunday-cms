@@ -11,5 +11,6 @@ export class PageHeadingComponent implements OnInit {
 
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 }

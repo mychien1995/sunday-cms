@@ -1,23 +1,47 @@
-import { LoginComponent, DashboardComponent, LoadingStateComponent, ManageUsersComponent, PageHeadingComponent } from 'app/components';
 import {
-  ApplicationLayoutComponent, AppHeaderComponent,
-  AppHeaderLogoComponent, AppHeaderInfoComponent, AppHeaderQuickLinkComponent,
-  AppSidebarComponent, AppNavigationComponent
+  LoginComponent,
+  DashboardComponent,
+  LoadingStateComponent,
+  ManageUsersComponent,
+  PageHeadingComponent,
+  AddUserComponent,
+} from 'app/components';
+import {
+  ApplicationLayoutComponent,
+  AppHeaderComponent,
+  AppHeaderLogoComponent,
+  AppHeaderInfoComponent,
+  AppHeaderQuickLinkComponent,
+  AppSidebarComponent,
+  AppNavigationComponent,
 } from 'app/components/_layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { LoginService, ApiService, AuthenticationService, AuthGuard, ClientState, UserService } from '@services/index';
+import {
+  LoginService,
+  ApiService,
+  AuthenticationService,
+  AuthGuard,
+  ClientState,
+  UserService,
+  RoleService
+} from '@services/index';
 import { SharedAngularMaterial } from './shared.angular-material.module';
-import { TokenInterceptor, AuthenticationInterceptor } from '@interceptors/index';
+import {
+  TokenInterceptor,
+  AuthenticationInterceptor,
+} from '@interceptors/index';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
   imports: [
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
-    SharedAngularMaterial
+    SharedAngularMaterial,
+    NgSelectModule
   ],
   declarations: [
     LoginComponent,
@@ -31,7 +55,8 @@ import { TokenInterceptor, AuthenticationInterceptor } from '@interceptors/index
     DashboardComponent,
     LoadingStateComponent,
     ManageUsersComponent,
-    PageHeadingComponent
+    PageHeadingComponent,
+    AddUserComponent
   ],
   exports: [
     FormsModule,
@@ -48,7 +73,9 @@ import { TokenInterceptor, AuthenticationInterceptor } from '@interceptors/index
     DashboardComponent,
     LoadingStateComponent,
     ManageUsersComponent,
-    PageHeadingComponent
+    PageHeadingComponent,
+    AddUserComponent,
+    NgSelectModule
   ],
   providers: [
     ApiService,
@@ -57,17 +84,17 @@ import { TokenInterceptor, AuthenticationInterceptor } from '@interceptors/index
     AuthGuard,
     ClientState,
     UserService,
+    RoleService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
-      multi: true
+      multi: true,
     },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthenticationInterceptor,
-      multi: true
-    }
-  ]
+      multi: true,
+    },
+  ],
 })
-
-export class SharedModule { }
+export class SharedModule {}

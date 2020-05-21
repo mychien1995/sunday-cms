@@ -50,7 +50,7 @@ namespace Sunday.Core.DataAccess.Database
             }
         }
 
-        public async Task<List<IEnumerable<object>>> ExecuteMultiple(string storeName, Type[] returnTypes, object parameter = null)
+        public async Task<List<IEnumerable<object>>> ExecuteMultipleAsync(string storeName, Type[] returnTypes, object parameter = null)
         {
             var finalResult = new List<IEnumerable<object>>();
             using (var connection = GetConnection())
@@ -61,6 +61,23 @@ namespace Sunday.Core.DataAccess.Database
                 foreach(var type in returnTypes)
                 {
                     var typeResult = await queryResult.ReadAsync(type);
+                    finalResult.Add(typeResult);
+                }
+                return finalResult;
+            }
+        }
+
+        public List<IEnumerable<object>> ExecuteMultiple(string storeName, Type[] returnTypes, object parameter = null)
+        {
+            var finalResult = new List<IEnumerable<object>>();
+            using (var connection = GetConnection())
+            {
+                if (connection.State != ConnectionState.Open)
+                    connection.Open();
+                var queryResult = connection.QueryMultiple(storeName, parameter, commandType: CommandType.StoredProcedure);
+                foreach (var type in returnTypes)
+                {
+                    var typeResult = queryResult.Read(type);
                     finalResult.Add(typeResult);
                 }
                 return finalResult;

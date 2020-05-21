@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Sunday.Core.Application.Identity;
 using Sunday.Core.Identity;
+using Sunday.Core.Models.Users;
 using Sunday.Core.Users;
 using System;
 using System.Collections.Generic;
@@ -40,7 +41,10 @@ namespace Sunday.CMS.Core.Filters
                 context.Result = new UnauthorizedResult();
                 return;
             }
-            var user = _userRepository.GetUserById(userId.Value);
+            var user = _userRepository.GetUserWithOptions(userId.Value, new GetUserOptions()
+            {
+                FetchRoles = true
+            });
             if (user == null || user.IsDeleted || !user.IsActive || user.IsLockedOut)
             {
                 context.Result = new UnauthorizedResult();

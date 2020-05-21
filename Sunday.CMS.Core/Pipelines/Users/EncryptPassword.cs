@@ -3,12 +3,13 @@ using Sunday.Core.Ultilities;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Sunday.CMS.Core.Pipelines.Users
 {
     public class EncryptPassword
     {
-        public void Process(BeforeCreateUserArg arg)
+        public async Task ProcessAsync(BeforeCreateUserArg arg)
         {
             var user = arg.User;
             var password = arg.Input.Password;

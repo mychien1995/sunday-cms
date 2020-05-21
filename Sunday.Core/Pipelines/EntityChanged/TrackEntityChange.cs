@@ -5,6 +5,7 @@ using Sunday.Core.Pipelines.Arguments;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Sunday.Core.Pipelines.EntityChanged
 {
@@ -17,6 +18,17 @@ namespace Sunday.Core.Pipelines.EntityChanged
         }
         public void Process(PipelineArg arg)
         {
+            DoProcess(arg);
+        }
+
+        public async Task ProcessAsync(PipelineArg arg)
+        {
+            DoProcess(arg);
+        }
+
+        private void DoProcess(PipelineArg arg)
+        {
+
             var changeArg = arg as IEntityChangedArg;
             if (changeArg?.EntityChange != null)
             {
