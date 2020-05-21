@@ -1,53 +1,64 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { LoginService, AuthenticationService, ClientState } from '@services/index';
+import {
+  LoginService,
+  AuthenticationService,
+  ClientState,
+  LayoutService
+} from '@services/index';
 import { LoginInputModel, LoginResponseModel } from '@models/index';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login-component.html'
 })
-
 export class LoginComponent implements OnInit {
-
   public loginForm: FormGroup;
 
-  constructor(private loginService: LoginService,
+  constructor(
+    private loginService: LoginService,
     private authService: AuthenticationService,
     private clientState: ClientState,
-    private router: Router) {
+    private router: Router,
+    private toastr: ToastrService,
+    private layoutService: LayoutService
+  ) {}
 
-  }
   ngOnInit(): void {
-    if (this.authService.isAuthenticated())
+    if (this.authService.isAuthenticated()) {
       this.router.navigate(['/']);
+    }
     this.buildForm();
   }
 
   buildForm = () => {
     this.loginForm = new FormGroup({
       username: new FormControl('', [Validators.required]),
-      password: new FormControl('', [Validators.required]),
+      password: new FormControl('', [Validators.required])
     });
+  };
 
-  }
-
-  onFormSubmit = (formValue) => {
+  onFormSubmit = formValue => {
     if (!this.loginForm.valid) {
       return;
     }
 
-    let userLoginData = <LoginInputModel>{
+    const userLoginData = <LoginInputModel>{
       Username: formValue.username,
-      Password: formValue.password,
+      Password: formValue.password
     };
     this.clientState.isBusy = true;
     this.loginService.login(userLoginData).subscribe(res => {
       this.clientState.isBusy = false;
-      var userData = <LoginResponseModel>(res);
+      this.toastr.success('Welcome');
+      const userData = <LoginResponseModel>res;
       this.authService.storeUserData(userData);
+      this.layoutService.layoutUpdated({
+        event: 'user-updated'
+      });
       this.router.navigate(['/']);
     });
-  }
+  };
 }

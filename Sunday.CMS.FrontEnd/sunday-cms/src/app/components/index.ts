@@ -4,3 +4,4 @@ export * from './dashboard/dashboard.component';
 export * from './shared';
 export * from './users/manage-users.component';
 export * from './users/add-user.component';
+export * from './users/user.resolver';

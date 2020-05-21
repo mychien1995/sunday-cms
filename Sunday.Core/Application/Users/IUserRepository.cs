@@ -19,5 +19,7 @@ namespace Sunday.Core.Users
         ApplicationUser GetUserWithOptions(int userId, GetUserOptions option = null);
 
         Task<ApplicationUser> CreateUser(ApplicationUser user);
+
+        Task<ApplicationUser> UpdateUser(ApplicationUser user);
     }
 }

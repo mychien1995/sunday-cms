@@ -7,15 +7,14 @@ using System.Text;
 namespace Sunday.CMS.Core.Models.Users
 {
     [MappedTo(typeof(ApplicationUser))]
-    public class UserMutationModel
+    public class UserDetailJsonResult : BaseApiResponse
     {
-        public UserMutationModel()
+        public UserDetailJsonResult()
         {
             RoleIds = new List<int>();
         }
         public int ID { get; set; }
         public string UserName { get; set; }
-        public string Password { get; set; }
         public string Fullname { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }

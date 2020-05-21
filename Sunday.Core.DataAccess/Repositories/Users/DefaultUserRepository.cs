@@ -85,5 +85,24 @@ namespace Sunday.Core.DataAccess.Repositories
             user.ID = result.FirstOrDefault();
             return user;
         }
+
+        public async Task<ApplicationUser> UpdateUser(ApplicationUser user)
+        {
+            var RoleIds = string.Join(",", user.Roles.Select(x => x.ID));
+            var result = await _dbRunner.ExecuteAsync<int>(ProcedureNames.Users.Update, new
+            {
+                user.ID,
+                user.Fullname,
+                user.Email,
+                user.Phone,
+                user.IsActive,
+                user.UpdatedBy,
+                user.UpdatedDate,
+                RoleIds
+            });
+            if (!result.Any()) return null;
+            user.ID = result.FirstOrDefault();
+            return user;
+        }
     }
 }

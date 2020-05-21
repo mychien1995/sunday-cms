@@ -27,18 +27,20 @@
             <h6 class="mt-3">No account? <a href="javascript:void(0);" class="text-primary">Sign up now</a></h6>
             <div class="divider row"></div>
             <div>
-              <form (ngSubmit)="onFormSubmit(loginForm.value)" [formGroup]="loginForm">
+              <form (ngSubmit)="onFormSubmit(loginForm.value)" #ngForm="ngForm" [formGroup]="loginForm">
                 <div class="form-row">
                   <div class="col-md-6">
                     <div class="position-relative form-group">
-                      <label for="exampleEmail" class="">Username</label>
-                      <input name="username" id="exampleEmail" placeholder="Username here..." type="text" class="form-control" formControlName="username">
+                      <label for="exampleEmail" class="">Username <span class="red">*</span></label>
+                      <input name="username" id="exampleEmail" placeholder="Username here..." type="text" class="form-control" formControlName="username" required>
+                      <span class="text-danger" [hidden]="!(ngForm.submitted && loginForm.controls['username'].hasError('required'))">This field is required</span>
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="position-relative form-group">
-                      <label for="examplePassword" class="">Password</label>
-                      <input name="password" id="examplePassword" placeholder="Password here..." type="password" class="form-control" formControlName="password">
+                      <label for="examplePassword" class="">Password <span class="red">*</span></label>
+                      <input name="password" id="examplePassword" placeholder="Password here..." type="password" class="form-control" formControlName="password" required>
+                      <span class="text-danger" [hidden]="!(ngForm.submitted && loginForm.controls['password'].hasError('required'))">This field is required</span>
                     </div>
                   </div>
                 </div>

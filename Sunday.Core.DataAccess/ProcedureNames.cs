@@ -15,6 +15,7 @@ namespace Sunday.Core.DataAccess
             public const string GetByIdWithOptions = "sp_users_getById_withOptions";
             public const string Search = "sp_users_search";
             public const string Insert = "sp_users_insert";
+            public const string Update = "sp_users_update";
         }
 
         public class Roles

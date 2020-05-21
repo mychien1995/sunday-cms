@@ -1,39 +1,18 @@
-import {
-  LoginComponent,
-  DashboardComponent,
-  LoadingStateComponent,
-  ManageUsersComponent,
-  PageHeadingComponent,
-  AddUserComponent,
-} from 'app/components';
-import {
-  ApplicationLayoutComponent,
-  AppHeaderComponent,
-  AppHeaderLogoComponent,
-  AppHeaderInfoComponent,
-  AppHeaderQuickLinkComponent,
-  AppSidebarComponent,
-  AppNavigationComponent,
-} from 'app/components/_layout';
+import { SharedComponents, SharedResolvers } from './shared.components';
+import { SharedServices } from './shared.services';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import {
-  LoginService,
-  ApiService,
-  AuthenticationService,
-  AuthGuard,
-  ClientState,
-  UserService,
-  RoleService
-} from '@services/index';
 import { SharedAngularMaterial } from './shared.angular-material.module';
 import {
   TokenInterceptor,
   AuthenticationInterceptor,
+  ErrorInterceptor
 } from '@interceptors/index';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { ToastrModule } from 'ngx-toastr';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   imports: [
@@ -41,50 +20,25 @@ import { NgSelectModule } from '@ng-select/ng-select';
     ReactiveFormsModule,
     RouterModule,
     SharedAngularMaterial,
-    NgSelectModule
+    NgSelectModule,
+    ToastrModule.forRoot(),
+    BrowserAnimationsModule
   ],
   declarations: [
-    LoginComponent,
-    ApplicationLayoutComponent,
-    AppHeaderComponent,
-    AppHeaderLogoComponent,
-    AppHeaderInfoComponent,
-    AppHeaderQuickLinkComponent,
-    AppSidebarComponent,
-    AppNavigationComponent,
-    DashboardComponent,
-    LoadingStateComponent,
-    ManageUsersComponent,
-    PageHeadingComponent,
-    AddUserComponent
+    SharedComponents
   ],
   exports: [
     FormsModule,
     ReactiveFormsModule,
     SharedAngularMaterial,
-    LoginComponent,
-    ApplicationLayoutComponent,
-    AppHeaderComponent,
-    AppHeaderLogoComponent,
-    AppHeaderInfoComponent,
-    AppHeaderQuickLinkComponent,
-    AppSidebarComponent,
-    AppNavigationComponent,
-    DashboardComponent,
-    LoadingStateComponent,
-    ManageUsersComponent,
-    PageHeadingComponent,
-    AddUserComponent,
-    NgSelectModule
+    NgSelectModule,
+    SharedComponents,
+    ToastrModule,
+    BrowserAnimationsModule
   ],
   providers: [
-    ApiService,
-    LoginService,
-    AuthenticationService,
-    AuthGuard,
-    ClientState,
-    UserService,
-    RoleService,
+    SharedServices,
+    SharedResolvers,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
@@ -95,6 +49,11 @@ import { NgSelectModule } from '@ng-select/ng-select';
       useClass: AuthenticationInterceptor,
       multi: true,
     },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptor,
+      multi: true,
+    }
   ],
 })
 export class SharedModule {}

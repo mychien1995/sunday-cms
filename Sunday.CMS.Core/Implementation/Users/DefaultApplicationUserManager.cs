@@ -40,12 +40,44 @@ namespace Sunday.CMS.Core.Implementation.Users
 
         public async Task<CreateUserJsonResult> CreateUser(UserMutationModel userData)
         {
+            var result = new CreateUserJsonResult();
             var applicationUser = userData.MapTo<ApplicationUser>();
-            await ApplicationPipelines.RunAsync("cms.users.beforeCreate", new BeforeCreateUserArg(applicationUser, userData));
+            var createUserArg = new BeforeCreateUserArg(applicationUser, userData);
+            await ApplicationPipelines.RunAsync("cms.users.beforeCreate", createUserArg);
+            if (createUserArg.Aborted)
+            {
+                result.AddErrors(createUserArg.Messages);
+                return result;
+            }
             applicationUser.EmailConfirmed = true;
             var createResult = await _userRepository.CreateUser(applicationUser);
-            var result = new CreateUserJsonResult(createResult.ID);
+            result = new CreateUserJsonResult(createResult.ID);
             return result;
+        }
+
+        public async Task<UpdateUserJsonResult> UpdateUser(UserMutationModel userData)
+        {
+            var result = new UpdateUserJsonResult();
+            var applicationUser = userData.MapTo<ApplicationUser>();
+            var updateArg = new BeforeUpdateUserArg(applicationUser, userData);
+            await ApplicationPipelines.RunAsync("cms.users.beforeUpdate", updateArg);
+            if (updateArg.Aborted)
+            {
+                result.AddErrors(updateArg.Messages);
+                return result;
+            }
+            var createResult = await _userRepository.UpdateUser(applicationUser);
+            result = new UpdateUserJsonResult(createResult.ID);
+            return result;
+        }
+
+        public async Task<UserDetailJsonResult> GetUserById(int userId)
+        {
+            var user = _userRepository.GetUserWithOptions(userId, new GetUserOptions() { FetchRoles = true, FetchOrganizations = true });
+            var result = user.MapTo<UserDetailJsonResult>();
+            result.RoleIds = user.Roles.Select(x => x.ID).ToList();
+            result.Success = true;
+            return await Task.FromResult(result);
         }
     }
 }

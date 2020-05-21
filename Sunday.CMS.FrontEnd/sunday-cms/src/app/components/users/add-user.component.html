@@ -1,38 +1,54 @@
-<app-page-heading [title]="'Create User'" [icon]="'bg-happy-itmeo'"></app-page-heading>
+<app-page-heading [title]="formTitle" [icon]="'bg-happy-itmeo'"></app-page-heading>
 <div class="row">
     <div class="col-12">
         <div class="main-card mb-3 card">
             <div class="card-body">
-                <form (ngSubmit)="onSubmit(userForm.value)" [formGroup]="userForm" autocomplete="off">
+                <form (ngSubmit)="onSubmit(userForm.value)" [formGroup]="userForm" autocomplete="off" #ngForm="ngForm">
                     <div class="form-row">
                         <div class="col-md-6">
                             <div class="position-relative form-group">
-                                <label for="username" class="">Username</label>
+                                <label for="username" class="">Username <span class="red">*</span></label>
                                 <input name="username" placeholder="Username here..." type="text" class="form-control"
-                                    formControlName="UserName" autocomplete="off">
+                                    formControlName="UserName" autocomplete="off" required [readOnly]="isEdit">
+                                <span class="text-danger"
+                                    [hidden]="!(ngForm.submitted && userForm.controls['UserName'].hasError('required'))">This
+                                    field is required</span>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="position-relative form-group">
-                                <label for="Fullname" class="">Full Name</label>
+                                <label for="Fullname" class="">Full Name <span class="red">*</span></label>
                                 <input name="Fullname" placeholder="Fullname here..." type="text" class="form-control"
-                                    formControlName="Fullname" autocomplete="off">
+                                    formControlName="Fullname" autocomplete="off" required>
+                                <span class="text-danger"
+                                    [hidden]="!(ngForm.submitted && userForm.controls['Fullname'].hasError('required'))">This
+                                    field is required</span>
                             </div>
                         </div>
                     </div>
-                    <div class="form-row">
+                    <div class="form-row"  *ngIf="!isEdit">
                         <div class="col-md-6">
                             <div class="position-relative form-group">
-                                <label for="password" class="">Password</label>
+                                <label for="password" class="">Password <span class="red">*</span></label>
                                 <input name="password" placeholder="Password here..." type="password"
-                                    class="form-control" formControlName="Password">
+                                    class="form-control" formControlName="Password" required [readOnly]="isEdit">
+                                <span class="text-danger"
+                                    [hidden]="!(ngForm.submitted && userForm.controls['Password'].hasError('required'))">This
+                                    field is required</span>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="position-relative form-group">
-                                <label for="confirm" class="">Confirm Password</label>
+                                <label for="confirm" class="">Confirm Password <span class="red">*</span></label>
                                 <input name="confirm" placeholder="Confirm Password here..." type="password"
                                     class="form-control" formControlName="ConfirmPassword">
+                                <span class="text-danger"
+                                    [hidden]="!(ngForm.submitted && userForm.controls['ConfirmPassword'].hasError('required'))">This
+                                    field is required</span>
+                                <span class="text-danger"
+                                    [hidden]="!(ngForm.submitted && userForm.controls['ConfirmPassword'].value && userForm.controls['Password'].value
+                                            && userForm.controls['ConfirmPassword'].value !== userForm.controls['Password'].value )">Password
+                                    mismatch</span>
                             </div>
                         </div>
                     </div>
@@ -55,16 +71,34 @@
                     <div class="form-row">
                         <div class="col-md-6">
                             <div class="position-relative form-group">
-                                <label for="Domain" class="">Domain</label>
-                                <ng-select [items]="['CMS']" formControlName="Domain"  [searchable]="false">
+                                <label for="Domain" class="">Domain <span class="red">*</span></label>
+                                <ng-select [items]="['CMS']" formControlName="Domain" [searchable]="false" required [readonly]="isEdit">
                                 </ng-select>
+                                <span class="text-danger"
+                                    [hidden]="!(ngForm.submitted && userForm.controls['Domain'].hasError('required'))">This
+                                    field is required</span>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="position-relative form-group">
-                                <label for="Roles" class="">Role</label>
-                                <ng-select [items]="roleLookup" bindValue="ID" bindLabel="RoleName" formControlName="RoleId" [searchable]="false">
+                                <label for="Roles" class="">Role <span class="red">*</span></label>
+                                <ng-select [items]="roleLookup" bindValue="ID" bindLabel="RoleName"
+                                    formControlName="RoleId" [searchable]="false" required>
                                 </ng-select>
+                                <span class="text-danger"
+                                    [hidden]="!(ngForm.submitted && userForm.controls['RoleId'].hasError('required'))">This
+                                    field is required</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <div class="position-relative form-group">
+                                <label for="Active" class="">Active</label>
+                                <div class="custom-checkbox custom-control">
+                                    <input type="checkbox" id="exampleCustomCheckbox4" class="custom-control-input" formControlName="IsActive">
+                                    <label class="custom-control-label" for="exampleCustomCheckbox4">&nbsp;</label>
+                                </div>
                             </div>
                         </div>
                     </div>

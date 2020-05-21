@@ -22,6 +22,13 @@ namespace Sunday.CMS.Core.Models
             Errors.Add(error);
             Success = false;
         }
+
+        public void AddErrors(IEnumerable<string> errors)
+        {
+            if (Errors == null) Errors = new List<string>();
+            Errors.AddRange(errors);
+            Success = false;
+        }
         public void AddMessage(string message)
         {
             if (Messages == null) Messages = new List<string>();

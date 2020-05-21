@@ -2,7 +2,9 @@ export class ApiUrl {
   public static Login = 'Authentication/Token';
   public static Users = {
     Search : 'cms/api/users/search',
-    Create: 'cms/api/users/create'
+    Create: 'cms/api/users/create',
+    Edit: 'cms/api/users/update',
+    GetById: 'cms/api/users/'
   };
   public static Roles = {
     GetAll : 'cms/api/roles/'

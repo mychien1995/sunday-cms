@@ -142,3 +142,32 @@ BEGIN
 	END
 END
 GO
+
+IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_users_update')
+BEGIN
+	EXEC('CREATE PROCEDURE [dbo].[sp_users_update] AS BEGIN SET NOCOUNT ON; END')
+END
+GO
+ALTER PROCEDURE [dbo].[sp_users_update]
+(
+	@ID int,
+	@Fullname nvarchar(500),
+	@Email nvarchar(500),
+	@Phone nvarchar(500),
+	@IsActive bit = 1,
+	@UpdatedBy nvarchar(500),
+	@UpdatedDate datetime,
+	@RoleIds nvarchar(MAX)
+)
+AS
+BEGIN
+	UPDATE [Users]
+	SET FullName = @Fullname, Email = @Email, Phone = @Phone, IsActive = @IsActive, UpdatedBy = @UpdatedBy, UpdatedDate = @UpdatedDate
+	WHERE ID = @ID
+	SELECT @ID
+
+	DECLARE @tblRoleIds TABLE (RoleId varchar(100))
+	INSERT INTO @tblRoleIds SELECT value  FROM STRING_SPLIT(@RoleIds, ',')
+	DELETE FROM UserRoles WHERE UserId = @ID
+	INSERT INTO UserRoles (UserId, RoleId) SELECT @ID, RoleId FROM @tblRoleIds
+END

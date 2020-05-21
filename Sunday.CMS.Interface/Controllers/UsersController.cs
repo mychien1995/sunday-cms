@@ -29,5 +29,19 @@ namespace Sunday.CMS.Interface.Controllers
             var result = await _userManager.CreateUser(data);
             return Ok(result);
         }
+
+        [HttpPut("update")]
+        public async Task<IActionResult> UpdateUser([FromBody]UserMutationModel data)
+        {
+            var result = await _userManager.UpdateUser(data);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetUserById([FromQuery]int id)
+        {
+            var result = await _userManager.GetUserById(id);
+            return Ok(result);
+        }
     }
 }

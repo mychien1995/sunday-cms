@@ -23,11 +23,22 @@ export class AuthenticationService {
   }
 
   public getToken(): string {
+    const userData = this.getUser();
+    if (!userData) {
+      return null;
+    }
+    return userData.Token;
+  }
+
+  public getUser(): any {
     const storageItem = localStorage.getItem(StorageKey.UserData);
     if (!storageItem) {
       return null;
     }
-    const userData = JSON.parse(storageItem);
-    return userData.Token;
+    return JSON.parse(storageItem);
+  }
+
+  public clearToken(): void {
+    localStorage.removeItem(StorageKey.UserData);
   }
 }

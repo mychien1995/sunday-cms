@@ -14,14 +14,19 @@ export class ApiService {
   }
 
   put(path: string, body: Object = {}): Observable<any> {
+    let headers = this.getHeaders();
+    let options = {
+      headers: headers
+    };
     return this.http.put(
       `${environment.apiUrl}${path}`,
-      JSON.stringify(body)
+      JSON.stringify(body),
+      options
     );
   }
 
   post(path: string, body: Object = {}): Observable<any> {
-    var headers = this.getHeaders();
+    let headers = this.getHeaders();
     let options = {
       headers: headers
     };

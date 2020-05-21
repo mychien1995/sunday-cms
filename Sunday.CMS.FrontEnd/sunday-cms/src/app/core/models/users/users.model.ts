@@ -28,3 +28,14 @@ export class UserMutationModel {
 export class CreateUserResponse extends ApiResponse {
   UserId: number;
 }
+
+export class UserDetailResponse extends ApiResponse {
+  ID?: number;
+  UserName: string;
+  Fullname: string;
+  Email: string;
+  Phone: string;
+  IsActive: boolean;
+  Domain: string;
+  RoleIds: number[] = [];
+}

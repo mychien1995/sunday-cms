@@ -14,5 +14,9 @@ namespace Sunday.CMS.Core.Application.Users
         Task<UserListJsonResult> SearchUsers(SearchUserCriteria criteria);
 
         Task<CreateUserJsonResult> CreateUser(UserMutationModel userData);
+
+        Task<UpdateUserJsonResult> UpdateUser(UserMutationModel userData);
+
+        Task<UserDetailJsonResult> GetUserById(int userId);
     }
 }

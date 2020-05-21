@@ -23,5 +23,11 @@ namespace Sunday.Core
                 PropertyBag.Remove(key);
             PropertyBag.Add(key, value);
         }
+        public void AddMessage(string msg)
+        {
+            if (Messages == null)
+                Messages = new List<string>();
+            Messages.Add(msg);
+        }
     }
 }
