@@ -56,14 +56,14 @@
                         <div class="col-md-6">
                             <div class="position-relative form-group">
                                 <label for="Domain" class="">Domain</label>
-                                <ng-select [items]="['CMS']" formControlName="Domain">
+                                <ng-select [items]="['CMS']" formControlName="Domain"  [searchable]="false">
                                 </ng-select>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="position-relative form-group">
                                 <label for="Roles" class="">Role</label>
-                                <ng-select [items]="roleLookup" bindValue="ID" bindLabel="RoleName" formControlName="RoleId">
+                                <ng-select [items]="roleLookup" bindValue="ID" bindLabel="RoleName" formControlName="RoleId" [searchable]="false">
                                 </ng-select>
                             </div>
                         </div>
