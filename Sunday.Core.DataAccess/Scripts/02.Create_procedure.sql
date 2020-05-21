@@ -94,7 +94,8 @@ ALTER PROCEDURE [dbo].[sp_users_insert]
 	@CreatedBy nvarchar(500),
 	@UpdatedBy nvarchar(500),
 	@SecurityStamp nvarchar(500),
-	@PasswordHash nvarchar(1000)
+	@PasswordHash nvarchar(1000),
+	@RoleIds nvarchar(MAX)
 )
 AS
 BEGIN
@@ -103,8 +104,11 @@ BEGIN
 	VALUES (@UserName, @Fullname, @Email, @Phone , @Domain, @IsActive, @EmailConfirmed, @CreatedBy, @UpdatedBy, @SecurityStamp, @PasswordHash)
 	SET @UserId = SCOPE_IDENTITY() 
 	SELECT @UserId
+
+	DECLARE @tblRoleIds TABLE (RoleId varchar(100))
+	INSERT INTO @tblRoleIds SELECT value  FROM STRING_SPLIT(@RoleIds, ',')
+	INSERT INTO UserRoles (UserId, RoleId) SELECT @UserId, RoleId FROM @tblRoleIds
 END
-GO
 
 IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_roles_getAll')
 BEGIN

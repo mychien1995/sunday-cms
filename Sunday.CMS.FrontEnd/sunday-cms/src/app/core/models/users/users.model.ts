@@ -22,6 +22,7 @@ export class UserMutationModel {
   Phone: string;
   IsActive: boolean;
   Domain: string;
+  RoleIds: string[] = [];
 }
 
 export class CreateUserResponse extends ApiResponse {

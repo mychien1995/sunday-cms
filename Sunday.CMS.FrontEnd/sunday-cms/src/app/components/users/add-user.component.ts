@@ -34,7 +34,7 @@ export class AddUserComponent implements OnInit {
       Password: new FormControl('', [Validators.required]),
       ConfirmPassword: new FormControl('', [Validators.required]),
       Domain: new FormControl('', [Validators.required]),
-      RoleIds: new FormControl('', [Validators.required]),
+      RoleId: new FormControl('', [Validators.required]),
       IsActive: new FormControl(true),
     });
   }
@@ -56,6 +56,8 @@ export class AddUserComponent implements OnInit {
       return;
     }
     const userData = <UserMutationModel>formValue;
+    userData.RoleIds = [];
+    userData.RoleIds.push(formValue.RoleId);
     this.clientState.isBusy = true;
     this.userService.createUser(userData).subscribe((res) => {
       this.router.navigate(['/users']);

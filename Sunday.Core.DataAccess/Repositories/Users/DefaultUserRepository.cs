@@ -65,6 +65,7 @@ namespace Sunday.Core.DataAccess.Repositories
 
         public async Task<ApplicationUser> CreateUser(ApplicationUser user)
         {
+            var RoleIds = string.Join(",", user.Roles.Select(x => x.ID));
             var result = await _dbRunner.ExecuteAsync<int>(ProcedureNames.Users.Insert, new
             {
                 user.UserName,
@@ -77,7 +78,8 @@ namespace Sunday.Core.DataAccess.Repositories
                 user.CreatedBy,
                 user.UpdatedBy,
                 user.SecurityStamp,
-                user.PasswordHash
+                user.PasswordHash,
+                RoleIds
             });
             if (!result.Any()) return null;
             user.ID = result.FirstOrDefault();
