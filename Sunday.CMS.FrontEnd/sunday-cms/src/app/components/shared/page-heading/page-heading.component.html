@@ -1,0 +1,15 @@
+<div class="app-page-title" [hidden]="!title">
+  <div class="page-title-wrapper">
+    <div class="page-title-heading">
+      <div class="page-title-icon" [hidden]="!icon">
+        <i [class]="'pe-7s-drawer icon-gradient ' + icon"> </i>
+      </div>
+      <div>
+        {{ title }}
+        <div class="page-title-subheading" [hidden]="!description">
+          {{ description }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

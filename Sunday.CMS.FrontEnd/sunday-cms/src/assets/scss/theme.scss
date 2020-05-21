@@ -108,7 +108,7 @@ ul.fancytree-container {
 }
 
 ul.fancytree-connectors.fancytree-container li {
-  background-image: url(assets/images/vline.gif);
+  background-image: url(/assets/images/vline.gif);
   background-position: 0 0;
 }
 
@@ -136,7 +136,7 @@ span.fancytree-drag-helper-img,
   vertical-align: top;
   background-repeat: no-repeat;
   background-position: left;
-  background-image: url(assets/images/icons.gif);
+  background-image: url(/assets/images/icons.gif);
   background-position: 0px 0px;
 }
 
@@ -186,7 +186,7 @@ span.fancytree-expander {
 
 .fancytree-connectors .fancytree-exp-n span.fancytree-expander,
 .fancytree-connectors .fancytree-exp-nl span.fancytree-expander {
-  background-image: url(assets/images/icons.gif);
+  background-image: url(/assets/images/icons.gif);
   margin-top: 0;
 }
 
@@ -395,7 +395,7 @@ span.fancytree-icon {
 .fancytree-statusnode-loading span.fancytree-icon,
 .fancytree-statusnode-loading span.fancytree-icon:hover,
 span.fancytree-icon.fancytree-icon-loading {
-  background-image: url(assets/images/loading.gif);
+  background-image: url(/assets/images/loading.gif);
   background-position: 0px 0px;
 }
 /* Status node icons */
@@ -519,7 +519,7 @@ span.fancytree-drag-source.fancytree-drag-remove {
 .fancytree-container.fancytree-rtl span.fancytree-expander,
 .fancytree-container.fancytree-rtl span.fancytree-icon,
 .fancytree-container.fancytree-rtl span.fancytree-drag-helper-img {
-  background-image: url(assets/images/icons-rtl.gif);
+  background-image: url(/assets/images/icons-rtl.gif);
 }
 
 .fancytree-container.fancytree-rtl .fancytree-exp-n span.fancytree-expander,
@@ -529,7 +529,7 @@ span.fancytree-drag-source.fancytree-drag-remove {
 
 .fancytree-container.fancytree-rtl.fancytree-connectors .fancytree-exp-n span.fancytree-expander,
 .fancytree-container.fancytree-rtl.fancytree-connectors .fancytree-exp-nl span.fancytree-expander {
-  background-image: url(assets/images/icons-rtl.gif);
+  background-image: url(/assets/images/icons-rtl.gif);
 }
 
 ul.fancytree-container.fancytree-rtl ul {
@@ -538,7 +538,7 @@ ul.fancytree-container.fancytree-rtl ul {
 
 ul.fancytree-container.fancytree-rtl.fancytree-connectors li {
   background-position: right 0;
-  background-image: url(assets/images/vline-rtl.gif);
+  background-image: url(/assets/images/vline-rtl.gif);
 }
 
 ul.fancytree-container.fancytree-rtl li.fancytree-lastsib,
@@ -547,7 +547,7 @@ ul.fancytree-container.fancytree-rtl.fancytree-no-connector > li {
 }
 
 #fancytree-drop-marker.fancytree-rtl {
-  background-image: url(assets/images/icons-rtl.gif);
+  background-image: url(/assets/images/icons-rtl.gif);
 }
 /*------------------------------------------------------------------------------
  * 'table' extension
@@ -11201,7 +11201,7 @@ a, button, .btn {
   .app-header__logo .logo-src {
     height: 23px;
     width: 97px;
-    background: url(../images/logo-inverse.png)
+    background: url(/assets/images/logo-inverse.png)
   }
 
 .app-header__menu, .app-header__mobile-menu {
@@ -11419,7 +11419,7 @@ a, button, .btn {
 }
 
 .app-header.header-text-light .app-header__logo .logo-src {
-  background: url(assets/images/logo.png)
+  background: url(/assets/images/logo.png)
 }
 
 .app-header.header-text-light .app-header__mobile-menu .hamburger-inner, .app-header.header-text-light .app-header__mobile-menu .hamburger-inner::before, .app-header.header-text-light .app-header__mobile-menu .hamburger-inner::after {
@@ -11502,7 +11502,7 @@ a, button, .btn {
 }
 
 .app-header.header-text-dark .app-header__logo .logo-src {
-  background: url(../images/logo-inverse.png)
+  background: url(/assets/images/logo-inverse.png)
 }
 
 .app-sidebar {
@@ -11780,7 +11780,7 @@ a, button, .btn {
   }
 
   .app-sidebar.sidebar-text-light .app-header__logo .logo-src {
-    background: url(assets/images/logo.png)
+    background: url(/assets/images/logo.png)
   }
 
   .app-sidebar.sidebar-text-light .app-header__logo .hamburger-inner, .app-sidebar.sidebar-text-light .app-header__logo .hamburger-inner::before, .app-sidebar.sidebar-text-light .app-header__logo .hamburger-inner::after {
@@ -21176,13 +21176,13 @@ legend {
 .app-logo {
   height: 23px;
   width: 97px;
-  background: url(../images/logo-inverse.png)
+  background: url(/assets/images/logo-inverse.png)
 }
 
 .app-logo-inverse {
   height: 23px;
   width: 97px;
-  background: url(assets/images/logo.png)
+  background: url(/assets/images/logo.png)
 }
 
 .app-login-box .app-logo {
@@ -21505,8 +21505,8 @@ legend {
   font-family: 'Font Awesome 5 Free';
   font-style: normal;
   font-weight: 900;
-  src: url(../fonts/fa-solid-900.eot);
-  src: url(../fonts/fa-solid-900.eot?#iefix) format("embedded-opentype"),url(../fonts/fa-solid-900.woff2) format("woff2"),url(../fonts/fa-solid-900.woff) format("woff"),url(../fonts/fa-solid-900.ttf) format("truetype"),url(../fonts/fa-solid-900.svg#fontawesome) format("svg")
+  src: url(/assets/fonts/fa-solid-900.eot);
+  src: url(/assets/fonts/fa-solid-900.eot?#iefix) format("embedded-opentype"),url(/assets/fonts/fa-solid-900.woff2) format("woff2"),url(/assets/fonts/fa-solid-900.woff) format("woff"),url(/assets/fonts/fa-solid-900.ttf) format("truetype"),url(/assets/fonts/fa-solid-900.svg#fontawesome) format("svg")
 }
 
 .fa, .fas {
@@ -27049,8 +27049,8 @@ legend {
 
 @font-face {
   font-family: "Ionicons";
-  src: url(../fonts/ionicons.eot);
-  src: url(../fonts/ionicons.eot#iefix) format("embedded-opentype"),url(../fonts/ionicons.ttf) format("truetype"),url(../fonts/ionicons.woff) format("woff"),url(../fonts/ionicons.svg#Ionicons) format("svg");
+  src: url(/assets/fonts/ionicons.eot);
+  src: url(/assets/fonts/ionicons.eot#iefix) format("embedded-opentype"),url(/assets/fonts/ionicons.ttf) format("truetype"),url(/assets/fonts/ionicons.woff) format("woff"),url(/assets/fonts/ionicons.svg#Ionicons) format("svg");
   font-weight: normal;
   font-style: normal
 }
@@ -30020,1023 +30020,1023 @@ legend {
   }
 
 .AD {
-  background: url(assets/fonts/AD.svg) no-repeat
+  background: url(/assets/fonts/AD.svg) no-repeat
 }
 
 .AE {
-  background: url(assets/fonts/AE.svg) no-repeat
+  background: url(/assets/fonts/AE.svg) no-repeat
 }
 
 .AF {
-  background: url(assets/fonts/AF.svg) no-repeat
+  background: url(/assets/fonts/AF.svg) no-repeat
 }
 
 .AG {
-  background: url(assets/fonts/AG.svg) no-repeat
+  background: url(/assets/fonts/AG.svg) no-repeat
 }
 
 .AI {
-  background: url(assets/fonts/AI.svg) no-repeat
+  background: url(/assets/fonts/AI.svg) no-repeat
 }
 
 .AL {
-  background: url(assets/fonts/AL.svg) no-repeat
+  background: url(/assets/fonts/AL.svg) no-repeat
 }
 
 .AM {
-  background: url(assets/fonts/AM.svg) no-repeat
+  background: url(/assets/fonts/AM.svg) no-repeat
 }
 
 .AO {
-  background: url(assets/fonts/AO.svg) no-repeat
+  background: url(/assets/fonts/AO.svg) no-repeat
 }
 
 .AR {
-  background: url(assets/fonts/AR.svg) no-repeat
+  background: url(/assets/fonts/AR.svg) no-repeat
 }
 
 .AS {
-  background: url(assets/fonts/AS.svg) no-repeat
+  background: url(/assets/fonts/AS.svg) no-repeat
 }
 
 .AT {
-  background: url(assets/fonts/AT.svg) no-repeat
+  background: url(/assets/fonts/AT.svg) no-repeat
 }
 
 .AU {
-  background: url(assets/fonts/AU.svg) no-repeat
+  background: url(/assets/fonts/AU.svg) no-repeat
 }
 
 .AW {
-  background: url(assets/fonts/AW.svg) no-repeat
+  background: url(/assets/fonts/AW.svg) no-repeat
 }
 
 .AX {
-  background: url(assets/fonts/AX.svg) no-repeat
+  background: url(/assets/fonts/AX.svg) no-repeat
 }
 
 .AZ {
-  background: url(assets/fonts/AZ.svg) no-repeat
+  background: url(/assets/fonts/AZ.svg) no-repeat
 }
 
 .BA {
-  background: url(assets/fonts/BA.svg) no-repeat
+  background: url(/assets/fonts/BA.svg) no-repeat
 }
 
 .BB {
-  background: url(assets/fonts/BB.svg) no-repeat
+  background: url(/assets/fonts/BB.svg) no-repeat
 }
 
 .BD {
-  background: url(assets/fonts/BD.svg) no-repeat
+  background: url(/assets/fonts/BD.svg) no-repeat
 }
 
 .BE {
-  background: url(assets/fonts/BE.svg) no-repeat
+  background: url(/assets/fonts/BE.svg) no-repeat
 }
 
 .BF {
-  background: url(assets/fonts/BF.svg) no-repeat
+  background: url(/assets/fonts/BF.svg) no-repeat
 }
 
 .BG {
-  background: url(assets/fonts/BG.svg) no-repeat
+  background: url(/assets/fonts/BG.svg) no-repeat
 }
 
 .BH {
-  background: url(assets/fonts/BH.svg) no-repeat
+  background: url(/assets/fonts/BH.svg) no-repeat
 }
 
 .BI {
-  background: url(assets/fonts/BI.svg) no-repeat
+  background: url(/assets/fonts/BI.svg) no-repeat
 }
 
 .BJ {
-  background: url(assets/fonts/BJ.svg) no-repeat
+  background: url(/assets/fonts/BJ.svg) no-repeat
 }
 
 .BL {
-  background: url(assets/fonts/BL.svg) no-repeat
+  background: url(/assets/fonts/BL.svg) no-repeat
 }
 
 .BM {
-  background: url(assets/fonts/BM.svg) no-repeat
+  background: url(/assets/fonts/BM.svg) no-repeat
 }
 
 .BN {
-  background: url(assets/fonts/BN.svg) no-repeat
+  background: url(/assets/fonts/BN.svg) no-repeat
 }
 
 .BO {
-  background: url(assets/fonts/BO.svg) no-repeat
+  background: url(/assets/fonts/BO.svg) no-repeat
 }
 
 .BR {
-  background: url(assets/fonts/BR.svg) no-repeat
+  background: url(/assets/fonts/BR.svg) no-repeat
 }
 
 .BS {
-  background: url(assets/fonts/BS.svg) no-repeat
+  background: url(/assets/fonts/BS.svg) no-repeat
 }
 
 .BT {
-  background: url(assets/fonts/BT.svg) no-repeat
+  background: url(/assets/fonts/BT.svg) no-repeat
 }
 
 .BV {
-  background: url(assets/fonts/BV.svg) no-repeat
+  background: url(/assets/fonts/BV.svg) no-repeat
 }
 
 .BW {
-  background: url(assets/fonts/BW.svg) no-repeat
+  background: url(/assets/fonts/BW.svg) no-repeat
 }
 
 .BY {
-  background: url(assets/fonts/BY.svg) no-repeat
+  background: url(/assets/fonts/BY.svg) no-repeat
 }
 
 .BZ {
-  background: url(assets/fonts/BZ.svg) no-repeat
+  background: url(/assets/fonts/BZ.svg) no-repeat
 }
 
 .CA {
-  background: url(assets/fonts/CA.svg) no-repeat
+  background: url(/assets/fonts/CA.svg) no-repeat
 }
 
 .CC {
-  background: url(assets/fonts/CC.svg) no-repeat
+  background: url(/assets/fonts/CC.svg) no-repeat
 }
 
 .CD {
-  background: url(assets/fonts/CD.svg) no-repeat
+  background: url(/assets/fonts/CD.svg) no-repeat
 }
 
 .CF {
-  background: url(assets/fonts/CF.svg) no-repeat
+  background: url(/assets/fonts/CF.svg) no-repeat
 }
 
 .CG {
-  background: url(assets/fonts/CG.svg) no-repeat
+  background: url(/assets/fonts/CG.svg) no-repeat
 }
 
 .CH {
-  background: url(assets/fonts/CH.svg) no-repeat
+  background: url(/assets/fonts/CH.svg) no-repeat
 }
 
 .CI {
-  background: url(assets/fonts/CI.svg) no-repeat
+  background: url(/assets/fonts/CI.svg) no-repeat
 }
 
 .CK {
-  background: url(assets/fonts/CK.svg) no-repeat
+  background: url(/assets/fonts/CK.svg) no-repeat
 }
 
 .CL {
-  background: url(assets/fonts/CL.svg) no-repeat
+  background: url(/assets/fonts/CL.svg) no-repeat
 }
 
 .CM {
-  background: url(assets/fonts/CM.svg) no-repeat
+  background: url(/assets/fonts/CM.svg) no-repeat
 }
 
 .CN {
-  background: url(assets/fonts/CN.svg) no-repeat
+  background: url(/assets/fonts/CN.svg) no-repeat
 }
 
 .CO {
-  background: url(assets/fonts/CO.svg) no-repeat
+  background: url(/assets/fonts/CO.svg) no-repeat
 }
 
 .CR {
-  background: url(assets/fonts/CR.svg) no-repeat
+  background: url(/assets/fonts/CR.svg) no-repeat
 }
 
 .CU {
-  background: url(assets/fonts/CU.svg) no-repeat
+  background: url(/assets/fonts/CU.svg) no-repeat
 }
 
 .CV {
-  background: url(assets/fonts/CV.svg) no-repeat
+  background: url(/assets/fonts/CV.svg) no-repeat
 }
 
 .CW {
-  background: url(assets/fonts/CW.svg) no-repeat
+  background: url(/assets/fonts/CW.svg) no-repeat
 }
 
 .CX {
-  background: url(assets/fonts/CX.svg) no-repeat
+  background: url(/assets/fonts/CX.svg) no-repeat
 }
 
 .CY {
-  background: url(assets/fonts/CY.svg) no-repeat
+  background: url(/assets/fonts/CY.svg) no-repeat
 }
 
 .CZ {
-  background: url(assets/fonts/CZ.svg) no-repeat
+  background: url(/assets/fonts/CZ.svg) no-repeat
 }
 
 .DE {
-  background: url(assets/fonts/DE.svg) no-repeat
+  background: url(/assets/fonts/DE.svg) no-repeat
 }
 
 .DJ {
-  background: url(assets/fonts/DJ.svg) no-repeat
+  background: url(/assets/fonts/DJ.svg) no-repeat
 }
 
 .DK {
-  background: url(assets/fonts/DK.svg) no-repeat
+  background: url(/assets/fonts/DK.svg) no-repeat
 }
 
 .DM {
-  background: url(assets/fonts/DM.svg) no-repeat
+  background: url(/assets/fonts/DM.svg) no-repeat
 }
 
 .DO {
-  background: url(assets/fonts/DO.svg) no-repeat
+  background: url(/assets/fonts/DO.svg) no-repeat
 }
 
 .DZ {
-  background: url(assets/fonts/DZ.svg) no-repeat
+  background: url(/assets/fonts/DZ.svg) no-repeat
 }
 
 .EC {
-  background: url(assets/fonts/EC.svg) no-repeat
+  background: url(/assets/fonts/EC.svg) no-repeat
 }
 
 .EE {
-  background: url(assets/fonts/EE.svg) no-repeat
+  background: url(/assets/fonts/EE.svg) no-repeat
 }
 
 .EG {
-  background: url(assets/fonts/EG.svg) no-repeat
+  background: url(/assets/fonts/EG.svg) no-repeat
 }
 
 .ER {
-  background: url(assets/fonts/ER.svg) no-repeat
+  background: url(/assets/fonts/ER.svg) no-repeat
 }
 
 .ES {
-  background: url(assets/fonts/ES.svg) no-repeat
+  background: url(/assets/fonts/ES.svg) no-repeat
 }
 
 .ET {
-  background: url(assets/fonts/ET.svg) no-repeat
+  background: url(/assets/fonts/ET.svg) no-repeat
 }
 
 .EU {
-  background: url(assets/fonts/EU.svg) no-repeat
+  background: url(/assets/fonts/EU.svg) no-repeat
 }
 
 .FI {
-  background: url(assets/fonts/FI.svg) no-repeat
+  background: url(/assets/fonts/FI.svg) no-repeat
 }
 
 .FJ {
-  background: url(assets/fonts/FJ.svg) no-repeat
+  background: url(/assets/fonts/FJ.svg) no-repeat
 }
 
 .FK {
-  background: url(assets/fonts/FK.svg) no-repeat
+  background: url(/assets/fonts/FK.svg) no-repeat
 }
 
 .FM {
-  background: url(assets/fonts/FM.svg) no-repeat
+  background: url(/assets/fonts/FM.svg) no-repeat
 }
 
 .FO {
-  background: url(assets/fonts/FO.svg) no-repeat
+  background: url(/assets/fonts/FO.svg) no-repeat
 }
 
 .FR {
-  background: url(assets/fonts/FR.svg) no-repeat
+  background: url(/assets/fonts/FR.svg) no-repeat
 }
 
 .GA {
-  background: url(assets/fonts/GA.svg) no-repeat
+  background: url(/assets/fonts/GA.svg) no-repeat
 }
 
 .GB-ENG {
-  background: url(assets/fonts/GB-ENG.svg) no-repeat
+  background: url(/assets/fonts/GB-ENG.svg) no-repeat
 }
 
 .GB-NIR {
-  background: url(assets/fonts/GB-NIR.svg) no-repeat
+  background: url(/assets/fonts/GB-NIR.svg) no-repeat
 }
 
 .GB-SCT {
-  background: url(assets/fonts/GB-SCT.svg) no-repeat
+  background: url(/assets/fonts/GB-SCT.svg) no-repeat
 }
 
 .GB-WLS {
-  background: url(assets/fonts/GB-WLS.svg) no-repeat
+  background: url(/assets/fonts/GB-WLS.svg) no-repeat
 }
 
 .GB-ZET {
-  background: url(assets/fonts/GB-ZET.svg) no-repeat
+  background: url(/assets/fonts/GB-ZET.svg) no-repeat
 }
 
 .GB {
-  background: url(assets/fonts/GB.svg) no-repeat
+  background: url(/assets/fonts/GB.svg) no-repeat
 }
 
 .GD {
-  background: url(assets/fonts/GD.svg) no-repeat
+  background: url(/assets/fonts/GD.svg) no-repeat
 }
 
 .GE {
-  background: url(assets/fonts/GE.svg) no-repeat
+  background: url(/assets/fonts/GE.svg) no-repeat
 }
 
 .GF {
-  background: url(assets/fonts/GF.svg) no-repeat
+  background: url(/assets/fonts/GF.svg) no-repeat
 }
 
 .GG {
-  background: url(assets/fonts/GG.svg) no-repeat
+  background: url(/assets/fonts/GG.svg) no-repeat
 }
 
 .GH {
-  background: url(assets/fonts/GH.svg) no-repeat
+  background: url(/assets/fonts/GH.svg) no-repeat
 }
 
 .GI {
-  background: url(assets/fonts/GI.svg) no-repeat
+  background: url(/assets/fonts/GI.svg) no-repeat
 }
 
 .GL {
-  background: url(assets/fonts/GL.svg) no-repeat
+  background: url(/assets/fonts/GL.svg) no-repeat
 }
 
 .GM {
-  background: url(assets/fonts/GM.svg) no-repeat
+  background: url(/assets/fonts/GM.svg) no-repeat
 }
 
 .GN {
-  background: url(assets/fonts/GN.svg) no-repeat
+  background: url(/assets/fonts/GN.svg) no-repeat
 }
 
 .GP {
-  background: url(assets/fonts/GP.svg) no-repeat
+  background: url(/assets/fonts/GP.svg) no-repeat
 }
 
 .GQ {
-  background: url(assets/fonts/GQ.svg) no-repeat
+  background: url(/assets/fonts/GQ.svg) no-repeat
 }
 
 .GR {
-  background: url(assets/fonts/GR.svg) no-repeat
+  background: url(/assets/fonts/GR.svg) no-repeat
 }
 
 .GS {
-  background: url(assets/fonts/GS.svg) no-repeat
+  background: url(/assets/fonts/GS.svg) no-repeat
 }
 
 .GT {
-  background: url(assets/fonts/GT.svg) no-repeat
+  background: url(/assets/fonts/GT.svg) no-repeat
 }
 
 .GU {
-  background: url(assets/fonts/GU.svg) no-repeat
+  background: url(/assets/fonts/GU.svg) no-repeat
 }
 
 .GW {
-  background: url(assets/fonts/GW.svg) no-repeat
+  background: url(/assets/fonts/GW.svg) no-repeat
 }
 
 .GY {
-  background: url(assets/fonts/GY.svg) no-repeat
+  background: url(/assets/fonts/GY.svg) no-repeat
 }
 
 .HK {
-  background: url(assets/fonts/HK.svg) no-repeat
+  background: url(/assets/fonts/HK.svg) no-repeat
 }
 
 .HM {
-  background: url(assets/fonts/HM.svg) no-repeat
+  background: url(/assets/fonts/HM.svg) no-repeat
 }
 
 .HN {
-  background: url(assets/fonts/HN.svg) no-repeat
+  background: url(/assets/fonts/HN.svg) no-repeat
 }
 
 .HR {
-  background: url(assets/fonts/HR.svg) no-repeat
+  background: url(/assets/fonts/HR.svg) no-repeat
 }
 
 .HT {
-  background: url(assets/fonts/HT.svg) no-repeat
+  background: url(/assets/fonts/HT.svg) no-repeat
 }
 
 .HU {
-  background: url(assets/fonts/HU.svg) no-repeat
+  background: url(/assets/fonts/HU.svg) no-repeat
 }
 
 .ID {
-  background: url(assets/fonts/ID.svg) no-repeat
+  background: url(/assets/fonts/ID.svg) no-repeat
 }
 
 .IE {
-  background: url(assets/fonts/IE.svg) no-repeat
+  background: url(/assets/fonts/IE.svg) no-repeat
 }
 
 .IL {
-  background: url(assets/fonts/IL.svg) no-repeat
+  background: url(/assets/fonts/IL.svg) no-repeat
 }
 
 .IM {
-  background: url(assets/fonts/IM.svg) no-repeat
+  background: url(/assets/fonts/IM.svg) no-repeat
 }
 
 .IN {
-  background: url(assets/fonts/IN.svg) no-repeat
+  background: url(/assets/fonts/IN.svg) no-repeat
 }
 
 .IO {
-  background: url(assets/fonts/IO.svg) no-repeat
+  background: url(/assets/fonts/IO.svg) no-repeat
 }
 
 .IQ {
-  background: url(assets/fonts/IQ.svg) no-repeat
+  background: url(/assets/fonts/IQ.svg) no-repeat
 }
 
 .IR {
-  background: url(assets/fonts/IR.svg) no-repeat
+  background: url(/assets/fonts/IR.svg) no-repeat
 }
 
 .IS {
-  background: url(assets/fonts/IS.svg) no-repeat
+  background: url(/assets/fonts/IS.svg) no-repeat
 }
 
 .IT {
-  background: url(assets/fonts/IT.svg) no-repeat
+  background: url(/assets/fonts/IT.svg) no-repeat
 }
 
 .JE {
-  background: url(assets/fonts/JE.svg) no-repeat
+  background: url(/assets/fonts/JE.svg) no-repeat
 }
 
 .JM {
-  background: url(assets/fonts/JM.svg) no-repeat
+  background: url(/assets/fonts/JM.svg) no-repeat
 }
 
 .JO {
-  background: url(assets/fonts/JO.svg) no-repeat
+  background: url(/assets/fonts/JO.svg) no-repeat
 }
 
 .JP {
-  background: url(assets/fonts/JP.svg) no-repeat
+  background: url(/assets/fonts/JP.svg) no-repeat
 }
 
 .KE {
-  background: url(assets/fonts/KE.svg) no-repeat
+  background: url(/assets/fonts/KE.svg) no-repeat
 }
 
 .KG {
-  background: url(assets/fonts/KG.svg) no-repeat
+  background: url(/assets/fonts/KG.svg) no-repeat
 }
 
 .KH {
-  background: url(assets/fonts/KH.svg) no-repeat
+  background: url(/assets/fonts/KH.svg) no-repeat
 }
 
 .KI {
-  background: url(assets/fonts/KI.svg) no-repeat
+  background: url(/assets/fonts/KI.svg) no-repeat
 }
 
 .KM {
-  background: url(assets/fonts/KM.svg) no-repeat
+  background: url(/assets/fonts/KM.svg) no-repeat
 }
 
 .KN {
-  background: url(assets/fonts/KN.svg) no-repeat
+  background: url(/assets/fonts/KN.svg) no-repeat
 }
 
 .KP {
-  background: url(assets/fonts/KP.svg) no-repeat
+  background: url(/assets/fonts/KP.svg) no-repeat
 }
 
 .KR {
-  background: url(assets/fonts/KR.svg) no-repeat
+  background: url(/assets/fonts/KR.svg) no-repeat
 }
 
 .KW {
-  background: url(assets/fonts/KW.svg) no-repeat
+  background: url(/assets/fonts/KW.svg) no-repeat
 }
 
 .KY {
-  background: url(assets/fonts/KY.svg) no-repeat
+  background: url(/assets/fonts/KY.svg) no-repeat
 }
 
 .KZ {
-  background: url(assets/fonts/KZ.svg) no-repeat
+  background: url(/assets/fonts/KZ.svg) no-repeat
 }
 
 .LA {
-  background: url(assets/fonts/LA.svg) no-repeat
+  background: url(/assets/fonts/LA.svg) no-repeat
 }
 
 .LB {
-  background: url(assets/fonts/LB.svg) no-repeat
+  background: url(/assets/fonts/LB.svg) no-repeat
 }
 
 .LC {
-  background: url(assets/fonts/LC.svg) no-repeat
+  background: url(/assets/fonts/LC.svg) no-repeat
 }
 
 .LGBT {
-  background: url(assets/fonts/LGBT.svg) no-repeat
+  background: url(/assets/fonts/LGBT.svg) no-repeat
 }
 
 .LI {
-  background: url(assets/fonts/LI.svg) no-repeat
+  background: url(/assets/fonts/LI.svg) no-repeat
 }
 
 .LK {
-  background: url(assets/fonts/LK.svg) no-repeat
+  background: url(/assets/fonts/LK.svg) no-repeat
 }
 
 .LR {
-  background: url(assets/fonts/LR.svg) no-repeat
+  background: url(/assets/fonts/LR.svg) no-repeat
 }
 
 .LS {
-  background: url(assets/fonts/LS.svg) no-repeat
+  background: url(/assets/fonts/LS.svg) no-repeat
 }
 
 .LT {
-  background: url(assets/fonts/LT.svg) no-repeat
+  background: url(/assets/fonts/LT.svg) no-repeat
 }
 
 .LU {
-  background: url(assets/fonts/LU.svg) no-repeat
+  background: url(/assets/fonts/LU.svg) no-repeat
 }
 
 .LV {
-  background: url(assets/fonts/LV.svg) no-repeat
+  background: url(/assets/fonts/LV.svg) no-repeat
 }
 
 .LY {
-  background: url(assets/fonts/LY.svg) no-repeat
+  background: url(/assets/fonts/LY.svg) no-repeat
 }
 
 .MA {
-  background: url(assets/fonts/MA.svg) no-repeat
+  background: url(/assets/fonts/MA.svg) no-repeat
 }
 
 .MC {
-  background: url(assets/fonts/MC.svg) no-repeat
+  background: url(/assets/fonts/MC.svg) no-repeat
 }
 
 .MD {
-  background: url(assets/fonts/MD.svg) no-repeat
+  background: url(/assets/fonts/MD.svg) no-repeat
 }
 
 .ME {
-  background: url(assets/fonts/ME.svg) no-repeat
+  background: url(/assets/fonts/ME.svg) no-repeat
 }
 
 .MF {
-  background: url(assets/fonts/MF.svg) no-repeat
+  background: url(/assets/fonts/MF.svg) no-repeat
 }
 
 .MG {
-  background: url(assets/fonts/MG.svg) no-repeat
+  background: url(/assets/fonts/MG.svg) no-repeat
 }
 
 .MH {
-  background: url(assets/fonts/MH.svg) no-repeat
+  background: url(/assets/fonts/MH.svg) no-repeat
 }
 
 .MK {
-  background: url(assets/fonts/MK.svg) no-repeat
+  background: url(/assets/fonts/MK.svg) no-repeat
 }
 
 .ML {
-  background: url(assets/fonts/ML.svg) no-repeat
+  background: url(/assets/fonts/ML.svg) no-repeat
 }
 
 .MM {
-  background: url(assets/fonts/MM.svg) no-repeat
+  background: url(/assets/fonts/MM.svg) no-repeat
 }
 
 .MN {
-  background: url(assets/fonts/MN.svg) no-repeat
+  background: url(/assets/fonts/MN.svg) no-repeat
 }
 
 .MO {
-  background: url(assets/fonts/MO.svg) no-repeat
+  background: url(/assets/fonts/MO.svg) no-repeat
 }
 
 .MP {
-  background: url(assets/fonts/MP.svg) no-repeat
+  background: url(/assets/fonts/MP.svg) no-repeat
 }
 
 .MQ {
-  background: url(assets/fonts/MQ.svg) no-repeat
+  background: url(/assets/fonts/MQ.svg) no-repeat
 }
 
 .MR {
-  background: url(assets/fonts/MR.svg) no-repeat
+  background: url(/assets/fonts/MR.svg) no-repeat
 }
 
 .MS {
-  background: url(assets/fonts/MS.svg) no-repeat
+  background: url(/assets/fonts/MS.svg) no-repeat
 }
 
 .MT {
-  background: url(assets/fonts/MT.svg) no-repeat
+  background: url(/assets/fonts/MT.svg) no-repeat
 }
 
 .MU {
-  background: url(assets/fonts/MU.svg) no-repeat
+  background: url(/assets/fonts/MU.svg) no-repeat
 }
 
 .MV {
-  background: url(assets/fonts/MV.svg) no-repeat
+  background: url(/assets/fonts/MV.svg) no-repeat
 }
 
 .MW {
-  background: url(assets/fonts/MW.svg) no-repeat
+  background: url(/assets/fonts/MW.svg) no-repeat
 }
 
 .MX {
-  background: url(assets/fonts/MX.svg) no-repeat
+  background: url(/assets/fonts/MX.svg) no-repeat
 }
 
 .MY {
-  background: url(assets/fonts/MY.svg) no-repeat
+  background: url(/assets/fonts/MY.svg) no-repeat
 }
 
 .MZ {
-  background: url(assets/fonts/MZ.svg) no-repeat
+  background: url(/assets/fonts/MZ.svg) no-repeat
 }
 
 .NA {
-  background: url(assets/fonts/NA.svg) no-repeat
+  background: url(/assets/fonts/NA.svg) no-repeat
 }
 
 .NC {
-  background: url(assets/fonts/NC.svg) no-repeat
+  background: url(/assets/fonts/NC.svg) no-repeat
 }
 
 .NE {
-  background: url(assets/fonts/NE.svg) no-repeat
+  background: url(/assets/fonts/NE.svg) no-repeat
 }
 
 .NF {
-  background: url(assets/fonts/NF.svg) no-repeat
+  background: url(/assets/fonts/NF.svg) no-repeat
 }
 
 .NG {
-  background: url(assets/fonts/NG.svg) no-repeat
+  background: url(/assets/fonts/NG.svg) no-repeat
 }
 
 .NI {
-  background: url(assets/fonts/NI.svg) no-repeat
+  background: url(/assets/fonts/NI.svg) no-repeat
 }
 
 .NL {
-  background: url(assets/fonts/NL.svg) no-repeat
+  background: url(/assets/fonts/NL.svg) no-repeat
 }
 
 .NO {
-  background: url(assets/fonts/NO.svg) no-repeat
+  background: url(/assets/fonts/NO.svg) no-repeat
 }
 
 .NP {
-  background: url(assets/fonts/NP.svg) no-repeat
+  background: url(/assets/fonts/NP.svg) no-repeat
 }
 
 .NR {
-  background: url(assets/fonts/NR.svg) no-repeat
+  background: url(/assets/fonts/NR.svg) no-repeat
 }
 
 .NU {
-  background: url(assets/fonts/NU.svg) no-repeat
+  background: url(/assets/fonts/NU.svg) no-repeat
 }
 
 .NZ {
-  background: url(assets/fonts/NZ.svg) no-repeat
+  background: url(/assets/fonts/NZ.svg) no-repeat
 }
 
 .OM {
-  background: url(assets/fonts/OM.svg) no-repeat
+  background: url(/assets/fonts/OM.svg) no-repeat
 }
 
 .PA {
-  background: url(assets/fonts/PA.svg) no-repeat
+  background: url(/assets/fonts/PA.svg) no-repeat
 }
 
 .PE {
-  background: url(assets/fonts/PE.svg) no-repeat
+  background: url(/assets/fonts/PE.svg) no-repeat
 }
 
 .PF {
-  background: url(assets/fonts/PF.svg) no-repeat
+  background: url(/assets/fonts/PF.svg) no-repeat
 }
 
 .PG {
-  background: url(assets/fonts/PG.svg) no-repeat
+  background: url(/assets/fonts/PG.svg) no-repeat
 }
 
 .PH {
-  background: url(assets/fonts/PH.svg) no-repeat
+  background: url(/assets/fonts/PH.svg) no-repeat
 }
 
 .PK {
-  background: url(assets/fonts/PK.svg) no-repeat
+  background: url(/assets/fonts/PK.svg) no-repeat
 }
 
 .PL {
-  background: url(assets/fonts/PL.svg) no-repeat
+  background: url(/assets/fonts/PL.svg) no-repeat
 }
 
 .PM {
-  background: url(assets/fonts/PM.svg) no-repeat
+  background: url(/assets/fonts/PM.svg) no-repeat
 }
 
 .PN {
-  background: url(assets/fonts/PN.svg) no-repeat
+  background: url(/assets/fonts/PN.svg) no-repeat
 }
 
 .PR {
-  background: url(assets/fonts/PR.svg) no-repeat
+  background: url(/assets/fonts/PR.svg) no-repeat
 }
 
 .PS {
-  background: url(assets/fonts/PS.svg) no-repeat
+  background: url(/assets/fonts/PS.svg) no-repeat
 }
 
 .PT {
-  background: url(assets/fonts/PT.svg) no-repeat
+  background: url(/assets/fonts/PT.svg) no-repeat
 }
 
 .PW {
-  background: url(assets/fonts/PW.svg) no-repeat
+  background: url(/assets/fonts/PW.svg) no-repeat
 }
 
 .PY {
-  background: url(assets/fonts/PY.svg) no-repeat
+  background: url(/assets/fonts/PY.svg) no-repeat
 }
 
 .QA {
-  background: url(assets/fonts/QA.svg) no-repeat
+  background: url(/assets/fonts/QA.svg) no-repeat
 }
 
 .RE {
-  background: url(assets/fonts/RE.svg) no-repeat
+  background: url(/assets/fonts/RE.svg) no-repeat
 }
 
 .RO {
-  background: url(assets/fonts/RO.svg) no-repeat
+  background: url(/assets/fonts/RO.svg) no-repeat
 }
 
 .RS {
-  background: url(assets/fonts/RS.svg) no-repeat
+  background: url(/assets/fonts/RS.svg) no-repeat
 }
 
 .RU {
-  background: url(assets/fonts/RU.svg) no-repeat
+  background: url(/assets/fonts/RU.svg) no-repeat
 }
 
 .RW {
-  background: url(assets/fonts/RW.svg) no-repeat
+  background: url(/assets/fonts/RW.svg) no-repeat
 }
 
 .SA {
-  background: url(assets/fonts/SA.svg) no-repeat
+  background: url(/assets/fonts/SA.svg) no-repeat
 }
 
 .SB {
-  background: url(assets/fonts/SB.svg) no-repeat
+  background: url(/assets/fonts/SB.svg) no-repeat
 }
 
 .SC {
-  background: url(assets/fonts/SC.svg) no-repeat
+  background: url(/assets/fonts/SC.svg) no-repeat
 }
 
 .SD {
-  background: url(assets/fonts/SD.svg) no-repeat
+  background: url(/assets/fonts/SD.svg) no-repeat
 }
 
 .SE {
-  background: url(assets/fonts/SE.svg) no-repeat
+  background: url(/assets/fonts/SE.svg) no-repeat
 }
 
 .SG {
-  background: url(assets/fonts/SG.svg) no-repeat
+  background: url(/assets/fonts/SG.svg) no-repeat
 }
 
 .SH {
-  background: url(assets/fonts/SH.svg) no-repeat
+  background: url(/assets/fonts/SH.svg) no-repeat
 }
 
 .SI {
-  background: url(assets/fonts/SI.svg) no-repeat
+  background: url(/assets/fonts/SI.svg) no-repeat
 }
 
 .SJ {
-  background: url(assets/fonts/SJ.svg) no-repeat
+  background: url(/assets/fonts/SJ.svg) no-repeat
 }
 
 .SK {
-  background: url(assets/fonts/SK.svg) no-repeat
+  background: url(/assets/fonts/SK.svg) no-repeat
 }
 
 .SL {
-  background: url(assets/fonts/SL.svg) no-repeat
+  background: url(/assets/fonts/SL.svg) no-repeat
 }
 
 .SM {
-  background: url(assets/fonts/SM.svg) no-repeat
+  background: url(/assets/fonts/SM.svg) no-repeat
 }
 
 .SN {
-  background: url(assets/fonts/SN.svg) no-repeat
+  background: url(/assets/fonts/SN.svg) no-repeat
 }
 
 .SO {
-  background: url(assets/fonts/SO.svg) no-repeat
+  background: url(/assets/fonts/SO.svg) no-repeat
 }
 
 .SR {
-  background: url(assets/fonts/SR.svg) no-repeat
+  background: url(/assets/fonts/SR.svg) no-repeat
 }
 
 .SS {
-  background: url(assets/fonts/SS.svg) no-repeat
+  background: url(/assets/fonts/SS.svg) no-repeat
 }
 
 .ST {
-  background: url(assets/fonts/ST.svg) no-repeat
+  background: url(/assets/fonts/ST.svg) no-repeat
 }
 
 .SV {
-  background: url(assets/fonts/SV.svg) no-repeat
+  background: url(/assets/fonts/SV.svg) no-repeat
 }
 
 .SX {
-  background: url(assets/fonts/SX.svg) no-repeat
+  background: url(/assets/fonts/SX.svg) no-repeat
 }
 
 .SY {
-  background: url(assets/fonts/SY.svg) no-repeat
+  background: url(/assets/fonts/SY.svg) no-repeat
 }
 
 .SZ {
-  background: url(assets/fonts/SZ.svg) no-repeat
+  background: url(/assets/fonts/SZ.svg) no-repeat
 }
 
 .TC {
-  background: url(assets/fonts/TC.svg) no-repeat
+  background: url(/assets/fonts/TC.svg) no-repeat
 }
 
 .TD {
-  background: url(assets/fonts/TD.svg) no-repeat
+  background: url(/assets/fonts/TD.svg) no-repeat
 }
 
 .TF {
-  background: url(assets/fonts/TF.svg) no-repeat
+  background: url(/assets/fonts/TF.svg) no-repeat
 }
 
 .TG {
-  background: url(assets/fonts/TG.svg) no-repeat
+  background: url(/assets/fonts/TG.svg) no-repeat
 }
 
 .TH {
-  background: url(assets/fonts/TH.svg) no-repeat
+  background: url(/assets/fonts/TH.svg) no-repeat
 }
 
 .TJ {
-  background: url(assets/fonts/TJ.svg) no-repeat
+  background: url(/assets/fonts/TJ.svg) no-repeat
 }
 
 .TK {
-  background: url(assets/fonts/TK.svg) no-repeat
+  background: url(/assets/fonts/TK.svg) no-repeat
 }
 
 .TL {
-  background: url(assets/fonts/TL.svg) no-repeat
+  background: url(/assets/fonts/TL.svg) no-repeat
 }
 
 .TM {
-  background: url(assets/fonts/TM.svg) no-repeat
+  background: url(/assets/fonts/TM.svg) no-repeat
 }
 
 .TN {
-  background: url(assets/fonts/TN.svg) no-repeat
+  background: url(/assets/fonts/TN.svg) no-repeat
 }
 
 .TO {
-  background: url(assets/fonts/TO.svg) no-repeat
+  background: url(/assets/fonts/TO.svg) no-repeat
 }
 
 .TR {
-  background: url(assets/fonts/TR.svg) no-repeat
+  background: url(/assets/fonts/TR.svg) no-repeat
 }
 
 .TT {
-  background: url(assets/fonts/TT.svg) no-repeat
+  background: url(/assets/fonts/TT.svg) no-repeat
 }
 
 .TV {
-  background: url(assets/fonts/TV.svg) no-repeat
+  background: url(/assets/fonts/TV.svg) no-repeat
 }
 
 .TW {
-  background: url(assets/fonts/TW.svg) no-repeat
+  background: url(/assets/fonts/TW.svg) no-repeat
 }
 
 .TZ {
-  background: url(assets/fonts/TZ.svg) no-repeat
+  background: url(/assets/fonts/TZ.svg) no-repeat
 }
 
 .UA {
-  background: url(assets/fonts/UA.svg) no-repeat
+  background: url(/assets/fonts/UA.svg) no-repeat
 }
 
 .UG {
-  background: url(assets/fonts/UG.svg) no-repeat
+  background: url(/assets/fonts/UG.svg) no-repeat
 }
 
 .UM {
-  background: url(assets/fonts/UM.svg) no-repeat
+  background: url(/assets/fonts/UM.svg) no-repeat
 }
 
 .US-CA {
-  background: url(assets/fonts/US-CA.svg) no-repeat
+  background: url(/assets/fonts/US-CA.svg) no-repeat
 }
 
 .US {
-  background: url(assets/fonts/US.svg) no-repeat
+  background: url(/assets/fonts/US.svg) no-repeat
 }
 
 .UY {
-  background: url(assets/fonts/UY.svg) no-repeat
+  background: url(/assets/fonts/UY.svg) no-repeat
 }
 
 .UZ {
-  background: url(assets/fonts/UZ.svg) no-repeat
+  background: url(/assets/fonts/UZ.svg) no-repeat
 }
 
 .VA {
-  background: url(assets/fonts/VA.svg) no-repeat
+  background: url(/assets/fonts/VA.svg) no-repeat
 }
 
 .VC {
-  background: url(assets/fonts/VC.svg) no-repeat
+  background: url(/assets/fonts/VC.svg) no-repeat
 }
 
 .VE {
-  background: url(assets/fonts/VE.svg) no-repeat
+  background: url(/assets/fonts/VE.svg) no-repeat
 }
 
 .VG {
-  background: url(assets/fonts/VG.svg) no-repeat
+  background: url(/assets/fonts/VG.svg) no-repeat
 }
 
 .VI {
-  background: url(assets/fonts/VI.svg) no-repeat
+  background: url(/assets/fonts/VI.svg) no-repeat
 }
 
 .VN {
-  background: url(assets/fonts/VN.svg) no-repeat
+  background: url(/assets/fonts/VN.svg) no-repeat
 }
 
 .VU {
-  background: url(assets/fonts/VU.svg) no-repeat
+  background: url(/assets/fonts/VU.svg) no-repeat
 }
 
 .WF {
-  background: url(assets/fonts/WF.svg) no-repeat
+  background: url(/assets/fonts/WF.svg) no-repeat
 }
 
 .WS {
-  background: url(assets/fonts/WS.svg) no-repeat
+  background: url(/assets/fonts/WS.svg) no-repeat
 }
 
 .XK {
-  background: url(assets/fonts/XK.svg) no-repeat
+  background: url(/assets/fonts/XK.svg) no-repeat
 }
 
 .YE {
-  background: url(assets/fonts/YE.svg) no-repeat
+  background: url(/assets/fonts/YE.svg) no-repeat
 }
 
 .YT {
-  background: url(assets/fonts/YT.svg) no-repeat
+  background: url(/assets/fonts/YT.svg) no-repeat
 }
 
 .ZA {
-  background: url(assets/fonts/ZA.svg) no-repeat
+  background: url(/assets/fonts/ZA.svg) no-repeat
 }
 
 .ZM {
-  background: url(assets/fonts/ZM.svg) no-repeat
+  background: url(/assets/fonts/ZM.svg) no-repeat
 }
 
 .ZW {
-  background: url(assets/fonts/ZW.svg) no-repeat
+  background: url(/assets/fonts/ZW.svg) no-repeat
 }
 /*!
  * Cropper.js v1.4.3
@@ -34375,7 +34375,7 @@ button.toast-close-button {
 }
 
 .slick-loading .slick-list {
-  background: #fff slick-image-url(assets/images/ajax-loader.gif) center center no-repeat
+  background: #fff slick-image-url('/assets/images/ajax-loader.gif') center center no-repeat
 }
 
 .slick-prev, .slick-next {
@@ -36505,8 +36505,8 @@ div.fixed-table-scroll-outer {
 
 @font-face {
   font-family: 'Linearicons-Free';
-  src: url(../fonts/Linearicons-Free.eot);
-  src: url(../fonts/Linearicons-Free.eot?#iefixw118d) format("embedded-opentype"),url(../fonts/Linearicons-Free.woff2) format("woff2"),url(../fonts/Linearicons-Free.woff) format("woff"),url(../fonts/Linearicons-Free.ttf) format("truetype"),url(../fonts/Linearicons-Free.svg#Linearicons-Free) format("svg");
+  src: url(/assets/fonts/Linearicons-Free.eot);
+  src: url(/assets/fonts/Linearicons-Free.eot?#iefixw118d) format("embedded-opentype"),url(/assets/fonts/Linearicons-Free.woff2) format("woff2"),url(/assets/fonts/Linearicons-Free.woff) format("woff"),url(/assets/fonts/Linearicons-Free.ttf) format("truetype"),url(/assets/fonts/Linearicons-Free.svg#Linearicons-Free) format("svg");
   font-weight: normal;
   font-style: normal
 }
@@ -37205,8 +37205,8 @@ div.fixed-table-scroll-outer {
 
 @font-face {
   font-family: 'Pe-icon-7-stroke';
-  src: url(../fonts/Pe-icon-7-stroke.eot);
-  src: url(../fonts/Pe-icon-7-stroke.eot?#iefixd7yf1v) format("embedded-opentype"),url(../fonts/Pe-icon-7-stroke.woff) format("woff"),url(../fonts/Pe-icon-7-stroke.ttf) format("truetype"),url(../fonts/Pe-icon-7-stroke.svg#Pe-icon-7-stroke) format("svg");
+  src: url(/assets/fonts/Pe-icon-7-stroke.eot);
+  src: url(/assets/fonts/Pe-icon-7-stroke.eot?#iefixd7yf1v) format("embedded-opentype"),url(/assets/fonts/Pe-icon-7-stroke.woff) format("woff"),url(/assets/fonts/Pe-icon-7-stroke.ttf) format("truetype"),url(/assets/fonts/Pe-icon-7-stroke.svg#Pe-icon-7-stroke) format("svg");
   font-weight: normal;
   font-style: normal
 }

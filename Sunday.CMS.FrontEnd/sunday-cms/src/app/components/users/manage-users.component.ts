@@ -2,14 +2,14 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ClientState } from '@services/layout/clientstate.service';
 import { UserService } from '@services/index';
 import { UserList } from '@models/index';
-//import { MatTableDataSource } from '@angular/material/table';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-manage-users',
   templateUrl: './manage-users.component.html',
 })
 export class ManageUsersComponent implements OnInit {
-  userList: UserList;
+  userList: UserList = new UserList();
 
   constructor(
     private userService: UserService,

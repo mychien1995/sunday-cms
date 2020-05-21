@@ -1,15 +1,16 @@
-import { LoginComponent, DashboardComponent, LoadingStateComponent, ManageUsersComponent } from 'app/components';
+import { LoginComponent, DashboardComponent, LoadingStateComponent, ManageUsersComponent, PageHeadingComponent } from 'app/components';
 import {
   ApplicationLayoutComponent, AppHeaderComponent,
   AppHeaderLogoComponent, AppHeaderInfoComponent, AppHeaderQuickLinkComponent,
   AppSidebarComponent, AppNavigationComponent
 } from 'app/components/_layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { LoginService, ApiService, AuthenticationService, AuthGuard, ClientState, UserService } from '@services/index';
 import { SharedAngularMaterial } from './shared.angular-material.module';
+import { TokenInterceptor, AuthenticationInterceptor } from '@interceptors/index';
 
 @NgModule({
   imports: [
@@ -29,11 +30,13 @@ import { SharedAngularMaterial } from './shared.angular-material.module';
     AppNavigationComponent,
     DashboardComponent,
     LoadingStateComponent,
-    ManageUsersComponent
+    ManageUsersComponent,
+    PageHeadingComponent
   ],
   exports: [
     FormsModule,
     ReactiveFormsModule,
+    SharedAngularMaterial,
     LoginComponent,
     ApplicationLayoutComponent,
     AppHeaderComponent,
@@ -45,7 +48,7 @@ import { SharedAngularMaterial } from './shared.angular-material.module';
     DashboardComponent,
     LoadingStateComponent,
     ManageUsersComponent,
-    SharedAngularMaterial
+    PageHeadingComponent
   ],
   providers: [
     ApiService,
@@ -53,7 +56,17 @@ import { SharedAngularMaterial } from './shared.angular-material.module';
     AuthenticationService,
     AuthGuard,
     ClientState,
-    UserService
+    UserService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthenticationInterceptor,
+      multi: true
+    }
   ]
 })
 

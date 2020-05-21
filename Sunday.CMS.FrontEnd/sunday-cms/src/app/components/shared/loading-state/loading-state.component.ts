@@ -8,7 +8,7 @@ import { ClientState } from '@services/layout/clientstate.service';
 })
 
 export class LoadingStateComponent implements OnInit {
-  constructor(private clientState: ClientState) {
+  constructor(public clientState: ClientState) {
 
   }
 
