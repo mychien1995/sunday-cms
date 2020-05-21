@@ -12,27 +12,29 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "^5.1.0",
-    "@angular/common": "^5.1.0",
-    "@angular/compiler": "^5.1.0",
-    "@angular/core": "^5.1.0",
-    "@angular/forms": "^5.1.0",
+    "@angular/animations": "^9.1.9",
+    "@angular/common": "^9.1.9",
+    "@angular/compiler": "^9.1.9",
+    "@angular/core": "^9.1.9",
+    "@angular/forms": "^9.1.9",
     "@angular/http": "^5.1.0",
     "@angular/material": "^9.2.4",
-    "@angular/platform-browser": "^5.1.0",
-    "@angular/platform-browser-dynamic": "^5.1.0",
-    "@angular/router": "^5.1.0",
+    "@angular/platform-browser": "^9.1.9",
+    "@angular/platform-browser-dynamic": "^9.1.9",
+    "@angular/router": "^9.1.9",
     "@auth0/angular-jwt": "^3.0.0",
     "angular-jwt": "github:auth0/angular-jwt",
     "core-js": "^2.4.1",
     "jquery": "^3.5.1",
-    "rxjs": "^5.5.6",
-    "zone.js": "^0.8.19"
+    "rxjs": "^6.5.5",
+    "rxjs-compat": "^6.0.0-rc.0",
+    "tslib": "^1.10.0",
+    "zone.js": "^0.10.3"
   },
   "devDependencies": {
     "@angular/cli": "^9.1.6",
-    "@angular/compiler-cli": "^5.1.0",
-    "@angular/language-service": "^5.1.0",
+    "@angular/compiler-cli": "^9.1.9",
+    "@angular/language-service": "^9.1.9",
     "@types/jasmine": "~2.8.3",
     "@types/jasminewd2": "~2.0.2",
     "@types/jquery": "^3.3.38",
@@ -49,7 +51,7 @@
     "protractor": "~5.1.2",
     "ts-node": "~3.2.0",
     "tslint": "~5.9.1",
-    "typescript": "~2.5.3"
+    "typescript": "~3.8.3"
   },
   "prettier": {
     "singleQuote": true
