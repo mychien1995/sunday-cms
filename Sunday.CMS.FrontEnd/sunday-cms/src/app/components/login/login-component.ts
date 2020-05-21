@@ -5,7 +5,7 @@ import { LoginService, AuthenticationService, ClientState } from '@services/inde
 import { LoginInputModel, LoginResponseModel } from '@models/index';
 
 @Component({
-  selector: 'login',
+  selector: 'app-login',
   templateUrl: './login-component.html'
 })
 

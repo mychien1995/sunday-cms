@@ -24,7 +24,6 @@ namespace Sunday.CMS.Core.Models.Users
         public string Email { get; set; }
         public string Fullname { get; set; }
         public bool IsActive { get; set; }
-        public bool IsDeleted { get; set; }
         public bool IsLockedOut { get; set; }
         public UserItem()
         {

@@ -8,13 +8,15 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { LoginService, ApiService, AuthenticationService, AuthGuard, ClientState } from '@services/index';
+import { LoginService, ApiService, AuthenticationService, AuthGuard, ClientState, UserService } from '@services/index';
+import { SharedAngularMaterial } from './shared.angular-material.module';
 
 @NgModule({
   imports: [
     FormsModule,
     ReactiveFormsModule,
-    RouterModule
+    RouterModule,
+    SharedAngularMaterial
   ],
   declarations: [
     LoginComponent,
@@ -42,14 +44,16 @@ import { LoginService, ApiService, AuthenticationService, AuthGuard, ClientState
     AppNavigationComponent,
     DashboardComponent,
     LoadingStateComponent,
-    ManageUsersComponent
+    ManageUsersComponent,
+    SharedAngularMaterial
   ],
   providers: [
     ApiService,
     LoginService,
     AuthenticationService,
     AuthGuard,
-    ClientState
+    ClientState,
+    UserService
   ]
 })
 

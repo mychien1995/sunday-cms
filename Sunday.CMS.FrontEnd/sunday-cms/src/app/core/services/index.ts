@@ -4,3 +4,4 @@ export * from 'app/core/services/login/login.service';
 export * from 'app/core/services/auth/auth.service';
 export * from 'app/core/services/auth/auth.guard';
 export * from 'app/core/services/layout/clientstate.service';
+export * from 'app/core/services/users/users.service';
