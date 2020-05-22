@@ -7,6 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { JwtModule } from '@auth0/angular-jwt';
 import { StorageKey } from 'app/core/constants';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 @NgModule({
@@ -25,6 +26,7 @@ import { StorageKey } from 'app/core/constants';
         tokenGetter: GetToken,
       }
     }),
+    NgbModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -26,7 +26,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-row"  *ngIf="!isEdit">
+                    <div class="form-row" *ngIf="!isEdit">
                         <div class="col-md-6">
                             <div class="position-relative form-group">
                                 <label for="password" class="">Password <span class="red">*</span></label>
@@ -57,14 +57,18 @@
                             <div class="position-relative form-group">
                                 <label for="Email" class="">Email</label>
                                 <input name="Email" placeholder="Email here..." type="text" class="form-control"
-                                    formControlName="Email" autocomplete="off">
+                                    formControlName="Email" autocomplete="off" [email]="true">
+                                <span class="text-danger"
+                                    [hidden]="!(ngForm.submitted && userForm.controls['Email'].hasError('email'))">Incorrect email format</span>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="position-relative form-group">
                                 <label for="Phonenumber" class="">Phone</label>
                                 <input name="Phonenumber" placeholder="Phone number here..." type="text"
-                                    class="form-control" formControlName="Phone">
+                                    class="form-control" formControlName="Phone" pattern="^(?:0|\\+)[0-9\\s.\\/-]{9,15}$">
+                                    <span class="text-danger"
+                                        [hidden]="!(ngForm.submitted && userForm.controls['Phone'].hasError('pattern'))">Incorrect phonenumber format</span>
                             </div>
                         </div>
                     </div>
@@ -72,7 +76,8 @@
                         <div class="col-md-6">
                             <div class="position-relative form-group">
                                 <label for="Domain" class="">Domain <span class="red">*</span></label>
-                                <ng-select [items]="['CMS']" formControlName="Domain" [searchable]="false" required [readonly]="isEdit">
+                                <ng-select [items]="['CMS']" formControlName="Domain" [searchable]="false" required
+                                    [readonly]="isEdit">
                                 </ng-select>
                                 <span class="text-danger"
                                     [hidden]="!(ngForm.submitted && userForm.controls['Domain'].hasError('required'))">This
@@ -96,7 +101,8 @@
                             <div class="position-relative form-group">
                                 <label for="Active" class="">Active</label>
                                 <div class="custom-checkbox custom-control">
-                                    <input type="checkbox" id="exampleCustomCheckbox4" class="custom-control-input" formControlName="IsActive">
+                                    <input type="checkbox" id="exampleCustomCheckbox4" class="custom-control-input"
+                                        formControlName="IsActive">
                                     <label class="custom-control-label" for="exampleCustomCheckbox4">&nbsp;</label>
                                 </div>
                             </div>

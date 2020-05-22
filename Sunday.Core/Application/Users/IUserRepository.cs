@@ -21,5 +21,7 @@ namespace Sunday.Core.Users
         Task<ApplicationUser> CreateUser(ApplicationUser user);
 
         Task<ApplicationUser> UpdateUser(ApplicationUser user);
+
+        Task<bool> DeleteUser(int userId);
     }
 }

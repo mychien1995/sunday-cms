@@ -43,5 +43,12 @@ namespace Sunday.CMS.Interface.Controllers
             var result = await _userManager.GetUserById(id);
             return Ok(result);
         }
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteUser([FromQuery]int id)
+        {
+            var result = await _userManager.DeleteUser(id);
+            return Ok(result);
+        }
     }
 }

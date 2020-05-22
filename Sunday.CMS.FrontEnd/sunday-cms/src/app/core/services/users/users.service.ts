@@ -39,4 +39,10 @@ export class UserService {
       .get(`${ApiUrl.Users.GetById}?id=${userId}`)
       .pipe(map(ApiHelper.onSuccess), catchError(ApiHelper.onFail));
   }
+
+  deleteUser(userId: number): Observable<ApiResponse> {
+    return this.apiService
+      .delete(`${ApiUrl.Users.GetById}?id=${userId}`)
+      .pipe(map(ApiHelper.onSuccess), catchError(ApiHelper.onFail));
+  }
 }

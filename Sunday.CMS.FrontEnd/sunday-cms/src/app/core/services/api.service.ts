@@ -6,9 +6,7 @@ import { environment } from '../../../environments/environment';
 
 @Injectable()
 export class ApiService {
-  constructor(
-    private http: HttpClient
-  ) { }
+  constructor(private http: HttpClient) {}
   get(path: string, params: HttpParams = new HttpParams()): Observable<any> {
     return this.http.get(`${environment.apiUrl}${path}`, { params });
   }
@@ -38,15 +36,25 @@ export class ApiService {
   }
 
   delete(path): Observable<any> {
-    return this.http.delete(
-      `${environment.apiUrl}${path}`
-    );
+    let headers = this.getHeaders();
+    let options = {
+      headers: headers
+    };
+    return this.http.delete(`${environment.apiUrl}${path}`, options);
   }
 
   private getHeaders = (isFormDataRequest: boolean = false): HttpHeaders => {
     let headers = new HttpHeaders();
-    if (!isFormDataRequest) headers = headers.append('Content-Type', 'application/json ; charset=utf-8');
-    headers = headers.append('Accept', 'application/json , text/javascript, */*; q=0.01');
+    if (!isFormDataRequest) {
+      headers = headers.append(
+        'Content-Type',
+        'application/json ; charset=utf-8'
+      );
+    }
+    headers = headers.append(
+      'Accept',
+      'application/json , text/javascript, */*; q=0.01'
+    );
     headers = headers.append('Access-Control-Allow-Origin', '*');
     return headers;
   }

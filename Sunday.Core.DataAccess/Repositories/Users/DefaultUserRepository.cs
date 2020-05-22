@@ -104,5 +104,11 @@ namespace Sunday.Core.DataAccess.Repositories
             user.ID = result.FirstOrDefault();
             return user;
         }
+
+        public async Task<bool> DeleteUser(int userId)
+        {
+            await _dbRunner.ExecuteAsync<int>(ProcedureNames.Users.Delete, new { UserId = userId });
+            return true;
+        }
     }
 }

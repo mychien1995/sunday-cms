@@ -72,8 +72,8 @@ GO
 ALTER PROCEDURE [dbo].[sp_users_search]
 AS
 BEGIN
-	SELECT COUNT(*) FROM [Users];
-	SELECT * FROM [Users];
+	SELECT COUNT(*) FROM [Users] WHERE IsDeleted = 0;
+	SELECT * FROM [Users]  WHERE IsDeleted = 0;
 END
 GO
 
@@ -171,3 +171,18 @@ BEGIN
 	DELETE FROM UserRoles WHERE UserId = @ID
 	INSERT INTO UserRoles (UserId, RoleId) SELECT @ID, RoleId FROM @tblRoleIds
 END
+
+IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_users_delete')
+BEGIN
+	EXEC('CREATE PROCEDURE [dbo].[sp_users_delete] AS BEGIN SET NOCOUNT ON; END')
+END
+GO
+ALTER PROCEDURE [dbo].[sp_users_delete]
+(
+	@UserId integer
+)
+AS
+BEGIN
+	UPDATE [Users] Set IsDeleted = 1 WHERE ID = @UserId
+END
+GO

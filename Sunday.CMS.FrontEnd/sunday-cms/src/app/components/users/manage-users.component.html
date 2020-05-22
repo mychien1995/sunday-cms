@@ -21,14 +21,19 @@
                     <ng-container matColumnDef="IsActive">
                         <th mat-header-cell *matHeaderCellDef>Active</th>
                         <td mat-cell *matCellDef="let user">
-                            <input type="checkbox" [checked]="user.IsActive" />
+                            <div class="custom-checkbox custom-control">
+                                <input type="checkbox" id="exampleCustomCheckbox4" class="custom-control-input"
+                                    [checked]="user.IsActive" readonly> 
+                                <label class="custom-control-label" for="exampleCustomCheckbox4" >&nbsp;</label>
+                            </div>
                         </td>
                     </ng-container>
                     <ng-container matColumnDef="Action">
                         <th mat-header-cell *matHeaderCellDef>Action</th>
                         <td mat-cell *matCellDef="let user">
                             <a title="Edit" [routerLink]="['/users/edit/' + user.ID]"><i class="fa fa-edit"></i></a>
-                            <a class="m-lg-2"><i class="fa fa-times"></i></a>
+                            <a class="m-lg-2" (click)="deleteUser(user, confirmDeleteDialog)" href="javascript:void(0)"><i
+                                    class="fa fa-times"></i></a>
                         </td>
                     </ng-container>
                     <tr mat-header-row *matHeaderRowDef="['UserName', 'Email', 'Fullname', 'IsActive', 'Action']"></tr>
@@ -40,3 +45,18 @@
         </div>
     </div>
 </div>
+<ng-template #confirmDeleteDialog let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Confirm delete</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <p>Are you sure you want to delete this user</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="confirmDelete()">Confirm</button>
+        <button type="button" class="btn btn-secondary" (click)="c()">Cancel</button>
+    </div>
+</ng-template>

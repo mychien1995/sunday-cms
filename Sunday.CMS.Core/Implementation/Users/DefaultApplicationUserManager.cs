@@ -79,5 +79,13 @@ namespace Sunday.CMS.Core.Implementation.Users
             result.Success = true;
             return await Task.FromResult(result);
         }
+
+        public async Task<BaseApiResponse> DeleteUser(int userId)
+        {
+            var result = await _userRepository.DeleteUser(userId);
+            var respone = new BaseApiResponse();
+            respone.Success = result;
+            return respone;
+        }
     }
 }

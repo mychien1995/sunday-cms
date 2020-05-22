@@ -5,6 +5,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { SharedAngularMaterial } from './shared.angular-material.module';
+import { SharedBootstraps } from './shared.bootstrap-module';
 import {
   TokenInterceptor,
   AuthenticationInterceptor,
@@ -20,6 +21,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     ReactiveFormsModule,
     RouterModule,
     SharedAngularMaterial,
+    SharedBootstraps,
     NgSelectModule,
     ToastrModule.forRoot(),
     BrowserAnimationsModule
@@ -31,6 +33,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     FormsModule,
     ReactiveFormsModule,
     SharedAngularMaterial,
+    SharedBootstraps,
     NgSelectModule,
     SharedComponents,
     ToastrModule,

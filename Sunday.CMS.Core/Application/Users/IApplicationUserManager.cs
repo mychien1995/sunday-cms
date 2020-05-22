@@ -18,5 +18,7 @@ namespace Sunday.CMS.Core.Application.Users
         Task<UpdateUserJsonResult> UpdateUser(UserMutationModel userData);
 
         Task<UserDetailJsonResult> GetUserById(int userId);
+
+        Task<BaseApiResponse> DeleteUser(int userId);
     }
 }
