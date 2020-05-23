@@ -17,6 +17,7 @@ namespace Sunday.Core.DataAccess
             public const string Insert = "sp_users_insert";
             public const string Update = "sp_users_update";
             public const string Delete = "sp_users_delete";
+            public const string FetchRoles = "sp_users_fetchRoles";
         }
 
         public class Roles

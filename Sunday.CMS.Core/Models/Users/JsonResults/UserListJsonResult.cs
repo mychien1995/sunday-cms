@@ -1,4 +1,5 @@
 ﻿using Sunday.Core;
+using Sunday.Core.Domain.Roles;
 using Sunday.Core.Domain.Users;
 using System;
 using System.Collections.Generic;
@@ -22,9 +23,12 @@ namespace Sunday.CMS.Core.Models.Users
         public int ID { get; set; }
         public string UserName { get; set; }
         public string Email { get; set; }
+        public string Phone { get; set; }
+        public string Domain { get; set; }
         public string Fullname { get; set; }
         public bool IsActive { get; set; }
         public bool IsLockedOut { get; set; }
+        public List<ApplicationRole> Roles { get; set; }
         public UserItem()
         {
 

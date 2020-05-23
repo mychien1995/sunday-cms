@@ -1,4 +1,5 @@
 import { ApiResponse } from '@models/common/response.model';
+import { RoleModel} from '../roles/roles.models';
 
 export class UserList extends ApiResponse {
   Total: number;
@@ -9,6 +10,8 @@ export class UserItem {
   ID: number;
   UserName: string;
   Email: string;
+  Domain: string;
+  Roles?: RoleModel[];
   Fullname: string;
   IsActive: boolean;
 }

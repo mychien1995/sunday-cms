@@ -70,10 +70,78 @@ BEGIN
 END
 GO
 ALTER PROCEDURE [dbo].[sp_users_search]
+(
+	@PageIndex int = 0,
+	@PageSize int = 10,
+	@ExcludeIds nvarchar(MAX) = '',
+	@IncludeIds nvarchar(MAX) = '',
+	@Text nvarchar(MAX) = '',
+	@RoleIds nvarchar(MAX) = '',
+	@SortBy nvarchar(MAX) = 'UpdatedDate',
+	@SortDirection nvarchar(MAX) = 'DESC'
+)
 AS
 BEGIN
-	SELECT COUNT(*) FROM [Users] WHERE IsDeleted = 0;
-	SELECT * FROM [Users]  WHERE IsDeleted = 0;
+	IF @PageIndex IS NULL
+		SET @PageIndex = 0
+
+	IF @PageSize IS NULL
+		SET @PageSize = 10
+
+	SET @PageIndex = @PageIndex * @PageSize
+
+	IF @SortBy IS NULL
+		SET @SortBy = 'UpdatedDate'
+
+	DECLARE @WhereClause nvarchar(MAX);
+	SET @WhereClause = ' IsDeleted = 0 ';
+
+	IF(@ExcludeIds IS NOT NULL AND LEN(TRIM(@ExcludeIds)) > 0)
+	BEGIN
+		IF LEN(TRIM(@WhereClause)) > 0
+			SET @WhereClause = @WhereClause + ' AND ';
+		SET @WhereClause = @WhereClause + ' ID NOT IN (' + @ExcludeIds + ') ';
+	END
+
+	IF(@IncludeIds IS NOT NULL AND LEN(TRIM(@IncludeIds)) > 0)
+	BEGIN
+		IF LEN(TRIM(@WhereClause)) > 0
+			SET @WhereClause = @WhereClause + ' AND ';
+		SET @WhereClause = @WhereClause + ' ID IN (' + @IncludeIds + ') ';
+	END
+
+	IF(@Text IS NOT NULL AND LEN(TRIM(@Text)) > 0)
+	BEGIN
+		IF LEN(TRIM(@WhereClause)) > 0
+			SET @WhereClause = @WhereClause + ' AND ';
+		SET @WhereClause = @WhereClause + ' (Username LIKE ''%'' + @Text + ''%'' OR FullName LIKE ''%'' + @Text + ''%'' OR Email LIKE ''%'' + @Text + ''%''' ;
+	END
+
+	IF(@RoleIds IS NOT NULL AND LEN(TRIM(@RoleIds)) > 0)
+	BEGIN
+		IF LEN(TRIM(@WhereClause)) > 0
+			SET @WhereClause = @WhereClause + ' AND ';
+		SET @WhereClause = @WhereClause + ' ID IN (SELECT UserId FROM UserRoles WHERE RoleId IN ('+@RoleIds+')) ';
+	END
+
+	IF(LEN(TRIM(@WhereClause)) > 0)
+		SET @WhereClause = ' WHERE ' + @WhereClause
+	DECLARE @CountQuery nvarchar(MAX);
+	SET @CountQuery = 'SELECT COUNT(*) FROM [Users] ' + @WhereClause
+	
+	DECLARE @DataQuery nvarchar(MAX);
+	SET @DataQuery = 'SELECT * FROM [Users] ' + @WhereClause  + ' ORDER BY ' + @SortBy + ' ' + @SortDirection
+	+ ' OFFSET ' + CAST(@PageIndex AS VARCHAR(100)) + ' ROWS FETCH NEXT '+ CAST(@PageSize AS VARCHAR(100)) +' ROWS ONLY'
+
+	PRINT @DataQuery
+
+	exec sp_executesql @CountQuery, 
+	N'@Text nvarchar(MAX)',
+	@Text
+
+	exec sp_executesql @DataQuery, 
+	N'@Text nvarchar(MAX)',
+	@Text
 END
 GO
 
@@ -184,5 +252,31 @@ ALTER PROCEDURE [dbo].[sp_users_delete]
 AS
 BEGIN
 	UPDATE [Users] Set IsDeleted = 1 WHERE ID = @UserId
+END
+GO
+
+IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_users_fetchRoles')
+BEGIN
+	EXEC('CREATE PROCEDURE [dbo].[sp_users_fetchRoles] AS BEGIN SET NOCOUNT ON; END')
+END
+GO
+ALTER PROCEDURE dbo.sp_users_fetchRoles
+(
+	@UserIds nvarchar(MAX)
+)
+AS
+BEGIN
+	IF(@UserIds IS NULL OR LEN(TRIM(@UserIds)) = 0)
+	BEGIN
+		SELECT * FROM Roles WHERE 1 = 2
+	END
+	DECLARE @tblUserIds TABLE (ID varchar(100))
+	INSERT INTO @tblUserIds SELECT value  FROM STRING_SPLIT(@UserIds, ',')
+
+	SELECT UserId, RoleId, Code, RoleName 
+	FROM UserRoles, Roles 
+	WHERE UserId IN (SELECT ID FROM @tblUserIds)
+	AND UserRoles.RoleId = Roles.ID
+
 END
 GO

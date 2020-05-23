@@ -6,6 +6,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { SharedAngularMaterial } from './shared.angular-material.module';
 import { SharedBootstraps } from './shared.bootstrap-module';
+import { SharedPipes } from './shared.pipes';
 import {
   TokenInterceptor,
   AuthenticationInterceptor,
@@ -27,7 +28,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     BrowserAnimationsModule
   ],
   declarations: [
-    SharedComponents
+    SharedComponents,
+    SharedPipes
   ],
   exports: [
     FormsModule,
@@ -37,6 +39,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     NgSelectModule,
     SharedComponents,
     ToastrModule,
+    SharedPipes,
     BrowserAnimationsModule
   ],
   providers: [

@@ -7,8 +7,8 @@
                     <div class="form-row">
                         <div class="col-md-6">
                             <div class="position-relative form-group">
-                                <label for="username" class="">Username <span class="red">*</span></label>
-                                <input name="username" placeholder="Username here..." type="text" class="form-control"
+                                <label for="zzzz" class="username">&nbsp;<span class="red">*</span></label>
+                                <input name="zzzz" placeholder="Username here..." type="text" class="form-control"
                                     formControlName="UserName" autocomplete="off" required [readOnly]="isEdit">
                                 <span class="text-danger"
                                     [hidden]="!(ngForm.submitted && userForm.controls['UserName'].hasError('required'))">This
@@ -29,8 +29,8 @@
                     <div class="form-row" *ngIf="!isEdit">
                         <div class="col-md-6">
                             <div class="position-relative form-group">
-                                <label for="password" class="">Password <span class="red">*</span></label>
-                                <input name="password" placeholder="Password here..." type="password"
+                                <label for="yyyy" class="password">&nbsp;<span class="red">*</span></label>
+                                <input name="yyyy" placeholder="Password here..." type="password"
                                     class="form-control" formControlName="Password" required [readOnly]="isEdit">
                                 <span class="text-danger"
                                     [hidden]="!(ngForm.submitted && userForm.controls['Password'].hasError('required'))">This

@@ -39,8 +39,10 @@ namespace Microsoft.Extensions.DependencyInjection
             {
                 ConfigurationNode configurationNode = (ConfigurationNode)serializer.Deserialize(reader);
                 _configuration = configurationNode;
+                var document = new XmlDocument();
+                document.LoadXml(configFileContent);
                 AddSetting(configurationNode);
-                AddPipelines(configurationNode);
+                AddPipelines(document);
             }
             return services;
         }
@@ -125,9 +127,9 @@ namespace Microsoft.Extensions.DependencyInjection
             }
         }
 
-        private static void AddPipelines(ConfigurationNode configurationNode)
+        private static void AddPipelines(XmlDocument document)
         {
-            ApplicationPipelines.Initialize(configurationNode);
+            ApplicationPipelines.Initialize(document);
         }
     }
 }

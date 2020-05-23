@@ -17,5 +17,7 @@ namespace Sunday.CMS.Core.Models.Users
         public List<int> OrganizationIds { get; set; }
         public int? PageIndex { get; set; }
         public int? PageSize { get; set; }
+        public string Text { get; set; }
+        public string SortBy { get; set; }
     }
 }

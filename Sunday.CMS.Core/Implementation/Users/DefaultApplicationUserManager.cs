@@ -27,6 +27,7 @@ namespace Sunday.CMS.Core.Implementation.Users
         public async Task<UserListJsonResult> SearchUsers(SearchUserCriteria criteria)
         {
             var query = criteria.MapTo<UserQuery>();
+            await ApplicationPipelines.RunAsync("cms.users.beforeSearch", new BeforeSearchUserArg(criteria, query));
             var searchResult = await _userRepository.QueryUsers(query);
             var apiResult = new UserListJsonResult();
             apiResult.Total = searchResult.Total;
@@ -35,6 +36,7 @@ namespace Sunday.CMS.Core.Implementation.Users
                 var user = x.MapTo<UserItem>();
                 return user;
             });
+            await ApplicationPipelines.RunAsync("cms.users.afterSearch", new AfterSearchUserArg(searchResult, apiResult));
             return apiResult;
         }
 

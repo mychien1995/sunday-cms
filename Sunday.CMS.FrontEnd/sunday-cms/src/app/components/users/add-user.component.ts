@@ -12,7 +12,8 @@ import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-add-user',
-  templateUrl: './add-user.component.html'
+  templateUrl: './add-user.component.html',
+  styleUrls: ['./add-user.component.scss']
 })
 export class AddUserComponent implements OnInit {
   public userForm: FormGroup;

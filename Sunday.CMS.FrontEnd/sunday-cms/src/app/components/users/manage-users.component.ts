@@ -30,9 +30,9 @@ export class ManageUsersComponent implements OnInit {
     this.getUsers();
   }
 
-  getUsers(): void {
+  getUsers(userQuery?: any): void {
     this.clientState.isBusy = true;
-    this.userService.getUsers().subscribe(res => {
+    this.userService.getUsers(userQuery).subscribe(res => {
       this.userList = <UserList>res;
       this.clientState.isBusy = false;
     });

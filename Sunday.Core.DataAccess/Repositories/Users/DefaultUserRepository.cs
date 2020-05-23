@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using Sunday.Core.DataAccess.Database;
+using Sunday.Core.DataAccess.Models.Users;
 using Sunday.Core.Domain.Roles;
 using Sunday.Core.Domain.Users;
 using Sunday.Core.Models;
@@ -57,7 +58,9 @@ namespace Sunday.Core.DataAccess.Repositories
         public async Task<SearchResult<ApplicationUser>> QueryUsers(UserQuery query)
         {
             var result = new SearchResult<ApplicationUser>();
-            var searchResult = await _dbRunner.ExecuteMultipleAsync(ProcedureNames.Users.Search, new Type[] { typeof(int), typeof(ApplicationUser) });
+            var dapperQuery = query.MapTo<DapperUserQuery>();
+            var param = dapperQuery.ToDapperParameters();
+            var searchResult = await _dbRunner.ExecuteMultipleAsync(ProcedureNames.Users.Search, new Type[] { typeof(int), typeof(ApplicationUser) }, param);
             result.Total = searchResult[0].Select(x => (int)x).FirstOrDefault();
             result.Result = searchResult[1].Select(x => (ApplicationUser)x);
             return result;
@@ -109,6 +112,25 @@ namespace Sunday.Core.DataAccess.Repositories
         {
             await _dbRunner.ExecuteAsync<int>(ProcedureNames.Users.Delete, new { UserId = userId });
             return true;
+        }
+
+        public async Task FetchUserRoles(List<ApplicationUser> users)
+        {
+            if (users == null || !users.Any()) return;
+            var userIds = string.Join(',', users.Select(x => x.ID));
+            var dbResult = await _dbRunner.ExecuteAsync<FetchRoleResult>(ProcedureNames.Users.FetchRoles, new { UserIds = userIds });
+            var groupedResult = dbResult.GroupBy(x => x.UserId).ToDictionary(x => x.Key);
+            foreach (var userId in groupedResult)
+            {
+                var matchingUser = users.FirstOrDefault(x => x.ID == userId.Key);
+                if (matchingUser == null) continue;
+                matchingUser.Roles = userId.Value.Select(x => new ApplicationRole()
+                {
+                    Code = x.Code,
+                    ID = x.RoleId,
+                    RoleName = x.RoleName
+                }).ToList();
+            }
         }
     }
 }

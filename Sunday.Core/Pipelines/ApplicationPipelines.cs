@@ -9,6 +9,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace Sunday.Core
 {
@@ -16,6 +17,37 @@ namespace Sunday.Core
     {
         private static ConcurrentDictionary<string, List<object>> _pipelineExecutors = new ConcurrentDictionary<string, List<object>>();
         private static ConcurrentDictionary<string, List<string>> _pipelineDefinitions = new ConcurrentDictionary<string, List<string>>();
+        public static void Initialize(XmlDocument configFile)
+        {
+            var piplinesNode = configFile.SelectSingleNode("/configuration/pipelines");
+            if (piplinesNode == null || !piplinesNode.HasChildNodes) return;
+            var childNodes = piplinesNode.ChildNodes;
+            foreach (var node in childNodes)
+            {
+                var pipelineNode = node as XmlNode;
+                var pipelineName = pipelineNode.Name;
+                var processorList = new List<string>();
+                if (pipelineNode.HasChildNodes)
+                {
+                    foreach (var childNode in pipelineNode.ChildNodes)
+                    {
+                        var processorNode = childNode as XmlNode;
+                        if (processorNode.Name == "processor" && !string.IsNullOrEmpty(processorNode.Attributes["type"]?.Value))
+                        {
+                            processorList.Add(processorNode.Attributes["type"]?.Value);
+                        }
+                    }
+                }
+                if (processorList.Any())
+                {
+                    if (_pipelineDefinitions.ContainsKey(pipelineName))
+                    {
+                        _pipelineDefinitions.TryRemove(pipelineName, out List<string> tmp);
+                    }
+                    _pipelineDefinitions.TryAdd(pipelineName, processorList);
+                }
+            }
+        }
 
         public static void Initialize(ConfigurationNode configurationNode)
         {
