@@ -1,4 +1,4 @@
-﻿using Sunday.CMS.Core.Models.Roles.JsonResults;
+﻿using Sunday.CMS.Core.Models.Roles;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,5 +9,6 @@ namespace Sunday.CMS.Core.Application.Roles
     public interface IApplicationRoleManager
     {
         Task<RoleListJsonResult> GetAvailableRoles();
+        Task<RoleDetailJsonResult> GetRoleById(int id);
     }
 }

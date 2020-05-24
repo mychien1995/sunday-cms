@@ -16,7 +16,7 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./add-user.component.scss']
 })
 export class AddUserComponent implements OnInit {
-  public userForm: FormGroup;
+  public userForm: FormGroup = new FormGroup({});
   public roleLookup: RoleModel[] = [];
   public currentUser: UserDetailResponse;
   public isEdit: boolean;

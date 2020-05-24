@@ -3,6 +3,7 @@ using Sunday.Core.Domain.Roles;
 using Sunday.Core.Roles;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -16,10 +17,16 @@ namespace Sunday.Core.DataAccess.Repositories.Roles
         {
             _dbRunner = dbRunner;
         }
-        public async Task<IEnumerable<ApplicationRole>> GetAllRolesAsync()
+        public async virtual Task<IEnumerable<ApplicationRole>> GetAllRolesAsync()
         {
             var result = await _dbRunner.ExecuteAsync<ApplicationRole>(ProcedureNames.Roles.GetAll);
             return result;
+        }
+
+        public async virtual Task<ApplicationRole> GetRoleById(int roleId)
+        {
+            var result = await _dbRunner.ExecuteAsync<ApplicationRole>(ProcedureNames.Roles.GetById, new { RoleId = roleId });
+            return result.FirstOrDefault();
         }
     }
 }

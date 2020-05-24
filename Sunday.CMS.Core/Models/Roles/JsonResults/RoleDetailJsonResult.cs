@@ -6,15 +6,8 @@ using System.Text;
 
 namespace Sunday.CMS.Core.Models.Roles
 {
-    public class RoleListJsonResult : ListApiResponse<RoleItem>
-    {
-        public RoleListJsonResult() : base()
-        {
-        }
-    }
-
     [MappedTo(typeof(ApplicationRole))]
-    public class RoleItem
+    public class RoleDetailJsonResult : BaseApiResponse
     {
         public int ID { get; set; }
         public string Code { get; set; }

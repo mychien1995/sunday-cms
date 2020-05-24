@@ -23,19 +23,19 @@ namespace Sunday.Core.DataAccess.Repositories
         {
             _dbRunner = dbRunner;
         }
-        public async Task<ApplicationUser> FindUserByNameAsync(string username)
+        public async virtual Task<ApplicationUser> FindUserByNameAsync(string username)
         {
             var result = await _dbRunner.ExecuteAsync<ApplicationUser>(ProcedureNames.Users.FindUserByUserName, new { Username = username });
             return result.FirstOrDefault();
         }
 
-        public ApplicationUser GetUserById(int userId)
+        public virtual ApplicationUser GetUserById(int userId)
         {
             var result = _dbRunner.Execute<ApplicationUser>(ProcedureNames.Users.GetById, new { UserId = userId });
             return result.FirstOrDefault();
         }
 
-        public ApplicationUser GetUserWithOptions(int userId, GetUserOptions option = null)
+        public virtual ApplicationUser GetUserWithOptions(int userId, GetUserOptions option = null)
         {
             ApplicationUser user = null;
             if (option == null) option = new GetUserOptions();
@@ -56,7 +56,7 @@ namespace Sunday.Core.DataAccess.Repositories
             return user;
         }
 
-        public async Task<SearchResult<ApplicationUser>> QueryUsers(UserQuery query)
+        public async virtual Task<SearchResult<ApplicationUser>> QueryUsers(UserQuery query)
         {
             var result = new SearchResult<ApplicationUser>();
             var dapperQuery = query.MapTo<DapperUserQuery>();
@@ -67,7 +67,7 @@ namespace Sunday.Core.DataAccess.Repositories
             return result;
         }
 
-        public async Task<ApplicationUser> CreateUser(ApplicationUser user)
+        public async virtual Task<ApplicationUser> CreateUser(ApplicationUser user)
         {
             var RoleIds = string.Join(",", user.Roles.Select(x => x.ID));
             var result = await _dbRunner.ExecuteAsync<int>(ProcedureNames.Users.Insert, new
@@ -90,7 +90,7 @@ namespace Sunday.Core.DataAccess.Repositories
             return user;
         }
 
-        public async Task<ApplicationUser> UpdateUser(ApplicationUser user)
+        public async virtual Task<ApplicationUser> UpdateUser(ApplicationUser user)
         {
             var RoleIds = string.Join(",", user.Roles.Select(x => x.ID));
             var result = await _dbRunner.ExecuteAsync<int>(ProcedureNames.Users.Update, new
@@ -109,13 +109,13 @@ namespace Sunday.Core.DataAccess.Repositories
             return user;
         }
 
-        public async Task<bool> DeleteUser(int userId)
+        public async virtual Task<bool> DeleteUser(int userId)
         {
             await _dbRunner.ExecuteAsync<int>(ProcedureNames.Users.Delete, new { UserId = userId });
             return true;
         }
 
-        public async Task FetchUserRoles(List<ApplicationUser> users)
+        public async virtual Task FetchUserRoles(List<ApplicationUser> users)
         {
             if (users == null || !users.Any()) return;
             var userIds = string.Join(',', users.Select(x => x.ID));
@@ -134,7 +134,7 @@ namespace Sunday.Core.DataAccess.Repositories
             }
         }
 
-        public async Task<bool> ActivateUser(int userId)
+        public async virtual Task<bool> ActivateUser(int userId)
         {
             var user = GetUserById(userId);
             if (user == null) throw new EntityNotFoundException("User not found");
@@ -142,7 +142,7 @@ namespace Sunday.Core.DataAccess.Repositories
             await _dbRunner.ExecuteAsync<object>(ProcedureNames.Users.Activate, new { UserId = userId });
             return true;
         }
-        public async Task<bool> DeactivateUser(int userId)
+        public async virtual Task<bool> DeactivateUser(int userId)
         {
             var user = GetUserById(userId);
             if (user == null) throw new EntityNotFoundException("User not found");
@@ -151,7 +151,7 @@ namespace Sunday.Core.DataAccess.Repositories
             return true;
         }
 
-        public async Task<bool> UpdatePassword(ApplicationUser user)
+        public async virtual Task<bool> UpdatePassword(ApplicationUser user)
         {
             await _dbRunner.ExecuteAsync<object>(ProcedureNames.Users.ChangePassword, new
             {

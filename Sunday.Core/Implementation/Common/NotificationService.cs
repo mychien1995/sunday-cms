@@ -15,7 +15,7 @@ namespace Sunday.Core.Implementation.Common
         {
             _mailService = mailService;
         }
-        public async Task NotifyPasswordReset(ApplicationUser user, string newPassword)
+        public async virtual Task NotifyPasswordReset(ApplicationUser user, string newPassword)
         {
             var template = @"Hi {0}. <br/>
                             Your new password is {1}";

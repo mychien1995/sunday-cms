@@ -15,4 +15,10 @@ export class RoleService {
       .get(ApiUrl.Roles.GetAll)
       .pipe(map(ApiHelper.onSuccess), catchError(ApiHelper.onFail));
   }
+
+  getRoleById(id: number): Observable<RoleModel> {
+    return this.apiService
+      .get(ApiUrl.Roles.GetById + id)
+      .pipe(map(ApiHelper.onSuccess), catchError(ApiHelper.onFail));
+  }
 }

@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { _throw } from 'rxjs/observable/throw';
-import { LoginInputModel, LoginResponseModel } from '@models/index';
+import {
+  LoginInputModel,
+  LoginResponseModel,
+  UserDetailResponse
+} from '@models/index';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { StorageKey } from 'app/core/constants';
 
@@ -40,5 +44,14 @@ export class AuthenticationService {
 
   public clearToken(): void {
     localStorage.removeItem(StorageKey.UserData);
+  }
+
+  public updateToken(user: UserDetailResponse): void {
+    const userData = this.getUser();
+    userData.Fullname = user.Fullname;
+    userData.Username = user.UserName;
+    userData.Phone = user.Phone;
+    userData.Email = user.Email;
+    localStorage.setItem(StorageKey.UserData, JSON.stringify(userData));
   }
 }

@@ -9,5 +9,7 @@ namespace Sunday.Core.Roles
     public interface IRoleRepository
     {
         Task<IEnumerable<ApplicationRole>> GetAllRolesAsync();
+
+        Task<ApplicationRole> GetRoleById(int roleId);
     }
 }

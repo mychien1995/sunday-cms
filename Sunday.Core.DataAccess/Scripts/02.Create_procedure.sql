@@ -327,3 +327,18 @@ BEGIN
 	UPDATE Users SET SecurityStamp = @SecurityHash, PasswordHash = @PasswordHash WHERE ID = @UserId
 END
 GO
+
+IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_roles_getById')
+BEGIN
+	EXEC('CREATE PROCEDURE [dbo].[sp_roles_getById] AS BEGIN SET NOCOUNT ON; END')
+END
+GO
+ALTER PROCEDURE dbo.sp_roles_getById
+(
+	@RoleId int
+)
+AS
+BEGIN
+	SELECT * FROM Roles WHERE ID = @RoleId
+END
+GO

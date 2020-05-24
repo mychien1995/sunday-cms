@@ -33,6 +33,11 @@ export class AppHeaderInfoComponent implements OnInit {
     this.router.navigate(['/login']);
   }
 
+  redirect(link: string): void {
+    this.router.navigate([link]);
+    this.toggleDropdown();
+  }
+  
   toggleDropdown(): void {
     const $menu = $('#headerProfileMenu');
     if ($menu.hasClass('show')) {
@@ -46,7 +51,7 @@ export class AppHeaderInfoComponent implements OnInit {
     const user = this.authService.getUser();
     if (user) {
       this.userName = user.Username;
-      this.fullName = user.FullName;
+      this.fullName = user.Fullname;
     }
   }
 }

@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace Sunday.Core.Implementation.Identity
 {
@@ -18,7 +19,7 @@ namespace Sunday.Core.Implementation.Identity
         {
             _userRepository = userRepository;
         }
-        public async Task<SignInResult> PasswordSignInAsync(string username, string password, bool loginToShell = false, bool remember = false)
+        public async virtual Task<SignInResult> PasswordSignInAsync(string username, string password, bool loginToShell = false, bool remember = false)
         {
             LoginStatus status = LoginStatus.Failure;
             var user = await _userRepository.FindUserByNameAsync(username);
@@ -37,7 +38,7 @@ namespace Sunday.Core.Implementation.Identity
             return new SignInResult(status);
         }
 
-        public async Task<string> ResetPasswordAsync(int userId)
+        public async virtual Task<string> ResetPasswordAsync(int userId)
         {
             var user = _userRepository.GetUserById(userId);
             var securityHash = Guid.NewGuid().ToString("N");
@@ -47,6 +48,18 @@ namespace Sunday.Core.Implementation.Identity
             user.PasswordHash = passwordHash;
             await _userRepository.UpdatePassword(user);
             return newPassword;
+        }
+
+        public async virtual Task<bool> ChangePasswordAsync(int userId, string oldPassword, string newPassword)
+        {
+            var user = _userRepository.GetUserById(userId);
+            var hashed = EncryptUltis.SHA256Encrypt(oldPassword, user.SecurityStamp);
+            if (hashed != user.PasswordHash) throw new InvalidDataException("Incorrect old password");
+            var newPasswordHash = EncryptUltis.SHA256Encrypt(newPassword, user.SecurityStamp);
+            user.PasswordHash = newPasswordHash;
+            await _userRepository.UpdatePassword(user);
+            return true;
+
         }
     }
 }

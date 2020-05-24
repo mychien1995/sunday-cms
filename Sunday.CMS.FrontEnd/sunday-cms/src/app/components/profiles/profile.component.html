@@ -1,0 +1,80 @@
+<app-page-heading [title]="'User Profile'" [icon]="'bg-happy-itmeo'"></app-page-heading>
+<div class="row">
+    <div class="col-12">
+        <div class="main-card mb-3 card">
+            <div class="card-body">
+                <form (ngSubmit)="onSubmit(userForm.value)" [formGroup]="userForm" autocomplete="off" #ngForm="ngForm">
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <div class="position-relative form-group">
+                                <label for="zzzz" class="username">Username <span class="red">*</span></label>
+                                <input name="zzzz" placeholder="Username here..." type="text" class="form-control"
+                                    formControlName="UserName" autocomplete="off" required readonly>
+                                <span class="text-danger"
+                                    [hidden]="!(ngForm.submitted  && userForm.controls['UserName'].hasError('required'))">This
+                                    field is required</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="position-relative form-group">
+                                <label for="Fullname" class="">Full Name <span class="red">*</span></label>
+                                <input name="Fullname" placeholder="Fullname here..." type="text" class="form-control"
+                                    formControlName="Fullname" autocomplete="off" required>
+                                <span class="text-danger"
+                                    [hidden]="!(ngForm.submitted && userForm.controls['Fullname'].hasError('required'))">This
+                                    field is required</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <div class="position-relative form-group">
+                                <label for="Email" class="">Email</label>
+                                <input name="Email" placeholder="Email here..." type="text" class="form-control"
+                                    formControlName="Email" autocomplete="off" [email]="true">
+                                <span class="text-danger"
+                                    [hidden]="!(ngForm.submitted && userForm.controls['Email'].hasError('email'))">Incorrect email format</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="position-relative form-group">
+                                <label for="Phonenumber" class="">Phone</label>
+                                <input name="Phonenumber" placeholder="Phone number here..." type="text"
+                                    class="form-control" formControlName="Phone" pattern="^(?:0|\\+)[0-9\\s.\\/-]{9,15}$">
+                                    <span class="text-danger"
+                                        [hidden]="!(ngForm.submitted && userForm.controls['Phone'].hasError('pattern'))">Incorrect phonenumber format</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <div class="position-relative form-group">
+                                <label for="Domain" class="">Domain <span class="red">*</span></label>
+                                <ng-select [items]="['CMS']" formControlName="Domain" [searchable]="false"
+                                [readonly]="true">
+                                </ng-select>
+                                <span class="text-danger"
+                                    [hidden]="!(ngForm.submitted && userForm.controls['Domain'].hasError('required'))">This
+                                    field is required</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="position-relative form-group">
+                                <label for="Roles" class="">Role <span class="red">*</span></label>
+                                <ng-select [items]="roleLookup" bindValue="ID" bindLabel="RoleName"
+                                    formControlName="RoleId" [searchable]="false" [readonly]="true">
+                                </ng-select>
+                                <span class="text-danger"
+                                    [hidden]="!(ngForm.submitted && userForm.controls['RoleId'].hasError('required'))">This
+                                    field is required</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="mt-1 btn btn-primary">Submit</button>
+                    <button class="mt-1 ml-2 btn btn-primary">Change Password</button>
+                    <button class="mt-1 ml-2 btn btn-light" [routerLink]="['/']">Back</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

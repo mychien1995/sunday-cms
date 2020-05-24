@@ -19,7 +19,7 @@ namespace Sunday.Core.Implementation.Identity
             _accessTokenService = accessTokenService;
         }
 
-        public async Task<AuthenticationResponse> AuthenticateAsync(string username, string password, bool loginToShell = false, bool remember = false)
+        public async virtual Task<AuthenticationResponse> AuthenticateAsync(string username, string password, bool loginToShell = false, bool remember = false)
         {
             var signInResult = await _identityService.PasswordSignInAsync(username, password, loginToShell, remember);
             if (signInResult.Status != LoginStatus.Success || signInResult.User == null) return new AuthenticationResponse(signInResult.Status);

@@ -1,7 +1,8 @@
 ﻿using Sunday.CMS.Core.Application.Roles;
-using Sunday.CMS.Core.Models.Roles.JsonResults;
+using Sunday.CMS.Core.Models.Roles;
 using Sunday.CMS.Core.Pipelines.Arguments;
 using Sunday.Core;
+using Sunday.Core.Roles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,11 @@ namespace Sunday.CMS.Core.Implementation.Roles
     [ServiceTypeOf(typeof(IApplicationRoleManager))]
     public class DefaultApplicationRoleManager : IApplicationRoleManager
     {
+        private readonly IRoleRepository _roleRepository;
+        public DefaultApplicationRoleManager(IRoleRepository roleRepository)
+        {
+            _roleRepository = roleRepository;
+        }
         public async Task<RoleListJsonResult> GetAvailableRoles()
         {
             var arg = new GetAvailableRolesArg();
@@ -20,6 +26,13 @@ namespace Sunday.CMS.Core.Implementation.Roles
             var roles = arg.Roles;
             var result = new RoleListJsonResult();
             result.List = arg.Roles.Select(x => x.MapTo<RoleItem>()).ToList();
+            return result;
+        }
+
+        public async Task<RoleDetailJsonResult> GetRoleById(int id)
+        {
+            var role = await _roleRepository.GetRoleById(id);
+            var result = role.MapTo<RoleDetailJsonResult>();
             return result;
         }
     }

@@ -6,7 +6,8 @@ import {
   UserMutationModel,
   CreateUserResponse,
   ApiResponse,
-  UserDetailResponse
+  UserDetailResponse,
+  ChangePasswordModel
 } from '@models/index';
 import { ApiUrl } from '@core/constants';
 import { Observable } from 'rxjs';
@@ -61,6 +62,24 @@ export class UserService {
   resetPassword(userId: number): Observable<ApiResponse> {
     return this.apiService
       .put(`${ApiUrl.Users.ResetPassword}?id=${userId}`)
+      .pipe(map(ApiHelper.onSuccess), catchError(ApiHelper.onFail));
+  }
+
+  getCurrentProfile(): Observable<UserDetailResponse> {
+    return this.apiService
+      .get(`${ApiUrl.Profile.Get}`)
+      .pipe(map(ApiHelper.onSuccess), catchError(ApiHelper.onFail));
+  }
+
+  updateProfile(data: UserMutationModel): Observable<ApiResponse> {
+    return this.apiService
+      .put(ApiUrl.Profile.Update, data)
+      .pipe(map(ApiHelper.onSuccess), catchError(ApiHelper.onFail));
+  }
+
+  changePassword(data: ChangePasswordModel): Observable<ApiResponse> {
+    return this.apiService
+      .put(ApiUrl.Profile.ChangePassword, data)
       .pipe(map(ApiHelper.onSuccess), catchError(ApiHelper.onFail));
   }
 }

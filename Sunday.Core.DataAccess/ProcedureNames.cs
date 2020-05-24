@@ -26,6 +26,7 @@ namespace Sunday.Core.DataAccess
         public class Roles
         {
             public const string GetAll = "sp_roles_getAll";
+            public const string GetById = "sp_roles_getById";
         }
     }
 }

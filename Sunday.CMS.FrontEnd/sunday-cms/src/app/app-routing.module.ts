@@ -5,7 +5,8 @@ import {
   ApplicationLayoutComponent,
   DashboardComponent,
   ManageUsersComponent,
-  AddUserComponent
+  AddUserComponent,
+  UserProfileComponent
 } from 'app/components';
 import { AuthGuard } from 'app/core/services';
 import { UserResolver } from '@components/index';
@@ -24,7 +25,8 @@ export const routes: Routes = [
         path: 'users/edit/:userId',
         component: AddUserComponent,
         resolve: { user: UserResolver }
-      }
+      },
+      { path: 'profile', component: UserProfileComponent }
     ],
     canActivate: [AuthGuard]
   }

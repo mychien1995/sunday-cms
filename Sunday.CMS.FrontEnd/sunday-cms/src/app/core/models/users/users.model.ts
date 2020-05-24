@@ -1,5 +1,5 @@
 import { ApiResponse } from '@models/common/response.model';
-import { RoleModel} from '../roles/roles.models';
+import { RoleModel } from '../roles/roles.models';
 
 export class UserList extends ApiResponse {
   Total: number;
@@ -41,4 +41,9 @@ export class UserDetailResponse extends ApiResponse {
   IsActive: boolean;
   Domain: string;
   RoleIds: number[] = [];
+}
+
+export class ChangePasswordModel {
+  OldPassword: string;
+  NewPassword: string;
 }
