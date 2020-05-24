@@ -10,20 +10,22 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatCardModule } from '@angular/material/card';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import {CdkTableModule} from '@angular/cdk/table'
+import { CdkTableModule } from '@angular/cdk/table';
+import { MatDialogModule } from '@angular/material/dialog';
 
 export const SharedAngularMaterial = [
-    MatButtonModule,
-    MatCheckboxModule,
-    MatInputModule,
-    MatSelectModule,
-    MatAutocompleteModule,
-    MatRadioModule,
-    MatIconModule,
-    MatTableModule,
-    CdkTableModule,
-    MatSortModule,
-    MatPaginatorModule,
-    MatCardModule,
-    MatTooltipModule
-]
+  MatButtonModule,
+  MatCheckboxModule,
+  MatInputModule,
+  MatSelectModule,
+  MatAutocompleteModule,
+  MatRadioModule,
+  MatIconModule,
+  MatTableModule,
+  CdkTableModule,
+  MatSortModule,
+  MatPaginatorModule,
+  MatCardModule,
+  MatTooltipModule,
+  MatDialogModule
+];

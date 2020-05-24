@@ -5,7 +5,8 @@ import {
   ManageUsersComponent,
   PageHeadingComponent,
   AddUserComponent,
-  UserProfileComponent
+  UserProfileComponent,
+  ChangePasswordDialogComponent
 } from 'app/components';
 import {
   ApplicationLayoutComponent,
@@ -31,7 +32,8 @@ export const SharedComponents = [
   AppHeaderQuickLinkComponent,
   AppSidebarComponent,
   AppNavigationComponent,
-  UserProfileComponent
+  UserProfileComponent,
+  ChangePasswordDialogComponent
 ];
 export const SharedResolvers = [
     UserResolver

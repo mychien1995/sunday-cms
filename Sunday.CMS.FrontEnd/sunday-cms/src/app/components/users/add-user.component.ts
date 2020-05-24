@@ -89,6 +89,9 @@ export class AddUserComponent implements OnInit {
     if (!this.userForm.valid) {
       return;
     }
+    if (!this.isEdit && formValue.Password !== formValue.ConfirmPassword) {
+      return;
+    }
     const userData = <UserMutationModel>formValue;
     userData.RoleIds = [];
     userData.RoleIds.push(formValue.RoleId);

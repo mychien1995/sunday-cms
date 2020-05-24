@@ -12,11 +12,12 @@ import {
   RoleModel,
   UserDetailResponse
 } from '@models/index';
-import { Router, ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { MatDialog } from '@angular/material/dialog';
+import { ChangePasswordDialogComponent} from './change-password.component';
 
 @Component({
-  selector: 'app-user=profile',
+  selector: 'app-user-profile',
   templateUrl: './profile.component.html'
 })
 export class UserProfileComponent implements OnInit {
@@ -37,7 +38,8 @@ export class UserProfileComponent implements OnInit {
     private clientState: ClientState,
     private authService: AuthenticationService,
     private layoutService: LayoutService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private dialogService: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -107,5 +109,9 @@ export class UserProfileComponent implements OnInit {
       }
       this.clientState.isBusy = false;
     });
+  }
+
+  openChangePwdDialog():void{
+      this.dialogService.open(ChangePasswordDialogComponent);
   }
 }
