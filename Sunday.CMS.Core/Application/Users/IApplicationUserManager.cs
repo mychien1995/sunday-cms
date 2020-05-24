@@ -20,5 +20,11 @@ namespace Sunday.CMS.Core.Application.Users
         Task<UserDetailJsonResult> GetUserById(int userId);
 
         Task<BaseApiResponse> DeleteUser(int userId);
+
+        Task<BaseApiResponse> ActivateUser(int userId);
+
+        Task<BaseApiResponse> DeactivateUser(int userId);
+
+        Task<BaseApiResponse> ResetUserPassword(int userId);
     }
 }

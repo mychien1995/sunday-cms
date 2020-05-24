@@ -24,7 +24,7 @@ namespace Sunday.Core.Implementation.Identity
                 {
                     new Claim(ClaimTypes.Name, user.ID.ToString())
                 }),
-                Expires = DateTime.UtcNow.AddDays(7),
+                Expires = DateTime.UtcNow.AddHours(1),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);

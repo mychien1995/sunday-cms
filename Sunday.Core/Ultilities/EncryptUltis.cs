@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Sunday.Core.Ultilities
 {
-    public class EncryptUtils
+    public class EncryptUltis
     {
         public static string SHA256Encrypt(string phrase, string salt)
         {

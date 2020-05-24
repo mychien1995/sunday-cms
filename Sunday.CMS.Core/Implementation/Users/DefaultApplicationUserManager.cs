@@ -4,6 +4,8 @@ using Sunday.CMS.Core.Models;
 using Sunday.CMS.Core.Models.Users;
 using Sunday.CMS.Core.Pipelines.Arguments;
 using Sunday.Core;
+using Sunday.Core.Application.Common;
+using Sunday.Core.Application.Identity;
 using Sunday.Core.Domain.Users;
 using Sunday.Core.Models;
 using Sunday.Core.Models.Users;
@@ -20,9 +22,13 @@ namespace Sunday.CMS.Core.Implementation.Users
     public class DefaultApplicationUserManager : IApplicationUserManager
     {
         private readonly IUserRepository _userRepository;
-        public DefaultApplicationUserManager(IUserRepository userRepository)
+        private readonly IIdentityService _identityService;
+        private readonly INotificationService _notificationService;
+        public DefaultApplicationUserManager(IUserRepository userRepository, IIdentityService identityService, INotificationService notificationService)
         {
             _userRepository = userRepository;
+            _identityService = identityService;
+            _notificationService = notificationService;
         }
         public async Task<UserListJsonResult> SearchUsers(SearchUserCriteria criteria)
         {
@@ -87,6 +93,30 @@ namespace Sunday.CMS.Core.Implementation.Users
             var result = await _userRepository.DeleteUser(userId);
             var respone = new BaseApiResponse();
             respone.Success = result;
+            return respone;
+        }
+
+        public async Task<BaseApiResponse> ActivateUser(int userId)
+        {
+            var result = await _userRepository.ActivateUser(userId);
+            var respone = new BaseApiResponse();
+            respone.Success = result;
+            return respone;
+        }
+        public async Task<BaseApiResponse> DeactivateUser(int userId)
+        {
+            var result = await _userRepository.DeactivateUser(userId);
+            var respone = new BaseApiResponse();
+            respone.Success = result;
+            return respone;
+        }
+
+        public async Task<BaseApiResponse> ResetUserPassword(int userId)
+        {
+            var newPassword = await _identityService.ResetPasswordAsync(userId);
+            var user = _userRepository.GetUserById(userId);
+            Task.Run(async () => await _notificationService.NotifyPasswordReset(user, newPassword));
+            var respone = new BaseApiResponse();
             return respone;
         }
     }

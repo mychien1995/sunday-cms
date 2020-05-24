@@ -45,4 +45,22 @@ export class UserService {
       .delete(`${ApiUrl.Users.GetById}?id=${userId}`)
       .pipe(map(ApiHelper.onSuccess), catchError(ApiHelper.onFail));
   }
+
+  activateUser(userId: number): Observable<ApiResponse> {
+    return this.apiService
+      .put(`${ApiUrl.Users.Activate}?id=${userId}`)
+      .pipe(map(ApiHelper.onSuccess), catchError(ApiHelper.onFail));
+  }
+
+  deactivateUser(userId: number): Observable<ApiResponse> {
+    return this.apiService
+      .put(`${ApiUrl.Users.Deactivate}?id=${userId}`)
+      .pipe(map(ApiHelper.onSuccess), catchError(ApiHelper.onFail));
+  }
+
+  resetPassword(userId: number): Observable<ApiResponse> {
+    return this.apiService
+      .put(`${ApiUrl.Users.ResetPassword}?id=${userId}`)
+      .pipe(map(ApiHelper.onSuccess), catchError(ApiHelper.onFail));
+  }
 }

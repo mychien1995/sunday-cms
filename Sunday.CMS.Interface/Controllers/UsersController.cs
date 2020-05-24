@@ -50,5 +50,26 @@ namespace Sunday.CMS.Interface.Controllers
             var result = await _userManager.DeleteUser(id);
             return Ok(result);
         }
+
+        [HttpPut("activate")]
+        public async Task<IActionResult> ActivateUser([FromQuery] int id)
+        {
+            var result = await _userManager.ActivateUser(id);
+            return Ok(result);
+        }
+
+        [HttpPut("deactivate")]
+        public async Task<IActionResult> DeactivateUser([FromQuery] int id)
+        {
+            var result = await _userManager.DeactivateUser(id);
+            return Ok(result);
+        }
+
+        [HttpPut("resetPassword")]
+        public async Task<IActionResult> ResetPassword([FromQuery] int id)
+        {
+            var result = await _userManager.ResetUserPassword(id);
+            return Ok(result);
+        }
     }
 }

@@ -3,6 +3,7 @@ using Sunday.Core.DataAccess.Database;
 using Sunday.Core.DataAccess.Models.Users;
 using Sunday.Core.Domain.Roles;
 using Sunday.Core.Domain.Users;
+using Sunday.Core.Exceptions;
 using Sunday.Core.Models;
 using Sunday.Core.Models.Users;
 using Sunday.Core.Users;
@@ -131,6 +132,34 @@ namespace Sunday.Core.DataAccess.Repositories
                     RoleName = x.RoleName
                 }).ToList();
             }
+        }
+
+        public async Task<bool> ActivateUser(int userId)
+        {
+            var user = GetUserById(userId);
+            if (user == null) throw new EntityNotFoundException("User not found");
+            if (user.IsActive) throw new EntityNotFoundException("User already activated");
+            await _dbRunner.ExecuteAsync<object>(ProcedureNames.Users.Activate, new { UserId = userId });
+            return true;
+        }
+        public async Task<bool> DeactivateUser(int userId)
+        {
+            var user = GetUserById(userId);
+            if (user == null) throw new EntityNotFoundException("User not found");
+            if (!user.IsActive) throw new EntityNotFoundException("User already deactivated");
+            await _dbRunner.ExecuteAsync<object>(ProcedureNames.Users.Deactivate, new { UserId = userId });
+            return true;
+        }
+
+        public async Task<bool> UpdatePassword(ApplicationUser user)
+        {
+            await _dbRunner.ExecuteAsync<object>(ProcedureNames.Users.ChangePassword, new
+            {
+                UserId = user.ID,
+                SecurityHash = user.SecurityStamp,
+                PasswordHash = user.PasswordHash
+            });
+            return true;
         }
     }
 }

@@ -280,3 +280,50 @@ BEGIN
 
 END
 GO
+
+IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_users_activate')
+BEGIN
+	EXEC('CREATE PROCEDURE [dbo].[sp_users_activate] AS BEGIN SET NOCOUNT ON; END')
+END
+GO
+ALTER PROCEDURE dbo.sp_users_activate
+(
+	@UserId int
+)
+AS
+BEGIN
+	UPDATE Users SET IsActive = 1 WHERE ID = @UserId
+END
+GO
+
+IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_users_deactivate')
+BEGIN
+	EXEC('CREATE PROCEDURE [dbo].[sp_users_deactivate] AS BEGIN SET NOCOUNT ON; END')
+END
+GO
+ALTER PROCEDURE dbo.sp_users_deactivate
+(
+	@UserId int
+)
+AS
+BEGIN
+	UPDATE Users SET IsActive = 0 WHERE ID = @UserId
+END
+GO
+
+IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_users_changePassword')
+BEGIN
+	EXEC('CREATE PROCEDURE [dbo].[sp_users_changePassword] AS BEGIN SET NOCOUNT ON; END')
+END
+GO
+ALTER PROCEDURE dbo.sp_users_changePassword
+(
+	@UserId int,
+	@SecurityHash nvarchar(MAX),
+	@PasswordHash nvarchar(MAX)
+)
+AS
+BEGIN
+	UPDATE Users SET SecurityStamp = @SecurityHash, PasswordHash = @PasswordHash WHERE ID = @UserId
+END
+GO

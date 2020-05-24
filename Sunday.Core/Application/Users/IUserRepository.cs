@@ -25,5 +25,11 @@ namespace Sunday.Core.Users
         Task<bool> DeleteUser(int userId);
 
         Task FetchUserRoles(List<ApplicationUser> users);
+
+        Task<bool> ActivateUser(int userId);
+
+        Task<bool> DeactivateUser(int userId);
+
+        Task<bool> UpdatePassword(ApplicationUser user);
     }
 }

@@ -14,7 +14,7 @@ namespace Sunday.CMS.Core.Pipelines.Users
             var user = arg.User;
             var password = arg.Input.Password;
             var securityHash = Guid.NewGuid().ToString("N");
-            var passwordHash = EncryptUtils.SHA256Encrypt(password, securityHash);
+            var passwordHash = EncryptUltis.SHA256Encrypt(password, securityHash);
             user.PasswordHash = passwordHash;
             user.SecurityStamp = securityHash;
         }

@@ -17,7 +17,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class ManageUsersComponent implements OnInit {
   userList: UserList = new UserList();
-  userToDelete: UserItem;
+  activeUserId?: number;
 
   constructor(
     private userService: UserService,
@@ -39,18 +39,60 @@ export class ManageUsersComponent implements OnInit {
   }
 
   deleteUser(user: UserItem, template: any): void {
-    this.userToDelete = user;
+    this.activeUserId = user.ID;
     this.modalService.open(template);
   }
 
   confirmDelete() {
-    if (this.userToDelete) {
+    if (this.activeUserId) {
       this.clientState.isBusy = true;
-      this.userService.deleteUser(this.userToDelete.ID).subscribe(res => {
+      this.userService.deleteUser(this.activeUserId).subscribe(res => {
         if (res.Success) {
           this.toastr.success('User deleted');
           this.modalService.dismissAll();
           this.getUsers();
+        }
+        this.clientState.isBusy = false;
+      });
+    }
+  }
+
+  activeUser(userId: number): void {
+    this.clientState.isBusy = true;
+    this.userService.activateUser(userId).subscribe(res => {
+      if (res.Success) {
+        this.toastr.success('User Activated');
+        this.getUsers();
+      }
+      this.clientState.isBusy = false;
+    });
+  }
+
+  deactiveUser(userId: number): void {
+    this.clientState.isBusy = true;
+    this.userService.deactivateUser(userId).subscribe(res => {
+      if (res.Success) {
+        this.toastr.success('User Deactivated');
+        this.getUsers();
+      }
+      this.clientState.isBusy = false;
+    });
+  }
+
+  resetPassword(userId: number, template: any): void {
+    this.activeUserId = userId;
+    this.modalService.open(template);
+  }
+
+  confirmResetPassword(): void {
+    if (this.activeUserId) {
+      this.clientState.isBusy = true;
+      this.userService.resetPassword(this.activeUserId).subscribe(res => {
+        if (res.Success) {
+          this.toastr.success(
+            'User password has beed reseted. An email has been sent to the user'
+          );
+          this.modalService.dismissAll();
         }
         this.clientState.isBusy = false;
       });

@@ -9,5 +9,7 @@ namespace Sunday.Core.Application.Identity
     public interface IIdentityService
     {
         Task<SignInResult> PasswordSignInAsync(string username, string password, bool loginToShell = false, bool remember = false);
+
+        Task<string> ResetPasswordAsync(int userId);
     }
 }

@@ -23,5 +23,11 @@ namespace Sunday.Core
             if (_settings.TryGetValue(key, out string value)) return value;
             return null;
         }
+        public static T Get<T>(string key)
+        {
+            var value = Get(key);
+            if (value == null) return default(T);
+            return (T)Convert.ChangeType(value, typeof(T));
+        }
     }
 }

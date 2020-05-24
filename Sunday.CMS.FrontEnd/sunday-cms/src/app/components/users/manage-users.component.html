@@ -28,7 +28,8 @@
                     </ng-container>
                     <ng-container matColumnDef="Roles">
                         <th mat-header-cell *matHeaderCellDef>Roles</th>
-                        <td mat-cell *matCellDef="let user">{{ user.Roles | mapArray : 'RoleName' | joinString : ',' }}</td>
+                        <td mat-cell *matCellDef="let user">{{ user.Roles | mapArray : 'RoleName' | joinString : ',' }}
+                        </td>
                     </ng-container>
                     <ng-container matColumnDef="IsActive">
                         <th mat-header-cell *matHeaderCellDef>Active</th>
@@ -46,15 +47,29 @@
                             <a title="Edit" [routerLink]="['/users/edit/' + user.ID]"><i class="fa fa-edit"></i></a>
                             <a title="Delete" class="m-lg-2" (click)="deleteUser(user, confirmDeleteDialog)"
                                 href="javascript:void(0)"><i class="fa fa-times"></i></a>
+                            <a title="Activate" class="m-lg-2" href="javascript:void(0)" [hidden]="user.IsActive"
+                                (click)="activeUser(user.ID)">
+                                <i class="fa fa-unlock"></i>
+                            </a>
+                            <a title="Dectivate" class="m-lg-2" href="javascript:void(0)" [hidden]="!user.IsActive"
+                                (click)="deactiveUser(user.ID)">
+                                <i class="fa fa-lock"></i>
+                            </a>
+                            <a title="Reset Password" class="m-lg-2" href="javascript:void(0)"
+                                (click)="resetPassword(user.ID, confirmResetPasswordDialog)">
+                                <i class="fa fa-key"></i>
+                            </a>
                         </td>
                     </ng-container>
                     <tr mat-header-row
-                        *matHeaderRowDef="['UserName', 'Fullname', 'Domain', 'Roles', 'Email', 'Phone', 'IsActive', 'Action']"></tr>
+                        *matHeaderRowDef="['UserName', 'Fullname', 'Domain', 'Roles', 'Email', 'Phone', 'IsActive', 'Action']">
+                    </tr>
                     <tr mat-row
                         *matRowDef="let myRowData; columns: ['UserName', 'Fullname', 'Domain', 'Roles', 'Email', 'Phone', 'IsActive', 'Action']">
                     </tr>
                 </table>
-                <mat-paginator [length]="userList.Total" [pageSize]="10" (page)="getUsers({PageIndex : $event.pageIndex})">
+                <mat-paginator [length]="userList.Total" [pageSize]="10"
+                    (page)="getUsers({PageIndex : $event.pageIndex})">
                 </mat-paginator>
             </div>
         </div>
@@ -72,6 +87,22 @@
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-primary" (click)="confirmDelete()">Confirm</button>
+        <button type="button" class="btn btn-secondary" (click)="c()">Cancel</button>
+    </div>
+</ng-template>
+
+<ng-template #confirmResetPasswordDialog let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Confirm Reset Password</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <p>Are you sure you want to reset this user's password</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="confirmResetPassword()">Confirm</button>
         <button type="button" class="btn btn-secondary" (click)="c()">Cancel</button>
     </div>
 </ng-template>

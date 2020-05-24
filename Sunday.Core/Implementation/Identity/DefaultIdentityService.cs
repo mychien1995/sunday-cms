@@ -26,7 +26,7 @@ namespace Sunday.Core.Implementation.Identity
             else if (!user.IsActive || user.IsLockedOut) status = LoginStatus.LockedOut;
             else
             {
-                var hashed = EncryptUtils.SHA256Encrypt(password, user.SecurityStamp);
+                var hashed = EncryptUltis.SHA256Encrypt(password, user.SecurityStamp);
                 if (hashed != user.PasswordHash) status = LoginStatus.Failure;
                 else if (!user.EmailConfirmed) status = LoginStatus.RequiresVerification;
                 else if (user.Domain != DomainNames.Shell && loginToShell) status = LoginStatus.Failure;
@@ -35,6 +35,18 @@ namespace Sunday.Core.Implementation.Identity
             if (status == LoginStatus.Success)
                 return new SignInResult(status, user);
             return new SignInResult(status);
+        }
+
+        public async Task<string> ResetPasswordAsync(int userId)
+        {
+            var user = _userRepository.GetUserById(userId);
+            var securityHash = Guid.NewGuid().ToString("N");
+            var newPassword = PasswordUltils.RandomString(6);
+            var passwordHash = EncryptUltis.SHA256Encrypt(newPassword, user.SecurityStamp);
+            user.SecurityStamp = securityHash;
+            user.PasswordHash = passwordHash;
+            await _userRepository.UpdatePassword(user);
+            return newPassword;
         }
     }
 }
