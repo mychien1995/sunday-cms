@@ -7,3 +7,4 @@ export * from './users/add-user.component';
 export * from './users/user.resolver';
 export * from './profiles/profile.component';
 export * from './profiles/change-password.component';
+export * from './users/user-filter.component';

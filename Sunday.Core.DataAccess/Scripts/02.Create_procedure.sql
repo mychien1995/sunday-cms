@@ -114,7 +114,7 @@ BEGIN
 	BEGIN
 		IF LEN(TRIM(@WhereClause)) > 0
 			SET @WhereClause = @WhereClause + ' AND ';
-		SET @WhereClause = @WhereClause + ' (Username LIKE ''%'' + @Text + ''%'' OR FullName LIKE ''%'' + @Text + ''%'' OR Email LIKE ''%'' + @Text + ''%''' ;
+		SET @WhereClause = @WhereClause + ' (Username LIKE ''%'' + @Text + ''%'' OR FullName LIKE ''%'' + @Text + ''%'' OR Email LIKE ''%'' + @Text + ''%'') ' ;
 	END
 
 	IF(@RoleIds IS NOT NULL AND LEN(TRIM(@RoleIds)) > 0)

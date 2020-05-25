@@ -2,7 +2,7 @@ import {
   Component,
   OnInit,
   ViewEncapsulation,
-  TemplateRef
+  TemplateRef,
 } from '@angular/core';
 import { ClientState } from '@services/layout/clientstate.service';
 import { UserService } from '@services/index';
@@ -13,7 +13,7 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-manage-users',
   templateUrl: './manage-users.component.html',
-  providers: [NgbModalConfig, NgbModal]
+  providers: [NgbModalConfig, NgbModal],
 })
 export class ManageUsersComponent implements OnInit {
   userList: UserList = new UserList();
@@ -32,10 +32,14 @@ export class ManageUsersComponent implements OnInit {
 
   getUsers(userQuery?: any): void {
     this.clientState.isBusy = true;
-    this.userService.getUsers(userQuery).subscribe(res => {
+    this.userService.getUsers(userQuery).subscribe((res) => {
       this.userList = <UserList>res;
       this.clientState.isBusy = false;
     });
+  }
+
+  onSearch(ev?: any): void {
+    this.getUsers(ev);
   }
 
   deleteUser(user: UserItem, template: any): void {
@@ -46,7 +50,7 @@ export class ManageUsersComponent implements OnInit {
   confirmDelete() {
     if (this.activeUserId) {
       this.clientState.isBusy = true;
-      this.userService.deleteUser(this.activeUserId).subscribe(res => {
+      this.userService.deleteUser(this.activeUserId).subscribe((res) => {
         if (res.Success) {
           this.toastr.success('User deleted');
           this.modalService.dismissAll();
@@ -59,7 +63,7 @@ export class ManageUsersComponent implements OnInit {
 
   activeUser(userId: number): void {
     this.clientState.isBusy = true;
-    this.userService.activateUser(userId).subscribe(res => {
+    this.userService.activateUser(userId).subscribe((res) => {
       if (res.Success) {
         this.toastr.success('User Activated');
         this.getUsers();
@@ -70,7 +74,7 @@ export class ManageUsersComponent implements OnInit {
 
   deactiveUser(userId: number): void {
     this.clientState.isBusy = true;
-    this.userService.deactivateUser(userId).subscribe(res => {
+    this.userService.deactivateUser(userId).subscribe((res) => {
       if (res.Success) {
         this.toastr.success('User Deactivated');
         this.getUsers();
@@ -87,7 +91,7 @@ export class ManageUsersComponent implements OnInit {
   confirmResetPassword(): void {
     if (this.activeUserId) {
       this.clientState.isBusy = true;
-      this.userService.resetPassword(this.activeUserId).subscribe(res => {
+      this.userService.resetPassword(this.activeUserId).subscribe((res) => {
         if (res.Success) {
           this.toastr.success(
             'User password has beed reseted. An email has been sent to the user'

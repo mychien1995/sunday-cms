@@ -5,6 +5,7 @@
         </button>
         <div class="main-card mb-3 card">
             <div class="card-body">
+                <app-users-filter (doSearch)="onSearch($event)"></app-users-filter>
                 <table mat-table [dataSource]="userList.Users" class="mb-0 table table-striped table-bordered">
                     <ng-container matColumnDef="UserName">
                         <th mat-header-cell *matHeaderCellDef>Username</th>
