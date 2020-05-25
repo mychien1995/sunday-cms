@@ -36,5 +36,12 @@ namespace Sunday.CMS.Interface.Controllers
             var result = await _profileManager.ChangePassword(model);
             return Ok(result);
         }
+
+        [HttpPut("changeAvatar")]
+        public async Task<IActionResult> ChangeAvatar([FromBody] ChangeAvatarModel model)
+        {
+            var result = await _profileManager.ChangeAvatar(model);
+            return Ok(result);
+        }
     }
 }

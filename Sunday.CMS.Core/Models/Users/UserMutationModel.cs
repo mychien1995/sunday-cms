@@ -21,6 +21,7 @@ namespace Sunday.CMS.Core.Models.Users
         public string Phone { get; set; }
         public bool IsActive { get; set; }
         public string Domain { get; set; }
+        public string AvatarBlobUri { get; set; }
 
         public List<int> RoleIds { get; set; }
     }

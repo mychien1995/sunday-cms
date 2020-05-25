@@ -7,3 +7,4 @@ export * from 'app/core/services/layout/clientstate.service';
 export * from 'app/core/services/layout/layout.service';
 export * from 'app/core/services/users/users.service';
 export * from 'app/core/services/roles/roles.services';
+export * from 'app/core/services/media/fileupload.service';

@@ -26,6 +26,7 @@ namespace Sunday.Core.Domain.Users
         public string Domain { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
+        public string AvatarBlobUri { get; set; }
         public string Fullname { get; set; }
 
         public List<ApplicationRole> Roles { get; set; }

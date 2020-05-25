@@ -52,6 +52,7 @@ export class AuthenticationService {
     userData.Username = user.UserName;
     userData.Phone = user.Phone;
     userData.Email = user.Email;
+    userData.AvatarLink = user.AvatarLink;
     localStorage.setItem(StorageKey.UserData, JSON.stringify(userData));
   }
 }

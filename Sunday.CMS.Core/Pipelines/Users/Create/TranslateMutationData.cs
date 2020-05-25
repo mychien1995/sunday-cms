@@ -1,5 +1,6 @@
 ﻿using Sunday.CMS.Core.Pipelines.Arguments;
 using Sunday.Core.Domain.Roles;
+using Sunday.Core.Users;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,6 @@ namespace Sunday.CMS.Core.Pipelines.Users
             {
                 ID = x
             }).ToList();
-
         }
     }
 }

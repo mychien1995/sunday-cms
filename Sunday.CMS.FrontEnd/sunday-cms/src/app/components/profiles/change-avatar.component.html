@@ -1,0 +1,23 @@
+<h4 class="modal-title" mat-dialog-title>Change Avatar</h4>
+<div class="modal-body" mat-dialog-content>
+    <form (ngSubmit)="onSubmit(ngForm)" autocomplete="off" #ngForm="ngForm">
+        <div class="form-row">
+            <div class="col-md-12">
+                <div class="avatar-box">
+                    <img src="{{logoImage}}" alt="Personal Logo" class="img-fluid">
+                </div>
+                <div class="position-relative form-group mt-3">
+                    <label for="exampleFile" class="">Select New Avatar<span class="red">*</span></label>
+                    <input name="file" id="exampleFile" type="file" class="form-control-file" required
+                        accept=".png, .jpg, .jpeg" (change)="onSelectAvatar($event)">
+                    <span class="text-danger" [hidden]="!(ngForm.submitted && ngForm.invalid)">This
+                        field is required</span>
+                </div>
+            </div>
+        </div>
+        <div class="pull-right">
+            <button type="submit" class="btn btn-primary">Confirm</button>
+            <button type="button" class="btn btn-secondary m-lg-2" mat-dialog-close>Cancel</button>
+        </div>
+    </form>
+</div>

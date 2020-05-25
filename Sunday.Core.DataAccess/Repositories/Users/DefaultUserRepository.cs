@@ -102,6 +102,7 @@ namespace Sunday.Core.DataAccess.Repositories
                 user.IsActive,
                 user.UpdatedBy,
                 user.UpdatedDate,
+                user.AvatarBlobUri,
                 RoleIds
             });
             if (!result.Any()) return null;

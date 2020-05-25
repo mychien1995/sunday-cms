@@ -225,19 +225,23 @@ ALTER PROCEDURE [dbo].[sp_users_update]
 	@IsActive bit = 1,
 	@UpdatedBy nvarchar(500),
 	@UpdatedDate datetime,
+	@AvatarBlobUri nvarchar(MAX),
 	@RoleIds nvarchar(MAX)
 )
 AS
 BEGIN
-	UPDATE [Users]
-	SET FullName = @Fullname, Email = @Email, Phone = @Phone, IsActive = @IsActive, UpdatedBy = @UpdatedBy, UpdatedDate = @UpdatedDate
+	UPDATE [Users] SET FullName = @Fullname, Email = @Email, Phone = @Phone, IsActive = @IsActive, UpdatedBy = @UpdatedBy,
+	UpdatedDate = @UpdatedDate, AvatarBlobUri = @AvatarBlobUri
 	WHERE ID = @ID
 	SELECT @ID
-
-	DECLARE @tblRoleIds TABLE (RoleId varchar(100))
-	INSERT INTO @tblRoleIds SELECT value  FROM STRING_SPLIT(@RoleIds, ',')
-	DELETE FROM UserRoles WHERE UserId = @ID
-	INSERT INTO UserRoles (UserId, RoleId) SELECT @ID, RoleId FROM @tblRoleIds
+	
+	IF(@RoleIds IS NOT NULL AND LEN(TRIM(@RoleIds)) > 0)
+	BEGIN
+		DECLARE @tblRoleIds TABLE (RoleId varchar(100))
+		INSERT INTO @tblRoleIds SELECT value  FROM STRING_SPLIT(@RoleIds, ',')
+		DELETE FROM UserRoles WHERE UserId = @ID
+		INSERT INTO UserRoles (UserId, RoleId) SELECT @ID, RoleId FROM @tblRoleIds
+	END
 END
 
 IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_users_delete')

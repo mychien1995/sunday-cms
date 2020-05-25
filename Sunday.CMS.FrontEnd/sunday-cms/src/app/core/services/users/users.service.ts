@@ -7,7 +7,7 @@ import {
   CreateUserResponse,
   ApiResponse,
   UserDetailResponse,
-  ChangePasswordModel
+  ChangePasswordModel,
 } from '@models/index';
 import { ApiUrl } from '@core/constants';
 import { Observable } from 'rxjs';
@@ -80,6 +80,12 @@ export class UserService {
   changePassword(data: ChangePasswordModel): Observable<ApiResponse> {
     return this.apiService
       .put(ApiUrl.Profile.ChangePassword, data)
+      .pipe(map(ApiHelper.onSuccess), catchError(ApiHelper.onFail));
+  }
+
+  updateAvatar(blobIdentifier: string): Observable<ApiResponse> {
+    return this.apiService
+      .put(ApiUrl.Profile.ChangeAvatar, { BlobIdentifier: blobIdentifier })
       .pipe(map(ApiHelper.onSuccess), catchError(ApiHelper.onFail));
   }
 }

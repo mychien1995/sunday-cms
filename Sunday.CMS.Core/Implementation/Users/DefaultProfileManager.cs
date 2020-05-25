@@ -48,6 +48,7 @@ namespace Sunday.CMS.Core.Implementation.Users
             });
             mutationModel.IsActive = currentUser.IsActive;
             mutationModel.UserName = currentUser.UserName;
+            mutationModel.AvatarBlobUri = currentUser.AvatarBlobUri;
             mutationModel.RoleIds = currentUser.Roles.Select(x => x.ID).ToList();
             mutationModel.Domain = currentUser.Domain;
             var result = await _applicationUserManager.UpdateUser(mutationModel);
@@ -61,6 +62,18 @@ namespace Sunday.CMS.Core.Implementation.Users
             var changePwdResut = await _identityService.ChangePasswordAsync(currentUserPrincipal.UserId, 
                 changePasswordModel.OldPassword, changePasswordModel.NewPassword);
             result.Success = changePwdResut;
+            return result;
+        }
+        public async virtual Task<BaseApiResponse> ChangeAvatar(ChangeAvatarModel changeAvatarModel)
+        {
+            var currentUserPrincipal = _httpContextAccesor.HttpContext.User as ApplicationUserPrincipal;
+            var currentUser = _userRepository.GetUserWithOptions(currentUserPrincipal.UserId, new GetUserOptions()
+            {
+                FetchRoles = true
+            });
+            currentUser.AvatarBlobUri = changeAvatarModel.BlobIdentifier;
+            var mutationModel = currentUser.MapTo<UserMutationModel>();
+            var result = await _applicationUserManager.UpdateUser(mutationModel);
             return result;
         }
     }

@@ -6,7 +6,8 @@ import {
   ClientState,
   UserService,
   RoleService,
-  LayoutService
+  LayoutService,
+  FileUploadService
 } from '@services/index';
 
 export const SharedServices = [
@@ -17,5 +18,6 @@ export const SharedServices = [
   ClientState,
   UserService,
   RoleService,
-  LayoutService
+  LayoutService,
+  FileUploadService 
 ];

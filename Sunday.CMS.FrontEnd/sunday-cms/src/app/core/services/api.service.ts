@@ -12,9 +12,9 @@ export class ApiService {
   }
 
   put(path: string, body: Object = {}): Observable<any> {
-    let headers = this.getHeaders();
-    let options = {
-      headers: headers
+    const headers = this.getHeaders();
+    const options = {
+      headers: headers,
     };
     return this.http.put(
       `${environment.apiUrl}${path}`,
@@ -23,10 +23,18 @@ export class ApiService {
     );
   }
 
+  postFormData(path, body: FormData): Observable<any> {
+    const headers = this.getHeaders(true);
+    const options = {
+      headers: headers,
+    };
+    return this.http.post(`${environment.apiUrl}${path}`, body, options);
+  }
+
   post(path: string, body: Object = {}): Observable<any> {
-    let headers = this.getHeaders();
-    let options = {
-      headers: headers
+    const headers = this.getHeaders();
+    const options = {
+      headers: headers,
     };
     return this.http.post(
       `${environment.apiUrl}${path}`,
@@ -36,9 +44,9 @@ export class ApiService {
   }
 
   delete(path): Observable<any> {
-    let headers = this.getHeaders();
-    let options = {
-      headers: headers
+    const headers = this.getHeaders();
+    const options = {
+      headers: headers,
     };
     return this.http.delete(`${environment.apiUrl}${path}`, options);
   }
@@ -50,6 +58,8 @@ export class ApiService {
         'Content-Type',
         'application/json ; charset=utf-8'
       );
+    } else {
+      //headers = headers.append('Content-Type', 'multipart/form-data');
     }
     headers = headers.append(
       'Accept',
@@ -57,5 +67,5 @@ export class ApiService {
     );
     headers = headers.append('Access-Control-Allow-Origin', '*');
     return headers;
-  }
+  };
 }

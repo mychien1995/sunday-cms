@@ -41,6 +41,7 @@ export class UserDetailResponse extends ApiResponse {
   IsActive: boolean;
   Domain: string;
   RoleIds: number[] = [];
+  AvatarLink?: string;
 }
 
 export class ChangePasswordModel {

@@ -10,6 +10,7 @@ BEGIN
 		PasswordHash nvarchar(MAX) NOT NULL,
 		Email nvarchar(500),
 		Phone nvarchar(500),
+		AvatarBlobUri nvarchar(MAX),
 		IsActive bit NOT NULL default(1),
 		IsLockedOut bit NOT NULL default(0),
 		EmailConfirmed bit NOT NULL default(0),

@@ -12,5 +12,6 @@ namespace Sunday.CMS.Core.Models
         public string Fullname { get; set; }
         public string Token { get; set; }
 
+        public string AvatarLink { get; set; }
     }
 }

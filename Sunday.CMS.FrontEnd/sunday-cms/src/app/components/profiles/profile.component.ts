@@ -4,21 +4,22 @@ import {
   UserService,
   RoleService,
   AuthenticationService,
-  LayoutService
+  LayoutService,
 } from '@services/index';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import {
   UserMutationModel,
   RoleModel,
-  UserDetailResponse
+  UserDetailResponse,
 } from '@models/index';
 import { ToastrService } from 'ngx-toastr';
 import { MatDialog } from '@angular/material/dialog';
-import { ChangePasswordDialogComponent} from './change-password.component';
+import { ChangePasswordDialogComponent } from './change-password.component';
+import { ChangeAvatarDialogComponent } from './change-avatar.component';
 
 @Component({
   selector: 'app-user-profile',
-  templateUrl: './profile.component.html'
+  templateUrl: './profile.component.html',
 })
 export class UserProfileComponent implements OnInit {
   public userForm: FormGroup = new FormGroup({
@@ -27,7 +28,7 @@ export class UserProfileComponent implements OnInit {
     Email: new FormControl(),
     Phone: new FormControl(),
     Domain: new FormControl(),
-    RoleId: new FormControl()
+    RoleId: new FormControl(),
   });
   public roleLookup: RoleModel[] = [];
   public currentUser: UserDetailResponse;
@@ -48,7 +49,7 @@ export class UserProfileComponent implements OnInit {
 
   getUser(): void {
     this.clientState.isBusy = true;
-    this.userService.getCurrentProfile().subscribe(res => {
+    this.userService.getCurrentProfile().subscribe((res) => {
       if (res.Success) {
         this.currentUser = res;
         this.getFormData(res);
@@ -62,14 +63,14 @@ export class UserProfileComponent implements OnInit {
     this.userForm = new FormGroup({
       UserName: new FormControl(this.currentUser.UserName),
       Fullname: new FormControl(this.currentUser.Fullname, [
-        Validators.required
+        Validators.required,
       ]),
       Email: new FormControl(this.currentUser.Email, []),
       Phone: new FormControl(this.currentUser.Phone, []),
       Domain: new FormControl(this.currentUser.Domain, [Validators.required]),
       RoleId: new FormControl(this.currentUser.RoleIds[0], [
-        Validators.required
-      ])
+        Validators.required,
+      ]),
     });
   }
 
@@ -79,7 +80,7 @@ export class UserProfileComponent implements OnInit {
 
   getRoleLookup(roleId: number): void {
     this.clientState.isBusy = true;
-    this.roleService.getRoleById(roleId).subscribe(res => {
+    this.roleService.getRoleById(roleId).subscribe((res) => {
       const roleList = [res];
       this.roleLookup = <RoleModel[]>roleList;
       this.clientState.isBusy = false;
@@ -94,15 +95,15 @@ export class UserProfileComponent implements OnInit {
     userData.RoleIds = [];
     userData.RoleIds.push(formValue.RoleId);
     this.clientState.isBusy = true;
-    this.userService.updateProfile(userData).subscribe(res => {
+    this.userService.updateProfile(userData).subscribe((res) => {
       if (res.Success) {
         this.toastr.success('Profile Updated');
         this.getUser();
-        this.userService.getCurrentProfile().subscribe(user => {
+        this.userService.getCurrentProfile().subscribe((user) => {
           if (user.Success) {
             this.authService.updateToken(user);
             this.layoutService.layoutUpdated({
-              event: 'user-updated'
+              event: 'user-updated',
             });
           }
         });
@@ -111,7 +112,11 @@ export class UserProfileComponent implements OnInit {
     });
   }
 
-  openChangePwdDialog():void{
-      this.dialogService.open(ChangePasswordDialogComponent);
+  openChangePwdDialog(): void {
+    this.dialogService.open(ChangePasswordDialogComponent);
+  }
+
+  openChangeAvatarDialog(): void {
+    this.dialogService.open(ChangeAvatarDialogComponent);
   }
 }

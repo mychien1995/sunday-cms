@@ -14,5 +14,6 @@ namespace Sunday.CMS.Core.Application.Users
         Task<BaseApiResponse> UpdateProfile(UserMutationModel mutationModel);
 
         Task<BaseApiResponse> ChangePassword(ChangePasswordModel changePasswordModel);
+        Task<BaseApiResponse> ChangeAvatar(ChangeAvatarModel changeAvatarModel);
     }
 }

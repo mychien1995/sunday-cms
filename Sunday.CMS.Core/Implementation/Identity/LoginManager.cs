@@ -3,6 +3,7 @@ using Sunday.CMS.Core.Models;
 using Sunday.Core;
 using Sunday.Core.Application.Identity;
 using Sunday.Core.Domain.Identity;
+using Sunday.Core.Media.Application;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -14,9 +15,11 @@ namespace Sunday.CMS.Core.Implementation.Identity
     public class LoginManager : ILoginManager
     {
         private readonly IAuthenticationService _authenticationService;
-        public LoginManager(IAuthenticationService authenticationService)
+        private readonly IBlobLinkManager _blobLinkManager;
+        public LoginManager(IAuthenticationService authenticationService, IBlobLinkManager blobLinkManager)
         {
             _authenticationService = authenticationService;
+            _blobLinkManager = blobLinkManager;
         }
         public async Task<LoginApiResponse> LoginAsync(LoginInputModel credential)
         {
@@ -45,6 +48,7 @@ namespace Sunday.CMS.Core.Implementation.Identity
             result.Phone = authenticateResult.User.Phone;
             result.Username = credential.Username;
             result.Token = authenticateResult.AccessToken;
+            result.AvatarLink = _blobLinkManager.GetPreviewLink(authenticateResult.User.AvatarBlobUri, true);
             return result;
         }
     }
