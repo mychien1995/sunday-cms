@@ -4,10 +4,7 @@
             <div class="position-relative form-group form-row">
                 <div class="col-8">
                     <input name="text" placeholder="Enter username or fullname" type="text" class="form-control"
-                        formControlName="Text" autocomplete="off" required>
-                    <span class="text-danger"
-                        [hidden]="!(ngForm.submitted && searchForm.controls['Text'].hasError('required'))">This
-                        field is required</span>
+                        formControlName="Text" autocomplete="off">
                 </div>
                 <button class="btn btn-primary" type="submit">Search</button>
             </div>

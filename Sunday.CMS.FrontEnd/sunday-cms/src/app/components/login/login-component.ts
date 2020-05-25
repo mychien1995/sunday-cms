@@ -5,14 +5,14 @@ import {
   LoginService,
   AuthenticationService,
   ClientState,
-  LayoutService
+  LayoutService,
 } from '@services/index';
 import { LoginInputModel, LoginResponseModel } from '@models/index';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-login',
-  templateUrl: './login-component.html'
+  templateUrl: './login-component.html',
 })
 export class LoginComponent implements OnInit {
   public loginForm: FormGroup;
@@ -36,29 +36,41 @@ export class LoginComponent implements OnInit {
   buildForm = () => {
     this.loginForm = new FormGroup({
       username: new FormControl('', [Validators.required]),
-      password: new FormControl('', [Validators.required])
+      password: new FormControl('', [Validators.required]),
     });
   };
 
-  onFormSubmit = formValue => {
+  onFormSubmit = (formValue) => {
     if (!this.loginForm.valid) {
       return;
     }
 
     const userLoginData = <LoginInputModel>{
       Username: formValue.username,
-      Password: formValue.password
+      Password: formValue.password,
     };
     this.clientState.isBusy = true;
-    this.loginService.login(userLoginData).subscribe(res => {
-      this.clientState.isBusy = false;
-      this.toastr.success('Welcome');
-      const userData = <LoginResponseModel>res;
-      this.authService.storeUserData(userData);
-      this.layoutService.layoutUpdated({
-        event: 'user-updated'
-      });
-      this.router.navigate(['/']);
-    });
+    this.loginService.login(userLoginData).subscribe(
+      (res) => {
+        this.clientState.isBusy = false;
+        this.toastr.success('Welcome', null, {
+          positionClass: 'toast-bottom-right',
+        });
+        const userData = <LoginResponseModel>res;
+        this.authService.storeUserData(userData);
+        this.layoutService.layoutUpdated({
+          event: 'user-updated',
+        });
+        this.router.navigate(['/']);
+      },
+      (err) => {
+        this.clientState.isBusy = false;
+        if (err.error.Errors) {
+          this.toastr.error(err.error.Errors);
+        } else {
+          this.toastr.error('Invalid username or password');
+        }
+      }
+    );
   };
 }

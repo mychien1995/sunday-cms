@@ -9,10 +9,12 @@ import {
 import { Observable, of } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { ApiUrl } from '@core/constants';
+import { ToastrService, Toast } from 'ngx-toastr';
 
 @Injectable()
 export class AuthenticationInterceptor implements HttpInterceptor {
-  constructor(private router: Router) {}
+  constructor(private router: Router, private toastr : ToastrService) {}
 
   intercept(
     request: HttpRequest<any>,
@@ -23,8 +25,8 @@ export class AuthenticationInterceptor implements HttpInterceptor {
         (event) => {},
         (error) => {
           if (error instanceof HttpErrorResponse) {
-            if (error.status === 401) {
-              alert('You are not logged in');
+            if (!request.url.endsWith(ApiUrl.Login) && error.status === 401) {
+              this.toastr.error('You are not logged in');
               this.router.navigate(['/login']);
             }
           }
