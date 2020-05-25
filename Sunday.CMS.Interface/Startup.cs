@@ -56,6 +56,8 @@ namespace Sunday.CMS.Interface
             {
                 endpoints.MapControllers();
             });
+
+            app.UseSundayMiddleware();
         }
     }
 }

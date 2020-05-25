@@ -41,6 +41,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 _configuration = configurationNode;
                 var document = new XmlDocument();
                 document.LoadXml(configFileContent);
+                services.Services.AddSingleton(new ApplicationConfiguration(configurationNode, document));
                 AddSetting(configurationNode);
                 AddPipelines(document);
             }
