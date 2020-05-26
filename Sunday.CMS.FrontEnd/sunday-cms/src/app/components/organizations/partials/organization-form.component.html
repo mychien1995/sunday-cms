@@ -1,0 +1,88 @@
+<form (ngSubmit)="onSubmit(organizationForm.value)" [formGroup]="organizationForm" autocomplete="off" #ngForm="ngForm">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-12">
+                    <div class="position-relative form-group">
+                        <label for="Name">Organization Name<span class="red">*</span></label>
+                        <input name="Name" placeholder="Name here..." type="text" class="form-control"
+                            formControlName="Name" autocomplete="off" required>
+                        <span class="text-danger"
+                            [hidden]="!(ngForm.submitted && organizationForm.controls['Name'].hasError('required'))">This
+                            field is required</span>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="position-relative form-group">
+                        <label for="Color" class="">Color Scheme <span class="red">*</span></label>
+                        <ng-select [items]="colorList" formControlName="Color" required bindValue="code"
+                            bindLabel="name">
+                            <ng-template ng-option-tmp let-item="item">
+                                <div>{{item.name}}
+                                    <span class="color-box-preview" [style]="{background : item.hex}"></span>
+                                </div>
+                            </ng-template>
+                        </ng-select>
+                        <span class="text-danger"
+                            [hidden]="!(ngForm.submitted && organizationForm.controls['Color'].hasError('required'))">This
+                            field is required</span>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="position-relative form-group">
+                        <label for="Description" class="">Description</label>
+                        <textarea name="Description" placeholder="Description here..." class="form-control"
+                            formControlName="Description"></textarea>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="position-relative form-group">
+                        <label for="Active" class="">Active</label>
+                        <div class="custom-checkbox custom-control">
+                            <input type="checkbox" id="exampleCustomCheckbox4" class="custom-control-input"
+                                formControlName="IsActive">
+                            <label class="custom-control-label" for="exampleCustomCheckbox4">&nbsp;</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-12">
+                    <div class="position-relative form-group">
+                        <label for="Name">Host Names<span class="red">*</span></label>
+                        <input name="Name" placeholder="Hostname here..." type="text" autocomplete="off"
+                            [(ngModel)]="hostNames[i]"
+                            *ngFor="let hostName of hostNames; let i = index; trackBy:trackByFn"
+                            (blur)="addHostNames(i)" [ngModelOptions]="{standalone: true}"
+                            [class]="'form-control ' + (i !== 0 ? 'mt-2' : '')">
+                        <span class="text-danger"
+                            [hidden]="!(ngForm.submitted && (hostNames | filterEmptyString).length === 0)">This
+                            field is required</span>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <label for="Logo">Logo <span class="red">*</span></label>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="logo-box" style="max-height: 200px;">
+                                <img src="{{logoImage}}" alt="Organization Logo" class="img-fluid">
+                            </div>
+                            <span class="text-danger"
+                                [hidden]="!(ngForm.submitted && organizationForm.controls['Logo'].hasError('required'))">This
+                                field is required</span>
+                        </div>
+                        <div class="position-relative form-group mt-3 col-6">
+                            <label for="exampleFile" class="">Select New Avatar</label>
+                            <input name="file" id="exampleFile" type="file" class="form-control-file" required
+                                accept=".png, .jpg, .jpeg" (change)="onSelectAvatar($event)" formControlName="Logo">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button class="mt-1 btn btn-primary">Submit</button>
+    <button class="mt-1 ml-2 btn btn-light" [routerLink]="['/organizations']">Back</button>
+</form>

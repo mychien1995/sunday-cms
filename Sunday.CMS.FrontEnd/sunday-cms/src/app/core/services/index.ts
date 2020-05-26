@@ -8,3 +8,5 @@ export * from 'app/core/services/layout/layout.service';
 export * from 'app/core/services/users/users.service';
 export * from 'app/core/services/roles/roles.services';
 export * from 'app/core/services/media/fileupload.service';
+export * from 'app/core/services/organizations/organization.service';
+export * from 'app/core/services/layout/color.service';

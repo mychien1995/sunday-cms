@@ -1,0 +1,77 @@
+<app-page-heading [title]="'Manage Organizations'" [icon]="'bg-happy-itmeo'"></app-page-heading>
+<div class="row">
+    <div class="col-12">
+        <button class="mb-3 btn btn-shadow btn-primary" [routerLink]="['/organizations/create']">Create Organization
+        </button>
+        <div class="main-card mb-3 card">
+            <div class="card-body">
+                <app-organizations-filter (doSearch)="onSearch($event)"></app-organizations-filter>
+                <table mat-table [dataSource]="organizationList.Organizations"
+                    class="mb-0 table table-striped table-bordered">
+                    <ng-container matColumnDef="Logo">
+                        <th mat-header-cell *matHeaderCellDef>Logo</th>
+                        <td mat-cell *matCellDef="let org">
+
+                            <img [src]="org.LogoLink" style="max-width: 100px; margin: auto; display: block;" />
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="Name">
+                        <th mat-header-cell *matHeaderCellDef>Name</th>
+                        <td mat-cell *matCellDef="let org">{{ org.OrganizationName }}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="CreatedBy">
+                        <th mat-header-cell *matHeaderCellDef>Created By</th>
+                        <td mat-cell *matCellDef="let org">{{ org.CreatedBy }}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="CreateDate">
+                        <th mat-header-cell *matHeaderCellDef>Create Date</th>
+                        <td mat-cell *matCellDef="let org">{{ org.CreatedDate }}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="UpdatedBy">
+                        <th mat-header-cell *matHeaderCellDef>Updated By</th>
+                        <td mat-cell *matCellDef="let org">{{ org.UpdatedBy }}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="UpdatedDate">
+                        <th mat-header-cell *matHeaderCellDef>Updated Date</th>
+                        <td mat-cell *matCellDef="let org">{{ org.UpdatedDate }}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="IsActive">
+                        <th mat-header-cell *matHeaderCellDef>Active</th>
+                        <td mat-cell *matCellDef="let org">
+                            <div class="custom-checkbox custom-control">
+                                <input type="checkbox" id="exampleCustomCheckbox4" class="custom-control-input"
+                                    [checked]="org.IsActive" disabled>
+                                <label class="custom-control-label" for="exampleCustomCheckbox4">&nbsp;</label>
+                            </div>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="Action">
+                        <th mat-header-cell *matHeaderCellDef>Action</th>
+                        <td mat-cell *matCellDef="let org">
+                            <a title="Edit" [routerLink]="['/organizations/edit/' + org.ID]"><i
+                                    class="fa fa-edit"></i></a>
+                            <a title="Delete" class="ml-2" href="javascript:void(0)"><i class="fa fa-times"></i></a>
+                            <a title="Activate" class="ml-2" href="javascript:void(0)" [hidden]="org.IsActive"
+                                (click)="activateOrganization(org.ID)">
+                                <i class="fa fa-unlock"></i>
+                            </a>
+                            <a title="Dectivate" class="ml-2" href="javascript:void(0)" [hidden]="!org.IsActive"
+                                (click)="deactivateOrganization(org.ID)">
+                                <i class="fa fa-lock"></i>
+                            </a>
+                        </td>
+                    </ng-container>
+                    <tr mat-header-row
+                        *matHeaderRowDef="['Logo', 'Name', 'CreatedBy', 'CreateDate', 'UpdatedBy', 'UpdatedDate', 'IsActive', 'Action']">
+                    </tr>
+                    <tr mat-row
+                        *matRowDef="let myRowData; columns: ['Logo', 'Name', 'CreatedBy', 'CreateDate', 'UpdatedBy', 'UpdatedDate', 'IsActive', 'Action']">
+                    </tr>
+                </table>
+                <mat-paginator [length]="organizationList.Total" [pageSize]="10"
+                    (page)="getOrganizations({PageIndex : $event.pageIndex})">
+                </mat-paginator>
+            </div>
+        </div>
+    </div>
+</div>

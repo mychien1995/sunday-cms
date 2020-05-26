@@ -8,7 +8,11 @@ import {
   UserProfileComponent,
   ChangePasswordDialogComponent,
   UserFilterComponent,
-  ChangeAvatarDialogComponent
+  ChangeAvatarDialogComponent,
+  ManageOrganizationComponent,
+  AddOrganizationComponent,
+  OrganizationFormComponent,
+  OrganizationFilterComponent
 } from 'app/components';
 import {
   ApplicationLayoutComponent,
@@ -37,7 +41,11 @@ export const SharedComponents = [
   UserProfileComponent,
   ChangePasswordDialogComponent,
   UserFilterComponent,
-  ChangeAvatarDialogComponent
+  ChangeAvatarDialogComponent,
+  ManageOrganizationComponent,
+  AddOrganizationComponent,
+  OrganizationFormComponent,
+  OrganizationFilterComponent
 ];
 export const SharedResolvers = [
     UserResolver

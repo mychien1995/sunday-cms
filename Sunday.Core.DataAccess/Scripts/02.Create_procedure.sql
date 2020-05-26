@@ -33,7 +33,7 @@ BEGIN
 	END
 END
 GO
-
+--------------------------------------------------------------------
 IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_users_findbyusername')
 BEGIN
 	EXEC('CREATE PROCEDURE [dbo].[sp_users_findbyusername] AS BEGIN SET NOCOUNT ON; END')
@@ -48,7 +48,7 @@ BEGIN
 	SELECT * FROM [Users] WHERE Username = @Username
 END
 GO
-
+--------------------------------------------------------------------
 IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_users_getById')
 BEGIN
 	EXEC('CREATE PROCEDURE [dbo].[sp_users_getById] AS BEGIN SET NOCOUNT ON; END')
@@ -63,7 +63,7 @@ BEGIN
 	SELECT * FROM [Users] WHERE ID = @UserId AND IsDeleted = 0;
 END
 GO
-
+--------------------------------------------------------------------
 IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_users_search')
 BEGIN
 	EXEC('CREATE PROCEDURE [dbo].[sp_users_search] AS BEGIN SET NOCOUNT ON; END')
@@ -144,7 +144,7 @@ BEGIN
 	@Text
 END
 GO
-
+--------------------------------------------------------------------
 IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_users_insert')
 BEGIN
 	EXEC('CREATE PROCEDURE [dbo].[sp_users_insert] AS BEGIN SET NOCOUNT ON; END')
@@ -177,7 +177,7 @@ BEGIN
 	INSERT INTO @tblRoleIds SELECT value  FROM STRING_SPLIT(@RoleIds, ',')
 	INSERT INTO UserRoles (UserId, RoleId) SELECT @UserId, RoleId FROM @tblRoleIds
 END
-
+--------------------------------------------------------------------
 IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_roles_getAll')
 BEGIN
 	EXEC('CREATE PROCEDURE [dbo].[sp_roles_getAll] AS BEGIN SET NOCOUNT ON; END')
@@ -210,7 +210,7 @@ BEGIN
 	END
 END
 GO
-
+--------------------------------------------------------------------
 IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_users_update')
 BEGIN
 	EXEC('CREATE PROCEDURE [dbo].[sp_users_update] AS BEGIN SET NOCOUNT ON; END')
@@ -243,7 +243,7 @@ BEGIN
 		INSERT INTO UserRoles (UserId, RoleId) SELECT @ID, RoleId FROM @tblRoleIds
 	END
 END
-
+--------------------------------------------------------------------
 IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_users_delete')
 BEGIN
 	EXEC('CREATE PROCEDURE [dbo].[sp_users_delete] AS BEGIN SET NOCOUNT ON; END')
@@ -258,7 +258,7 @@ BEGIN
 	UPDATE [Users] Set IsDeleted = 1 WHERE ID = @UserId
 END
 GO
-
+--------------------------------------------------------------------
 IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_users_fetchRoles')
 BEGIN
 	EXEC('CREATE PROCEDURE [dbo].[sp_users_fetchRoles] AS BEGIN SET NOCOUNT ON; END')
@@ -284,7 +284,7 @@ BEGIN
 
 END
 GO
-
+--------------------------------------------------------------------
 IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_users_activate')
 BEGIN
 	EXEC('CREATE PROCEDURE [dbo].[sp_users_activate] AS BEGIN SET NOCOUNT ON; END')
@@ -314,7 +314,7 @@ BEGIN
 	UPDATE Users SET IsActive = 0 WHERE ID = @UserId
 END
 GO
-
+--------------------------------------------------------------------
 IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_users_changePassword')
 BEGIN
 	EXEC('CREATE PROCEDURE [dbo].[sp_users_changePassword] AS BEGIN SET NOCOUNT ON; END')
@@ -331,7 +331,7 @@ BEGIN
 	UPDATE Users SET SecurityStamp = @SecurityHash, PasswordHash = @PasswordHash WHERE ID = @UserId
 END
 GO
-
+--------------------------------------------------------------------
 IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_roles_getById')
 BEGIN
 	EXEC('CREATE PROCEDURE [dbo].[sp_roles_getById] AS BEGIN SET NOCOUNT ON; END')

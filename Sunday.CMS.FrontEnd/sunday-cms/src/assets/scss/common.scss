@@ -1,3 +1,19 @@
 .red {
   color: red;
 }
+.color-box-preview {
+  float: right;
+  width: 30px;
+  height: 30px;
+  border: 1px solid #ccc;
+}
+.logo-box{
+  padding: 10px;
+  border: 1px solid #ccc;
+  height: 100%;
+  img{
+    display: block;
+    margin: auto;
+    max-height: 100%;
+  }
+}

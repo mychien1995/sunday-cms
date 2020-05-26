@@ -7,10 +7,12 @@
   <ItemGroup>
     <None Remove="Scripts\01.Create_schema.sql" />
     <None Remove="Scripts\02.Create_procedure.sql" />
+    <None Remove="Scripts\03.Create_procedure.sql" />
     <None Remove="Scripts\Clear_version.sql" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Scripts\03.Create_procedure.sql" />
     <EmbeddedResource Include="Scripts\02.Create_procedure.sql" />
     <EmbeddedResource Include="Scripts\Clear_version.sql">
       <SubType>Designer</SubType>
@@ -21,6 +23,7 @@
   <ItemGroup>
     <PackageReference Include="dbup-core" Version="4.3.1" />
     <PackageReference Include="dbup-sqlserver" Version="4.3.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.DependencyInjection;
+using Sunday.Core.Framework.Automap;
 using Sunday.Core.Framework.Helpers;
 using Sunday.Core.Pipelines.Arguments;
 using System;
@@ -26,12 +27,16 @@ namespace Sunday.Core.Framework.Pipelines.Initialization
                 {
                     foreach (var mappedType in mappedTypeAttr.MappedType)
                     {
-                        mappingProfile.CreateMap(type, mappedType);
+                        var mapExp = mappingProfile.CreateMap(type, mappedType);
                         if (mappedTypeAttr.TwoWay)
-                            mappingProfile.CreateMap(mappedType, type);
+                        {
+                            var reversMapExp = mappingProfile.CreateMap(mappedType, type);
+                        }
                     }
                 }
             }
+            mappingProfile.CreateMap<long, DateTime>().ConvertUsing<TicksToDateTimeConverter>();
+            mappingProfile.CreateMap<DateTime, long>().ConvertUsing<DatetimeToTicksConverter>();
             var mappingConfig = new MapperConfiguration(mc =>
             {
                 mc.AddProfile(mappingProfile);

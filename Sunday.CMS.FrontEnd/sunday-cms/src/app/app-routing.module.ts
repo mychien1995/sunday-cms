@@ -6,7 +6,9 @@ import {
   DashboardComponent,
   ManageUsersComponent,
   AddUserComponent,
-  UserProfileComponent
+  UserProfileComponent,
+  ManageOrganizationComponent,
+  AddOrganizationComponent
 } from 'app/components';
 import { AuthGuard } from 'app/core/services';
 import { UserResolver } from '@components/index';
@@ -26,7 +28,9 @@ export const routes: Routes = [
         component: AddUserComponent,
         resolve: { user: UserResolver }
       },
-      { path: 'profile', component: UserProfileComponent }
+      { path: 'profile', component: UserProfileComponent },
+      { path: 'organizations', component: ManageOrganizationComponent },
+      { path: 'organizations/create', component: AddOrganizationComponent }
     ],
     canActivate: [AuthGuard]
   }

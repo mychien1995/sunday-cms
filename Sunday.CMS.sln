@@ -17,30 +17,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sunday.Core.Framework", "Su
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sunday.CMS.Core", "Sunday.CMS.Core\Sunday.CMS.Core.csproj", "{EF2140AC-EBFB-4D5F-B907-0A75391757D2}"
 EndProject
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "sunday-cms", "Sunday.CMS.FrontEnd\sunday-cms\", "{4F9474B3-7ED9-4CEA-92C3-6FCAE185383E}"
-	ProjectSection(WebsiteProperties) = preProject
-		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
-		Debug.AspNetCompiler.VirtualPath = "/localhost_1034"
-		Debug.AspNetCompiler.PhysicalPath = "Sunday.CMS.FrontEnd\sunday-cms\"
-		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_1034\"
-		Debug.AspNetCompiler.Updateable = "false"
-		Debug.AspNetCompiler.ForceOverwrite = "true"
-		Debug.AspNetCompiler.FixedNames = "false"
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.VirtualPath = "/localhost_1034"
-		Release.AspNetCompiler.PhysicalPath = "Sunday.CMS.FrontEnd\sunday-cms\"
-		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_1034\"
-		Release.AspNetCompiler.Updateable = "false"
-		Release.AspNetCompiler.ForceOverwrite = "true"
-		Release.AspNetCompiler.FixedNames = "false"
-		Release.AspNetCompiler.Debug = "False"
-		VWDPort = "1034"
-		SlnRelativePath = "Sunday.CMS.FrontEnd\sunday-cms\"
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Media", "Media", "{8777BC02-D5AF-4DB1-9DF7-F42F0C71D76F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sunday.Core.Media", "Sunday.Core.Media\Sunday.Core.Media.csproj", "{899988F2-874C-48AF-AFF2-4AD14C0F4670}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sunday.Core.Media", "Sunday.Core.Media\Sunday.Core.Media.csproj", "{899988F2-874C-48AF-AFF2-4AD14C0F4670}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -68,10 +47,6 @@ Global
 		{EF2140AC-EBFB-4D5F-B907-0A75391757D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EF2140AC-EBFB-4D5F-B907-0A75391757D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EF2140AC-EBFB-4D5F-B907-0A75391757D2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4F9474B3-7ED9-4CEA-92C3-6FCAE185383E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4F9474B3-7ED9-4CEA-92C3-6FCAE185383E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4F9474B3-7ED9-4CEA-92C3-6FCAE185383E}.Release|Any CPU.ActiveCfg = Debug|Any CPU
-		{4F9474B3-7ED9-4CEA-92C3-6FCAE185383E}.Release|Any CPU.Build.0 = Debug|Any CPU
 		{899988F2-874C-48AF-AFF2-4AD14C0F4670}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{899988F2-874C-48AF-AFF2-4AD14C0F4670}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{899988F2-874C-48AF-AFF2-4AD14C0F4670}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -86,7 +61,6 @@ Global
 		{7C4A6EF2-AD92-43F3-A5C0-07A4A4123D5B} = {E3DCEA1C-29E4-4078-BBBA-246256C7395E}
 		{B78EEE1C-84D0-4F65-B8DC-0827FC65BF06} = {E3DCEA1C-29E4-4078-BBBA-246256C7395E}
 		{EF2140AC-EBFB-4D5F-B907-0A75391757D2} = {DFFD1965-3AB5-4017-8A47-A0693BE1A7BD}
-		{4F9474B3-7ED9-4CEA-92C3-6FCAE185383E} = {DFFD1965-3AB5-4017-8A47-A0693BE1A7BD}
 		{899988F2-874C-48AF-AFF2-4AD14C0F4670} = {8777BC02-D5AF-4DB1-9DF7-F42F0C71D76F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution

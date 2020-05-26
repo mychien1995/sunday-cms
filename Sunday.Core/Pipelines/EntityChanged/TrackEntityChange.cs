@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Sunday.Core;
+using Sunday.Core.Domain;
 using Sunday.Core.Identity;
 using Sunday.Core.Pipelines.Arguments;
 using System;
@@ -28,24 +29,26 @@ namespace Sunday.Core.Pipelines.EntityChanged
 
         private void DoProcess(PipelineArg arg)
         {
-
+            IEntity entity;
             var changeArg = arg as IEntityChangedArg;
-            if (changeArg?.EntityChange != null)
+            entity = changeArg?.EntityChange;
+            if (entity == null)
             {
-                var entity = changeArg.EntityChange;
-                var now = DateTime.Now;
+                entity = arg["EntityChanged"] as IEntity;
+            }
+            if (entity == null) return;
+            var now = DateTime.Now;
+            if (entity.ID == 0)
+            {
+                entity.CreatedDate = now;
+            }
+            entity.UpdatedDate = now;
+            var currentUser = _httpContextAccessor.HttpContext.User as ApplicationUserPrincipal;
+            if (currentUser != null)
+            {
+                entity.UpdatedBy = currentUser.Username;
                 if (entity.ID == 0)
-                {
-                    entity.CreatedDate = now;
-                }
-                entity.UpdatedDate = now;
-                var currentUser = _httpContextAccessor.HttpContext.User as ApplicationUserPrincipal;
-                if (currentUser != null)
-                {
-                    entity.UpdatedBy = currentUser.Username;
-                    if (entity.ID == 0)
-                        entity.CreatedBy = currentUser.Username;
-                }
+                    entity.CreatedBy = currentUser.Username;
             }
         }
     }

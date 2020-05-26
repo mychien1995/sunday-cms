@@ -1,6 +1,7 @@
-import { MapArrayPipe, JoinStringPipe } from '@core/pipes/index';
+import { MapArrayPipe, JoinStringPipe, FilterEmptyStringPipe } from '@core/pipes/index';
 
 export const SharedPipes = [
     MapArrayPipe,
-    JoinStringPipe
+    JoinStringPipe,
+    FilterEmptyStringPipe
 ];

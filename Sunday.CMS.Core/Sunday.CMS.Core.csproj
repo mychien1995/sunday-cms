@@ -5,8 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Sunday.Core.Framework\Sunday.Core.Framework.csproj" />
     <ProjectReference Include="..\Sunday.Core.Media\Sunday.Core.Media.csproj" />
     <ProjectReference Include="..\Sunday.Core\Sunday.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Pipelines\Shared\" />
   </ItemGroup>
 
 </Project>

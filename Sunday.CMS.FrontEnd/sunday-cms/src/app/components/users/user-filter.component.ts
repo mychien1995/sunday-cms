@@ -17,7 +17,7 @@ export class UserFilterComponent implements OnInit {
   @Output() doSearch: EventEmitter<any> = new EventEmitter();
 
   searchForm: FormGroup = new FormGroup({
-    Text: new FormControl(''),
+    Text: new FormControl('' ),
   });
 
   ngOnInit(): void {}
