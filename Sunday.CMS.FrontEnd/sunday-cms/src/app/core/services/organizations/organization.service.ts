@@ -49,4 +49,10 @@ export class OrganizationService {
       .put(`${ApiUrl.Organizations.Deactivate}?id=${userId}`)
       .pipe(map(ApiHelper.onSuccess), catchError(ApiHelper.onFail));
   }
+
+  deleteOrganization(orgId: number): Observable<ApiResponse> {
+    return this.apiService
+      .delete(`${ApiUrl.Organizations.Delete}?id=${orgId}`)
+      .pipe(map(ApiHelper.onSuccess), catchError(ApiHelper.onFail));
+  }
 }

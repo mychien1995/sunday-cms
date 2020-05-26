@@ -17,6 +17,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class ManageOrganizationComponent implements OnInit {
   organizationList: OrganizationList = new OrganizationList();
+  activeOrganizationId: number;
 
   constructor(
     private organizationService: OrganizationService,
@@ -61,5 +62,26 @@ export class ManageOrganizationComponent implements OnInit {
       }
       this.clientState.isBusy = false;
     });
+  }
+
+  deleteOrganization(orgId: number, template: any): void {
+    this.activeOrganizationId = orgId;
+    this.modalService.open(template);
+  }
+
+  confirmDelete() {
+    if (this.activeOrganizationId) {
+      this.clientState.isBusy = true;
+      this.organizationService
+        .deleteOrganization(this.activeOrganizationId)
+        .subscribe((res) => {
+          if (res.Success) {
+            this.toastr.success('Organization Deleted');
+            this.modalService.dismissAll();
+            this.getOrganizations();
+          }
+          this.clientState.isBusy = false;
+        });
+    }
   }
 }

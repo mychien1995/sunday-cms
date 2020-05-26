@@ -33,7 +33,7 @@ export class OrganizationFormComponent implements OnInit {
   public currentOrganization: OrganizationDetailResponse;
   public organizationForm: FormGroup = new FormGroup({
     Name: new FormControl('', [Validators.required]),
-    Description: new FormControl('', [Validators.required]),
+    Description: new FormControl(''),
     IsActive: new FormControl(true, [Validators.required]),
     Color: new FormControl(true, [Validators.required]),
     Logo: new FormControl('', [Validators.required]),
@@ -69,9 +69,7 @@ export class OrganizationFormComponent implements OnInit {
         Name: new FormControl(this.currentOrganization.OrganizationName, [
           Validators.required,
         ]),
-        Description: new FormControl(this.currentOrganization.Description, [
-          Validators.required,
-        ]),
+        Description: new FormControl(this.currentOrganization.Description),
         IsActive: new FormControl(this.currentOrganization.IsActive, [
           Validators.required,
         ]),
