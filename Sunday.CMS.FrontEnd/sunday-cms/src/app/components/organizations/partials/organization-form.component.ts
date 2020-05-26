@@ -12,9 +12,13 @@ import {
   ColorService,
   FileUploadService,
 } from '@services/index';
-import { OrganizationMutationModel } from '@models/index';
+import {
+  OrganizationMutationModel,
+  OrganizationDetailResponse,
+} from '@models/index';
 import { DefaultOrganizationLogo } from '@core/constants';
 import { ToastrService } from 'ngx-toastr';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-organization-form',
@@ -26,6 +30,7 @@ export class OrganizationFormComponent implements OnInit {
   public hostNames: string[] = [''];
   public logoImage: string = DefaultOrganizationLogo;
   public logoImageFile: File;
+  public currentOrganization: OrganizationDetailResponse;
   public organizationForm: FormGroup = new FormGroup({
     Name: new FormControl('', [Validators.required]),
     Description: new FormControl('', [Validators.required]),
@@ -43,50 +48,88 @@ export class OrganizationFormComponent implements OnInit {
     private toastr: ToastrService,
     private clientState: ClientState
   ) {
-    this.activatedRoute.paramMap.subscribe((param) => {
-      const orgId = param.get('orgId');
-      if (orgId) {
-        this.isEdit = true;
+    this.activatedRoute.data.subscribe(
+      (data: { organization: OrganizationDetailResponse }) => {
+        if (data.organization) {
+          this.isEdit = true;
+          this.currentOrganization = data.organization;
+          this.logoImage =
+            data.organization.LogoLink || DefaultOrganizationLogo;
+          this.hostNames = data.organization.HostNames;
+          this.hostNames.push('');
+        }
       }
-    });
+    );
   }
 
   ngOnInit(): void {
     this.getColors();
+    if (this.isEdit) {
+      this.organizationForm = new FormGroup({
+        Name: new FormControl(this.currentOrganization.OrganizationName, [
+          Validators.required,
+        ]),
+        Description: new FormControl(this.currentOrganization.Description, [
+          Validators.required,
+        ]),
+        IsActive: new FormControl(this.currentOrganization.IsActive, [
+          Validators.required,
+        ]),
+        Color: new FormControl(this.currentOrganization.ColorScheme, [
+          Validators.required,
+        ]),
+        Logo: new FormControl('', !this.isEdit ? [Validators.required] : []),
+      });
+    }
   }
 
   onSubmit(formValue: any): void {
     if (
-      this.organizationForm.invalid &&
+      this.organizationForm.invalid ||
       !this.hostNames.filter((x) => x && x.trim().length > 0)
     ) {
       return;
     }
     this.clientState.isBusy = true;
-    this.fileUploadService
-      .uploadBlob('logos', this.logoImageFile)
-      .subscribe((res) => {
-        if (res.Success) {
-          const blobIdentifier = res.BlobIdentifier;
-          const mutationData = <OrganizationMutationModel>{
-            ColorScheme: formValue.Color,
-            Description: formValue.Description,
-            OrganizationName: formValue.Name,
-            IsActive: formValue.IsActive,
-            HostNames: this.hostNames,
-            LogoBlobUri: blobIdentifier,
-          };
-          this.organizationService
-            .createOrganization(mutationData)
-            .subscribe((createResponse) => {
-              if (createResponse.Success) {
-                this.toastr.success('Organization Created');
-                this.router.navigate(['/organizations']);
-              }
-              this.clientState.isBusy = false;
-            });
-        }
+
+    let promise = new Observable<any>();
+    if (this.logoImageFile) {
+      promise = this.fileUploadService.uploadBlob('logos', this.logoImageFile);
+    } else {
+      promise = new Observable((obs) => {
+        obs.next({
+          BlobIdentifier: this.currentOrganization?.LogoBlobUri,
+          Success: true,
+        });
+        obs.complete();
       });
+    }
+    promise.subscribe((res) => {
+      if (res.Success) {
+        const blobIdentifier = res.BlobIdentifier;
+        const mutationData = <OrganizationMutationModel>{
+          ColorScheme: formValue.Color,
+          Description: formValue.Description,
+          OrganizationName: formValue.Name,
+          IsActive: formValue.IsActive,
+          HostNames: this.hostNames,
+          LogoBlobUri: blobIdentifier,
+          ID: this.currentOrganization?.ID || 0,
+        };
+        (this.isEdit
+          ? this.organizationService.updateOrganization(mutationData)
+          : this.organizationService.createOrganization(mutationData)
+        ).subscribe((response) => {
+          if (response.Success) {
+            this.toastr.success(
+              this.isEdit ? 'Organization Updated' : 'Organization Created'
+            );
+            this.router.navigate(['/organizations']);
+          }
+          this.clientState.isBusy = false;
+        });
+      }
+    });
   }
 
   getColors(): void {

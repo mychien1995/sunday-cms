@@ -75,7 +75,7 @@
                         </div>
                         <div class="position-relative form-group mt-3 col-6">
                             <label for="exampleFile" class="">Select New Avatar</label>
-                            <input name="file" id="exampleFile" type="file" class="form-control-file" required
+                            <input name="file" id="exampleFile" type="file" class="form-control-file" [required]="!isEdit"
                                 accept=".png, .jpg, .jpeg" (change)="onSelectAvatar($event)" formControlName="Logo">
                         </div>
                     </div>

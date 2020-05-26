@@ -27,11 +27,12 @@ export class OrganizationMutationModel {
 }
 
 export class OrganizationDetailResponse extends ApiResponse {
-    ID?: number;
-    OrganizationName: string;
-    Description: string;
-    LogoBlobUri: string;
-    ColorScheme: string;
-    IsActive: boolean;
-    HostNames: string[];
-  }
+  ID?: number;
+  OrganizationName: string;
+  LogoLink: string;
+  Description: string;
+  LogoBlobUri: string;
+  ColorScheme: string;
+  IsActive: boolean;
+  HostNames: string[];
+}

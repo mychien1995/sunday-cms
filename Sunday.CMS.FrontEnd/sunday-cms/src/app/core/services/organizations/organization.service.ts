@@ -27,6 +27,17 @@ export class OrganizationService {
       .pipe(map(ApiHelper.onSuccess), catchError(ApiHelper.onFail));
   }
 
+  updateOrganization(data: OrganizationMutationModel): Observable<ApiResponse> {
+    return this.apiService
+      .put(ApiUrl.Organizations.Edit, data)
+      .pipe(map(ApiHelper.onSuccess), catchError(ApiHelper.onFail));
+  }
+
+  getOrganizationById(orgId: number): Observable<OrganizationDetailResponse> {
+    return this.apiService
+      .get(`${ApiUrl.Organizations.GetById}?id=${orgId}`)
+      .pipe(map(ApiHelper.onSuccess), catchError(ApiHelper.onFail));
+  }
   activateOrganization(userId: number): Observable<ApiResponse> {
     return this.apiService
       .put(`${ApiUrl.Organizations.Activate}?id=${userId}`)

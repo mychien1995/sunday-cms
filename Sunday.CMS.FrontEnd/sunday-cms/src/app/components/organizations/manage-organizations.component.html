@@ -25,7 +25,7 @@
                     </ng-container>
                     <ng-container matColumnDef="CreateDate">
                         <th mat-header-cell *matHeaderCellDef>Create Date</th>
-                        <td mat-cell *matCellDef="let org">{{ org.CreatedDate }}</td>
+                        <td mat-cell *matCellDef="let org">{{ org.CreatedDate | unixToDatetime }}</td>
                     </ng-container>
                     <ng-container matColumnDef="UpdatedBy">
                         <th mat-header-cell *matHeaderCellDef>Updated By</th>
@@ -33,7 +33,7 @@
                     </ng-container>
                     <ng-container matColumnDef="UpdatedDate">
                         <th mat-header-cell *matHeaderCellDef>Updated Date</th>
-                        <td mat-cell *matCellDef="let org">{{ org.UpdatedDate }}</td>
+                        <td mat-cell *matCellDef="let org">{{ org.UpdatedDate | unixToDatetime }}</td>
                     </ng-container>
                     <ng-container matColumnDef="IsActive">
                         <th mat-header-cell *matHeaderCellDef>Active</th>

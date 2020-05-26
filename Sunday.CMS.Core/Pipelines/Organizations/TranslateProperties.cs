@@ -12,8 +12,8 @@ namespace Sunday.CMS.Core.Pipelines.Organizations
     {
         public async Task ProcessAsync(PipelineArg arg)
         {
-            var mutationData = arg["mutationData"] as OrganizationMutationModel;
-            var organization = arg["organization"] as ApplicationOrganization;
+            var mutationData = arg["Source"] as OrganizationMutationModel;
+            var organization = arg["Target"] as ApplicationOrganization;
             if (mutationData == null || organization == null) return;
             if (!string.IsNullOrEmpty(mutationData.ColorScheme))
             {

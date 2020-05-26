@@ -39,10 +39,8 @@ namespace Sunday.Core.DataAccess.Repositories.Organizations
 
         public virtual async Task<ApplicationOrganization> Create(ApplicationOrganization organization)
         {
-            var arg = new PipelineArg();
-            arg["organization"] = organization;
-            await ApplicationPipelines.RunAsync("cms.organizations.translateToInsert", arg);
-            var result = await _dbRunner.ExecuteAsync<int>(ProcedureNames.Organizations.Insert, arg["input"]);
+            var param = GetInsertParameters(organization);
+            var result = await _dbRunner.ExecuteAsync<int>(ProcedureNames.Organizations.Insert, param);
             organization.ID = result.FirstOrDefault();
             return organization;
         }
@@ -55,16 +53,14 @@ namespace Sunday.Core.DataAccess.Repositories.Organizations
 
         public virtual ApplicationOrganization GetById(int organizationId)
         {
-            var result = _dbRunner.Execute<ApplicationOrganization>(ProcedureNames.Organizations.GetById, new { OrganizationId = organizationId });
-            return result.FirstOrDefault();
+            var result = _dbRunner.Execute<OrganizationEntity>(ProcedureNames.Organizations.GetById, new { OrganizationId = organizationId });
+            return result.FirstOrDefault().MapTo<ApplicationOrganization>();
         }
 
         public virtual async Task<ApplicationOrganization> Update(ApplicationOrganization organization)
         {
-            var arg = new PipelineArg();
-            arg["organization"] = organization;
-            await ApplicationPipelines.RunAsync("cms.organizations.translateToUpdate", arg);
-            var result = await _dbRunner.ExecuteAsync<ApplicationOrganization>(ProcedureNames.Organizations.Update, arg["input"]);
+            var param = GetUpdateParameters(organization);
+            var result = await _dbRunner.ExecuteAsync<ApplicationOrganization>(ProcedureNames.Organizations.Update, param);
             return result.FirstOrDefault();
         }
 
@@ -83,6 +79,38 @@ namespace Sunday.Core.DataAccess.Repositories.Organizations
             if (organization.IsActive) throw new EntityNotFoundException("Organization already activated");
             await _dbRunner.ExecuteAsync<object>(ProcedureNames.Organizations.Activate, new { OrganizationId = organizationId });
             return true;
+        }
+
+        protected virtual object GetInsertParameters(ApplicationOrganization org)
+        {
+            return new
+            {
+                org.OrganizationName,
+                org.CreatedBy,
+                org.CreatedDate,
+                org.Description,
+                org.UpdatedBy,
+                org.UpdatedDate,
+                org.IsActive,
+                org.LogoBlobUri,
+                HostNames = string.Join('|', org.HostNames.Where(x => !string.IsNullOrEmpty(x))),
+                Properties = org.Properties != null ? JsonConvert.SerializeObject(org.Properties) : ""
+            };
+        }
+        protected virtual object GetUpdateParameters(ApplicationOrganization org)
+        {
+            return new
+            {
+                org.ID,
+                org.OrganizationName,
+                org.Description,
+                org.UpdatedBy,
+                org.UpdatedDate,
+                org.IsActive,
+                org.LogoBlobUri,
+                HostNames = string.Join('|', org.HostNames.Where(x => !string.IsNullOrEmpty(x))),
+                Properties = org.Properties != null ? JsonConvert.SerializeObject(org.Properties) : ""
+            };
         }
     }
 }

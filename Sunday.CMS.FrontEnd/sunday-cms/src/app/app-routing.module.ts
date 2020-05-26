@@ -8,10 +8,10 @@ import {
   AddUserComponent,
   UserProfileComponent,
   ManageOrganizationComponent,
-  AddOrganizationComponent
+  AddOrganizationComponent,
 } from 'app/components';
 import { AuthGuard } from 'app/core/services';
-import { UserResolver } from '@components/index';
+import { UserResolver, OrganizationResolver } from '@components/index';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -26,18 +26,23 @@ export const routes: Routes = [
       {
         path: 'users/edit/:userId',
         component: AddUserComponent,
-        resolve: { user: UserResolver }
+        resolve: { user: UserResolver },
       },
       { path: 'profile', component: UserProfileComponent },
       { path: 'organizations', component: ManageOrganizationComponent },
-      { path: 'organizations/create', component: AddOrganizationComponent }
+      { path: 'organizations/create', component: AddOrganizationComponent },
+      {
+        path: 'organizations/edit/:orgId',
+        component: AddOrganizationComponent,
+        resolve: { organization: OrganizationResolver },
+      },
     ],
-    canActivate: [AuthGuard]
-  }
+    canActivate: [AuthGuard],
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class AppRoutingModule {}

@@ -18,10 +18,8 @@ namespace Sunday.CMS.Core.Implementation.Organizations
     public class DefaultApplicationOrganizationManager : IApplicationOrganizationManager
     {
         private readonly IOrganizationRepository _organizationRepository;
-        private readonly IBlobLinkManager _blobLinkManager;
-        public DefaultApplicationOrganizationManager(IOrganizationRepository organizationRepository, IBlobLinkManager blobLinkManager)
+        public DefaultApplicationOrganizationManager(IOrganizationRepository organizationRepository)
         {
-            _blobLinkManager = blobLinkManager;
             _organizationRepository = organizationRepository;
         }
 
@@ -33,13 +31,12 @@ namespace Sunday.CMS.Core.Implementation.Organizations
             apiResult.Total = searchResult.Total;
             apiResult.Organizations = await Task.WhenAll(searchResult.Result.Select(async x =>
             {
-                var user = x.MapTo<OrganizationItem>();
+                var orgItem = x.MapTo<OrganizationItem>();
                 var pipelineArg = new PipelineArg();
-                pipelineArg["source"] = x;
-                pipelineArg["target"] = user;
-                await ApplicationPipelines.RunAsync("cms.organizations.translateListItem", pipelineArg);
-                user.LogoLink = _blobLinkManager.GetPreviewLink(x.LogoBlobUri);
-                return user;
+                pipelineArg["Source"] = x;
+                pipelineArg["Target"] = orgItem;
+                await ApplicationPipelines.RunAsync("cms.organizations.translateToModel", pipelineArg);
+                return orgItem;
             }));
             return apiResult;
         }
@@ -47,6 +44,10 @@ namespace Sunday.CMS.Core.Implementation.Organizations
         {
             var organization = _organizationRepository.GetById(orgId);
             var result = organization.MapTo<OrganizationDetailJsonResult>();
+            var pipelineArg = new PipelineArg();
+            pipelineArg["Source"] = organization;
+            pipelineArg["Target"] = result;
+            await ApplicationPipelines.RunAsync("cms.organizations.translateToModel", pipelineArg);
             result.Success = true;
             return await Task.FromResult(result);
         }
@@ -55,8 +56,8 @@ namespace Sunday.CMS.Core.Implementation.Organizations
             var result = new BaseApiResponse();
             var organization = data.MapTo<ApplicationOrganization>();
             var pipelineArg = new PipelineArg();
-            pipelineArg["mutationData"] = data;
-            pipelineArg["organization"] = organization;
+            pipelineArg["Source"] = data;
+            pipelineArg["Target"] = organization;
             pipelineArg["EntityChanged"] = organization;
             await ApplicationPipelines.RunAsync("cms.organizations.beforeUpdate", pipelineArg);
             if (pipelineArg.Aborted)
@@ -72,8 +73,8 @@ namespace Sunday.CMS.Core.Implementation.Organizations
             var result = new CreateOrganizationJsonResult();
             var organization = data.MapTo<ApplicationOrganization>();
             var pipelineArg = new PipelineArg();
-            pipelineArg["mutationData"] = data;
-            pipelineArg["organization"] = organization;
+            pipelineArg["Source"] = data;
+            pipelineArg["Target"] = organization;
             pipelineArg["EntityChanged"] = organization;
             await ApplicationPipelines.RunAsync("cms.organizations.beforeCreate", pipelineArg);
             if (pipelineArg.Aborted)

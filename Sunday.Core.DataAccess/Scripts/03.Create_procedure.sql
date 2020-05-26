@@ -1,9 +1,10 @@
 ﻿USE [SundayCMS]
 GO
 /****** Object:  StoredProcedure [dbo].[sp_organizations_create]    Script Date: 5/26/2020 5:31:54 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
+IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_organizations_create')
+BEGIN
+	EXEC('CREATE PROCEDURE [dbo].[sp_organizations_create] AS BEGIN SET NOCOUNT ON; END')
+END
 GO
 ALTER PROCEDURE [dbo].[sp_organizations_create]
 (
@@ -56,7 +57,7 @@ BEGIN
 	SET @OrganizationId = SCOPE_IDENTITY()
 	SELECT @OrganizationId
 END
-
+GO
 --------------------------------------------------------------------
 IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_organizations_update')
 BEGIN
@@ -111,6 +112,7 @@ AS
 BEGIN
 	UPDATE Organizations SET IsActive = 1 WHERE ID = @OrganizationId
 END
+GO
 --------------------------------------------------------------------
 IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_organizations_deactivate')
 BEGIN
@@ -125,6 +127,7 @@ AS
 BEGIN
 	UPDATE Organizations SET IsActive = 0 WHERE ID = @OrganizationId
 END
+GO
 --------------------------------------------------------------------
 IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_organizations_delete')
 BEGIN
@@ -139,6 +142,7 @@ AS
 BEGIN
 	UPDATE Organizations SET IsDeleted = 1 WHERE ID = @OrganizationId
 END
+GO
 --------------------------------------------------------------------
 IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_organizations_getById')
 BEGIN
@@ -153,6 +157,7 @@ AS
 BEGIN
 	SELECT * FROM Organizations WHERE ID = @OrganizationId AND IsDeleted = 0
 END
+GO
 --------------------------------------------------------------------
 IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_organizations_search')
 BEGIN
@@ -206,3 +211,4 @@ BEGIN
 	N'@Text nvarchar(MAX)',
 	@Text
 END
+GO
