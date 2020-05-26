@@ -12,6 +12,8 @@ using Microsoft.Extensions.Configuration;
 using Sunday.Core.Framework.Helpers;
 using System.Reflection;
 using Sunday.Core.Pipelines.Arguments;
+using System.Xml.Linq;
+using XmlDocumentMerger;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -33,7 +35,15 @@ namespace Microsoft.Extensions.DependencyInjection
                 configurationPath = $"\\config\\sunday.config";
                 filePath = hostingEnv.WebRootPath + configurationPath;
             }
+            XDocument finalConfig = new XDocument();
             var configFileContent = File.ReadAllText(filePath);
+            var includeFolder = hostingEnv.WebRootPath + "\\config\\include";
+            var includeFiles = Directory.GetFiles(includeFolder, "*.config");
+            foreach (var includeFile in includeFiles)
+            {
+                var xmlContent = File.ReadAllText(includeFile);
+                configFileContent = XmlMerger.MergeDocuments(xmlContent, configFileContent);
+            }
             var serializer = new XmlSerializer(typeof(ConfigurationNode));
             using (TextReader reader = new StringReader(configFileContent))
             {

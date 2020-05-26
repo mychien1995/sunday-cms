@@ -21,6 +21,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Media", "Media", "{8777BC02
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sunday.Core.Media", "Sunday.Core.Media\Sunday.Core.Media.csproj", "{899988F2-874C-48AF-AFF2-4AD14C0F4670}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Library", "Library", "{83F79037-7070-4AFD-85BA-DED0A5EFFEB1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XmlMerger", "LibraryProject\XmlMerger\XmlMerger.csproj", "{9FE0152A-AD61-42FE-A13F-03528D76D21A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +55,10 @@ Global
 		{899988F2-874C-48AF-AFF2-4AD14C0F4670}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{899988F2-874C-48AF-AFF2-4AD14C0F4670}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{899988F2-874C-48AF-AFF2-4AD14C0F4670}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9FE0152A-AD61-42FE-A13F-03528D76D21A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9FE0152A-AD61-42FE-A13F-03528D76D21A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9FE0152A-AD61-42FE-A13F-03528D76D21A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9FE0152A-AD61-42FE-A13F-03528D76D21A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -62,6 +70,7 @@ Global
 		{B78EEE1C-84D0-4F65-B8DC-0827FC65BF06} = {E3DCEA1C-29E4-4078-BBBA-246256C7395E}
 		{EF2140AC-EBFB-4D5F-B907-0A75391757D2} = {DFFD1965-3AB5-4017-8A47-A0693BE1A7BD}
 		{899988F2-874C-48AF-AFF2-4AD14C0F4670} = {8777BC02-D5AF-4DB1-9DF7-F42F0C71D76F}
+		{9FE0152A-AD61-42FE-A13F-03528D76D21A} = {83F79037-7070-4AFD-85BA-DED0A5EFFEB1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B00775C3-EEF6-4883-A795-0C11DB15EC6E}
