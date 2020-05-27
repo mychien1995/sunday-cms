@@ -3,6 +3,7 @@ using Sunday.Core;
 using Sunday.Core.Domain.Organizations;
 using Sunday.Core.Framework.Automap;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
@@ -31,7 +32,22 @@ namespace Sunday.CMS.Core.Models.Organizations
         public bool IsActive { get; set; }
         public OrganizationItem()
         {
-
         }
+        public string DoSmt()
+        {
+            short a = 0;
+            Test.Do(a);
+            return a + "";
+        }
+        
     }
+    public class Test
+    {
+        public static void Do(long x)
+        {
+        }
+        public static void Do(int x)
+        {
+        }
+   
 }
