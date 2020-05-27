@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Core\Sunday.Core\Sunday.Core.csproj" />
+    <ProjectReference Include="..\..\..\Core\Sunday.DataAccess.SqlServer\Sunday.DataAccess.SqlServer.csproj" />
+  </ItemGroup>
+
+</Project>

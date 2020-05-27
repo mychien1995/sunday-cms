@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Sunday.Core\Sunday.Core.csproj" />
+    <ProjectReference Include="..\..\..\Core\Sunday.Core\Sunday.Core.csproj" />
     <ProjectReference Include="..\Sunday.Users.Core\Sunday.Users.Core.csproj" />
   </ItemGroup>
 

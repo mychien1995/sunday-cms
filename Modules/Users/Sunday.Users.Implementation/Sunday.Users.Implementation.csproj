@@ -5,8 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Sunday.Core\Sunday.Core.csproj" />
-    <ProjectReference Include="..\Sunday.DataAccess.SqlServer\Sunday.DataAccess.SqlServer.csproj" />
+    <ProjectReference Include="..\..\..\Core\Sunday.Core\Sunday.Core.csproj" />
+    <ProjectReference Include="..\..\..\Core\Sunday.DataAccess.SqlServer\Sunday.DataAccess.SqlServer.csproj" />
     <ProjectReference Include="..\Sunday.Users.Application\Sunday.Users.Application.csproj" />
     <ProjectReference Include="..\Sunday.Users.Core\Sunday.Users.Core.csproj" />
   </ItemGroup>
