@@ -110,5 +110,23 @@ namespace Sunday.CMS.Core.Implementation.Organizations
             response.Success = result;
             return response;
         }
+
+        public virtual async Task<ListApiResponse<OrganizationItem>> GetOrganizationLookup()
+        {
+            var query = new OrganizationQuery()
+            {
+                PageIndex = 0,
+                PageSize = int.MaxValue,
+                IsActive = true
+            };
+            var searchResult = (await _organizationRepository.Query(query)).Result;
+            var result = new ListApiResponse<OrganizationItem>();
+            result.List = searchResult.Select(x => new OrganizationItem()
+            {
+                ID = x.ID,
+                OrganizationName = x.OrganizationName
+            }).ToList();
+            return result;
+        }
     }
 }

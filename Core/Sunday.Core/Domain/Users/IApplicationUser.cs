@@ -1,4 +1,5 @@
-﻿using Sunday.Core.Domain.Roles;
+﻿using Sunday.Core.Domain.Organizations;
+using Sunday.Core.Domain.Roles;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -20,5 +21,6 @@ namespace Sunday.Core.Domain.Users
         public string AvatarBlobUri { get; set; }
         public string Fullname { get; set; }
         public List<IApplicationRole> Roles { get; set; }
+        public List<IApplicationOrganization> Organizations { get; set; }
     }
 }

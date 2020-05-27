@@ -64,5 +64,12 @@ namespace Sunday.CMS.Interface.Controllers
             var result = await _organizationManager.DeactivateOrganization(id);
             return Ok(result);
         }
+
+        [HttpGet("lookup")]
+        public async Task<IActionResult> Lookup()
+        {
+            var result = await _organizationManager.GetOrganizationLookup();
+            return Ok(result);
+        }
     }
 }

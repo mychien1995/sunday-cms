@@ -25,7 +25,13 @@ namespace Sunday.CMS.Core.Implementation.Roles
             await ApplicationPipelines.RunAsync("cms.roles.getAvailable", arg);
             var roles = arg.Roles;
             var result = new RoleListJsonResult();
-            result.List = arg.Roles.Select(x => x.MapTo<RoleItem>()).ToList();
+            result.List = arg.Roles.Select(x =>
+            {
+                var roleItem = x.MapTo<RoleItem>();
+                if (roleItem.Code == RoleCodes.OrganizationAdmin || roleItem.Code == RoleCodes.OrganizationUser)
+                    roleItem.RequireOrganization = true;
+                return roleItem;
+            }).ToList();
             return result;
         }
 
@@ -33,6 +39,8 @@ namespace Sunday.CMS.Core.Implementation.Roles
         {
             var role = await _roleRepository.GetRoleById(id);
             var result = role.MapTo<RoleDetailJsonResult>();
+            if (role.Code == RoleCodes.OrganizationAdmin || role.Code == RoleCodes.OrganizationUser)
+                result.RequireOrganization = true;
             return result;
         }
     }

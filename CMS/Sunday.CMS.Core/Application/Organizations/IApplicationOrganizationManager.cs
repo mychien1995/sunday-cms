@@ -24,5 +24,7 @@ namespace Sunday.CMS.Core.Application.Organizations
         Task<BaseApiResponse> ActivateOrganization(int orgId);
 
         Task<BaseApiResponse> DeactivateOrganization(int orgId);
+
+        Task<ListApiResponse<OrganizationItem>> GetOrganizationLookup();
     }
 }

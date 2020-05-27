@@ -163,7 +163,8 @@ ALTER PROCEDURE [dbo].[sp_users_insert]
 	@UpdatedBy nvarchar(500),
 	@SecurityStamp nvarchar(500),
 	@PasswordHash nvarchar(1000),
-	@RoleIds nvarchar(MAX)
+	@RoleIds nvarchar(MAX),
+	@Organizations OrganizationUserType READONLY
 )
 AS
 BEGIN
@@ -176,7 +177,10 @@ BEGIN
 	DECLARE @tblRoleIds TABLE (RoleId varchar(100))
 	INSERT INTO @tblRoleIds SELECT value  FROM STRING_SPLIT(@RoleIds, ',')
 	INSERT INTO UserRoles (UserId, RoleId) SELECT @UserId, RoleId FROM @tblRoleIds
+
+	INSERT INTO OrganizationUsers(UserId, OrganizationId, IsActive) SELECT @UserId, OrganizationId, IsActive FROM OrganizationUserType
 END
+GO
 --------------------------------------------------------------------
 IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_roles_getAll')
 BEGIN
@@ -226,7 +230,8 @@ ALTER PROCEDURE [dbo].[sp_users_update]
 	@UpdatedBy nvarchar(500),
 	@UpdatedDate datetime,
 	@AvatarBlobUri nvarchar(MAX),
-	@RoleIds nvarchar(MAX)
+	@RoleIds nvarchar(MAX),
+	@Organizations OrganizationUserType READONLY
 )
 AS
 BEGIN
@@ -242,7 +247,24 @@ BEGIN
 		DELETE FROM UserRoles WHERE UserId = @ID
 		INSERT INTO UserRoles (UserId, RoleId) SELECT @ID, RoleId FROM @tblRoleIds
 	END
+
+	IF EXISTS(SELECT * FROM @Organizations)
+	BEGIN
+		DELETE FROM OrganizationUsers WHERE UserId = @ID AND OrganizationId NOT IN (SELECT OrganizationId FROM @Organizations)
+
+		INSERT INTO OrganizationUsers(UserId, OrganizationId, IsActive) SELECT @ID, OrganizationId, IsActive FROM 
+			(SELECT OrganizationId, IsActive FROM @Organizations WHERE OrganizationId NOT IN 
+				(SELECT OrganizationId FROM OrganizationUsers WHERE UserId = @ID)) B
+
+		MERGE INTO OrganizationUsers AS tgt
+			USING @Organizations AS src
+		ON tgt.OrganizationId = src.OrganizationId AND tgt.UserId = @ID
+		WHEN MATCHED THEN
+        UPDATE 
+            SET tgt.IsActive = tgt.IsActive;
+	END
 END
+GO
 --------------------------------------------------------------------
 IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_users_delete')
 BEGIN

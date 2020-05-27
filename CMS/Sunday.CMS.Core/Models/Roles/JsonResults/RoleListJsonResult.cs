@@ -20,5 +20,7 @@ namespace Sunday.CMS.Core.Models.Roles
         public int ID { get; set; }
         public string Code { get; set; }
         public string RoleName { get; set; }
+
+        public bool RequireOrganization { get; set; }
     }
 }

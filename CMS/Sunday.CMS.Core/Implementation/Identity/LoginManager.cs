@@ -1,12 +1,16 @@
-﻿using Sunday.CMS.Core.Application.Identity;
+﻿using Microsoft.AspNetCore.Http;
+using Sunday.CMS.Core.Application.Identity;
 using Sunday.CMS.Core.Models;
 using Sunday.Core;
 using Sunday.Core.Domain.Identity;
+using Sunday.Core.Domain.Organizations;
+using Sunday.Core.Domain.Users;
 using Sunday.Core.Media.Application;
 using Sunday.Identity.Application;
 using Sunday.Identity.Core;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -17,10 +21,12 @@ namespace Sunday.CMS.Core.Implementation.Identity
     {
         private readonly IAuthenticationService _authenticationService;
         private readonly IBlobLinkManager _blobLinkManager;
-        public LoginManager(IAuthenticationService authenticationService, IBlobLinkManager blobLinkManager)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public LoginManager(IAuthenticationService authenticationService, IBlobLinkManager blobLinkManager, IHttpContextAccessor httpContextAccessor)
         {
             _authenticationService = authenticationService;
             _blobLinkManager = blobLinkManager;
+            _httpContextAccessor = httpContextAccessor;
         }
         public async Task<LoginApiResponse> LoginAsync(LoginInputModel credential)
         {

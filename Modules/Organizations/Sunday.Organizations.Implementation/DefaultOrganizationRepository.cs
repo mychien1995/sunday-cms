@@ -27,7 +27,9 @@ namespace Sunday.Organizations.Implementation
         {
             var result = new SearchResult<ApplicationOrganization>();
             var param = query.ToDapperParameters();
-            var searchResult = await _dbRunner.ExecuteMultipleAsync(ProcedureNames.Organizations.Search, new Type[] { typeof(int), typeof(OrganizationEntity) }, param);
+            if (query.IsActive.HasValue) (param as dynamic).IsActive = query.IsActive.Value;
+            else (param as dynamic).IsActive = null;
+            var searchResult = await _dbRunner.ExecuteMultipleAsync(ProcedureNames.Organizations.Search, new Type[] { typeof(int), typeof(OrganizationEntity) }, param as object);
             result.Total = searchResult[0].Select(x => (int)x).FirstOrDefault();
             result.Result = searchResult[1].Select(x =>
             {

@@ -169,6 +169,7 @@ ALTER PROCEDURE [dbo].[sp_organizations_search]
 	@PageIndex int = 0,
 	@PageSize int = 10,
 	@Text nvarchar(MAX) = '',
+	@IsActive bit,
 	@SortBy nvarchar(MAX) = 'UpdatedDate',
 	@SortDirection nvarchar(MAX) = 'DESC'
 )
@@ -194,6 +195,13 @@ BEGIN
 		SET @WhereClause = @WhereClause + ' (OrganizationName LIKE ''%'' + @Text + ''%'') ' ;
 	END
 
+	IF(@IsActive IS NOT NULL)
+	BEGIN
+		IF LEN(TRIM(@WhereClause)) > 0
+			SET @WhereClause = @WhereClause + ' AND ';
+		SET @WhereClause = @WhereClause + ' (IsActive = @IsActive) ' ;
+	END
+
 	IF(LEN(TRIM(@WhereClause)) > 0)
 		SET @WhereClause = ' WHERE ' + @WhereClause
 	DECLARE @CountQuery nvarchar(MAX);
@@ -204,11 +212,11 @@ BEGIN
 	+ ' OFFSET ' + CAST(@PageIndex AS VARCHAR(100)) + ' ROWS FETCH NEXT '+ CAST(@PageSize AS VARCHAR(100)) +' ROWS ONLY'
 
 	exec sp_executesql @CountQuery, 
-	N'@Text nvarchar(MAX)',
-	@Text
+	N'@Text nvarchar(MAX), @IsActive bit',
+	@Text, @IsActive
 
 	exec sp_executesql @DataQuery, 
-	N'@Text nvarchar(MAX)',
-	@Text
+	N'@Text nvarchar(MAX), @IsActive bit',
+	@Text, @IsActive
 END
 GO

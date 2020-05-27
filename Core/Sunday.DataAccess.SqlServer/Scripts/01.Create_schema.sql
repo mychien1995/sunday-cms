@@ -82,6 +82,7 @@ BEGIN
 		ID integer primary key identity(1,1),
 		UserId integer NOT NULL,
 		OrganizationId integer NOT NULL,
+		IsActive bit NOT NULL default(1),
 		CONSTRAINT FK_OrganizationUsers_Users FOREIGN KEY (UserId) REFERENCES Users(ID),
 		CONSTRAINT FK_OrganizationUsers_Organization FOREIGN KEY (OrganizationId) REFERENCES Organizations(ID),
 	);
@@ -136,5 +137,14 @@ BEGIN
 		FeatureId integer NOT NULL,
 		CONSTRAINT FK_OrganizationRolesMapping_OrganizationRole FOREIGN KEY (OrganizationRoleId) REFERENCES OrganizationRoles(ID),
 		CONSTRAINT FK_OrganizationRolesMapping_Feature FOREIGN KEY (FeatureId) REFERENCES Features(ID),
+	);
+END
+
+IF TYPE_ID(N'OrganizationUserType') IS NULL
+BEGIN
+	CREATE TYPE OrganizationUserType AS TABLE
+	(
+		OrganizationId int,
+		IsActive bit
 	);
 END

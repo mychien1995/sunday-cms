@@ -70,6 +70,10 @@ namespace Sunday.Users.Implementation
         public async virtual Task<ApplicationUser> CreateUser(ApplicationUser user)
         {
             var RoleIds = string.Join(",", user.Roles.Select(x => x.ID));
+            var OrganizationIds = string.Join(",", user.Organizations.Select(x => x.ID));
+            var roleType = new DataTable("RoleType");
+            roleType.Columns.Add("ID", typeof(int));
+            roleType.Columns.Add("Code", typeof(string));
             var result = await _dbRunner.ExecuteAsync<int>(ProcedureNames.Users.Insert, new
             {
                 user.UserName,
@@ -83,7 +87,8 @@ namespace Sunday.Users.Implementation
                 user.UpdatedBy,
                 user.SecurityStamp,
                 user.PasswordHash,
-                RoleIds
+                RoleIds,
+                OrganizationIds
             });
             if (!result.Any()) return null;
             user.ID = result.FirstOrDefault();
