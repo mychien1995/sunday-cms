@@ -20,7 +20,7 @@ namespace Sunday.CMS.Core.Models.Organizations
     }
 
     [MappedTo(typeof(ApplicationOrganization))]
-    public class OrganizationItem
+    public class OrganizationItem : IOrganizationProperties
     {
         public int ID { get; set; }
         public string LogoLink { get; set; }
@@ -30,6 +30,8 @@ namespace Sunday.CMS.Core.Models.Organizations
         public string UpdatedBy { get; set; }
         public long UpdatedDate { get; set; }
         public bool IsActive { get; set; }
+        public string ColorScheme { get; set; }
+
         public OrganizationItem()
         {
         }

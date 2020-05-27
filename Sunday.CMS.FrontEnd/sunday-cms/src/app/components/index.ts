@@ -13,3 +13,4 @@ export * from './organizations/manage-organizations.component';
 export * from './organizations/add-organization.component';
 export * from './organizations/partials/organization-form.component';
 export * from './organizations/partials/organization-filter.component';
+export * from './organizations/organization.resolver';

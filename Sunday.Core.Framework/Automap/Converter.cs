@@ -9,7 +9,7 @@ namespace Sunday.Core.Framework.Automap
     {
         public DateTime Convert(long source, DateTime destination, ResolutionContext context)
         {
-            return new DateTime(source);
+            return source.ToDatetime();
         }
     }
 
@@ -17,7 +17,7 @@ namespace Sunday.Core.Framework.Automap
     {
         public long Convert(DateTime source, long destination, ResolutionContext context)
         {
-            return source.Ticks;
+            return source.ToEpoch();
         }
     }
 }

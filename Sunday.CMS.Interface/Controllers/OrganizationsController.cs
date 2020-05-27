@@ -47,7 +47,7 @@ namespace Sunday.CMS.Interface.Controllers
         [HttpDelete]
         public async Task<IActionResult> Delete([FromQuery]int id)
         {
-            var result = await _organizationManager.DeactivateOrganization(id);
+            var result = await _organizationManager.DeleleOrganization(id);
             return Ok(result);
         }
 
