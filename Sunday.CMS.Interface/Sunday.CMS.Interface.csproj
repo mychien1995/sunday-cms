@@ -6,9 +6,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Sunday.CMS.Core\Sunday.CMS.Core.csproj" />
-    <ProjectReference Include="..\Sunday.Core.DataAccess\Sunday.Core.DataAccess.csproj" />
     <ProjectReference Include="..\Sunday.Core.Framework\Sunday.Core.Framework.csproj" />
     <ProjectReference Include="..\Sunday.Core\Sunday.Core.csproj" />
+    <ProjectReference Include="..\Sunday.Infrastructure\Sunday.Infrastructure.csproj" />
   </ItemGroup>
 
 

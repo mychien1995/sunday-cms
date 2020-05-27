@@ -2,6 +2,7 @@
 using Sunday.Core;
 using Sunday.Core.Domain.Organizations;
 using Sunday.Core.Media.Application;
+using Sunday.Organizations.Core;
 using System;
 using System.Collections.Generic;
 using System.Text;

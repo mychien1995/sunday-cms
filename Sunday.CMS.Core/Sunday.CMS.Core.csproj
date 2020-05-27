@@ -14,6 +14,12 @@
     <ProjectReference Include="..\Sunday.Core.Framework\Sunday.Core.Framework.csproj" />
     <ProjectReference Include="..\Sunday.Core.Media\Sunday.Core.Media.csproj" />
     <ProjectReference Include="..\Sunday.Core\Sunday.Core.csproj" />
+    <ProjectReference Include="..\Sunday.Identity.Application\Sunday.Identity.Application.csproj" />
+    <ProjectReference Include="..\Sunday.Identity.Core\Sunday.Identity.Core.csproj" />
+    <ProjectReference Include="..\Sunday.Organizations.Application\Sunday.Organizations.Application.csproj" />
+    <ProjectReference Include="..\Sunday.Organizations.Core\Sunday.Organizations.Core.csproj" />
+    <ProjectReference Include="..\Sunday.Users.Application\Sunday.Users.Application.csproj" />
+    <ProjectReference Include="..\Sunday.Users.Core\Sunday.Users.Core.csproj" />
   </ItemGroup>
 
 </Project>

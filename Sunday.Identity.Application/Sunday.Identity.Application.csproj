@@ -6,7 +6,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Sunday.Identity.Core\Sunday.Identity.Core.csproj" />
-    <ProjectReference Include="..\Sunday.Users.Core\Sunday.Users.Core.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,6 +1,6 @@
 ﻿using Sunday.CMS.Core.Pipelines.Arguments;
 using Sunday.Core.Domain.Roles;
-using Sunday.Core.Users;
+using Sunday.Users.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +13,7 @@ namespace Sunday.CMS.Core.Pipelines.Users
     {
         public async Task ProcessAsync(BeforeCreateUserArg arg)
         {
-            arg.User.Roles = arg.Input.RoleIds.Select(x => new ApplicationRole()
+            arg.User.Roles = arg.Input.RoleIds.Select(x => (IApplicationRole)new ApplicationRole()
             {
                 ID = x
             }).ToList();

@@ -1,6 +1,6 @@
 ﻿using Sunday.CMS.Core.Models.Users;
 using Sunday.Core;
-using Sunday.Core.Models.Users;
+using Sunday.Users.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;

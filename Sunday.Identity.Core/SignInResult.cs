@@ -13,7 +13,7 @@ namespace Sunday.Identity.Core
         public SignInResult(LoginStatus status, IApplicationUser user = null)
         {
             this.Status = status;
-            this.User = user;
+            this.User = (T)user;
         }
     }
 }

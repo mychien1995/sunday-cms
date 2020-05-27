@@ -2,10 +2,11 @@
 using Sunday.CMS.Core.Models;
 using Sunday.CMS.Core.Models.Organizations;
 using Sunday.Core;
-using Sunday.Core.Application.Organizations;
 using Sunday.Core.Domain.Organizations;
 using Sunday.Core.Media.Application;
-using Sunday.Core.Models.Organizations;
+using Sunday.Organizations.Application;
+using Sunday.Organizations.Core;
+using Sunday.Organizations.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

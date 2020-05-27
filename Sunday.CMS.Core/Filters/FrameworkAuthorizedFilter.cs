@@ -2,10 +2,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Sunday.Core.Application.Identity;
-using Sunday.Core.Identity;
-using Sunday.Core.Models.Users;
-using Sunday.Core.Users;
+using Sunday.Identity.Application;
+using Sunday.Identity.Core;
+using Sunday.Users.Application;
+using Sunday.Users.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

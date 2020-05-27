@@ -1,6 +1,7 @@
 ﻿using Sunday.Core;
 using Sunday.Core.Domain.Roles;
 using Sunday.Core.Domain.Users;
+using Sunday.Users.Core;
 using System;
 using System.Collections.Generic;
 using System.Text;

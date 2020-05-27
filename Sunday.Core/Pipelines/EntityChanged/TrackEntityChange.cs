@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Sunday.Core;
 using Sunday.Core.Domain;
-using Sunday.Core.Identity;
+using Sunday.Core.Domain.Identity;
 using Sunday.Core.Pipelines.Arguments;
 using System;
 using System.Collections.Generic;
@@ -43,7 +43,7 @@ namespace Sunday.Core.Pipelines.EntityChanged
                 entity.CreatedDate = now;
             }
             entity.UpdatedDate = now;
-            var currentUser = _httpContextAccessor.HttpContext.User as ApplicationUserPrincipal;
+            var currentUser = _httpContextAccessor.HttpContext.User as IApplicationUserPrincipal;
             if (currentUser != null)
             {
                 entity.UpdatedBy = currentUser.Username;

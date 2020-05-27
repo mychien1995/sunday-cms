@@ -1,5 +1,5 @@
 ﻿using Sunday.Core;
-using Sunday.Core.Models.Organizations;
+using Sunday.Organizations.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;

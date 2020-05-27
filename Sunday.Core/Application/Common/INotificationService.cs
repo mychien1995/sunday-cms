@@ -8,6 +8,6 @@ namespace Sunday.Core.Application.Common
 {
     public interface INotificationService
     {
-        Task NotifyPasswordReset(ApplicationUser user, string newPassword);
+        Task NotifyPasswordReset(IApplicationUser user, string newPassword);
     }
 }

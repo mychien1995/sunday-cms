@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Sunday.CMS.Core.Pipelines.Arguments;
-using Sunday.Core.Identity;
+using Sunday.Identity.Core;
 using System;
 using System.Collections.Generic;
 using System.Text;

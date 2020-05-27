@@ -1,5 +1,5 @@
 ﻿using Sunday.CMS.Core.Pipelines.Arguments;
-using Sunday.Core.Users;
+using Sunday.Users.Application;
 using System;
 using System.Collections.Generic;
 using System.Text;
