@@ -13,6 +13,7 @@ import {
   AddOrganizationComponent,
   OrganizationFormComponent,
   OrganizationFilterComponent,
+  OrganizationAssignBoardComponent
 } from 'app/components';
 import {
   ApplicationLayoutComponent,
@@ -46,5 +47,6 @@ export const SharedComponents = [
   AddOrganizationComponent,
   OrganizationFormComponent,
   OrganizationFilterComponent,
+  OrganizationAssignBoardComponent
 ];
 export const SharedResolvers = [UserResolver, OrganizationResolver];

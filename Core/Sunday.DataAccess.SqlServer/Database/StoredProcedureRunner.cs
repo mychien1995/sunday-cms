@@ -59,7 +59,7 @@ namespace Sunday.DataAccess.SqlServer
                 if (connection.State != ConnectionState.Open)
                     connection.Open();
                 var queryResult = await connection.QueryMultipleAsync(storeName, parameter, commandType: CommandType.StoredProcedure);
-                foreach(var type in returnTypes)
+                foreach (var type in returnTypes)
                 {
                     var typeResult = await queryResult.ReadAsync(type);
                     finalResult.Add(typeResult);

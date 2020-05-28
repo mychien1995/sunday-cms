@@ -178,7 +178,7 @@ BEGIN
 	INSERT INTO @tblRoleIds SELECT value  FROM STRING_SPLIT(@RoleIds, ',')
 	INSERT INTO UserRoles (UserId, RoleId) SELECT @UserId, RoleId FROM @tblRoleIds
 
-	INSERT INTO OrganizationUsers(UserId, OrganizationId, IsActive) SELECT @UserId, OrganizationId, IsActive FROM OrganizationUserType
+	INSERT INTO OrganizationUsers(UserId, OrganizationId, IsActive) SELECT @UserId, OrganizationId, IsActive FROM @Organizations
 END
 GO
 --------------------------------------------------------------------
@@ -211,6 +211,14 @@ BEGIN
 	IF @FetchRoles = 1
 	BEGIN
 		SELECT * FROM Roles WHERE ID IN (SELECT RoleId FROM UserRoles WHERE UserId = @UserId)
+	END
+	IF @FetchOrganizations = 1
+	BEGIN
+		SELECT OrganizationUsers.ID, OrganizationUsers.OrganizationId, OrganizationUsers.UserId,
+		OrganizationUsers.IsActive, Organizations.OrganizationName
+		FROM OrganizationUsers, Organizations
+			WHERE OrganizationUsers.UserId = @UserId
+			AND Organizations.ID = OrganizationUsers.OrganizationId
 	END
 END
 GO

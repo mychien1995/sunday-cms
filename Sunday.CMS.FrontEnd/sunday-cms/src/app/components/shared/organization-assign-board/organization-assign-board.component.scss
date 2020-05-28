@@ -1,0 +1,20 @@
+.organization-assign {
+  display: flex;
+  .arrow-btn-group {
+    margin: auto;
+    text-align: center;
+    min-width: 30px;
+    button {
+      display: block;
+    }
+  }
+  .select-group {
+    width: calc(50% - 30px);
+  }
+  .result-group {
+    width: calc(50% - 15px);
+    tr.selected {
+      background: #f3f2f2;
+    }
+  }
+}

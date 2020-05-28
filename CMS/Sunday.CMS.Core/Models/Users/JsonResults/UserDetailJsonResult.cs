@@ -13,6 +13,7 @@ namespace Sunday.CMS.Core.Models.Users
         public UserDetailJsonResult()
         {
             RoleIds = new List<int>();
+            Organizations = new List<OrganizationsUserItem>();
         }
         public int ID { get; set; }
         public string UserName { get; set; }
@@ -21,7 +22,14 @@ namespace Sunday.CMS.Core.Models.Users
         public string Phone { get; set; }
         public bool IsActive { get; set; }
         public string Domain { get; set; }
-
+        public List<OrganizationsUserItem> Organizations { get; set; }
         public List<int> RoleIds { get; set; }
+    }
+
+    public class OrganizationsUserItem
+    {
+        public string OrganizationName { get; set; }
+        public int OrganizationId { get; set; }
+        public bool IsActive { get; set; }
     }
 }

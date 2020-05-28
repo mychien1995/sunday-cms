@@ -85,6 +85,12 @@ namespace Sunday.CMS.Core.Implementation.Users
             var user = _userRepository.GetUserWithOptions(userId, new GetUserOptions() { FetchRoles = true, FetchOrganizations = true });
             var result = user.MapTo<UserDetailJsonResult>();
             result.RoleIds = user.Roles.Select(x => x.ID).ToList();
+            result.Organizations = user.OrganizationUsers.Select(x => new OrganizationsUserItem()
+            {
+                OrganizationName = x.Organization.OrganizationName,
+                IsActive = x.IsActive,
+                OrganizationId = x.OrganizationId
+            }).ToList();
             result.Success = true;
             return await Task.FromResult(result);
         }

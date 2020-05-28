@@ -1,15 +1,20 @@
 ﻿using Dapper;
 using Sunday.Core;
+using Sunday.Core.Domain.Organizations;
 using Sunday.Core.Domain.Roles;
 using Sunday.Core.Exceptions;
 using Sunday.Core.Models;
 using Sunday.DataAccess.SqlServer;
+using Sunday.Organizations.Core;
+using Sunday.Organizations.Core.Models;
 using Sunday.Users.Application;
 using Sunday.Users.Core;
 using Sunday.Users.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -40,12 +45,16 @@ namespace Sunday.Users.Implementation
         {
             ApplicationUser user = null;
             if (option == null) option = new GetUserOptions();
-            var queryResult = _dbRunner.ExecuteMultiple(ProcedureNames.Users.GetByIdWithOptions, new Type[] { typeof(ApplicationUser), typeof(ApplicationRole) }, new
-            {
-                UserId = userId,
-                option.FetchRoles,
-                option.FetchOrganizations
-            });
+            var returnTypes = new List<Type>() { typeof(ApplicationUser) };
+            if (option.FetchRoles) returnTypes.Add(typeof(ApplicationRole));
+            if (option.FetchOrganizations) returnTypes.Add(typeof(OrganizationUserEntity));
+            var queryResult = _dbRunner.ExecuteMultiple(ProcedureNames.Users.GetByIdWithOptions, returnTypes.ToArray(),
+                new
+                {
+                    UserId = userId,
+                    option.FetchRoles,
+                    option.FetchOrganizations
+                });
             if (queryResult.Count > 0)
             {
                 user = queryResult[0].FirstOrDefault() as ApplicationUser;
@@ -53,6 +62,16 @@ namespace Sunday.Users.Implementation
             if (queryResult.Count > 1)
             {
                 user.Roles = queryResult[1].Select(x => x as ApplicationRole).Cast<IApplicationRole>().ToList();
+            }
+            if (queryResult.Count > 2)
+            {
+                user.OrganizationUsers = queryResult[2].Select(x => x as OrganizationUserEntity).Select(x =>
+                {
+                    var organizationUser = x.MapTo<ApplicationOrganizationUser>();
+                    organizationUser.Organization = new ApplicationOrganization();
+                    organizationUser.Organization.OrganizationName = x.OrganizationName;
+                    return organizationUser;
+                }).Cast<IApplicationOrganizationUser>().ToList();
             }
             return user;
         }
@@ -71,25 +90,8 @@ namespace Sunday.Users.Implementation
         public async virtual Task<ApplicationUser> CreateUser(ApplicationUser user)
         {
             var RoleIds = string.Join(",", user.Roles.Select(x => x.ID));
-            var roleType = new DataTable("RoleType");
-            roleType.Columns.Add("ID", typeof(int));
-            roleType.Columns.Add("Code", typeof(string));
-            var result = await _dbRunner.ExecuteAsync<int>(ProcedureNames.Users.Insert, new
-            {
-                user.UserName,
-                user.Fullname,
-                user.Email,
-                user.Phone,
-                user.IsActive,
-                user.Domain,
-                user.EmailConfirmed,
-                user.CreatedBy,
-                user.UpdatedBy,
-                user.SecurityStamp,
-                user.PasswordHash,
-                RoleIds,
-                Organizations = GetOrganizationParam(user)
-            });
+            var param = new CreateUserDynamicParameter(user);
+            var result = await _dbRunner.ExecuteAsync<int>(ProcedureNames.Users.Insert, param);
             if (!result.Any()) return null;
             user.ID = result.FirstOrDefault();
             return user;
@@ -108,8 +110,7 @@ namespace Sunday.Users.Implementation
                 user.UpdatedBy,
                 user.UpdatedDate,
                 user.AvatarBlobUri,
-                RoleIds,
-                Organizations = GetOrganizationParam(user)
+                RoleIds
             });
             if (!result.Any()) return null;
             user.ID = result.FirstOrDefault();
@@ -167,18 +168,6 @@ namespace Sunday.Users.Implementation
                 PasswordHash = user.PasswordHash
             });
             return true;
-        }
-
-        protected object GetOrganizationParam(ApplicationUser user)
-        {
-            var organizationUserType = new DataTable("Organizations");
-            organizationUserType.Columns.Add("OrganizationId", typeof(int));
-            organizationUserType.Columns.Add("IsActive", typeof(bool));
-            foreach (var organization in user.OrganizationUsers)
-            {
-                organizationUserType.Rows.Add(organization.Organization.ID, organization.IsActive);
-            }
-            return organizationUserType;
         }
     }
 }

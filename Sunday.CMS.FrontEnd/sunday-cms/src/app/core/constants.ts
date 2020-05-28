@@ -26,8 +26,9 @@ export class ApiUrl {
     Edit: 'cms/api/organizations/update',
     GetById: 'cms/api/organizations/',
     Delete: 'cms/api/organizations/',
+    Lookup: 'cms/api/organizations/lookup',
     Activate: 'cms/api/organizations/activate',
-    Deactivate: 'cms/api/organizations/deactivate'
+    Deactivate: 'cms/api/organizations/deactivate',
   };
   public static FileUpload = 'cms/api/FileUpload';
 }

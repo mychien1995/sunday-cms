@@ -36,3 +36,13 @@ export class OrganizationDetailResponse extends ApiResponse {
   IsActive: boolean;
   HostNames: string[];
 }
+
+export class OrganizationLookupResponse extends ApiResponse {
+  List: OrganizationItem[];
+}
+
+export class OrganizationUserItem {
+  OrganizationName: string;
+  OrganizationId: number;
+  IsActive: boolean;
+}

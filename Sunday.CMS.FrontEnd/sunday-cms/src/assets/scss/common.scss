@@ -7,13 +7,17 @@
   height: 30px;
   border: 1px solid #ccc;
 }
-.logo-box{
+.logo-box {
   padding: 10px;
   border: 1px solid #ccc;
   height: 100%;
-  img{
+  img {
     display: block;
     margin: auto;
     max-height: 100%;
   }
+}
+.hint-text {
+  font-style: italic;
+  font-size: 12px;
 }

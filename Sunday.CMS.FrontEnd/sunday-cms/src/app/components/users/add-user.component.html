@@ -30,8 +30,8 @@
                         <div class="col-md-6">
                             <div class="position-relative form-group">
                                 <label for="yyyy" class="password">&nbsp;<span class="red">*</span></label>
-                                <input name="yyyy" placeholder="Password here..." type="password"
-                                    class="form-control" formControlName="Password" required [readOnly]="isEdit">
+                                <input name="yyyy" placeholder="Password here..." type="password" class="form-control"
+                                    formControlName="Password" required [readOnly]="isEdit">
                                 <span class="text-danger"
                                     [hidden]="!(ngForm.submitted && userForm.controls['Password'].hasError('required'))">This
                                     field is required</span>
@@ -59,16 +59,19 @@
                                 <input name="Email" placeholder="Email here..." type="text" class="form-control"
                                     formControlName="Email" autocomplete="off" [email]="true">
                                 <span class="text-danger"
-                                    [hidden]="!(ngForm.submitted && userForm.controls['Email'].hasError('email'))">Incorrect email format</span>
+                                    [hidden]="!(ngForm.submitted && userForm.controls['Email'].hasError('email'))">Incorrect
+                                    email format</span>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="position-relative form-group">
                                 <label for="Phonenumber" class="">Phone</label>
                                 <input name="Phonenumber" placeholder="Phone number here..." type="text"
-                                    class="form-control" formControlName="Phone" pattern="^(?:0|\\+)[0-9\\s.\\/-]{9,15}$">
-                                    <span class="text-danger"
-                                        [hidden]="!(ngForm.submitted && userForm.controls['Phone'].hasError('pattern'))">Incorrect phonenumber format</span>
+                                    class="form-control" formControlName="Phone"
+                                    pattern="^(?:0|\\+)[0-9\\s.\\/-]{9,15}$">
+                                <span class="text-danger"
+                                    [hidden]="!(ngForm.submitted && userForm.controls['Phone'].hasError('pattern'))">Incorrect
+                                    phonenumber format</span>
                             </div>
                         </div>
                     </div>
@@ -88,7 +91,7 @@
                             <div class="position-relative form-group">
                                 <label for="Roles" class="">Role <span class="red">*</span></label>
                                 <ng-select [items]="roleLookup" bindValue="ID" bindLabel="RoleName"
-                                    formControlName="RoleId" [searchable]="false" required>
+                                    formControlName="RoleId" [searchable]="false" required (change)="onRoleChange()">
                                 </ng-select>
                                 <span class="text-danger"
                                     [hidden]="!(ngForm.submitted && userForm.controls['RoleId'].hasError('required'))">This
@@ -97,6 +100,14 @@
                         </div>
                     </div>
                     <div class="form-row">
+                        <div class="col-md-6" [hidden]="!showOrganization">
+                            <div class="position-relative form-group">
+                                <label for="Active" class="">Organizations</label>
+                                <app-organization-assign-board [organizationList]="organizationLookup" [selectedOrganizations]="this.currentUser.Organizations"
+                                    (selectedOrganizationChanged)="onOrganizationSelected($event)">
+                                </app-organization-assign-board>
+                            </div>
+                        </div>
                         <div class="col-md-6">
                             <div class="position-relative form-group">
                                 <label for="Active" class="">Active</label>

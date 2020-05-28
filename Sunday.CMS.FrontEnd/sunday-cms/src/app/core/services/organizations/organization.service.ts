@@ -6,6 +6,7 @@ import {
   OrganizationMutationModel,
   ApiResponse,
   OrganizationDetailResponse,
+  OrganizationLookupResponse
 } from '@models/index';
 import { ApiUrl } from '@core/constants';
 import { Observable } from 'rxjs';
@@ -53,6 +54,12 @@ export class OrganizationService {
   deleteOrganization(orgId: number): Observable<ApiResponse> {
     return this.apiService
       .delete(`${ApiUrl.Organizations.Delete}?id=${orgId}`)
+      .pipe(map(ApiHelper.onSuccess), catchError(ApiHelper.onFail));
+  }
+
+  getOrganizationsLookup() : Observable<OrganizationLookupResponse>{
+    return this.apiService
+      .get(`${ApiUrl.Organizations.Lookup}`)
       .pipe(map(ApiHelper.onSuccess), catchError(ApiHelper.onFail));
   }
 }

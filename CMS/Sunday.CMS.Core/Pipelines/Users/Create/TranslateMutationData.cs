@@ -25,6 +25,7 @@ namespace Sunday.CMS.Core.Pipelines.Users
                 {
                     ID = x.OrganizationId
                 },
+                OrganizationId = x.OrganizationId,
                 IsActive = x.IsActive
             }).ToList();
         }

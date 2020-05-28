@@ -1,5 +1,6 @@
 import { ApiResponse } from '@models/common/response.model';
 import { RoleModel } from '../roles/roles.models';
+import { OrganizationUserItem } from '@models/organizations/organization.model';
 
 export class UserList extends ApiResponse {
   Total: number;
@@ -26,6 +27,7 @@ export class UserMutationModel {
   IsActive: boolean;
   Domain: string;
   RoleIds: string[] = [];
+  Organizations: OrganizationUserItem[] = [];
 }
 
 export class CreateUserResponse extends ApiResponse {
@@ -33,6 +35,11 @@ export class CreateUserResponse extends ApiResponse {
 }
 
 export class UserDetailResponse extends ApiResponse {
+  constructor() {
+    super();
+    this.Organizations = [];
+    this.RoleIds = [];
+  }
   ID?: number;
   UserName: string;
   Fullname: string;
@@ -41,6 +48,7 @@ export class UserDetailResponse extends ApiResponse {
   IsActive: boolean;
   Domain: string;
   RoleIds: number[] = [];
+  Organizations: OrganizationUserItem[] = [];
   AvatarLink?: string;
 }
 

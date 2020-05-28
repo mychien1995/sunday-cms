@@ -5,9 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Identity\Sunday.Identity.Application\Sunday.Identity.Application.csproj" />
-    <ProjectReference Include="..\Organizations\Sunday.Organizations.Application\Sunday.Organizations.Application.csproj" />
-    <ProjectReference Include="..\Users\Sunday.Users.Application\Sunday.Users.Application.csproj" />
+    <ProjectReference Include="..\Identity\Sunday.Identity.Implementation\Sunday.Identity.Implementation.csproj" />
+    <ProjectReference Include="..\Organizations\Sunday.Organizations.Implementation\Sunday.Organizations.Implementation.csproj" />
+    <ProjectReference Include="..\Users\Sunday.Users.Implementation\Sunday.Users.Implementation.csproj" />
   </ItemGroup>
 
 </Project>

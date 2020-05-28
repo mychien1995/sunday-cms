@@ -1,0 +1,41 @@
+<div class="organization-assign">
+    <div class="select-group">
+        <label class="hint-text">Available Organizations</label>
+        <select multiple class="form-control" style="height: 200px;" [(ngModel)]="selectedAvailableOrganizationIds">
+            <option *ngFor="let org of availableOrganizations" value="{{org.ID}}">{{org.OrganizationName}}</option>
+        </select>
+    </div>
+    <div class="arrow-btn-group">
+        <button class="mt-5" type="button" (click)="selectOrganization()">
+            <i class="fa fa-arrow-right"></i>
+        </button>
+        <button class="mt-4" type="button" (click)="deselectOrganization()">
+            <i class="fa fa-arrow-left"></i>
+        </button>
+    </div>
+    <div class="result-group">
+        <label class="hint-text">Selected Organizations</label>
+        <div class="scroll-area-sm" style="border: 1px solid #ccc;">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Organization</th>
+                        <th>User Active</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let org of selectedOrganizations; let i = index" [class]="tableRowClass(org.OrganizationId)">
+                        <td (click)="selectCurrentOrganization(org.OrganizationId)">{{org.OrganizationName}}</td>
+                        <td align="center">
+                            <div class="position-relative custom-checkbox custom-control">
+                                <input type="checkbox" id="customCheckbox{{i}}" class="custom-control-input" [checked]="org.IsActive"
+                                    title="Is Active">
+                                <label class="custom-control-label" for="customCheckbox{{i}}">&nbsp;</label>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
