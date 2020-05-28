@@ -9,6 +9,7 @@ using Sunday.Users.Core;
 using Sunday.Users.Core.Models;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -70,7 +71,6 @@ namespace Sunday.Users.Implementation
         public async virtual Task<ApplicationUser> CreateUser(ApplicationUser user)
         {
             var RoleIds = string.Join(",", user.Roles.Select(x => x.ID));
-            var OrganizationIds = string.Join(",", user.Organizations.Select(x => x.ID));
             var roleType = new DataTable("RoleType");
             roleType.Columns.Add("ID", typeof(int));
             roleType.Columns.Add("Code", typeof(string));
@@ -88,7 +88,7 @@ namespace Sunday.Users.Implementation
                 user.SecurityStamp,
                 user.PasswordHash,
                 RoleIds,
-                OrganizationIds
+                Organizations = GetOrganizationParam(user)
             });
             if (!result.Any()) return null;
             user.ID = result.FirstOrDefault();
@@ -108,7 +108,8 @@ namespace Sunday.Users.Implementation
                 user.UpdatedBy,
                 user.UpdatedDate,
                 user.AvatarBlobUri,
-                RoleIds
+                RoleIds,
+                Organizations = GetOrganizationParam(user)
             });
             if (!result.Any()) return null;
             user.ID = result.FirstOrDefault();
@@ -166,6 +167,18 @@ namespace Sunday.Users.Implementation
                 PasswordHash = user.PasswordHash
             });
             return true;
+        }
+
+        protected object GetOrganizationParam(ApplicationUser user)
+        {
+            var organizationUserType = new DataTable("Organizations");
+            organizationUserType.Columns.Add("OrganizationId", typeof(int));
+            organizationUserType.Columns.Add("IsActive", typeof(bool));
+            foreach (var organization in user.OrganizationUsers)
+            {
+                organizationUserType.Rows.Add(organization.Organization.ID, organization.IsActive);
+            }
+            return organizationUserType;
         }
     }
 }

@@ -19,9 +19,13 @@ namespace Sunday.CMS.Core.Pipelines.Users
             {
                 ID = x
             }).ToList();
-            arg.User.Organizations = arg.Input.OrganizationIds.Select(x => (IApplicationOrganization)new ApplicationOrganization()
+            arg.User.OrganizationUsers = arg.Input.Organizations.Select(x => (IApplicationOrganizationUser)new ApplicationOrganizationUser()
             {
-                ID = x
+                Organization = new ApplicationOrganization()
+                {
+                    ID = x.OrganizationId
+                },
+                IsActive = x.IsActive
             }).ToList();
         }
     }
