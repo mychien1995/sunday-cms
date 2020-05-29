@@ -237,7 +237,7 @@ ALTER PROCEDURE [dbo].[sp_users_update]
 	@IsActive bit = 1,
 	@UpdatedBy nvarchar(500),
 	@UpdatedDate datetime,
-	@AvatarBlobUri nvarchar(MAX),
+	@AvatarBlobUri nvarchar(MAX) = NULL,
 	@RoleIds nvarchar(MAX),
 	@Organizations OrganizationUserType READONLY
 )
@@ -269,7 +269,7 @@ BEGIN
 		ON tgt.OrganizationId = src.OrganizationId AND tgt.UserId = @ID
 		WHEN MATCHED THEN
         UPDATE 
-            SET tgt.IsActive = tgt.IsActive;
+            SET tgt.IsActive = src.IsActive;
 	END
 END
 GO

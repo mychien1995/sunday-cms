@@ -100,18 +100,8 @@ namespace Sunday.Users.Implementation
         public async virtual Task<ApplicationUser> UpdateUser(ApplicationUser user)
         {
             var RoleIds = string.Join(",", user.Roles.Select(x => x.ID));
-            var result = await _dbRunner.ExecuteAsync<int>(ProcedureNames.Users.Update, new
-            {
-                user.ID,
-                user.Fullname,
-                user.Email,
-                user.Phone,
-                user.IsActive,
-                user.UpdatedBy,
-                user.UpdatedDate,
-                user.AvatarBlobUri,
-                RoleIds
-            });
+            var param = new UpdateUserDynamicParamter(user);
+            var result = await _dbRunner.ExecuteAsync<int>(ProcedureNames.Users.Update, param);
             if (!result.Any()) return null;
             user.ID = result.FirstOrDefault();
             return user;

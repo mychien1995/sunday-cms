@@ -1,4 +1,10 @@
-import { Component, OnInit, ViewEncapsulation, Input, Output } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ViewEncapsulation,
+  Input,
+  Output,
+} from '@angular/core';
 import { OrganizationItem, OrganizationUserItem } from '@models/index';
 import { EventEmitter } from '@angular/core';
 
@@ -72,6 +78,15 @@ export class OrganizationAssignBoardComponent implements OnInit {
       return 'selected';
     }
     return '';
+  }
+
+  onActiveChange($event: any, orgId: number): void {
+    const checked = $event.target.checked;
+    const organizationUser = this.selectedOrganizations.find(
+      (c) => c.OrganizationId.toString() === orgId.toString()
+    );
+    organizationUser.IsActive = checked;
+    this.selectedOrganizationChanged.emit(this.selectedOrganizations);
   }
 
   ngOnInit(): void {}

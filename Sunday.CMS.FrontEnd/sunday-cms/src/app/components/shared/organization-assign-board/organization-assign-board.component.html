@@ -29,7 +29,7 @@
                         <td align="center">
                             <div class="position-relative custom-checkbox custom-control">
                                 <input type="checkbox" id="customCheckbox{{i}}" class="custom-control-input" [checked]="org.IsActive"
-                                    title="Is Active">
+                                    title="Is Active" (change)="onActiveChange($event, org.OrganizationId)">
                                 <label class="custom-control-label" for="customCheckbox{{i}}">&nbsp;</label>
                             </div>
                         </td>
