@@ -22,6 +22,8 @@ namespace Sunday.Users.Application
 
         Task<ApplicationUser> UpdateUser(ApplicationUser user);
 
+        Task<ApplicationUser> UpdateAvatar(int userId, string blobIdentifier);
+
         Task<bool> DeleteUser(int userId);
 
         Task FetchUserRoles(List<ApplicationUser> users);

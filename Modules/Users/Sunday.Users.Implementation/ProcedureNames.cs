@@ -14,6 +14,7 @@ namespace Sunday.Users.Implementation
             public const string Search = "sp_users_search";
             public const string Insert = "sp_users_insert";
             public const string Update = "sp_users_update";
+            public const string UpdateAvatar = "sp_users_updateAvatar";
             public const string Delete = "sp_users_delete";
             public const string FetchRoles = "sp_users_fetchRoles";
             public const string Activate = "sp_users_activate";

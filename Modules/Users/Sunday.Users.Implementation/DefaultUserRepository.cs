@@ -44,7 +44,11 @@ namespace Sunday.Users.Implementation
         public virtual ApplicationUser GetUserWithOptions(int userId, GetUserOptions option = null)
         {
             ApplicationUser user = null;
-            if (option == null) option = new GetUserOptions();
+            if (option == null) option = new GetUserOptions()
+            {
+                FetchOrganizations = true,
+                FetchRoles = true
+            };
             var returnTypes = new List<Type>() { typeof(ApplicationUser) };
             if (option.FetchRoles) returnTypes.Add(typeof(ApplicationRole));
             if (option.FetchOrganizations) returnTypes.Add(typeof(OrganizationUserEntity));
@@ -105,6 +109,17 @@ namespace Sunday.Users.Implementation
             if (!result.Any()) return null;
             user.ID = result.FirstOrDefault();
             return user;
+        }
+
+        public async virtual Task<ApplicationUser> UpdateAvatar(int userId, string blobIdentifier)
+        {
+            var result = await _dbRunner.ExecuteAsync<ApplicationUser>(ProcedureNames.Users.UpdateAvatar, new
+            {
+                UserId = userId,
+                BlobUri = blobIdentifier
+            });
+            if (!result.Any()) return null;
+            return result.FirstOrDefault();
         }
 
         public async virtual Task<bool> DeleteUser(int userId)

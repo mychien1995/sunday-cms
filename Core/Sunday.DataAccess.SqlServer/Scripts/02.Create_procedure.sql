@@ -232,17 +232,20 @@ ALTER PROCEDURE [dbo].[sp_users_update]
 (
 	@ID int,
 	@Fullname nvarchar(500),
-	@Email nvarchar(500),
-	@Phone nvarchar(500),
+	@Email nvarchar(500) = NULL,
+	@Phone nvarchar(500) = NULL,
 	@IsActive bit = 1,
 	@UpdatedBy nvarchar(500),
 	@UpdatedDate datetime,
 	@AvatarBlobUri nvarchar(MAX) = NULL,
-	@RoleIds nvarchar(MAX),
+	@RoleIds nvarchar(MAX) = NULL,
 	@Organizations OrganizationUserType READONLY
 )
 AS
 BEGIN
+	IF(@UpdatedDate IS NULL)
+		SET @UpdatedDate = GETDATE()
+
 	UPDATE [Users] SET FullName = @Fullname, Email = @Email, Phone = @Phone, IsActive = @IsActive, UpdatedBy = @UpdatedBy,
 	UpdatedDate = @UpdatedDate, AvatarBlobUri = @AvatarBlobUri
 	WHERE ID = @ID
@@ -256,7 +259,6 @@ BEGIN
 		INSERT INTO UserRoles (UserId, RoleId) SELECT @ID, RoleId FROM @tblRoleIds
 	END
 
-	IF EXISTS(SELECT * FROM @Organizations)
 	BEGIN
 		DELETE FROM OrganizationUsers WHERE UserId = @ID AND OrganizationId NOT IN (SELECT OrganizationId FROM @Organizations)
 
@@ -271,6 +273,24 @@ BEGIN
         UPDATE 
             SET tgt.IsActive = src.IsActive;
 	END
+	
+END
+GO
+--------------------------------------------------------------------
+IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_users_updateAvatar')
+BEGIN
+	EXEC('CREATE PROCEDURE [dbo].[sp_users_updateAvatar] AS BEGIN SET NOCOUNT ON; END')
+END
+GO
+ALTER PROCEDURE [dbo].[sp_users_updateAvatar]
+(
+	@UserId int,
+	@BlobUri nvarchar(MAX)
+)
+AS
+BEGIN
+	UPDATE Users SET AvatarBlobUri = @BlobUri WHERE ID = @UserId
+	SELECT * FROM Users WHERE ID = @UserId
 END
 GO
 --------------------------------------------------------------------
