@@ -82,7 +82,7 @@ namespace Sunday.CMS.Core.Implementation.Users
 
         public async virtual Task<UserDetailJsonResult> GetUserById(int userId)
         {
-            var user = _userRepository.GetUserWithOptions(userId, new GetUserOptions() { FetchRoles = true, FetchOrganizations = true });
+            var user = _userRepository.GetUserById(userId);
             var result = user.MapTo<UserDetailJsonResult>();
             result.RoleIds = user.Roles.Select(x => x.ID).ToList();
             result.Organizations = user.OrganizationUsers.Select(x => new OrganizationsUserItem()

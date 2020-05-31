@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Sunday.CMS.Core.Application.Identity;
+using Sunday.CMS.Core.Application.Organizations;
 using Sunday.CMS.Core.Models;
 using Sunday.Core;
 using Sunday.Core.Domain.Identity;
@@ -8,6 +9,7 @@ using Sunday.Core.Domain.Users;
 using Sunday.Core.Media.Application;
 using Sunday.Identity.Application;
 using Sunday.Identity.Core;
+using Sunday.Users.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,12 +23,12 @@ namespace Sunday.CMS.Core.Implementation.Identity
     {
         private readonly IAuthenticationService _authenticationService;
         private readonly IBlobLinkManager _blobLinkManager;
-        private readonly IHttpContextAccessor _httpContextAccessor;
-        public LoginManager(IAuthenticationService authenticationService, IBlobLinkManager blobLinkManager, IHttpContextAccessor httpContextAccessor)
+        private readonly IOrganizationAccessManager _accessManager;
+        public LoginManager(IAuthenticationService authenticationService, IBlobLinkManager blobLinkManager, IOrganizationAccessManager accessManager)
         {
             _authenticationService = authenticationService;
             _blobLinkManager = blobLinkManager;
-            _httpContextAccessor = httpContextAccessor;
+            _accessManager = accessManager;
         }
         public async Task<LoginApiResponse> LoginAsync(LoginInputModel credential)
         {
@@ -50,6 +52,11 @@ namespace Sunday.CMS.Core.Implementation.Identity
                     break;
             }
             if (authenticateResult.SignInResult != LoginStatus.Success) return result;
+            if (!_accessManager.AllowAccess(authenticateResult.User))
+            {
+                result.AddError("You are not allowed to access this hostname");
+                return result;
+            }
             result.Email = authenticateResult.User.Email;
             result.Fullname = authenticateResult.User.Fullname;
             result.Phone = authenticateResult.User.Phone;

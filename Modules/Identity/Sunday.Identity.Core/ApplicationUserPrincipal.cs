@@ -12,13 +12,11 @@ namespace Sunday.Identity.Core
 {
     public class ApplicationUserPrincipal : ClaimsPrincipal, IApplicationUserPrincipal
     {
-        public ApplicationUserPrincipal(int userId)
-        {
-            this.Identity = new GenericIdentity(userId.ToString());
-        }
+        public IApplicationUser User { get; set; }
         public ApplicationUserPrincipal(IApplicationUser user)
         {
             this.Identity = new GenericIdentity(user.ID.ToString());
+            this.User = user;
             this.UserId = user.ID;
             this.Username = user.UserName;
             this.Fullname = user.Fullname;
@@ -35,8 +33,7 @@ namespace Sunday.Identity.Core
 
         public override bool IsInRole(string roleCode)
         {
-            if (Roles == null || !Roles.Any()) return false;
-            return Roles.Any(c => c.Code.ToLower() == roleCode.ToLower());
+            return User.IsInRole(roleCode);
         }
     }
 }

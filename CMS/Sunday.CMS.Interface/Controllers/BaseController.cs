@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 namespace Sunday.CMS.Interface.Controllers
 {
     [FrameworkAuthorized]
+    [OrganizationAuthorized]
     [FrameworkExceptionHandler]
     [ApiController]
     [Route("cms/api/[controller]")]

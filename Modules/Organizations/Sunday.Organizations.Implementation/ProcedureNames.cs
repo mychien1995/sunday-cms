@@ -15,6 +15,7 @@ namespace Sunday.Organizations.Implementation
             public const string Update = "sp_organizations_update";
             public const string Delete = "sp_organizations_delete";
             public const string Activate = "sp_organizations_activate";
+            public const string FindByHostname = "sp_organizations_findByHostName";
             public const string Deactivate = "sp_organizations_deactivate";
         }
     }

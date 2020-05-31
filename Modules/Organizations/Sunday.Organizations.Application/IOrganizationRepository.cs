@@ -25,5 +25,7 @@ namespace Sunday.Organizations.Application
         Task<bool> Activate(int organizationId);
 
         Task<bool> Deactivate(int organizationId);
+
+        Task<ApplicationOrganization> FindOrganizationByHostname(string hostName);
     }
 }

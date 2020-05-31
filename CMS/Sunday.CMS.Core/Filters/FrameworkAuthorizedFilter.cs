@@ -41,10 +41,7 @@ namespace Sunday.CMS.Core.Filters
                 context.Result = new UnauthorizedResult();
                 return;
             }
-            var user = _userRepository.GetUserWithOptions(userId.Value, new GetUserOptions()
-            {
-                FetchRoles = true
-            });
+            var user = _userRepository.GetUserById(userId.Value);
             if (user == null || user.IsDeleted || !user.IsActive || user.IsLockedOut)
             {
                 context.Result = new UnauthorizedResult();

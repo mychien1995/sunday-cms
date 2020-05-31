@@ -46,6 +46,7 @@ ALTER PROCEDURE [dbo].[sp_users_findbyusername]
 AS
 BEGIN
 	SELECT * FROM [Users] WHERE Username = @Username
+	SELECT * FROM [Roles] WHERE ID IN (SELECT RoleId FROM UserRoles WHERE UserId IN (SELECT ID FROM [Users] WHERE Username = @Username))
 END
 GO
 --------------------------------------------------------------------

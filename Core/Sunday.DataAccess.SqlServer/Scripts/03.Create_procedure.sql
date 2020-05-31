@@ -220,3 +220,19 @@ BEGIN
 	@Text, @IsActive
 END
 GO
+--------------------------------------------------------------------
+IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_organizations_findByHostName')
+BEGIN
+	EXEC('CREATE PROCEDURE [dbo].[sp_organizations_findByHostName] AS BEGIN SET NOCOUNT ON; END')
+END
+GO
+ALTER PROCEDURE dbo.sp_organizations_findByHostName
+(
+	@Hostname nvarchar(MAX)
+)
+AS
+BEGIN
+	SELECT * FROM [Organizations] WHERE Hosts LIKE '%|' + @Hostname + '%'
+	OR Hosts LIKE '%' + @Hostname + '|%' OR Hosts = @Hostname
+END
+GO

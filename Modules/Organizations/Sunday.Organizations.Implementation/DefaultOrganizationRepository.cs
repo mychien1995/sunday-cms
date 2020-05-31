@@ -83,7 +83,13 @@ namespace Sunday.Organizations.Implementation
             await _dbRunner.ExecuteAsync<object>(ProcedureNames.Organizations.Activate, new { OrganizationId = organizationId });
             return true;
         }
-
+        public virtual async Task<ApplicationOrganization> FindOrganizationByHostname(string hostName)
+        {
+            var result = await _dbRunner.ExecuteAsync<OrganizationEntity>(ProcedureNames.Organizations.FindByHostname, new { Hostname = hostName });
+            var matchedOrg = result.FirstOrDefault(x => x.Hosts != null && x.HostNames.Contains(hostName));
+            if (matchedOrg == null) return null;
+            return matchedOrg;
+        }
         protected virtual object GetInsertParameters(ApplicationOrganization org)
         {
             return new

@@ -14,7 +14,7 @@ import { ToastrService, Toast } from 'ngx-toastr';
 
 @Injectable()
 export class AuthenticationInterceptor implements HttpInterceptor {
-  constructor(private router: Router, private toastr : ToastrService) {}
+  constructor(private router: Router, private toastr: ToastrService) {}
 
   intercept(
     request: HttpRequest<any>,
@@ -26,7 +26,9 @@ export class AuthenticationInterceptor implements HttpInterceptor {
         (error) => {
           if (error instanceof HttpErrorResponse) {
             if (!request.url.endsWith(ApiUrl.Login) && error.status === 401) {
-              this.toastr.error('You are not logged in');
+              if (error.error.message) {
+                this.toastr.error(error.error.message);
+              } else this.toastr.error('You are not logged in');
               this.router.navigate(['/login']);
             }
           }

@@ -42,10 +42,7 @@ namespace Sunday.CMS.Core.Implementation.Users
         {
             var currentUserPrincipal = _httpContextAccesor.HttpContext.User as ApplicationUserPrincipal;
             mutationModel.ID = currentUserPrincipal.UserId;
-            var currentUser = _userRepository.GetUserWithOptions(currentUserPrincipal.UserId, new GetUserOptions()
-            {
-                FetchRoles = true
-            });
+            var currentUser = _userRepository.GetUserById(currentUserPrincipal.UserId);
             mutationModel.IsActive = currentUser.IsActive;
             mutationModel.UserName = currentUser.UserName;
             mutationModel.AvatarBlobUri = currentUser.AvatarBlobUri;
@@ -67,7 +64,7 @@ namespace Sunday.CMS.Core.Implementation.Users
         public async virtual Task<BaseApiResponse> ChangeAvatar(ChangeAvatarModel changeAvatarModel)
         {
             var currentUserPrincipal = _httpContextAccesor.HttpContext.User as ApplicationUserPrincipal;
-            var currentUser = _userRepository.GetUserWithOptions(currentUserPrincipal.UserId, new GetUserOptions());
+            var currentUser = _userRepository.GetUserById(currentUserPrincipal.UserId);
             var result = await _userRepository.UpdateAvatar(currentUser.ID, changeAvatarModel.BlobIdentifier);
             return new BaseApiResponse();
         }

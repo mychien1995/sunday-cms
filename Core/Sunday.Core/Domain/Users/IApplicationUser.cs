@@ -22,5 +22,6 @@ namespace Sunday.Core.Domain.Users
         public string Fullname { get; set; }
         public List<IApplicationRole> Roles { get; set; }
         public List<IApplicationOrganizationUser> OrganizationUsers { get; set; }
+        bool IsInRole(string roleCode);
     }
 }

@@ -31,33 +31,24 @@ namespace Sunday.Users.Implementation
         }
         public async virtual Task<ApplicationUser> FindUserByNameAsync(string username)
         {
-            var result = await _dbRunner.ExecuteAsync<ApplicationUser>(ProcedureNames.Users.FindUserByUserName, new { Username = username });
-            return result.FirstOrDefault();
+            var queryResult = _dbRunner.ExecuteMultiple(ProcedureNames.Users.FindUserByUserName, new Type[] { typeof(ApplicationUser),
+                typeof(ApplicationRole) }, new { Username = username });
+            var user = queryResult[0].FirstOrDefault() as ApplicationUser;
+            if (user != null)
+                user.Roles = queryResult[1].Select(x => x as ApplicationRole).Cast<IApplicationRole>().ToList();
+            return user;
         }
 
         public virtual ApplicationUser GetUserById(int userId)
         {
-            var result = _dbRunner.Execute<ApplicationUser>(ProcedureNames.Users.GetById, new { UserId = userId });
-            return result.FirstOrDefault();
-        }
-
-        public virtual ApplicationUser GetUserWithOptions(int userId, GetUserOptions option = null)
-        {
             ApplicationUser user = null;
-            if (option == null) option = new GetUserOptions()
-            {
-                FetchOrganizations = true,
-                FetchRoles = true
-            };
-            var returnTypes = new List<Type>() { typeof(ApplicationUser) };
-            if (option.FetchRoles) returnTypes.Add(typeof(ApplicationRole));
-            if (option.FetchOrganizations) returnTypes.Add(typeof(OrganizationUserEntity));
+            var returnTypes = new List<Type>() { typeof(ApplicationUser), typeof(ApplicationRole), typeof(OrganizationUserEntity) };
             var queryResult = _dbRunner.ExecuteMultiple(ProcedureNames.Users.GetByIdWithOptions, returnTypes.ToArray(),
                 new
                 {
                     UserId = userId,
-                    option.FetchRoles,
-                    option.FetchOrganizations
+                    FetchRoles = true,
+                    FetchOrganizations = true
                 });
             if (queryResult.Count > 0)
             {
