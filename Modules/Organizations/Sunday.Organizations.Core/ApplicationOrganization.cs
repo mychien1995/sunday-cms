@@ -1,4 +1,5 @@
-﻿using Sunday.Core.Domain.Organizations;
+﻿using Sunday.Core.Domain.FeatureAccess;
+using Sunday.Core.Domain.Organizations;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,6 +12,7 @@ namespace Sunday.Organizations.Core
         {
             Properties = new Dictionary<string, object>();
             HostNames = new List<string>();
+            Modules = new List<IApplicationModule>();
         }
         public virtual int ID { get; set; }
         public virtual string OrganizationName { get; set; }
@@ -24,5 +26,6 @@ namespace Sunday.Organizations.Core
         public virtual string UpdatedBy { get; set; }
         public virtual bool IsActive { get; set; }
         public virtual bool IsDeleted { get; set; }
+        public List<IApplicationModule> Modules { get; set; }
     }
 }

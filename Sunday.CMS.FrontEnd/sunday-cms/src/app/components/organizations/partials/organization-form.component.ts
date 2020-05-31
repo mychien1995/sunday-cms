@@ -3,6 +3,7 @@ import {
   OnInit,
   ViewEncapsulation,
   TemplateRef,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { ClientState } from '@services/layout/clientstate.service';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -11,10 +12,12 @@ import {
   OrganizationService,
   ColorService,
   FileUploadService,
+  ModuleService,
 } from '@services/index';
 import {
   OrganizationMutationModel,
   OrganizationDetailResponse,
+  ModuleModel,
 } from '@models/index';
 import { DefaultOrganizationLogo } from '@core/constants';
 import { ToastrService } from 'ngx-toastr';
@@ -31,6 +34,9 @@ export class OrganizationFormComponent implements OnInit {
   public logoImage: string = DefaultOrganizationLogo;
   public logoImageFile: File;
   public currentOrganization: OrganizationDetailResponse;
+  public modules: ModuleModel[];
+  public selectedModules: ModuleModel[] = [];
+
   public organizationForm: FormGroup = new FormGroup({
     Name: new FormControl('', [Validators.required]),
     Description: new FormControl(''),
@@ -46,7 +52,8 @@ export class OrganizationFormComponent implements OnInit {
     private fileUploadService: FileUploadService,
     private organizationService: OrganizationService,
     private toastr: ToastrService,
-    private clientState: ClientState
+    private clientState: ClientState,
+    private moduleService: ModuleService
   ) {
     this.activatedRoute.data.subscribe(
       (data: { organization: OrganizationDetailResponse }) => {
@@ -57,6 +64,12 @@ export class OrganizationFormComponent implements OnInit {
             data.organization.LogoLink || DefaultOrganizationLogo;
           this.hostNames = data.organization.HostNames;
           this.hostNames.push('');
+          this.selectedModules = data.organization.ModuleIds.map(
+            (c) =>
+              <ModuleModel>{
+                ID: c,
+              }
+          );
         }
       }
     );
@@ -64,6 +77,7 @@ export class OrganizationFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.getColors();
+    this.getModules();
     if (this.isEdit) {
       this.organizationForm = new FormGroup({
         Name: new FormControl(this.currentOrganization.OrganizationName, [
@@ -89,7 +103,6 @@ export class OrganizationFormComponent implements OnInit {
       return;
     }
     this.clientState.isBusy = true;
-
     let promise = new Observable<any>();
     if (this.logoImageFile) {
       promise = this.fileUploadService.uploadBlob('logos', this.logoImageFile);
@@ -113,6 +126,7 @@ export class OrganizationFormComponent implements OnInit {
           HostNames: this.hostNames,
           LogoBlobUri: blobIdentifier,
           ID: this.currentOrganization?.ID || 0,
+          ModuleIds: this.selectedModules.map((c) => c.ID),
         };
         (this.isEdit
           ? this.organizationService.updateOrganization(mutationData)
@@ -132,6 +146,18 @@ export class OrganizationFormComponent implements OnInit {
 
   getColors(): void {
     this.colorList = this.colorService.getColors();
+  }
+
+  getModules(): void {
+    this.moduleService.getModules().subscribe((res) => {
+      if (res.Success) {
+        this.modules = res.Modules;
+        const moduleIds = this.selectedModules.map((c) => c.ID);
+        this.selectedModules = this.modules.filter(
+          (c) => moduleIds.indexOf(c.ID) > -1
+        );
+      }
+    });
   }
 
   addHostNames(index: number): void {

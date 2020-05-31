@@ -1,9 +1,11 @@
 ﻿using Newtonsoft.Json;
 using Sunday.Core;
+using Sunday.Core.Domain.FeatureAccess;
 using Sunday.Core.Domain.Organizations;
 using Sunday.Core.Exceptions;
 using Sunday.Core.Models;
 using Sunday.DataAccess.SqlServer;
+using Sunday.FeatureAccess.Core;
 using Sunday.Organizations.Application;
 using Sunday.Organizations.Core;
 using Sunday.Organizations.Core.Models;
@@ -56,8 +58,18 @@ namespace Sunday.Organizations.Implementation
 
         public virtual ApplicationOrganization GetById(int organizationId)
         {
-            var result = _dbRunner.Execute<OrganizationEntity>(ProcedureNames.Organizations.GetById, new { OrganizationId = organizationId });
-            return result.FirstOrDefault().MapTo<ApplicationOrganization>();
+            var queryResult = _dbRunner.ExecuteMultiple(ProcedureNames.Organizations.GetById, new Type[] { typeof(OrganizationEntity), typeof(ApplicationModule) },
+                new { OrganizationId = organizationId });
+            OrganizationEntity organization = null;
+            if (queryResult.Count > 0)
+            {
+                organization = queryResult[0].FirstOrDefault() as OrganizationEntity;
+            }
+            if (queryResult.Count > 1)
+            {
+                organization.Modules = queryResult[1].Select(x => x as IApplicationModule).ToList();
+            }
+            return organization;
         }
 
         public virtual async Task<ApplicationOrganization> Update(ApplicationOrganization organization)
@@ -103,7 +115,8 @@ namespace Sunday.Organizations.Implementation
                 org.IsActive,
                 org.LogoBlobUri,
                 HostNames = string.Join('|', org.HostNames.Where(x => !string.IsNullOrEmpty(x))),
-                Properties = org.Properties != null ? JsonConvert.SerializeObject(org.Properties) : ""
+                Properties = org.Properties != null ? JsonConvert.SerializeObject(org.Properties) : "",
+                ModuleIds = string.Join(',', (org.Modules ?? new List<IApplicationModule>()).Select(x => x.ID))
             };
         }
         protected virtual object GetUpdateParameters(ApplicationOrganization org)
@@ -118,7 +131,8 @@ namespace Sunday.Organizations.Implementation
                 org.IsActive,
                 org.LogoBlobUri,
                 HostNames = string.Join('|', org.HostNames.Where(x => !string.IsNullOrEmpty(x))),
-                Properties = org.Properties != null ? JsonConvert.SerializeObject(org.Properties) : ""
+                Properties = org.Properties != null ? JsonConvert.SerializeObject(org.Properties) : "",
+                ModuleIds = string.Join(',', (org.Modules ?? new List<IApplicationModule>()).Select(x => x.ID))
             };
         }
     }

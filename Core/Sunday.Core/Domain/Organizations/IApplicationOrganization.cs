@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Sunday.Core.Domain.FeatureAccess;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -13,5 +14,7 @@ namespace Sunday.Core.Domain.Organizations
         string LogoBlobUri { get; set; }
         bool IsActive { get; set; }
         bool IsDeleted { get; set; }
+
+        List<IApplicationModule> Modules { get; set; }
     }
 }

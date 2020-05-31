@@ -13,6 +13,7 @@ namespace Sunday.CMS.Core.Models.Organizations
         public OrganizationDetailJsonResult()
         {
             Properties = new Dictionary<string, object>();
+            ModuleIds = new List<int>();
         }
         public int ID { get; set; }
         public string OrganizationName { get; set; }
@@ -23,5 +24,6 @@ namespace Sunday.CMS.Core.Models.Organizations
         public string ColorScheme { get; set; }
         public List<string> HostNames { get; set; }
         public Dictionary<string, object> Properties { get; set; }
+        public List<int> ModuleIds { get; set; }
     }
 }

@@ -17,7 +17,8 @@ ALTER PROCEDURE [dbo].[sp_organizations_create]
 	@CreatedDate datetime,
 	@CreatedBy nvarchar(100),
 	@UpdatedDate datetime,
-	@UpdatedBy nvarchar(100)
+	@UpdatedBy nvarchar(100),
+	@ModuleIds nvarchar(MAX) = ''
 )
 AS
 BEGIN
@@ -27,6 +28,8 @@ BEGIN
 		SET @CreatedDate = GETDATE()
 	IF @UpdatedDate IS NULL
 		SET @UpdatedDate  = GETDATE()
+	IF @ModuleIds IS NULL
+		SET @ModuleIds  = ''
 
 	DECLARE @OrganizationId int
 	INSERT INTO [dbo].[Organizations]
@@ -56,6 +59,11 @@ BEGIN
 	
 	SET @OrganizationId = SCOPE_IDENTITY()
 	SELECT @OrganizationId
+
+	DECLARE @tblModules TABLE (ModuleId varchar(100))
+	INSERT INTO @tblModules SELECT value FROM STRING_SPLIT(@ModuleIds, ',')
+	INSERT INTO OrganizationModules (OrganizationId, ModuleId) SELECT @OrganizationId, ModuleId FROM @tblModules
+
 END
 GO
 --------------------------------------------------------------------
@@ -74,7 +82,8 @@ ALTER PROCEDURE [dbo].[sp_organizations_update]
 	@LogoBlobUri nvarchar(MAX),
 	@IsActive bit = 0,
 	@UpdatedDate datetime,
-	@UpdatedBy nvarchar(100)
+	@UpdatedBy nvarchar(100),
+	@ModuleIds nvarchar(MAX) = ''
 )
 AS
 BEGIN
@@ -82,6 +91,8 @@ BEGIN
 		SET @IsActive = 0
 	IF @UpdatedDate IS NULL
 		SET @UpdatedDate  = GETDATE()
+	IF @ModuleIds IS NULL
+		SET @ModuleIds  = ''
 
 
 	UPDATE [dbo].[Organizations]
@@ -96,6 +107,14 @@ BEGIN
 	WHERE ID = @ID
 
 	SELECT * FROM Organizations WHERE ID = @ID
+	
+	DELETE FROM OrganizationModules WHERE OrganizationId = @ID
+	BEGIN
+		DECLARE @tblModules TABLE (ModuleId varchar(100))
+		INSERT INTO @tblModules SELECT value FROM STRING_SPLIT(@ModuleIds, ',')
+		INSERT INTO OrganizationModules (OrganizationId, ModuleId) SELECT @ID, ModuleId FROM @tblModules
+	END
+
 END
 GO
 --------------------------------------------------------------------
@@ -156,6 +175,7 @@ ALTER PROCEDURE [dbo].[sp_organizations_getById]
 AS
 BEGIN
 	SELECT * FROM Organizations WHERE ID = @OrganizationId AND IsDeleted = 0
+	SELECT * FROM Modules WHERE IsActive = 1 AND ID IN (SELECT ModuleId FROM OrganizationModules WHERE OrganizationId = @OrganizationId)
 END
 GO
 --------------------------------------------------------------------

@@ -11,5 +11,9 @@
     <ProjectReference Include="..\Sunday.CMS.Core\Sunday.CMS.Core.csproj" />
   </ItemGroup>
 
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="powershell.exe -ExecutionPolicy Unrestricted -file  &quot;$(SolutionDir)KillProcess.ps1&quot;" />
+  </Target>
+
 
 </Project>

@@ -113,7 +113,31 @@ BEGIN
 		OrganizationUserId integer NOT NULL,
 		OrganizationRoleId integer NOT NULL,
 		CONSTRAINT FK_OrganizationUserRoles_OrganizationUser FOREIGN KEY (OrganizationUserId) REFERENCES OrganizationUsers(ID),
-		CONSTRAINT FK_OrganizationUserRoles_OrganizationRole FOREIGN KEY (OrganizationRoleId) REFERENCES OrganizationRoles(ID),
+		CONSTRAINT FK_OrganizationUserRoles_OrganizationRole FOREIGN KEY (OrganizationRoleId) REFERENCES OrganizationRoles(ID)
+	);
+END
+
+
+IF (NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'dbo' AND  TABLE_NAME = 'Modules'))
+BEGIN
+	CREATE TABLE Modules
+	(
+		ID int primary key identity(1,1),
+		ModuleName nvarchar(500),
+		ModuleCode varchar(100),
+		IsActive bit
+	);
+END
+
+IF (NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'dbo' AND  TABLE_NAME = 'OrganizationModules'))
+BEGIN
+	CREATE TABLE OrganizationModules
+	(
+		ID integer primary key identity(1,1),
+		ModuleId int,
+		OrganizationId int,
+		CONSTRAINT FK_OrganizationModule_Module FOREIGN KEY (ModuleId) REFERENCES Modules(ID),
+		CONSTRAINT FK_OrganizationModule_Organization FOREIGN KEY (OrganizationId) REFERENCES Organizations(ID)
 	);
 END
 
@@ -122,9 +146,11 @@ BEGIN
 	CREATE TABLE Features
 	(
 		ID integer primary key identity(1,1),
-		Code varchar(20),
-		[Name] nvarchar(500),
-		[Description] nvarchar(MAX)
+		FeatureCode varchar(20),
+		FeatureName nvarchar(500),
+		[Description] nvarchar(MAX),
+		ModuleId int NULL,
+		CONSTRAINT FK_Feature_Module FOREIGN KEY (ModuleId) REFERENCES Modules(ID)
 	);
 END
 

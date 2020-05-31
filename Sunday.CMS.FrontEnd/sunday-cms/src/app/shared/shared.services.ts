@@ -9,7 +9,8 @@ import {
   LayoutService,
   FileUploadService,
   OrganizationService,
-  ColorService
+  ColorService,
+  ModuleService
 } from '@services/index';
 
 export const SharedServices = [
@@ -23,5 +24,6 @@ export const SharedServices = [
   LayoutService,
   FileUploadService,
   OrganizationService,
-  ColorService
+  ColorService,
+  ModuleService
 ];

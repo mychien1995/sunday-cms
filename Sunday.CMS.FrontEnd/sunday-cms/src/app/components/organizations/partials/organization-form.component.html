@@ -31,18 +31,17 @@
                 <div class="col-12">
                     <div class="position-relative form-group">
                         <label for="Description" class="">Description</label>
-                        <textarea name="Description" placeholder="Description here..." class="form-control"
+                        <textarea name="Description" placeholder="Description here..." class="form-control" rows="3"
                             formControlName="Description"></textarea>
                     </div>
                 </div>
                 <div class="col-12">
                     <div class="position-relative form-group">
-                        <label for="Active" class="">Active</label>
-                        <div class="custom-checkbox custom-control">
-                            <input type="checkbox" id="exampleCustomCheckbox4" class="custom-control-input"
-                                formControlName="IsActive">
-                            <label class="custom-control-label" for="exampleCustomCheckbox4">&nbsp;</label>
-                        </div>
+                        <label class="">Modules</label>
+                        <ng-multiselect-dropdown [placeholder]="'Select Modules'" [data]="modules"
+                            [settings]="{ textField : 'ModuleName', idField : 'ID'}" [(ngModel)]="selectedModules"
+                            [ngModelOptions]="{standalone : true}">
+                        </ng-multiselect-dropdown>
                     </div>
                 </div>
             </div>
@@ -75,8 +74,19 @@
                         </div>
                         <div class="position-relative form-group mt-3 col-6">
                             <label for="exampleFile" class="">Select New Avatar</label>
-                            <input name="file" id="exampleFile" type="file" class="form-control-file" [required]="!isEdit"
-                                accept=".png, .jpg, .jpeg" (change)="onSelectAvatar($event)" formControlName="Logo">
+                            <input name="file" id="exampleFile" type="file" class="form-control-file"
+                                [required]="!isEdit" accept=".png, .jpg, .jpeg" (change)="onSelectAvatar($event)"
+                                formControlName="Logo">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 mt-3">
+                    <div class="position-relative form-group">
+                        <label for="Active" class="">Active</label>
+                        <div class="custom-checkbox custom-control">
+                            <input type="checkbox" id="exampleCustomCheckbox4" class="custom-control-input"
+                                formControlName="IsActive">
+                            <label class="custom-control-label" for="exampleCustomCheckbox4">&nbsp;</label>
                         </div>
                     </div>
                 </div>

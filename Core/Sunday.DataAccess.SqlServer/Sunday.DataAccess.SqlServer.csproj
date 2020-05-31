@@ -15,6 +15,7 @@
     <None Remove="Scripts\01.Create_schema.sql" />
     <None Remove="Scripts\02.Create_procedure.sql" />
     <None Remove="Scripts\03.Create_procedure.sql" />
+    <None Remove="Scripts\04.Create_procedure.sql" />
     <None Remove="Scripts\Clear_version.sql" />
   </ItemGroup>
 
@@ -23,6 +24,7 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Scripts\02.Create_procedure.sql" />
+    <EmbeddedResource Include="Scripts\04.Create_procedure.sql" />
     <EmbeddedResource Include="Scripts\03.Create_procedure.sql" />
     <EmbeddedResource Include="Scripts\Clear_version.sql">
       <SubType>Designer</SubType>

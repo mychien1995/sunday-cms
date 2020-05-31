@@ -24,6 +24,7 @@ export class OrganizationMutationModel {
   ColorScheme: string;
   IsActive: boolean;
   HostNames: string[];
+  ModuleIds: number[];
 }
 
 export class OrganizationDetailResponse extends ApiResponse {
@@ -35,6 +36,7 @@ export class OrganizationDetailResponse extends ApiResponse {
   ColorScheme: string;
   IsActive: boolean;
   HostNames: string[];
+  ModuleIds: number[];
 }
 
 export class OrganizationLookupResponse extends ApiResponse {

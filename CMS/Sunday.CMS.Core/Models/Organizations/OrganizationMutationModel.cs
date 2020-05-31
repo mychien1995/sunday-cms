@@ -14,6 +14,7 @@ namespace Sunday.CMS.Core.Models.Organizations
         {
             Properties = new Dictionary<string, object>();
             HostNames = new List<string>();
+            ModuleIds = new List<int>();
         }
         public int ID { get; set; }
         public string OrganizationName { get; set; }
@@ -22,6 +23,7 @@ namespace Sunday.CMS.Core.Models.Organizations
         public string ColorScheme { get; set; }
         public bool IsActive { get; set; }
         public List<string> HostNames { get; set; }
+        public List<int> ModuleIds { get; set; }
         public Dictionary<string, object> Properties { get; set; }
     }
 }

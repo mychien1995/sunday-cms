@@ -14,6 +14,8 @@
     <ProjectReference Include="..\..\Core\Sunday.Core.Framework\Sunday.Core.Framework.csproj" />
     <ProjectReference Include="..\..\Core\Sunday.Core.Media\Sunday.Core.Media.csproj" />
     <ProjectReference Include="..\..\Core\Sunday.Core\Sunday.Core.csproj" />
+    <ProjectReference Include="..\..\Modules\FeatureAccess\Sunday.FeatureAccess.Application\Sunday.FeatureAccess.Application.csproj" />
+    <ProjectReference Include="..\..\Modules\FeatureAccess\Sunday.FeatureAccess.Core\Sunday.FeatureAccess.Core.csproj" />
     <ProjectReference Include="..\..\Modules\Identity\Sunday.Identity.Application\Sunday.Identity.Application.csproj" />
     <ProjectReference Include="..\..\Modules\Identity\Sunday.Identity.Core\Sunday.Identity.Core.csproj" />
     <ProjectReference Include="..\..\Modules\Organizations\Sunday.Organizations.Application\Sunday.Organizations.Application.csproj" />

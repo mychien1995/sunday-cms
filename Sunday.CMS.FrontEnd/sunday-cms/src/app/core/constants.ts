@@ -16,6 +16,9 @@ export class ApiUrl {
     ChangePassword: 'cms/api/profile/changePassword/',
     ChangeAvatar: 'cms/api/profile/changeAvatar/',
   };
+  public static Modules = {
+    Get: 'cms/api/modules/'
+  };
   public static Roles = {
     GetAll: 'cms/api/roles/',
     GetById: 'cms/api/roles/',
