@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 
 namespace Sunday.CMS.Core.Implementation.VirtualRoles
 {
+    [ServiceTypeOf(typeof(IOrganizationRolesManager))]
     public class DefaultOrganizationRolesManager : IOrganizationRolesManager
     {
         private readonly IOrganizationRoleRepository _organizationRoleRepository;
