@@ -1,7 +1,4 @@
-﻿USE [SundayCMS]
-GO
-/****** Object:  StoredProcedure [dbo].[sp_organizations_create]    Script Date: 5/26/2020 5:31:54 PM ******/
-IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_organizations_create')
+﻿IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_organizations_create')
 BEGIN
 	EXEC('CREATE PROCEDURE [dbo].[sp_organizations_create] AS BEGIN SET NOCOUNT ON; END')
 END

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Sunday.FeatureAccess.Core
 {
-    public class AApplicationFeature : IApplicationFeature
+    public class ApplicationFeature : IApplicationFeature
     {
         public int ID { get; set; }
         public string FeatureName { get; set; }

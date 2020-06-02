@@ -53,11 +53,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XmlMerger", "LibraryProject
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FeatureAccess", "FeatureAccess", "{ACC7AF57-FB3D-473C-80B3-436BF6DF2507}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sunday.FeatureAccess.Core", "Modules\FeatureAccess\Sunday.FeatureAccess.Core\Sunday.FeatureAccess.Core.csproj", "{D19EECBE-9178-4B50-A814-2400AB489D51}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sunday.FeatureAccess.Core", "Modules\FeatureAccess\Sunday.FeatureAccess.Core\Sunday.FeatureAccess.Core.csproj", "{D19EECBE-9178-4B50-A814-2400AB489D51}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sunday.FeatureAccess.Application", "Modules\FeatureAccess\Sunday.FeatureAccess.Application\Sunday.FeatureAccess.Application.csproj", "{8B2C7FFD-400E-48FB-A8FD-16618053488B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sunday.FeatureAccess.Application", "Modules\FeatureAccess\Sunday.FeatureAccess.Application\Sunday.FeatureAccess.Application.csproj", "{8B2C7FFD-400E-48FB-A8FD-16618053488B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sunday.FeatureAccess.Implementation", "Modules\FeatureAccess\Sunday.FeatureAccess.Implementation\Sunday.FeatureAccess.Implementation.csproj", "{961FE316-D5EE-4EF3-BFA6-33C8A68FF5A6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sunday.FeatureAccess.Implementation", "Modules\FeatureAccess\Sunday.FeatureAccess.Implementation\Sunday.FeatureAccess.Implementation.csproj", "{961FE316-D5EE-4EF3-BFA6-33C8A68FF5A6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "VirtualRoles", "VirtualRoles", "{FB9F4F18-6ADF-41A3-A2C5-932F098E9D37}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sunday.VirtualRoles.Core", "Modules\VirtualRoles\Sunday.VirtualRoles.Core\Sunday.VirtualRoles.Core.csproj", "{B2FFC244-FF96-4472-9E31-7DB0593A9A46}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sunday.VirtualRoles.Application", "Modules\VirtualRoles\Sunday.VirtualRoles.Application\Sunday.VirtualRoles.Application.csproj", "{5DC16E1F-A083-4907-B92F-9F273BF0F807}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sunday.VirtualRoles.Implementation", "Modules\VirtualRoles\Sunday.VirtualRoles.Implementation\Sunday.VirtualRoles.Implementation.csproj", "{AE23A4BD-A991-4775-99A6-4CF9C7E370B8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -145,6 +153,18 @@ Global
 		{961FE316-D5EE-4EF3-BFA6-33C8A68FF5A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{961FE316-D5EE-4EF3-BFA6-33C8A68FF5A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{961FE316-D5EE-4EF3-BFA6-33C8A68FF5A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B2FFC244-FF96-4472-9E31-7DB0593A9A46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2FFC244-FF96-4472-9E31-7DB0593A9A46}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2FFC244-FF96-4472-9E31-7DB0593A9A46}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2FFC244-FF96-4472-9E31-7DB0593A9A46}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5DC16E1F-A083-4907-B92F-9F273BF0F807}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5DC16E1F-A083-4907-B92F-9F273BF0F807}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5DC16E1F-A083-4907-B92F-9F273BF0F807}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5DC16E1F-A083-4907-B92F-9F273BF0F807}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE23A4BD-A991-4775-99A6-4CF9C7E370B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE23A4BD-A991-4775-99A6-4CF9C7E370B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE23A4BD-A991-4775-99A6-4CF9C7E370B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE23A4BD-A991-4775-99A6-4CF9C7E370B8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -174,6 +194,10 @@ Global
 		{D19EECBE-9178-4B50-A814-2400AB489D51} = {ACC7AF57-FB3D-473C-80B3-436BF6DF2507}
 		{8B2C7FFD-400E-48FB-A8FD-16618053488B} = {ACC7AF57-FB3D-473C-80B3-436BF6DF2507}
 		{961FE316-D5EE-4EF3-BFA6-33C8A68FF5A6} = {ACC7AF57-FB3D-473C-80B3-436BF6DF2507}
+		{FB9F4F18-6ADF-41A3-A2C5-932F098E9D37} = {10107D0E-74F3-4305-A4DD-FF5F11C5086C}
+		{B2FFC244-FF96-4472-9E31-7DB0593A9A46} = {FB9F4F18-6ADF-41A3-A2C5-932F098E9D37}
+		{5DC16E1F-A083-4907-B92F-9F273BF0F807} = {FB9F4F18-6ADF-41A3-A2C5-932F098E9D37}
+		{AE23A4BD-A991-4775-99A6-4CF9C7E370B8} = {FB9F4F18-6ADF-41A3-A2C5-932F098E9D37}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B00775C3-EEF6-4883-A795-0C11DB15EC6E}

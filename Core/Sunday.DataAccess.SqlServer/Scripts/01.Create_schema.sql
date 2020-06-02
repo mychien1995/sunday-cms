@@ -101,6 +101,7 @@ BEGIN
 		CreatedBy nvarchar(100),
 		UpdatedDate datetime NOT NULL default(GETDATE()),
 		UpdatedBy nvarchar(100),
+		IsDeleted bit NOT NULL default(0),
 		CONSTRAINT FK_OrganizationRoles_Organization FOREIGN KEY (OrganizationId) REFERENCES Organizations(ID),
 	);
 END

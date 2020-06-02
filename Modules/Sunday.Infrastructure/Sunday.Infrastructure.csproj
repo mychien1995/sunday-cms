@@ -9,6 +9,7 @@
     <ProjectReference Include="..\Identity\Sunday.Identity.Implementation\Sunday.Identity.Implementation.csproj" />
     <ProjectReference Include="..\Organizations\Sunday.Organizations.Implementation\Sunday.Organizations.Implementation.csproj" />
     <ProjectReference Include="..\Users\Sunday.Users.Implementation\Sunday.Users.Implementation.csproj" />
+    <ProjectReference Include="..\VirtualRoles\Sunday.VirtualRoles.Implementation\Sunday.VirtualRoles.Implementation.csproj" />
   </ItemGroup>
 
 </Project>

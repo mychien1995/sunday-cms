@@ -10,5 +10,10 @@ namespace Sunday.FeatureAccess.Implementation
         {
             public const string GetAll = "sp_modules_getAll";
         }
+
+        public class Features
+        {
+            public const string GetByModules = "sp_features_getByModules";
+        }
     }
 }

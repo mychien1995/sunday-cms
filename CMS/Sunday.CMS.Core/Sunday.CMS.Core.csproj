@@ -22,6 +22,8 @@
     <ProjectReference Include="..\..\Modules\Organizations\Sunday.Organizations.Core\Sunday.Organizations.Core.csproj" />
     <ProjectReference Include="..\..\Modules\Users\Sunday.Users.Application\Sunday.Users.Application.csproj" />
     <ProjectReference Include="..\..\Modules\Users\Sunday.Users.Core\Sunday.Users.Core.csproj" />
+    <ProjectReference Include="..\..\Modules\VirtualRoles\Sunday.VirtualRoles.Application\Sunday.VirtualRoles.Application.csproj" />
+    <ProjectReference Include="..\..\Modules\VirtualRoles\Sunday.VirtualRoles.Core\Sunday.VirtualRoles.Core.csproj" />
   </ItemGroup>
 
 </Project>
