@@ -6,7 +6,6 @@ import {
   EventEmitter,
   ViewEncapsulation,
 } from '@angular/core';
-import { element } from 'protractor';
 
 @Component({
   selector: 'app-two-sides-select',
