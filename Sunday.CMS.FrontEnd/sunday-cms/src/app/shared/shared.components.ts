@@ -13,7 +13,10 @@ import {
   AddOrganizationComponent,
   OrganizationFormComponent,
   OrganizationFilterComponent,
-  OrganizationAssignBoardComponent
+  OrganizationAssignBoardComponent,
+  ManageOrganizationRolesComponent,
+  TwoSideSelectComponent,
+  AddOrganizationRoleComponent,
 } from 'app/components';
 import {
   ApplicationLayoutComponent,
@@ -24,7 +27,6 @@ import {
   AppSidebarComponent,
   AppNavigationComponent,
 } from 'app/components/_layout';
-import { UserResolver, OrganizationResolver } from 'app/components';
 export const SharedComponents = [
   LoginComponent,
   DashboardComponent,
@@ -47,6 +49,18 @@ export const SharedComponents = [
   AddOrganizationComponent,
   OrganizationFormComponent,
   OrganizationFilterComponent,
-  OrganizationAssignBoardComponent
+  OrganizationAssignBoardComponent,
+  TwoSideSelectComponent,
+  AddOrganizationRoleComponent,
+  ManageOrganizationRolesComponent,
 ];
-export const SharedResolvers = [UserResolver, OrganizationResolver];
+import {
+  UserResolver,
+  OrganizationResolver,
+  OrganizationRoleResolver,
+} from 'app/components';
+export const SharedResolvers = [
+  UserResolver,
+  OrganizationResolver,
+  OrganizationRoleResolver,
+];

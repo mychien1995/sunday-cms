@@ -16,7 +16,7 @@ namespace Sunday.CMS.Core.Models.FeatureAccess
         public IEnumerable<FeatureItem> Features { get; set; }
     }
 
-    [MappedTo(typeof(ApplicationModule))]
+    [MappedTo(typeof(ApplicationFeature))]
     public class FeatureItem
     {
         public int ID { get; set; }

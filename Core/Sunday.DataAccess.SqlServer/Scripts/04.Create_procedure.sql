@@ -48,6 +48,12 @@ ALTER PROCEDURE [dbo].sp_organizationRoles_getByOrganization
 )
 AS
 BEGIN
+	If @PageIndex IS NULL
+		SET @PageIndex = 0
+	If @PageSize IS NULL
+		SET @PageSize = 10
+
+	SELECT COUNT(*) FROM OrganizationRoles  WHERE OrganizationId = @OrganizationId AND IsDeleted = 0
 	SELECT * FROM OrganizationRoles WHERE OrganizationId = @OrganizationId AND IsDeleted = 0
 	ORDER BY UpdatedDate DESC
 	OFFSET @PageIndex ROWS

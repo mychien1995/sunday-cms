@@ -9,9 +9,15 @@ import {
   UserProfileComponent,
   ManageOrganizationComponent,
   AddOrganizationComponent,
+  ManageOrganizationRolesComponent,
+  AddOrganizationRoleComponent,
 } from 'app/components';
 import { AuthGuard } from 'app/core/services';
-import { UserResolver, OrganizationResolver } from '@components/index';
+import {
+  UserResolver,
+  OrganizationResolver,
+  OrganizationRoleResolver,
+} from '@components/index';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -35,6 +41,19 @@ export const routes: Routes = [
         path: 'organizations/edit/:orgId',
         component: AddOrganizationComponent,
         resolve: { organization: OrganizationResolver },
+      },
+      {
+        path: 'organization-roles',
+        component: ManageOrganizationRolesComponent,
+      },
+      {
+        path: 'organization-roles/create',
+        component: AddOrganizationRoleComponent,
+      },
+      {
+        path: 'organization-roles/edit/:roleId',
+        component: AddOrganizationRoleComponent,
+        resolve: { role: OrganizationRoleResolver },
       },
     ],
     canActivate: [AuthGuard],

@@ -23,7 +23,7 @@ namespace Sunday.VirtualRoles.Implementation
         public async Task<ISearchResult<OrganizationRole>> GetRoles(OrganizationRoleQuery query)
         {
             var result = new SearchResult<OrganizationRole>();
-            var queryResult = await _dbRunner.ExecuteMultipleAsync(ProcedureNames.OrganizationRoles.GetByOrganization, new Type[] { typeof(OrganizationRole), typeof(int) }, new
+            var queryResult = await _dbRunner.ExecuteMultipleAsync(ProcedureNames.OrganizationRoles.GetByOrganization, new Type[] { typeof(int), typeof(OrganizationRole) }, new
             {
                 OrganizationId = query.OrganizationId,
                 PageIndex = query.PageIndex,

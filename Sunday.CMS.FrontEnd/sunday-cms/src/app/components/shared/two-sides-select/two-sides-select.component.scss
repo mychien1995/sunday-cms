@@ -1,0 +1,14 @@
+.two-side-select {
+  display: flex;
+  .arrow-btn-group {
+    margin: auto;
+    text-align: center;
+    min-width: 30px;
+    button {
+      display: block;
+    }
+  }
+  .select-group {
+    width: calc(50% - 30px);
+  }
+}

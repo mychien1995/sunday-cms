@@ -19,9 +19,19 @@ export class ApiUrl {
   public static Modules = {
     Get: 'cms/api/modules/'
   };
+  public static Features = {
+    GetByOrganization: 'cms/api/features/getByOrganization/'
+  };
   public static Roles = {
     GetAll: 'cms/api/roles/',
     GetById: 'cms/api/roles/',
+  };
+  public static OrganizationRoles = {
+    Search: 'cms/api/organizationroles/search/',
+    Create: 'cms/api/organizationroles/create/',
+    Update: 'cms/api/organizationroles/update/',
+    GetById: 'cms/api/organizationroles/',
+    Delete: 'cms/api/organizationroles/'
   };
   public static Organizations = {
     Search: 'cms/api/organizations/search',

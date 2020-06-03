@@ -11,3 +11,5 @@ export * from 'app/core/services/media/fileupload.service';
 export * from 'app/core/services/organizations/organization.service';
 export * from 'app/core/services/layout/color.service';
 export * from 'app/core/services/feature-access/modules.service';
+export * from 'app/core/services/feature-access/features.service';
+export * from 'app/core/services/virtual-roles/organization-roles.service';

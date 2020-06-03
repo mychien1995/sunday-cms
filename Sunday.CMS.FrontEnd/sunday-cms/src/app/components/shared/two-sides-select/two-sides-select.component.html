@@ -1,0 +1,22 @@
+<div class="two-side-select">
+    <div class="select-group">
+        <select multiple class="form-control" style="height: 200px;" [(ngModel)]="selectedValues">
+            <option *ngFor="let item of availableItems" value="{{item[bindValue]}}"
+                (dblclick)="selectSingleItem(item[bindValue])">{{item[bindLabel]}}</option>
+        </select>
+    </div>
+    <div class="arrow-btn-group">
+        <button class="btn btn-primary" type="button" (click)="selectItems()">
+            <i class="fa fa-arrow-right"></i>
+        </button>
+        <button class="mt-4 btn btn-primary" type="button" (click)="deselectItems()">
+            <i class="fa fa-arrow-left"></i>
+        </button>
+    </div>
+    <div class="select-group">
+        <select multiple class="form-control" style="height: 200px;" [(ngModel)]="deselectedValues">
+            <option *ngFor="let item of selectedItems" value="{{item[bindValue]}}"
+                (dblclick)="deselectSingleItem(item[bindValue])">{{item[bindLabel]}}</option>
+        </select>
+    </div>
+</div>

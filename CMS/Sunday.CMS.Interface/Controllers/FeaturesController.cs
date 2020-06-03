@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Sunday.CMS.Core.Application.FeatureAccess;
+using Sunday.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace Sunday.CMS.Interface.Controllers
     public class FeaturesController : BaseController
     {
         private readonly IApplicationFeatureManager _featureManager;
-        public FeaturesController(IApplicationFeatureManager featureManager)
+        public FeaturesController(IApplicationFeatureManager featureManager, ISundayContext context) : base(context)
         {
             _featureManager = featureManager;
         }
@@ -18,7 +19,7 @@ namespace Sunday.CMS.Interface.Controllers
         [HttpGet("getByOrganization")]
         public async Task<IActionResult> GetByOrganization()
         {
-            int organizationId = 0;
+            int organizationId = CurrentOrganizationId;
             var result = await _featureManager.GetOrganizationFeatures(organizationId);
             return Ok(result);
         }

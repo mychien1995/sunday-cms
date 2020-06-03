@@ -7,13 +7,14 @@ using Microsoft.AspNetCore.Mvc;
 using Sunday.CMS.Core.Models.VirtualRoles;
 using Sunday.Core.Models.Base;
 using Sunday.VirtualRoles.Core.Models;
+using Sunday.Core;
 
 namespace Sunday.CMS.Interface.Controllers
 {
     public class OrganizationRolesController : BaseController
     {
         private readonly IOrganizationRolesManager _organizationRoleManager;
-        public OrganizationRolesController(IOrganizationRolesManager organizationRoleManager)
+        public OrganizationRolesController(IOrganizationRolesManager organizationRoleManager, ISundayContext context) : base(context)
         {
             this._organizationRoleManager = organizationRoleManager;
         }
@@ -21,6 +22,7 @@ namespace Sunday.CMS.Interface.Controllers
         [HttpPost("search")]
         public async Task<IActionResult> Search([FromBody]OrganizationRoleQuery query)
         {
+            query.OrganizationId = CurrentOrganizationId;
             var result = await _organizationRoleManager.GetRolesList(query);
             return Ok(result);
         }
@@ -28,6 +30,7 @@ namespace Sunday.CMS.Interface.Controllers
         [HttpPost("create")]
         public async Task<IActionResult> Create([FromBody]OrganizationRoleMutationModel data)
         {
+            data.OrganizationId = CurrentOrganizationId;
             var result = await _organizationRoleManager.CreateRole(data);
             return Ok(result);
         }
@@ -35,6 +38,7 @@ namespace Sunday.CMS.Interface.Controllers
         [HttpPut("update")]
         public async Task<IActionResult> Update([FromBody]OrganizationRoleMutationModel data)
         {
+            data.OrganizationId = CurrentOrganizationId;
             var result = await _organizationRoleManager.UpdateRole(data);
             return Ok(result);
         }

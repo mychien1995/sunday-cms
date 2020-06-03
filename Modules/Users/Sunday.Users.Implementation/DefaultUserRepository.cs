@@ -65,6 +65,7 @@ namespace Sunday.Users.Implementation
                     var organizationUser = x.MapTo<ApplicationOrganizationUser>();
                     organizationUser.Organization = new ApplicationOrganization();
                     organizationUser.Organization.OrganizationName = x.OrganizationName;
+                    organizationUser.Organization.ID = x.OrganizationId;
                     return organizationUser;
                 }).Cast<IApplicationOrganizationUser>().ToList();
             }

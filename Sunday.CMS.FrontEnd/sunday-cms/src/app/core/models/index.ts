@@ -4,3 +4,4 @@ export * from './common/response.model';
 export * from './roles/roles.models';
 export * from './organizations/organization.model';
 export * from './feature-access/feature-access.model';
+export * from './virtual-roles/virtual-roles.model';

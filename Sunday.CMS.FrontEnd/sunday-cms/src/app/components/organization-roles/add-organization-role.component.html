@@ -1,0 +1,38 @@
+<app-page-heading [title]="formTitle" [icon]="'bg-happy-itmeo'"></app-page-heading>
+<div class="row">
+    <div class="col-12">
+        <div class="main-card mb-3 card">
+            <div class="card-body">
+                <form (ngSubmit)="onSubmit(roleForm.value)" [formGroup]="roleForm" autocomplete="off" #ngForm="ngForm">
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <div class="position-relative form-group">
+                                <label for="RoleName">Role Name<span class="red">*</span></label>
+                                <input name="RoleName" placeholder="Rolename here..." type="text" class="form-control"
+                                    formControlName="RoleName" autocomplete="off" required>
+                                <span class="text-danger"
+                                    [hidden]="!(ngForm.submitted && roleForm.controls['RoleName'].hasError('required'))">This
+                                    field is required</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <div class="position-relative form-group">
+                                <label>Features <span class="red">*</span></label>
+                                <app-two-sides-select [datasource]="featureLookup" [bindValue]="'ID'"
+                                    [(values)]="currentRole.FeatureIds" [bindLabel]="'FeatureName'">
+                                </app-two-sides-select>
+                                <span class="text-danger"
+                                    [hidden]="!(ngForm.submitted && currentRole.FeatureIds.length === 0)">This
+                                    field is required</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="mt-1 btn btn-primary">Submit</button>
+                    <button class="mt-1 ml-2 btn btn-light" [routerLink]="['/organization-roles']">Back</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

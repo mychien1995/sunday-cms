@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.4" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\Core\Sunday.Core.Framework\Sunday.Core.Framework.csproj" />
     <ProjectReference Include="..\..\Core\Sunday.Core\Sunday.Core.csproj" />
     <ProjectReference Include="..\..\Modules\Sunday.Infrastructure\Sunday.Infrastructure.csproj" />

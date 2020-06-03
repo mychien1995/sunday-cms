@@ -10,3 +10,14 @@ export class ModuleListApiResponse extends ApiResponse {
   Total?: number;
   Modules: ModuleModel[] = [];
 }
+
+export class FeatureItem {
+  ID?: number;
+  FeatureCode?: string;
+  FeatureName?: string;
+}
+
+export class FeatureListApiResponse extends ApiResponse {
+  Total?: number;
+  Features: FeatureItem[] = [];
+}

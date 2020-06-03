@@ -35,7 +35,7 @@ namespace Sunday.CMS.Core.Implementation.VirtualRoles
             var result = new OrganizationRoleDetailJsonResult();
             var organizationRole = await _organizationRoleRepository.GetById(roleId);
             result = organizationRole.MapTo<OrganizationRoleDetailJsonResult>();
-            var arg = new EntityModelExchangeArg(organizationRole, result);
+            var arg = new EntityModelExchangeArg(result, organizationRole);
             await ApplicationPipelines.RunAsync("cms.organizationRoles.translateToModel", arg);
             return result;
         }
