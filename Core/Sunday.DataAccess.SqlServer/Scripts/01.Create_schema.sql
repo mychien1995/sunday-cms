@@ -125,7 +125,7 @@ BEGIN
 	(
 		ID int primary key identity(1,1),
 		ModuleName nvarchar(500),
-		ModuleCode varchar(100),
+		ModuleCode varchar(100) UNIQUE,
 		IsActive bit
 	);
 END
@@ -147,7 +147,7 @@ BEGIN
 	CREATE TABLE Features
 	(
 		ID integer primary key identity(1,1),
-		FeatureCode varchar(20),
+		FeatureCode varchar(20) UNIQUE,
 		FeatureName nvarchar(500),
 		[Description] nvarchar(MAX),
 		ModuleId int NULL,
@@ -173,5 +173,24 @@ BEGIN
 	(
 		OrganizationId int,
 		IsActive bit
+	);
+END
+
+IF TYPE_ID(N'ModuleType') IS NULL
+BEGIN
+	CREATE TYPE ModuleType AS TABLE
+	(
+		Code nvarchar(MAX),
+		[Name] nvarchar(MAX)
+	);
+END
+
+IF TYPE_ID(N'FeatureType') IS NULL
+BEGIN
+	CREATE TYPE FeatureType AS TABLE
+	(
+		Code nvarchar(MAX),
+		[Name] nvarchar(MAX),
+		[ModuleCode] nvarchar(MAX)
 	);
 END

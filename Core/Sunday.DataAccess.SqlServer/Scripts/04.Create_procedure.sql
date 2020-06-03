@@ -169,3 +169,36 @@ BEGIN
 	UPDATE OrganizationRoles SET IsDeleted = 1 WHERE ID = @RoleId
 END
 GO
+--------------------------------------------------------------------
+IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_modules_seeding')
+BEGIN
+	EXEC('CREATE PROCEDURE [dbo].[sp_modules_seeding] AS BEGIN SET NOCOUNT ON; END')
+END
+GO
+ALTER PROCEDURE [dbo].[sp_modules_seeding]
+(
+	@Modules ModuleType READONLY
+)
+AS
+BEGIN
+	INSERT INTO Modules (ModuleCode, ModuleName, IsActive)
+	SELECT Code,[Name], 1 FROM @Modules WHERE Code NOT IN (SELECT ModuleCode FROM Modules)
+END
+GO
+--------------------------------------------------------------------
+IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_features_seeding')
+BEGIN
+	EXEC('CREATE PROCEDURE [dbo].[sp_features_seeding] AS BEGIN SET NOCOUNT ON; END')
+END
+GO
+ALTER PROCEDURE [dbo].[sp_features_seeding]
+(
+	@Features FeatureType READONLY
+)
+AS
+BEGIN
+	INSERT INTO Features (ModuleId, FeatureCode, FeatureName)
+	SELECT Modules.ID, Code
+	,[Name] FROM @Features B, Modules WHERE B.ModuleCode = Modules.ModuleCode
+END
+GO
