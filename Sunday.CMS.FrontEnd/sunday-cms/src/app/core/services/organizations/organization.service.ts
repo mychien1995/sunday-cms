@@ -6,7 +6,8 @@ import {
   OrganizationMutationModel,
   ApiResponse,
   OrganizationDetailResponse,
-  OrganizationLookupResponse
+  OrganizationLookupResponse,
+  ModuleListApiResponse,
 } from '@models/index';
 import { ApiUrl } from '@core/constants';
 import { Observable } from 'rxjs';
@@ -57,9 +58,15 @@ export class OrganizationService {
       .pipe(map(ApiHelper.onSuccess), catchError(ApiHelper.onFail));
   }
 
-  getOrganizationsLookup() : Observable<OrganizationLookupResponse>{
+  getOrganizationsLookup(): Observable<OrganizationLookupResponse> {
     return this.apiService
       .get(`${ApiUrl.Organizations.Lookup}`)
+      .pipe(map(ApiHelper.onSuccess), catchError(ApiHelper.onFail));
+  }
+
+  getModules(): Observable<ModuleListApiResponse> {
+    return this.apiService
+      .get(`${ApiUrl.Organizations.GetModules}`)
       .pipe(map(ApiHelper.onSuccess), catchError(ApiHelper.onFail));
   }
 }

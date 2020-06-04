@@ -1,9 +1,11 @@
 ﻿using Sunday.CMS.Core.Application.Organizations;
 using Sunday.CMS.Core.Models;
+using Sunday.CMS.Core.Models.FeatureAccess;
 using Sunday.CMS.Core.Models.Organizations;
 using Sunday.Core;
 using Sunday.Core.Domain.Organizations;
 using Sunday.Core.Media.Application;
+using Sunday.FeatureAccess.Application;
 using Sunday.Organizations.Application;
 using Sunday.Organizations.Core;
 using Sunday.Organizations.Core.Models;
@@ -19,9 +21,12 @@ namespace Sunday.CMS.Core.Implementation.Organizations
     public class DefaultApplicationOrganizationManager : IApplicationOrganizationManager
     {
         private readonly IOrganizationRepository _organizationRepository;
-        public DefaultApplicationOrganizationManager(IOrganizationRepository organizationRepository)
+        private readonly IFeatureRepository _featureRepository;
+
+        public DefaultApplicationOrganizationManager(IOrganizationRepository organizationRepository, IFeatureRepository featureRepository)
         {
             _organizationRepository = organizationRepository;
+            _featureRepository = featureRepository;
         }
 
         public virtual async Task<OrganizationListJsonResult> SearchOrganizations(SearchOrganizationCriteria criteria)
@@ -126,6 +131,31 @@ namespace Sunday.CMS.Core.Implementation.Organizations
                 ID = x.ID,
                 OrganizationName = x.OrganizationName
             }).ToList();
+            return result;
+        }
+
+        public virtual async Task<ModuleListJsonResult> GetOrganizationModules(int organizationId)
+        {
+            var result = new ModuleListJsonResult();
+            var organization = _organizationRepository.GetById(organizationId);
+            result.Modules = organization.Modules.Select(x => new ModuleItem()
+            {
+                ID = x.ID,
+                ModuleCode = x.ModuleCode,
+                ModuleName = x.ModuleName
+            });
+            var features = await _featureRepository.GetFeaturesByModules(organization.Modules.Select(x => x.ID).ToList());
+            var modules = result.Modules.ToList();
+            foreach (var module in modules)
+            {
+                module.Features = features.Where(x => x.ModuleId == module.ID).Select(x => new FeatureItem()
+                {
+                    ID = x.ID,
+                    FeatureCode = x.FeatureCode,
+                    FeatureName = x.FeatureName
+                }).ToList();
+            }
+            result.Modules = modules;
             return result;
         }
     }

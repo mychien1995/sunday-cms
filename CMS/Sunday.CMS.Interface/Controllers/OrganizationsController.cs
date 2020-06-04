@@ -5,13 +5,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Sunday.CMS.Core.Models.Organizations;
+using Sunday.Core;
 
 namespace Sunday.CMS.Interface.Controllers
 {
     public class OrganizationsController : BaseController
     {
         private readonly IApplicationOrganizationManager _organizationManager;
-        public OrganizationsController(IApplicationOrganizationManager organizationManager)
+        public OrganizationsController(IApplicationOrganizationManager organizationManager, ISundayContext context) : base(context)
         {
             this._organizationManager = organizationManager;
         }
@@ -69,6 +70,13 @@ namespace Sunday.CMS.Interface.Controllers
         public async Task<IActionResult> Lookup()
         {
             var result = await _organizationManager.GetOrganizationLookup();
+            return Ok(result);
+        }
+
+        [HttpGet("getModules")]
+        public async Task<IActionResult> GetModules()
+        {
+            var result = await _organizationManager.GetOrganizationModules(CurrentOrganizationId);
             return Ok(result);
         }
     }

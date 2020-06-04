@@ -19,8 +19,14 @@ namespace Sunday.CMS.Core.Models.FeatureAccess
     [MappedTo(typeof(ApplicationModule))]
     public class ModuleItem
     {
+        public ModuleItem()
+        {
+            Features = new List<FeatureItem>();
+        }
         public int ID { get; set; }
         public string ModuleName { get; set; }
         public string ModuleCode { get; set; }
+
+        public List<FeatureItem> Features { get; set; }
     }
 }

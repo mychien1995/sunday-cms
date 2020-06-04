@@ -1,4 +1,5 @@
 ﻿using Sunday.CMS.Core.Models;
+using Sunday.CMS.Core.Models.FeatureAccess;
 using Sunday.CMS.Core.Models.Organizations;
 using Sunday.Core.Domain.Organizations;
 using Sunday.Core.Models;
@@ -26,5 +27,7 @@ namespace Sunday.CMS.Core.Application.Organizations
         Task<BaseApiResponse> DeactivateOrganization(int orgId);
 
         Task<ListApiResponse<OrganizationItem>> GetOrganizationLookup();
+
+        Task<ModuleListJsonResult> GetOrganizationModules(int organizationId);
     }
 }
