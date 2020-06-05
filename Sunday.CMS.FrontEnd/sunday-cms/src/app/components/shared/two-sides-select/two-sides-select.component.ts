@@ -20,6 +20,9 @@ export class TwoSideSelectComponent implements OnInit {
 
   @Input() bindValue?: string;
   @Input() bindLabel?: string;
+  @Input() nested: boolean;
+  @Input() nestedChild?: string;
+  @Input() nestedLabel?: string;
 
   selectedValues: any[] = [];
   deselectedValues: any[] = [];
@@ -34,8 +37,23 @@ export class TwoSideSelectComponent implements OnInit {
     this.valuesChange.emit(this.modelValues);
   }
 
+  get actualDatasource(): any[] {
+    if (this.nested) {
+      const arr = this.datasource.map((c) => c[this.nestedChild]);
+      if (arr.length === 0) {
+        return [];
+      }
+      if (arr.length === 1) {
+        return arr[0][this.nestedChild];
+      }
+      return arr.reduce((a, b) => {
+        return (a ?? []).concat(b ?? []);
+      });
+    }
+    return this.datasource;
+  }
   get selectedItems() {
-    return this.datasource.filter(
+    return this.actualDatasource.filter(
       (c) =>
         this.modelValues.filter(
           (s) => s.toString() === c[this.bindValue].toString()
@@ -44,7 +62,7 @@ export class TwoSideSelectComponent implements OnInit {
   }
 
   get availableItems() {
-    return this.datasource.filter(
+    return this.actualDatasource.filter(
       (c) =>
         this.modelValues.filter(
           (s) => s.toString() === c[this.bindValue].toString()

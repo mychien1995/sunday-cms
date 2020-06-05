@@ -10,8 +10,14 @@ import {
   OrganizationRoleDetailApiResponse,
   FeatureItem,
   OrganizationRoleMutationData,
+  ModuleListApiResponse,
+  ModuleModel,
 } from '@models/index';
-import { FeatureService, OrganizationRoleService } from '@services/index';
+import {
+  FeatureService,
+  OrganizationRoleService,
+  OrganizationService,
+} from '@services/index';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { Observable, Subscription, forkJoin } from 'rxjs';
@@ -24,7 +30,7 @@ export class AddOrganizationRoleComponent implements OnInit {
   public roleForm: FormGroup = new FormGroup({
     RoleName: new FormControl('', [Validators.required]),
   });
-  public featureLookup: FeatureItem[] = [];
+  public moduleLookup: ModuleModel[] = [];
   public isEdit: boolean;
   public currentRole: OrganizationRoleDetailApiResponse = new OrganizationRoleDetailApiResponse();
 
@@ -35,6 +41,7 @@ export class AddOrganizationRoleComponent implements OnInit {
     private featureService: FeatureService,
     private clientState: ClientState,
     private roleService: OrganizationRoleService,
+    private organizationService: OrganizationService,
     private toastr: ToastrService
   ) {
     this.activatedRoute.data.subscribe(
@@ -63,9 +70,9 @@ export class AddOrganizationRoleComponent implements OnInit {
   }
 
   getFeatures(): void {
-    this.featureService.getFeatures().subscribe((res) => {
+    this.organizationService.getModules().subscribe((res) => {
       if (res.Success) {
-        this.featureLookup = res.Features;
+        this.moduleLookup = res.Modules;
       }
     });
   }

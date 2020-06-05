@@ -1,8 +1,16 @@
 <div class="two-side-select">
-    <div class="select-group">
+    <div class="select-group" [hidden]="nested">
         <select multiple class="form-control" style="height: 200px;" [(ngModel)]="selectedValues">
             <option *ngFor="let item of availableItems" value="{{item[bindValue]}}"
                 (dblclick)="selectSingleItem(item[bindValue])">{{item[bindLabel]}}</option>
+        </select>
+    </div>
+    <div class="select-group" [hidden]="!nested">
+        <select multiple class="form-control" style="height: 200px;" [(ngModel)]="selectedValues">
+            <optgroup *ngFor="let item of datasource" label="{{item[nestedLabel]}}">
+                <option *ngFor="let child of item[nestedChild]" value="{{child[bindValue]}}"
+                    (dblclick)="selectSingleItem(child[bindValue])">{{child[bindLabel]}}</option>
+            </optgroup>
         </select>
     </div>
     <div class="arrow-btn-group">

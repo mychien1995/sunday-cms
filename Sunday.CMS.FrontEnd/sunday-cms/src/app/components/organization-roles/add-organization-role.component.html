@@ -20,8 +20,8 @@
                         <div class="col-md-6">
                             <div class="position-relative form-group">
                                 <label>Features <span class="red">*</span></label>
-                                <app-two-sides-select [datasource]="featureLookup" [bindValue]="'ID'"
-                                    [(values)]="currentRole.FeatureIds" [bindLabel]="'FeatureName'">
+                                <app-two-sides-select [datasource]="moduleLookup" [bindValue]="'ID'"
+                                    [(values)]="currentRole.FeatureIds" [bindLabel]="'FeatureName'" [nested]="true" [nestedChild]="'Features'" [nestedLabel]="'ModuleName'">
                                 </app-two-sides-select>
                                 <span class="text-danger"
                                     [hidden]="!(ngForm.submitted && currentRole.FeatureIds.length === 0)">This
