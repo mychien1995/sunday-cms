@@ -203,3 +203,61 @@ BEGIN
 	AND B.Code NOT IN (SELECT FeatureCode FROM Features)
 END
 GO
+--------------------------------------------------------------------
+IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_organizationRoles_bulkUpdate')
+BEGIN
+	EXEC('CREATE PROCEDURE [dbo].[sp_organizationRoles_bulkUpdate] AS BEGIN SET NOCOUNT ON; END')
+END
+GO
+ALTER PROCEDURE dbo.sp_organizationRoles_bulkUpdate
+(
+	@Roles OrganizationRoleType READONLY
+)
+AS
+BEGIN
+	DECLARE @RoleId int
+	DECLARE @FeaturesIds nvarchar(MAX)
+	DECLARE RoleCursor CURSOR 
+		FOR SELECT * FROM @Roles
+	OPEN RoleCursor
+	FETCH NEXT FROM RoleCursor INTO @RoleId, @FeaturesIds
+	
+	WHILE @@FETCH_STATUS = 0  
+    BEGIN
+		IF(@FeaturesIds IS NULL OR LEN(TRIM(@FeaturesIds)) = 0)
+		BEGIN
+			DELETE OrganizationRolesMapping WHERE OrganizationRoleId = @RoleId
+		END
+		ELSE
+		BEGIN
+			DECLARE @tblFeatureIds TABLE (FeatureId int)
+			INSERT INTO @tblFeatureIds select value from string_split(@FeaturesIds, ',');
+		
+			DELETE OrganizationRolesMapping WHERE OrganizationRoleId = @RoleId AND FeatureId NOT IN (SELECT FeatureId FROM @tblFeatureIds)
+
+			INSERT INTO OrganizationRolesMapping
+			(OrganizationRoleId, FeatureId) SELECT @RoleId, FeatureId FROM @tblFeatureIds
+			WHERE FeatureId NOT IN (SELECT FeatureId FROM OrganizationRolesMapping WHERE OrganizationRoleId = @RoleId)
+		END
+
+        FETCH NEXT FROM RoleCursor;  
+    END
+	CLOSE RoleCursor
+	DEALLOCATE RoleCursor;
+END
+GO
+--------------------------------------------------------------------
+IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_clean')
+BEGIN
+	EXEC('CREATE PROCEDURE [dbo].[sp_clean] AS BEGIN SET NOCOUNT ON; END')
+END
+GO
+ALTER PROCEDURE dbo.sp_clean
+AS
+BEGIN
+	DELETE FROM OrganizationRolesMapping
+	DELETE FROM OrganizationUserRoles
+	DELETE FROM OrganizationRoles
+	DELETE FROM Features
+END
+GO

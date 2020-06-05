@@ -194,3 +194,12 @@ BEGIN
 		[ModuleCode] nvarchar(MAX)
 	);
 END
+
+IF TYPE_ID(N'OrganizationRoleType') IS NULL
+BEGIN
+	CREATE TYPE OrganizationRoleType AS TABLE
+	(
+		OrganizationRoleId int,
+		Features nvarchar(MAX)
+	);
+END

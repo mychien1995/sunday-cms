@@ -45,4 +45,10 @@ export class OrganizationRoleService {
       .delete(`${ApiUrl.OrganizationRoles.Delete}?id=${roleId}`)
       .pipe(map(ApiHelper.onSuccess), catchError(ApiHelper.onFail));
   }
+
+  bulkUpdate(roles: OrganizationRoleMutationData[]): Observable<ApiResponse> {
+    return this.apiService
+      .post(`${ApiUrl.OrganizationRoles.BulkUpdate}`, { Roles: roles })
+      .pipe(map(ApiHelper.onSuccess), catchError(ApiHelper.onFail));
+  }
 }

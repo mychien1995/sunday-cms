@@ -56,5 +56,12 @@ namespace Sunday.CMS.Interface.Controllers
             var result = await _organizationRoleManager.DeleteRole(id);
             return Ok(result);
         }
+
+        [HttpPost("bulkUpdate")]
+        public async Task<IActionResult> BulkUpdate([FromBody]OrganizationRoleBulkUpdateModel roles)
+        {
+            var result = await _organizationRoleManager.BulkUpdate(roles);
+            return Ok(result);
+        }
     }
 }

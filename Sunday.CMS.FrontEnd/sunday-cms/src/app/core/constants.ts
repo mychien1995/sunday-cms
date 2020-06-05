@@ -31,7 +31,8 @@ export class ApiUrl {
     Create: 'cms/api/organizationroles/create/',
     Update: 'cms/api/organizationroles/update/',
     GetById: 'cms/api/organizationroles/',
-    Delete: 'cms/api/organizationroles/'
+    Delete: 'cms/api/organizationroles/',
+    BulkUpdate: 'cms/api/organizationroles/bulkUpdate/'
   };
   public static Organizations = {
     Search: 'cms/api/organizations/search',

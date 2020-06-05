@@ -26,12 +26,15 @@
 </style>
 <div class="row">
     <div class="col-12">
-        <button class="mb-3 btn btn-shadow btn-primary" (click)="updatePermission(confirmUpdateDialog)">Update
+        <button [hidden]="roleList.Roles.length === 0 || featureList.length === 0"
+            class="mb-3 btn btn-shadow btn-primary" (click)="updatePermission(confirmUpdateDialog)">Update
             Permissions
         </button>
         <div class="main-card mb-3 card">
             <div class="card-body">
-                <div class="frozen-table-wrapper">
+                <div [hidden]="roleList.Roles.length > 0">No roles available</div>
+                <div [hidden]="featureList.length > 0">No features available</div>
+                <div [hidden]="roleList.Roles.length === 0 || featureList.length === 0" class="frozen-table-wrapper">
                     <table class="mb-0 table table-striped table-bordered">
                         <thead>
                             <tr>
@@ -67,8 +70,8 @@
                         </tbody>
                     </table>
                 </div>
-                <mat-paginator [length]="roleList.Total" [pageSize]="10"
-                    (page)="onPaging({PageIndex : $event.pageIndex})">
+                <mat-paginator [hidden]="roleList.Roles.length === 0 || featureList.length === 0"
+                    [length]="roleList.Total" [pageSize]="10" (page)="onPaging({PageIndex : $event.pageIndex})">
                 </mat-paginator>
             </div>
         </div>

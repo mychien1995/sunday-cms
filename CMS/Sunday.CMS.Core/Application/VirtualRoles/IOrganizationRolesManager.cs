@@ -18,5 +18,7 @@ namespace Sunday.CMS.Core.Application.VirtualRoles
         Task<BaseApiResponse> UpdateRole(OrganizationRoleMutationModel mutationData);
 
         Task<BaseApiResponse> DeleteRole(int roleId);
+
+        Task<BaseApiResponse> BulkUpdate(OrganizationRoleBulkUpdateModel model);
     }
 }

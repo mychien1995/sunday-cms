@@ -7,6 +7,9 @@ using Sunday.VirtualRoles.Application;
 using Sunday.VirtualRoles.Core;
 using Sunday.VirtualRoles.Core.Models;
 using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -85,6 +88,30 @@ namespace Sunday.VirtualRoles.Implementation
             {
                 RoleId = roleId
             });
+            return true;
+        }
+
+        public async Task<bool> BulkUpdate(IEnumerable<OrganizationRole> roles)
+        {
+            var dbRoleType = new DataTable("OrganizationRoleType");
+            dbRoleType.Columns.Add("OrganizationRoleId", typeof(int));
+            dbRoleType.Columns.Add("Features", typeof(string));
+            foreach (var role in roles)
+            {
+                var row = dbRoleType.NewRow();
+                row["OrganizationRoleId"] = role.ID;
+                row["Features"] = string.Join(',', role.Features.Select(x => x.ID));
+                dbRoleType.Rows.Add(row);
+            }
+            var param = new SqlParameter
+            {
+                ParameterName = "@Roles",
+                SqlDbType = SqlDbType.Structured,
+                Value = dbRoleType,
+                TypeName = "dbo.OrganizationRoleType",
+                Direction = ParameterDirection.Input
+            };
+            await Task.Run(() => _dbRunner.Execute(ProcedureNames.OrganizationRoles.BulkUpdate, param));
             return true;
         }
     }

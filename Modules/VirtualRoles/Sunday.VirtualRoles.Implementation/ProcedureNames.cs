@@ -13,6 +13,7 @@ namespace Sunday.VirtualRoles.Implementation
             public const string Delete = "sp_organizationRoles_delete";
             public const string Update = "sp_organizationRoles_update";
             public const string Create = "sp_organizationRoles_create";
+            public const string BulkUpdate = "sp_organizationRoles_bulkUpdate";
         }
     }
 }

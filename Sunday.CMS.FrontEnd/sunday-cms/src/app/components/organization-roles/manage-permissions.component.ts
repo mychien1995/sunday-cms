@@ -6,6 +6,7 @@ import {
   OrganizationRoleItem,
   ModuleListApiResponse,
   FeatureItem,
+  OrganizationRoleMutationData,
 } from '@models/index';
 import { forkJoin, Observable } from 'rxjs';
 import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -79,7 +80,19 @@ export class ManagePermissionsComponent implements OnInit {
     return this.organizationService.getModules();
   }
 
-  confirmUpdate(): void {}
+  confirmUpdate(): void {
+    const data = this.roleList.Roles.map(
+      (c) => <OrganizationRoleMutationData>c
+    );
+    this.clientState.isBusy = true;
+    this.roleService.bulkUpdate(data).subscribe((res) => {
+      if (res.Success) {
+        this.clientState.isBusy = false;
+        this.toastr.success('Permissions Updated');
+        this.modalService.dismissAll();
+      }
+    });
+  }
 
   updatePermission(template: any): void {
     this.modalService.open(template);

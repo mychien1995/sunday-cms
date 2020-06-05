@@ -87,5 +87,20 @@ namespace Sunday.CMS.Core.Implementation.VirtualRoles
             await _organizationRoleRepository.Delete(roleId);
             return result;
         }
+
+        public virtual async Task<BaseApiResponse> BulkUpdate(OrganizationRoleBulkUpdateModel model)
+        {
+            var result = new BaseApiResponse();
+            var roleEntityList = new List<OrganizationRole>();
+            foreach (var role in model.Roles)
+            {
+                var roleEntity = role.MapTo<OrganizationRole>();
+                var arg = new BeforeUpdateEntityArg(role, roleEntity);
+                await ApplicationPipelines.RunAsync("cms.organizationRoles.beforeUpdate", arg);
+                roleEntityList.Add(roleEntity);
+            }
+            await _organizationRoleRepository.BulkUpdate(roleEntityList);
+            return result;
+        }
     }
 }
