@@ -17,9 +17,21 @@ table {
     }
   }
 }
-.toast-top-right{
+.toast-top-right {
   top: 70px !important;
 }
-.app-main__outer{
+.app-main__outer {
   max-width: 100%;
+}
+.side-bar-loader {
+  width: 100%;
+  min-height: 100vh;
+  position: relative;
+  background: #000;
+  opacity: 0.2;
+  img {
+    position: absolute;
+    left: calc(50% - 20px);
+    top: 40%;
+  }
 }

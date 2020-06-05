@@ -52,7 +52,6 @@ export class LoginComponent implements OnInit {
     this.clientState.isBusy = true;
     this.loginService.login(userLoginData).subscribe(
       (res) => {
-        this.clientState.isBusy = false;
         this.toastr.success('Welcome', null, {
           positionClass: 'toast-bottom-right',
         });
@@ -61,7 +60,10 @@ export class LoginComponent implements OnInit {
         this.layoutService.layoutUpdated({
           event: 'user-updated',
         });
-        this.router.navigate(['/']);
+        this.layoutService.refreshNavigation(() => {
+          this.clientState.isBusy = false;
+          this.router.navigate(['/']);
+        });
       },
       (err) => {
         this.clientState.isBusy = false;

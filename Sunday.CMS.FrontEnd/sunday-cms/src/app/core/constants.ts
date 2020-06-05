@@ -26,6 +26,9 @@ export class ApiUrl {
     GetAll: 'cms/api/roles/',
     GetById: 'cms/api/roles/',
   };
+  public static Layout = {
+    GetNavigation: 'cms/api/layout/getNavigation/'
+  };
   public static OrganizationRoles = {
     Search: 'cms/api/organizationroles/search/',
     Create: 'cms/api/organizationroles/create/',
@@ -50,6 +53,7 @@ export class ApiUrl {
 
 export class StorageKey {
   public static UserData = 'app_user_data';
+  public static NavigationData = 'app_navigation_data';
 }
 export const DefaultLogo = 'assets/images/avatars/1.jpg';
 export const DefaultOrganizationLogo = 'assets/images/logo-inverse.png';

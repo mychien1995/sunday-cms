@@ -1,36 +1,18 @@
+<div class="side-bar-loader" [hidden]="!clientState.isNavigationBusy">
+  <img src="assets/images/spinner.gif" />
+</div>
 <div class="app-sidebar__inner">
-  <ul class="vertical-nav-menu">
-    <li class="app-sidebar__heading">Dashboards</li>
-    <li>
-      <a [routerLink]="['/']">
-        <i class="metismenu-icon pe-7s-rocket"></i>
-        Dashboard
-      </a>
-    </li>
-    <li class="app-sidebar__heading">Manage Users</li>
-    <li>
-      <a [routerLink]="['/users']">
-        <i class="metismenu-icon pe-7s-diamond"></i>
-        Manage users
-      </a>
-    </li>
-    <li class="app-sidebar__heading">Manage Organizations</li>
-    <li>
-      <a [routerLink]="['/organizations']">
-        <i class="metismenu-icon pe-7s-car"></i>
-        Manage organizations
-      </a>
-    </li>
-    <li class="app-sidebar__heading">Manage Roles</li>
-    <li>
-      <a [routerLink]="['/organization-roles']">
-        <i class="metismenu-icon pe-7s-browser"></i>
-        Manage Roles
-      </a>
-      <a [routerLink]="['/permissions-manager']">
-        <i class="metismenu-icon pe-7s-display2"></i>
-        Permissions Manager
-      </a>
-    </li>
+  <ul class="vertical-nav-menu" [hidden]="clientState.isNavigationBusy">
+    <ng-container *ngFor="let section of navigationTree.Sections">
+      <li class="app-sidebar__heading">
+        {{section.Section}}
+      </li>
+      <li *ngFor="let item of section.Items">
+        <a [routerLink]="[item.Link]">
+          <i [class]="'metismenu-icon ' + item.IconClass"></i>
+          {{item.Title}}
+        </a>
+      </li>
+    </ng-container>
   </ul>
 </div>

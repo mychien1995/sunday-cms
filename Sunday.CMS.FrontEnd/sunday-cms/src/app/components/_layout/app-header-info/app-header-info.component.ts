@@ -32,6 +32,7 @@ export class AppHeaderInfoComponent implements OnInit {
 
   logout(): void {
     this.authService.clearToken();
+    this.layoutService.clearNavigationCache();
     this.router.navigate(['/login']);
   }
 
