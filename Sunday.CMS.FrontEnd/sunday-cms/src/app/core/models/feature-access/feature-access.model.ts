@@ -4,6 +4,7 @@ export class ModuleModel {
   ID?: number;
   ModuleName?: string;
   ModuleCode?: string;
+  Features?: FeatureItem[];
 }
 
 export class ModuleListApiResponse extends ApiResponse {

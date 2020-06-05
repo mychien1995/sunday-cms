@@ -27,7 +27,18 @@ namespace Sunday.CMS.Core.Implementation.VirtualRoles
             var result = new OrganizationRolesListJsonResult();
             var searchResult = await _organizationRoleRepository.GetRoles(query);
             result.Total = searchResult.Total;
-            result.Roles = searchResult.Result.Select(x => x.MapTo<OrganizationRoleItem>()).ToList();
+            result.Roles = await Task.WhenAll(searchResult.Result.Select(async x =>
+            {
+                var entity = x;
+                var model = x.MapTo<OrganizationRoleItem>();
+                if (query.FetchFeatures)
+                {
+                    entity = await _organizationRoleRepository.GetById(entity.ID);
+                }
+                await ApplicationPipelines.RunAsync("cms.organizationRoles.translateToModel", new EntityModelExchangeArg(model, entity));
+                return model;
+            }));
+            result.Roles = result.Roles.OrderBy(x => x.RoleName).ToList();
             return result;
         }
         public virtual async Task<OrganizationRoleDetailJsonResult> GetRoleById(int roleId)

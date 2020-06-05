@@ -1,0 +1,91 @@
+<app-page-heading [title]="'Permissions Manager'" [icon]="'bg-happy-itmeo'"></app-page-heading>
+<style>
+    .frozen-table-wrapper {
+        overflow-x: scroll;
+        position: relative;
+        width: 100%;
+        border-left: 1px solid #e9ecef;
+    }
+
+    .headcol {
+        position: sticky;
+        left: 0;
+        z-index: 1;
+        background: #fff;
+        width: 75px;
+        padding: 0px;
+    }
+
+    .headcol .inner {
+        padding: 10px;
+        border-right: 1px solid #e9ecef;
+        margin-left: -2px;
+        background: #fff;
+        height: 100%;
+    }
+</style>
+<div class="row">
+    <div class="col-12">
+        <button class="mb-3 btn btn-shadow btn-primary" (click)="updatePermission(confirmUpdateDialog)">Update
+            Permissions
+        </button>
+        <div class="main-card mb-3 card">
+            <div class="card-body">
+                <div class="frozen-table-wrapper">
+                    <table class="mb-0 table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th rowspan="2" class="headcol" style="height: 1px;">
+                                    <div class="inner">&nbsp;</div>
+                                </th>
+                                <th style="text-align: center;" *ngFor="let module of modulesList.Modules"
+                                    [attr.colspan]="module.Features.length">
+                                    {{module.ModuleName}}</th>
+                            </tr>
+                            <tr>
+                                <th style="text-align: center;" *ngFor="let feature of featureList">
+                                    {{feature.FeatureName}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let role of roleList.Roles;let roleIndex = index">
+                                <th class="headcol" style="padding: 0px;">
+                                    <div class="inner">{{role.RoleName}}</div>
+                                </th>
+                                <td style="text-align: center;"
+                                    *ngFor="let feature of featureList;let featureIndex = index">
+                                    <div class="custom-checkbox custom-control">
+                                        <input type="checkbox" id="chkBox_{{roleIndex}}_{{featureIndex}}"
+                                            class="custom-control-input"
+                                            [checked]="role.FeatureIds.indexOf(feature.ID) > -1"
+                                            (change)="selectFeature(role, feature.ID)" />
+                                        <label class="custom-control-label"
+                                            for="chkBox_{{roleIndex}}_{{featureIndex}}">&nbsp;</label>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <mat-paginator [length]="roleList.Total" [pageSize]="10"
+                    (page)="onPaging({PageIndex : $event.pageIndex})">
+                </mat-paginator>
+            </div>
+        </div>
+    </div>
+</div>
+<ng-template #confirmUpdateDialog let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Confirm Update</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <p>Are you sure you want to update permissions</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="confirmUpdate()">Confirm</button>
+        <button type="button" class="btn btn-secondary" (click)="c()">Cancel</button>
+    </div>
+</ng-template>

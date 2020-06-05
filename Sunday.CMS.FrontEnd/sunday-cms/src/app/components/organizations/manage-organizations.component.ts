@@ -28,7 +28,6 @@ export class ManageOrganizationComponent implements OnInit {
 
   ngOnInit(): void {
     this.getOrganizations();
-    this.organizationService.getModules().subscribe((res) => {});
   }
 
   getOrganizations(query?: any): void {

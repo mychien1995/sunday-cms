@@ -17,3 +17,4 @@ export * from './organizations/organization.resolver';
 export * from './organization-roles/manage-organization-roles.component';
 export * from './organization-roles/add-organization-role.component';
 export * from './organization-roles/organization-role.resolver';
+export * from './organization-roles/manage-permissions.component';

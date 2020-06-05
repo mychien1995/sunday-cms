@@ -11,6 +11,7 @@ import {
   AddOrganizationComponent,
   ManageOrganizationRolesComponent,
   AddOrganizationRoleComponent,
+  ManagePermissionsComponent,
 } from 'app/components';
 import { AuthGuard } from 'app/core/services';
 import {
@@ -54,6 +55,10 @@ export const routes: Routes = [
         path: 'organization-roles/edit/:roleId',
         component: AddOrganizationRoleComponent,
         resolve: { role: OrganizationRoleResolver },
+      },
+      {
+        path: 'permissions-manager',
+        component: ManagePermissionsComponent,
       },
     ],
     canActivate: [AuthGuard],

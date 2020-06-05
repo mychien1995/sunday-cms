@@ -21,5 +21,20 @@ namespace Sunday.FeatureAccess.Core
             public const string DisplayName = "Roles Management";
             public const string Code = "ORM";
         }
+        public static class Dump1
+        {
+            public const string DisplayName = "Dump 1 Management";
+            public const string Code = "DMP";
+        }
+        public static class Dump2
+        {
+            public const string DisplayName = "Dump 2 Management";
+            public const string Code = "DMP1";
+        }
+        public static class Dump3
+        {
+            public const string DisplayName = "Dump 3 Management";
+            public const string Code = "DMP2";
+        }
     }
 }

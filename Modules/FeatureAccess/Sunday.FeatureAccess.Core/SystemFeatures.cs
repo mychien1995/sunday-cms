@@ -12,7 +12,7 @@ namespace Sunday.FeatureAccess.Core
             public static class Read
             {
                 public const string DisplayName = "View Users";
-                public const string Code = "UM_R";
+                public const string Code = "UM_V";
             }
             public static class Write
             {
@@ -86,6 +86,78 @@ namespace Sunday.FeatureAccess.Core
             {
                 public const string DisplayName = "Delete Roles";
                 public const string Code = "ORM_D";
+            }
+        }
+        public static class Dump1
+        {
+            public const string Code = "DMP";
+            public static class Read
+            {
+                public const string DisplayName = "View Roles";
+                public const string Code = "DMP_1";
+            }
+            public static class Write
+            {
+                public const string DisplayName = "Create/Edit Roles";
+                public const string Code = "DMP_2";
+            }
+            public static class Activate
+            {
+                public const string DisplayName = "Activate/Deactivate Roles";
+                public const string Code = "DMP_3";
+            }
+            public static class Delete
+            {
+                public const string DisplayName = "Delete Roles";
+                public const string Code = "DMP_4";
+            }
+        }
+        public static class Dump2
+        {
+            public const string Code = "DMP1";
+            public static class Read
+            {
+                public const string DisplayName = "View Roles";
+                public const string Code = "DMP1_1";
+            }
+            public static class Write
+            {
+                public const string DisplayName = "Create/Edit Roles";
+                public const string Code = "DMP1_2";
+            }
+            public static class Activate
+            {
+                public const string DisplayName = "Activate/Deactivate Roles";
+                public const string Code = "DMP1_3";
+            }
+            public static class Delete
+            {
+                public const string DisplayName = "Delete Roles";
+                public const string Code = "DMP1_4";
+            }
+        }
+        public static class Dump3
+        {
+            public const string Code = "DMP2";
+            public static class Read
+            {
+                public const string DisplayName = "View Roles";
+                public const string Code = "DMP2_1";
+            }
+            public static class Write
+            {
+                public const string DisplayName = "Create/Edit Roles";
+                public const string Code = "DMP2_2";
+            }
+            public static class Activate
+            {
+                public const string DisplayName = "Activate/Deactivate Roles";
+                public const string Code = "DMP2_3";
+            }
+            public static class Delete
+            {
+                public const string DisplayName = "Delete Roles";
+                public const string Code = "DMP2_4";
             }
         }
     }

@@ -7,6 +7,7 @@ export class OrganizationRoleItem {
   UpdatedBy?: string;
   CreatedDate?: number;
   UpdatedDate?: number;
+  FeatureIds?: number[] = [];
 }
 
 export class OrganizationRoleListApiResponse extends ApiResponse {

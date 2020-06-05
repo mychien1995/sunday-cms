@@ -17,6 +17,7 @@ import {
   ManageOrganizationRolesComponent,
   TwoSideSelectComponent,
   AddOrganizationRoleComponent,
+  ManagePermissionsComponent,
 } from 'app/components';
 import {
   ApplicationLayoutComponent,
@@ -53,6 +54,7 @@ export const SharedComponents = [
   TwoSideSelectComponent,
   AddOrganizationRoleComponent,
   ManageOrganizationRolesComponent,
+  ManagePermissionsComponent,
 ];
 import {
   UserResolver,

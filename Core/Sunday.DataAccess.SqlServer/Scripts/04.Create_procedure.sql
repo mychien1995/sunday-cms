@@ -200,5 +200,6 @@ BEGIN
 	INSERT INTO Features (ModuleId, FeatureCode, FeatureName)
 	SELECT Modules.ID, Code
 	,[Name] FROM @Features B, Modules WHERE B.ModuleCode = Modules.ModuleCode
+	AND B.Code NOT IN (SELECT FeatureCode FROM Features)
 END
 GO
