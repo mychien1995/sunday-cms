@@ -11,6 +11,7 @@ namespace Sunday.Users.Core.Models
         {
             ExcludeIdList = new List<int>();
             IncludeIdList = new List<int>();
+            OrganizationIds = new List<int>();
         }
         public int? PageIndex { get; set; }
         public int? PageSize { get; set; }
@@ -32,10 +33,21 @@ namespace Sunday.Users.Core.Models
                 return string.Join(',', IncludeIdList);
             }
         }
+
+        public string OrganizationIdList
+        {
+            get
+            {
+                if (OrganizationIds == null || !OrganizationIds.Any()) return string.Empty;
+                return string.Join(',', OrganizationIds);
+            }
+        }
+
         public string RoleIds { get; set; }
 
         public virtual List<int> ExcludeIdList { get; set; }
 
         public virtual List<int> IncludeIdList { get; set; }
+        public virtual List<int> OrganizationIds { get; set; }
     }
 }

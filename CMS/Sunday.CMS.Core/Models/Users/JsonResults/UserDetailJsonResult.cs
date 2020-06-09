@@ -14,6 +14,7 @@ namespace Sunday.CMS.Core.Models.Users
         {
             RoleIds = new List<int>();
             Organizations = new List<OrganizationsUserItem>();
+            OrganizationRoleIds = new List<int>();
         }
         public int ID { get; set; }
         public string UserName { get; set; }
@@ -24,6 +25,7 @@ namespace Sunday.CMS.Core.Models.Users
         public string Domain { get; set; }
         public List<OrganizationsUserItem> Organizations { get; set; }
         public List<int> RoleIds { get; set; }
+        public List<int> OrganizationRoleIds { get; set; }
     }
 
     public class OrganizationsUserItem

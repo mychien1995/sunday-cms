@@ -1,0 +1,13 @@
+<form (ngSubmit)="onSubmit(searchForm.value)" [formGroup]="searchForm" autocomplete="off" #ngForm="ngForm">
+    <div class="form-row">
+        <div class="col-md-6">
+            <div class="position-relative form-group form-row">
+                <div class="col-8">
+                    <input name="text" placeholder="Enter username or fullname" type="text" class="form-control"
+                        formControlName="Text" autocomplete="off">
+                </div>
+                <button class="btn btn-primary" type="submit">Search</button>
+            </div>
+        </div>
+    </div>
+</form> 

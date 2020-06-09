@@ -19,13 +19,13 @@ using System.Threading.Tasks;
 
 namespace Sunday.CMS.Core.Implementation.Users
 {
-    [ServiceTypeOf(typeof(IApplicationUserManager))]
-    public class DefaultApplicationUserManager : IApplicationUserManager
+    [ServiceTypeOf(typeof(IOrganizationUsersManager))]
+    public class DefaultOrganizationUserManager : IOrganizationUsersManager
     {
         private readonly IUserRepository _userRepository;
         private readonly IIdentityService _identityService;
         private readonly INotificationService _notificationService;
-        public DefaultApplicationUserManager(IUserRepository userRepository, IIdentityService identityService, INotificationService notificationService)
+        public DefaultOrganizationUserManager(IUserRepository userRepository, IIdentityService identityService, INotificationService notificationService)
         {
             _userRepository = userRepository;
             _identityService = identityService;
@@ -91,7 +91,6 @@ namespace Sunday.CMS.Core.Implementation.Users
                 IsActive = x.IsActive,
                 OrganizationId = x.OrganizationId
             }).ToList();
-            result.OrganizationRoleIds = user.VirtualRoles.Select(x => x.ID).ToList();
             result.Success = true;
             return await Task.FromResult(result);
         }

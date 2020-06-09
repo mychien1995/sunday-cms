@@ -12,51 +12,22 @@ using static Dapper.SqlMapper;
 
 namespace Sunday.Users.Implementation
 {
-    public class UpdateUserDynamicParamter : IDynamicParameters
+    public class UpdateUserDynamicParamter : BaseUpdateUserDynamicParameter, IDynamicParameters
     {
-        private readonly ApplicationUser _user;
 
-        public UpdateUserDynamicParamter(ApplicationUser user)
+        public UpdateUserDynamicParamter(ApplicationUser user) : base(user)
         {
-            _user = user;
         }
 
         public void AddParameters(IDbCommand command, Identity identity)
         {
+            AddCommonParam(command, identity);
             var sqlCommand = (SqlCommand)command;
             sqlCommand.CommandType = CommandType.StoredProcedure;
-            var items = new List<SqlDataRecord>();
-            var p = sqlCommand.Parameters.Add("@Organizations", SqlDbType.Structured);
-            p.Direction = ParameterDirection.Input;
-            p.TypeName = "OrganizationUserType";
-            p.Value = null;
-            if (_user.OrganizationUsers.Any())
-            {
-                foreach (var param in _user.OrganizationUsers)
-                {
-                    var rec = new SqlDataRecord(
-                        new SqlMetaData("OrganizationId", SqlDbType.Int),
-                        new SqlMetaData("IsActive", SqlDbType.Bit)
-                       );
-                    rec.SetInt32(0, param.Organization.ID);
-                    rec.SetBoolean(1, param.IsActive);
-                    items.Add(rec);
-                }
-                p.Value = items;
-            }
-            sqlCommand.Parameters.Add("@ID", SqlDbType.Int).Value = _user.ID;
-            sqlCommand.Parameters.Add("@Fullname", SqlDbType.NVarChar).Value = _user.Fullname;
-            sqlCommand.Parameters.Add("@Email", SqlDbType.NVarChar).Value = _user.Email;
-            sqlCommand.Parameters.Add("@Phone", SqlDbType.NVarChar).Value = _user.Phone;
-            sqlCommand.Parameters.Add("@IsActive", SqlDbType.Bit).Value = _user.IsActive;
-            sqlCommand.Parameters.Add("@UpdatedBy", SqlDbType.NVarChar).Value = _user.UpdatedBy;
-            sqlCommand.Parameters.Add("@UpdatedDate", SqlDbType.DateTime).Value = _user.UpdatedDate;
-            sqlCommand.Parameters.Add("@AvatarBlobUri", SqlDbType.NVarChar).Value = _user.AvatarBlobUri;
-            if (_user.Roles.Any())
-            {
-                var RoleIds = string.Join(",", _user.Roles.Select(x => x.ID));
-                sqlCommand.Parameters.Add("@RoleIds", SqlDbType.NVarChar).Value = RoleIds;
-            }
+            sqlCommand.Parameters.Add("@ID", SqlDbType.Int).Value = User.ID;
+            sqlCommand.Parameters.Add("@UpdatedDate", SqlDbType.DateTime).Value = User.UpdatedDate;
+            sqlCommand.Parameters.Add("@AvatarBlobUri", SqlDbType.NVarChar).Value = User.AvatarBlobUri;
+
         }
     }
 }

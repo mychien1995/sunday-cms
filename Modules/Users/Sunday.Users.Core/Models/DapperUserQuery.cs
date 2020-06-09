@@ -13,5 +13,7 @@ namespace Sunday.Users.Core.Models
         public override List<int> ExcludeIdList { get; set; }
         [DapperIgnoreParam]
         public override List<int> IncludeIdList { get; set; }
+        [DapperIgnoreParam]
+        public override List<int> OrganizationIds { get; set; }
     }
 }

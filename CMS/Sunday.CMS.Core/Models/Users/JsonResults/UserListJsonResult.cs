@@ -2,6 +2,7 @@
 using Sunday.Core.Domain.Roles;
 using Sunday.Core.Domain.Users;
 using Sunday.Users.Core;
+using Sunday.VirtualRoles.Core;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -30,9 +31,11 @@ namespace Sunday.CMS.Core.Models.Users
         public bool IsActive { get; set; }
         public bool IsLockedOut { get; set; }
         public List<ApplicationRole> Roles { get; set; }
+        public List<OrganizationRole> OrganizationRoles { get; set; }
         public UserItem()
         {
-
+            Roles = new List<ApplicationRole>();
+            OrganizationRoles = new List<OrganizationRole>();
         }
     }
 }

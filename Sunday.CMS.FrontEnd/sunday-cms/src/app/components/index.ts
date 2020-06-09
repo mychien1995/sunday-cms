@@ -18,3 +18,5 @@ export * from './organization-roles/manage-organization-roles.component';
 export * from './organization-roles/add-organization-role.component';
 export * from './organization-roles/organization-role.resolver';
 export * from './organization-roles/manage-permissions.component';
+export * from './organization-users/manage-users.component';
+export * from './organization-users/add-user.component';

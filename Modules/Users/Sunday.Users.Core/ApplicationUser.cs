@@ -1,6 +1,7 @@
 ﻿using Sunday.Core.Domain.Organizations;
 using Sunday.Core.Domain.Roles;
 using Sunday.Core.Domain.Users;
+using Sunday.Core.Domain.VirtualRoles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,7 @@ namespace Sunday.Users.Core
         {
             Roles = new List<IApplicationRole>();
             OrganizationUsers = new List<IApplicationOrganizationUser>();
+            VirtualRoles = new List<IOrganizationRole>();
         }
         public int ID { get; set; }
         public string UserName { get; set; }
@@ -33,6 +35,7 @@ namespace Sunday.Users.Core
         public string AvatarBlobUri { get; set; }
         public string Fullname { get; set; }
         public List<IApplicationRole> Roles { get; set; }
+        public List<IOrganizationRole> VirtualRoles { get; set; }
         public List<IApplicationOrganizationUser> OrganizationUsers { get; set; }
 
         public bool IsInRole(string roleCode)

@@ -31,5 +31,7 @@ namespace Sunday.Users.Application
         Task<bool> DeactivateUser(int userId);
 
         Task<bool> UpdatePassword(ApplicationUser user);
+
+        Task FetchVirtualRoles(List<ApplicationUser> users);
     }
 }

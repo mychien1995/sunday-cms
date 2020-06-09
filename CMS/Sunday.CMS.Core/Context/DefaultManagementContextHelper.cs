@@ -3,6 +3,7 @@ using Sunday.CMS.Core.Application.Organizations;
 using Sunday.Core;
 using Sunday.Core.Domain.Organizations;
 using Sunday.Core.Domain.Users;
+using Sunday.Identity.Core;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -32,7 +33,13 @@ namespace Sunday.CMS.Core.Context
 
         public IApplicationUser GetCurrentUser()
         {
-            throw new NotImplementedException();
+            var user = _httpContextAccessor.HttpContext.GetCurrentUser();
+            if (user == null)
+            {
+                user = (_httpContextAccessor.HttpContext.User as ApplicationUserPrincipal).User;
+                _httpContextAccessor.HttpContext.SetCurrentUser(user);
+            }
+            return user;
         }
     }
 }

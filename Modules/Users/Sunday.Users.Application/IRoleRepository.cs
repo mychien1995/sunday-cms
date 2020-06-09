@@ -12,5 +12,7 @@ namespace Sunday.Users.Application
         Task<IEnumerable<ApplicationRole>> GetAllRolesAsync();
 
         Task<ApplicationRole> GetRoleById(int roleId);
+
+        Task<ApplicationRole> GetRoleByCode(string roleCode);
     }
 }

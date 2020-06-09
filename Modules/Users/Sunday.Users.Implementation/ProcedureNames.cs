@@ -17,6 +17,7 @@ namespace Sunday.Users.Implementation
             public const string UpdateAvatar = "sp_users_updateAvatar";
             public const string Delete = "sp_users_delete";
             public const string FetchRoles = "sp_users_fetchRoles";
+            public const string FetchVirtualRoles = "sp_users_fetchOrganizationRoles";
             public const string Activate = "sp_users_activate";
             public const string Deactivate = "sp_users_deactivate";
             public const string ChangePassword = "sp_users_changePassword";

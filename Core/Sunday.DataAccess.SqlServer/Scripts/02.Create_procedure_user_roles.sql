@@ -78,6 +78,7 @@ ALTER PROCEDURE [dbo].[sp_users_search]
 	@IncludeIds nvarchar(MAX) = '',
 	@Text nvarchar(MAX) = '',
 	@RoleIds nvarchar(MAX) = '',
+	@OrganizationIdList nvarchar(MAX) = '',
 	@SortBy nvarchar(MAX) = 'UpdatedDate',
 	@SortDirection nvarchar(MAX) = 'DESC'
 )
@@ -125,6 +126,13 @@ BEGIN
 		SET @WhereClause = @WhereClause + ' ID IN (SELECT UserId FROM UserRoles WHERE RoleId IN ('+@RoleIds+')) ';
 	END
 
+	IF(@OrganizationIdList IS NOT NULL AND LEN(TRIM(@OrganizationIdList)) > 0)
+	BEGIN
+		IF LEN(TRIM(@WhereClause)) > 0
+			SET @WhereClause = @WhereClause + ' AND ';
+		SET @WhereClause = @WhereClause + ' ID IN (SELECT UserId FROM OrganizationUsers WHERE OrganizationId IN ('+@OrganizationIdList+')) ';
+	END
+
 	IF(LEN(TRIM(@WhereClause)) > 0)
 		SET @WhereClause = ' WHERE ' + @WhereClause
 	DECLARE @CountQuery nvarchar(MAX);
@@ -165,6 +173,7 @@ ALTER PROCEDURE [dbo].[sp_users_insert]
 	@SecurityStamp nvarchar(500),
 	@PasswordHash nvarchar(1000),
 	@RoleIds nvarchar(MAX),
+	@OrganizationRoles OrganizationUserRoleType READONLY,
 	@Organizations OrganizationUserType READONLY
 )
 AS
@@ -180,6 +189,28 @@ BEGIN
 	INSERT INTO UserRoles (UserId, RoleId) SELECT @UserId, RoleId FROM @tblRoleIds
 
 	INSERT INTO OrganizationUsers(UserId, OrganizationId, IsActive) SELECT @UserId, OrganizationId, IsActive FROM @Organizations
+
+
+	DECLARE @OrganizationId int
+	DECLARE @OrganizationRolesId nvarchar(MAX)
+	DECLARE OrganizationCursor CURSOR FOR SELECT OrganizationId, OrganizationRolesId FROM @OrganizationRoles
+	OPEN OrganizationCursor
+	FETCH NEXT FROM OrganizationCursor INTO @OrganizationId, @OrganizationRolesId
+	WHILE @@FETCH_STATUS = 0  
+    BEGIN
+		DECLARE @tblOrgRole TABLE (OrgRoleId varchar(100))
+		INSERT INTO @tblOrgRole SELECT value  FROM STRING_SPLIT(@OrganizationRolesId, ',')
+		
+		DECLARE @OrganizationUserId int
+		SET @OrganizationUserId = (SELECT TOP 1 ID FROM OrganizationUsers WHERE UserId = @UserId AND OrganizationId = @OrganizationId)
+
+		INSERT INTO OrganizationUserRoles (OrganizationUserId, OrganizationRoleId)
+		SELECT @OrganizationUserId, OrgRoleId FROM @tblOrgRole
+		FETCH NEXT FROM OrganizationCursor INTO @OrganizationUserId, @OrganizationId
+	END
+
+	CLOSE OrganizationCursor
+	DEALLOCATE OrganizationCursor;
 END
 GO
 --------------------------------------------------------------------
@@ -204,7 +235,8 @@ ALTER PROCEDURE [dbo].[sp_users_getById_withOptions]
 (
 	@UserId integer,
 	@FetchRoles bit = 0,
-	@FetchOrganizations bit = 0
+	@FetchOrganizations bit = 0,
+	@FetchVirtualRoles bit = 0
 )
 AS
 BEGIN
@@ -220,6 +252,13 @@ BEGIN
 		FROM OrganizationUsers, Organizations
 			WHERE OrganizationUsers.UserId = @UserId
 			AND Organizations.ID = OrganizationUsers.OrganizationId
+	END
+	IF @FetchVirtualRoles = 1
+	BEGIN
+		SELECT ID, RoleName FROM OrganizationRoles WHERE ID IN 
+		(SELECT OrganizationRoleId FROM OrganizationUserRoles WHERE OrganizationUserId IN 
+			(SELECT ID FROM OrganizationUsers WHERE UserId = @UserId AND IsActive = 1)
+		)
 	END
 END
 GO
@@ -240,6 +279,7 @@ ALTER PROCEDURE [dbo].[sp_users_update]
 	@UpdatedDate datetime,
 	@AvatarBlobUri nvarchar(MAX) = NULL,
 	@RoleIds nvarchar(MAX) = NULL,
+	@OrganizationRoles OrganizationUserRoleType READONLY,
 	@Organizations OrganizationUserType READONLY
 )
 AS
@@ -274,7 +314,35 @@ BEGIN
         UPDATE 
             SET tgt.IsActive = src.IsActive;
 	END
-	
+
+	BEGIN
+		DECLARE @OrganizationId int
+		DECLARE @OrganizationRolesId nvarchar(MAX)
+		DECLARE OrganizationCursor CURSOR FOR SELECT OrganizationId, OrganizationRolesId FROM @OrganizationRoles
+		OPEN OrganizationCursor
+		FETCH NEXT FROM OrganizationCursor INTO @OrganizationId, @OrganizationRolesId
+		WHILE @@FETCH_STATUS = 0  
+		BEGIN
+			DECLARE @tblOrgRole TABLE (OrgRoleId varchar(100))
+			INSERT INTO @tblOrgRole SELECT value  FROM STRING_SPLIT(@OrganizationRolesId, ',')
+		
+			DECLARE @OrganizationUserId int
+			SET @OrganizationUserId = (SELECT TOP 1 ID FROM OrganizationUsers WHERE UserId = @ID AND OrganizationId = @OrganizationId)
+
+			DELETE FROM OrganizationUserRoles WHERE OrganizationUserId = @OrganizationUserId 
+			AND OrganizationRoleId IN (SELECT ID FROM OrganizationRoles WHERE OrganizationId = @OrganizationId)
+			AND OrganizationRoleId NOT IN (SELECT OrgRoleId FROM @tblOrgRole)
+
+			INSERT INTO OrganizationUserRoles (OrganizationUserId, OrganizationRoleId)
+			SELECT @OrganizationUserId, OrgRoleId FROM @tblOrgRole
+			WHERE OrgRoleId NOT IN (SELECT OrganizationRoleId FROM OrganizationUserRoles WHERE OrganizationUserId = @OrganizationUserId)
+
+			FETCH NEXT FROM OrganizationCursor INTO @OrganizationUserId, @OrganizationId
+		END
+
+		CLOSE OrganizationCursor
+		DEALLOCATE OrganizationCursor;
+	END
 END
 GO
 --------------------------------------------------------------------
@@ -397,3 +465,29 @@ BEGIN
 	SELECT * FROM Roles WHERE ID = @RoleId
 END
 GO
+--------------------------------------------------------------------
+IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_users_fetchOrganizationRoles')
+BEGIN
+	EXEC('CREATE PROCEDURE [dbo].[sp_users_fetchOrganizationRoles] AS BEGIN SET NOCOUNT ON; END')
+END
+GO
+ALTER PROCEDURE [dbo].[sp_users_fetchOrganizationRoles]
+(
+	@UserIds nvarchar(MAX)
+)
+AS
+BEGIN
+	IF(@UserIds IS NULL OR LEN(TRIM(@UserIds)) = 0)
+	BEGIN
+		SELECT * FROM OrganizationRoles WHERE 1 = 2
+	END
+	DECLARE @tblUserIds TABLE (ID varchar(100))
+	INSERT INTO @tblUserIds SELECT value  FROM STRING_SPLIT(@UserIds, ',')
+
+	SELECT UserId, OrganizationRoles.ID, OrganizationRoles.RoleCode, OrganizationRoles.RoleName 
+	FROM OrganizationRoles, OrganizationUserRoles, OrganizationUsers 
+	WHERE OrganizationUsers.UserId IN (SELECT ID FROM @tblUserIds)
+	AND OrganizationUserRoles.OrganizationUserId = OrganizationUsers.ID
+	AND OrganizationUserRoles.OrganizationRoleId = OrganizationRoles.ID
+
+END

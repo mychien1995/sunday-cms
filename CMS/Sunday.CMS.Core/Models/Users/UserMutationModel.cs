@@ -13,6 +13,7 @@ namespace Sunday.CMS.Core.Models.Users
         public UserMutationModel()
         {
             RoleIds = new List<int>();
+            OrganizationRoleIds = new List<int>();
             Organizations = new List<OrganizationSelectionModel>();
         }
         public int ID { get; set; }
@@ -26,6 +27,8 @@ namespace Sunday.CMS.Core.Models.Users
         public string AvatarBlobUri { get; set; }
 
         public List<int> RoleIds { get; set; }
+
+        public List<int> OrganizationRoleIds { get; set; }
         public List<OrganizationSelectionModel> Organizations { get; set; }
     }
 

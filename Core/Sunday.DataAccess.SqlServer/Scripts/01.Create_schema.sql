@@ -203,3 +203,10 @@ BEGIN
 		Features nvarchar(MAX)
 	);
 END
+
+IF TYPE_ID(N'OrganizationUserRoleType') IS NULL
+CREATE TYPE [dbo].[OrganizationUserRoleType] AS TABLE(
+	[OrganizationId] [int] NULL,
+	[OrganizationRolesId] [nvarchar](max) NULL
+)
+GO

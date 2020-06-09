@@ -2,6 +2,7 @@
 using Sunday.Core;
 using Sunday.Core.Domain.Organizations;
 using Sunday.Core.Domain.Roles;
+using Sunday.Core.Domain.VirtualRoles;
 using Sunday.Core.Exceptions;
 using Sunday.Core.Models;
 using Sunday.DataAccess.SqlServer;
@@ -10,6 +11,7 @@ using Sunday.Organizations.Core.Models;
 using Sunday.Users.Application;
 using Sunday.Users.Core;
 using Sunday.Users.Core.Models;
+using Sunday.VirtualRoles.Core;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -42,13 +44,14 @@ namespace Sunday.Users.Implementation
         public virtual ApplicationUser GetUserById(int userId)
         {
             ApplicationUser user = null;
-            var returnTypes = new List<Type>() { typeof(ApplicationUser), typeof(ApplicationRole), typeof(OrganizationUserEntity) };
+            var returnTypes = new List<Type>() { typeof(ApplicationUser), typeof(ApplicationRole), typeof(OrganizationUserEntity), typeof(OrganizationRole) };
             var queryResult = _dbRunner.ExecuteMultiple(ProcedureNames.Users.GetByIdWithOptions, returnTypes.ToArray(),
                 new
                 {
                     UserId = userId,
                     FetchRoles = true,
-                    FetchOrganizations = true
+                    FetchOrganizations = true,
+                    FetchVirtualRoles = true
                 });
             if (queryResult.Count > 0)
             {
@@ -68,6 +71,10 @@ namespace Sunday.Users.Implementation
                     organizationUser.Organization.ID = x.OrganizationId;
                     return organizationUser;
                 }).Cast<IApplicationOrganizationUser>().ToList();
+            }
+            if (queryResult.Count > 3)
+            {
+                user.VirtualRoles = queryResult[3].Select(x => x as IOrganizationRole).ToList();
             }
             return user;
         }
@@ -136,6 +143,24 @@ namespace Sunday.Users.Implementation
                     ID = x.RoleId,
                     RoleName = x.RoleName
                 }).Cast<IApplicationRole>().ToList();
+            }
+        }
+
+        public async virtual Task FetchVirtualRoles(List<ApplicationUser> users)
+        {
+            if (users == null || !users.Any()) return;
+            var userIds = string.Join(',', users.Select(x => x.ID));
+            var dbResult = await _dbRunner.ExecuteAsync<FetchRoleResult>(ProcedureNames.Users.FetchVirtualRoles, new { UserIds = userIds });
+            var groupedResult = dbResult.GroupBy(x => x.UserId).ToDictionary(x => x.Key);
+            foreach (var userId in groupedResult)
+            {
+                var matchingUser = users.FirstOrDefault(x => x.ID == userId.Key);
+                if (matchingUser == null) continue;
+                matchingUser.VirtualRoles = userId.Value.Select(x => new OrganizationRole()
+                {
+                    ID = x.RoleId,
+                    RoleName = x.RoleName
+                }).Cast<IOrganizationRole>().ToList();
             }
         }
 
