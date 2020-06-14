@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Core\Sunday.DataAccess.SqlServer\Sunday.DataAccess.SqlServer.csproj" />
+    <ProjectReference Include="..\..\Organizations\Sunday.Organizations.Application\Sunday.Organizations.Application.csproj" />
     <ProjectReference Include="..\Sunday.FeatureAccess.Application\Sunday.FeatureAccess.Application.csproj" />
     <ProjectReference Include="..\Sunday.FeatureAccess.Core\Sunday.FeatureAccess.Core.csproj" />
   </ItemGroup>

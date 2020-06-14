@@ -1,14 +1,11 @@
 ﻿using Sunday.Core;
-using Sunday.Core.Domain.Roles;
 using Sunday.DataAccess.SqlServer;
+using Sunday.Users.Application;
 using Sunday.Users.Core;
-using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Sunday.Users.Application;
-using System.Collections.Concurrent;
 
 namespace Sunday.Users.Implementation
 {

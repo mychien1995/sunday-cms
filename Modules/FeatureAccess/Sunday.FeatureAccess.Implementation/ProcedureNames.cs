@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Sunday.FeatureAccess.Implementation
+﻿namespace Sunday.FeatureAccess.Implementation
 {
     internal class ProcedureNames
     {

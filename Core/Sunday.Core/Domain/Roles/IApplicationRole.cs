@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Sunday.Core.Domain.Roles
+﻿namespace Sunday.Core.Domain.Roles
 {
     public interface IApplicationRole
     {

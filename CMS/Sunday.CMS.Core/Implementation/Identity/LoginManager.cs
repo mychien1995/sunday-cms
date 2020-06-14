@@ -1,19 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
-using Sunday.CMS.Core.Application.Identity;
+﻿using Sunday.CMS.Core.Application.Identity;
 using Sunday.CMS.Core.Application.Organizations;
 using Sunday.CMS.Core.Models;
 using Sunday.Core;
-using Sunday.Core.Domain.Identity;
-using Sunday.Core.Domain.Organizations;
-using Sunday.Core.Domain.Users;
 using Sunday.Core.Media.Application;
 using Sunday.Identity.Application;
 using Sunday.Identity.Core;
-using Sunday.Users.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Sunday.CMS.Core.Implementation.Identity

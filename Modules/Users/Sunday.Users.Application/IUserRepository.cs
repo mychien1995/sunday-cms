@@ -1,9 +1,7 @@
 ﻿using Sunday.Core.Models;
 using Sunday.Users.Core;
 using Sunday.Users.Core.Models;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Sunday.Users.Application

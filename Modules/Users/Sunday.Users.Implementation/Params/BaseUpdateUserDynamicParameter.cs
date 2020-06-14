@@ -1,12 +1,10 @@
-﻿using Microsoft.SqlServer.Server;
+﻿using Dapper;
+using Microsoft.SqlServer.Server;
 using Sunday.Users.Core;
-using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
-using static Dapper.SqlMapper;
 
 namespace Sunday.Users.Implementation
 {
@@ -17,7 +15,7 @@ namespace Sunday.Users.Implementation
         {
             this.User = user;
         }
-        protected void AddCommonParam(IDbCommand command, Identity identity)
+        protected void AddCommonParam(IDbCommand command, SqlMapper.Identity identity)
         {
             var sqlCommand = (SqlCommand)command;
             sqlCommand.CommandType = CommandType.StoredProcedure;

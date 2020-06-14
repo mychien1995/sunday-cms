@@ -1,5 +1,4 @@
-﻿using Dapper;
-using Sunday.Core;
+﻿using Sunday.Core;
 using Sunday.Core.Domain.Organizations;
 using Sunday.Core.Domain.Roles;
 using Sunday.Core.Domain.VirtualRoles;
@@ -15,10 +14,7 @@ using Sunday.VirtualRoles.Core;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Common;
-using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Sunday.Users.Implementation

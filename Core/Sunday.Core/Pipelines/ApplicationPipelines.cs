@@ -1,13 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Sunday.Core.Configuration;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
 
@@ -15,7 +11,7 @@ namespace Sunday.Core
 {
     public class ApplicationPipelines
     {
-        private static ConcurrentDictionary<string, List<object>> _pipelineExecutors = new ConcurrentDictionary<string, List<object>>();
+        private static ConcurrentDictionary<string, List<Type>> _pipelineTypes = new ConcurrentDictionary<string, List<Type>>();
         private static ConcurrentDictionary<string, List<string>> _pipelineDefinitions = new ConcurrentDictionary<string, List<string>>();
         public static void Initialize(XmlDocument configFile)
         {
@@ -65,20 +61,21 @@ namespace Sunday.Core
         {
             using (var scope = ServiceActivator.GetScope())
             {
-                if (_pipelineExecutors.TryGetValue(pipelineName, out List<object> executors))
+                if (_pipelineTypes.TryGetValue(pipelineName, out List<Type> types))
                 {
-                    foreach (var executor in executors)
+                    foreach (var type in types)
                     {
-                        var processMethod = executor.GetType().GetMethod("Process");
+                        var processMethod = type.GetMethod("Process");
                         if (processMethod == null) continue;
-                        else processMethod.Invoke(executor, new object[1] { arg });
+                        var executor = ActivatorUtilities.CreateInstance(scope.ServiceProvider, type);
+                        processMethod.Invoke(executor, new object[1] { arg });
                         if (arg != null && arg.Aborted) break;
                     }
                 }
                 else if (_pipelineDefinitions.TryGetValue(pipelineName, out List<string> definitions))
                 {
-                    var executorObjs = definitions.Select(x => Type.GetType(x, true, true)).Select(x => ActivatorUtilities.CreateInstance(scope.ServiceProvider, x)).ToList();
-                    _pipelineExecutors.TryAdd(pipelineName, executorObjs);
+                    var executorObjs = definitions.Select(x => Type.GetType(x, true, true)).ToList();
+                    _pipelineTypes.TryAdd(pipelineName, executorObjs);
                     Run(pipelineName, arg);
                 }
             }
@@ -88,12 +85,13 @@ namespace Sunday.Core
         {
             using (var scope = ServiceActivator.GetScope())
             {
-                if (_pipelineExecutors.TryGetValue(pipelineName, out List<object> executors))
+                if (_pipelineTypes.TryGetValue(pipelineName, out List<Type> types))
                 {
-                    foreach (var executor in executors)
+                    foreach (var type in types)
                     {
-                        var processMethod = executor.GetType().GetMethod("ProcessAsync");
+                        var processMethod = type.GetMethod("ProcessAsync");
                         if (processMethod == null) continue;
+                        var executor = ActivatorUtilities.CreateInstance(scope.ServiceProvider, type);
                         var task = (Task)processMethod.Invoke(executor, new object[1] { arg });
                         await task;
                         if (arg != null && arg.Aborted) break;
@@ -101,8 +99,8 @@ namespace Sunday.Core
                 }
                 else if (_pipelineDefinitions.TryGetValue(pipelineName, out List<string> definitions))
                 {
-                    var executorObjs = definitions.Select(x => Type.GetType(x, true, true)).Select(x => ActivatorUtilities.CreateInstance(scope.ServiceProvider, x)).ToList();
-                    _pipelineExecutors.TryAdd(pipelineName, executorObjs);
+                    var executorObjs = definitions.Select(x => Type.GetType(x, true, true)).ToList();
+                    _pipelineTypes.TryAdd(pipelineName, executorObjs);
                     await RunAsync(pipelineName, arg);
                 }
             }

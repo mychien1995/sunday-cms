@@ -3,14 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Sunday.CMS.Core.Application.Organizations;
-using Sunday.Core;
 using Sunday.Identity.Core;
-using Sunday.Organizations.Application;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Sunday.CMS.Core.Filters
 {

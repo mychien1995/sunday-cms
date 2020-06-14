@@ -6,7 +6,6 @@ using Sunday.Core.Media.Implementation;
 using Sunday.Core.Pipelines.Arguments;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Xml;
 
 namespace Sunday.Core.Media.Pipelines.Initialization

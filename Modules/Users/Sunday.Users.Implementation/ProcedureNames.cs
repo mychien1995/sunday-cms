@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Sunday.Users.Implementation
+﻿namespace Sunday.Users.Implementation
 {
     internal class ProcedureNames
     {

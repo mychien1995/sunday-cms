@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Sunday.Organizations.Core.Models
+﻿namespace Sunday.Organizations.Core.Models
 {
     public class OrganizationQuery
     {

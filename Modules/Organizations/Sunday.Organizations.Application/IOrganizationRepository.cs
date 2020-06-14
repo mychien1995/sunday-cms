@@ -1,10 +1,6 @@
-﻿using Sunday.Core.Domain.Organizations;
-using Sunday.Core.Models;
+﻿using Sunday.Core.Models;
 using Sunday.Organizations.Core;
 using Sunday.Organizations.Core.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Sunday.Organizations.Application

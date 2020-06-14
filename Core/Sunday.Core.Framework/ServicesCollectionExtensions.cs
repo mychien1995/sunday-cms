@@ -1,18 +1,16 @@
-﻿using Sunday.Core.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Sunday.Core;
-using Microsoft.AspNetCore.Hosting;
-using System.IO;
-using System.Xml;
-using System.Xml.Serialization;
-using System.Linq;
+﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Sunday.Core;
+using Sunday.Core.Configuration;
 using Sunday.Core.Framework.Helpers;
-using System.Reflection;
 using Sunday.Core.Pipelines.Arguments;
+using System;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Xml;
 using System.Xml.Linq;
+using System.Xml.Serialization;
 using XmlDocumentMerger;
 
 namespace Microsoft.Extensions.DependencyInjection

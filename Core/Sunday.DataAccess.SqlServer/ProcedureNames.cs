@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Sunday.DataAccess.SqlServer
+﻿namespace Sunday.DataAccess.SqlServer
 {
     internal class ProcedureNames
     {

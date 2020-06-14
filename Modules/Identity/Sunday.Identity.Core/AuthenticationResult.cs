@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Sunday.Core.Domain.Users;
+﻿using Sunday.Core.Domain.Users;
 
 namespace Sunday.Identity.Core
 {

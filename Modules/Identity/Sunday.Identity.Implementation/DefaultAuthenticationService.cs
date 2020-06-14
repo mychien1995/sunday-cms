@@ -1,11 +1,7 @@
-﻿using AutoMapper;
-using Sunday.Core;
+﻿using Sunday.Core;
 using Sunday.Core.Domain.Users;
 using Sunday.Identity.Application;
 using Sunday.Identity.Core;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Sunday.Identity.Implementation

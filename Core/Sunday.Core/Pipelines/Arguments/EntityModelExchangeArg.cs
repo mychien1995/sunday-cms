@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Sunday.Core.Pipelines.Arguments
+﻿namespace Sunday.Core.Pipelines.Arguments
 {
     public class EntityModelExchangeArg : PipelineArg
     {

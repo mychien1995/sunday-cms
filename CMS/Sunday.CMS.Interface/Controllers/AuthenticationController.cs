@@ -2,9 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Sunday.CMS.Core.Application.Identity;
 using Sunday.CMS.Core.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Sunday.CMS.Interface.Controllers
@@ -21,7 +18,7 @@ namespace Sunday.CMS.Interface.Controllers
 
         [AllowAnonymous]
         [HttpPost("token")]
-        public async Task<IActionResult> Authenticate([FromBody]LoginInputModel loginInputModel)
+        public async Task<IActionResult> Authenticate([FromBody] LoginInputModel loginInputModel)
         {
             if (!ModelState.IsValid) return BadRequest();
             var result = await _loginRepository.LoginAsync(loginInputModel);

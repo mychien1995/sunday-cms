@@ -1,11 +1,8 @@
 ﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
 using Sunday.Core.Media.Application;
 using Sunday.Core.Pipelines.Arguments;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace Sunday.Core.Media.Pipelines.BuildApplication
 {

@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Sunday.Core;
 using Sunday.Core.Domain.FeatureAccess;
-using Sunday.Core.Domain.Organizations;
 using Sunday.Core.Exceptions;
 using Sunday.Core.Models;
 using Sunday.DataAccess.SqlServer;
@@ -12,7 +11,6 @@ using Sunday.Organizations.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Sunday.Organizations.Implementation

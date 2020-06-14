@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Sunday.CMS.Core.Application.Users;
-using Sunday.CMS.Core.Models.Users;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using Sunday.Users.Application;
+using Sunday.Users.Core.Models;
 using System.Threading.Tasks;
 
 namespace Sunday.CMS.Interface.Controllers
@@ -17,35 +14,35 @@ namespace Sunday.CMS.Interface.Controllers
         }
 
         [HttpPost("search")]
-        public async Task<IActionResult> GetUsers([FromBody]SearchUserCriteria criteria)
+        public async Task<IActionResult> GetUsers([FromBody] SearchUserCriteria criteria)
         {
             var result = await _userManager.SearchUsers(criteria);
             return Ok(result);
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> CreateUser([FromBody]UserMutationModel data)
+        public async Task<IActionResult> CreateUser([FromBody] UserMutationModel data)
         {
             var result = await _userManager.CreateUser(data);
             return Ok(result);
         }
 
         [HttpPut("update")]
-        public async Task<IActionResult> UpdateUser([FromBody]UserMutationModel data)
+        public async Task<IActionResult> UpdateUser([FromBody] UserMutationModel data)
         {
             var result = await _userManager.UpdateUser(data);
             return Ok(result);
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetUserById([FromQuery]int id)
+        public async Task<IActionResult> GetUserById([FromQuery] int id)
         {
             var result = await _userManager.GetUserById(id);
             return Ok(result);
         }
 
         [HttpDelete]
-        public async Task<IActionResult> DeleteUser([FromQuery]int id)
+        public async Task<IActionResult> DeleteUser([FromQuery] int id)
         {
             var result = await _userManager.DeleteUser(id);
             return Ok(result);

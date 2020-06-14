@@ -1,8 +1,6 @@
 ﻿using Sunday.Core.Domain.Organizations;
 using Sunday.Core.Domain.Roles;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Sunday.Core.Domain.Users
 {

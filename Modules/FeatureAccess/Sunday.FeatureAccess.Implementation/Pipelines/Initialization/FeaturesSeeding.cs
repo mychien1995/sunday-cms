@@ -1,12 +1,9 @@
 ﻿using Sunday.Core;
 using Sunday.DataAccess.SqlServer;
 using Sunday.FeatureAccess.Core;
-using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Reflection;
-using System.Text;
 
 namespace Sunday.FeatureAccess.Implementation.Pipelines.Initialization
 {

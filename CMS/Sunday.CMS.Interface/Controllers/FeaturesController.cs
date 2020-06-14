@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Sunday.CMS.Core.Application.FeatureAccess;
 using Sunday.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using Sunday.FeatureAccess.Application;
 using System.Threading.Tasks;
 
 namespace Sunday.CMS.Interface.Controllers

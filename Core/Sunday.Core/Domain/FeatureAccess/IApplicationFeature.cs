@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Sunday.Core.Domain.FeatureAccess
+﻿namespace Sunday.Core.Domain.FeatureAccess
 {
     public interface IApplicationFeature
     {

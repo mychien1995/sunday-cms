@@ -1,9 +1,7 @@
 ﻿using Sunday.DataAccess.SqlServer.Attributes;
-using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Reflection;
-using System.Text;
 
 namespace System
 {

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Sunday.FeatureAccess.Core
+﻿namespace Sunday.FeatureAccess.Core
 {
     public static class SystemModules
     {

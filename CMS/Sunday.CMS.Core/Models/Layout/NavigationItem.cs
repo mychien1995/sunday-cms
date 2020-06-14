@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Sunday.CMS.Core.Models.Layout
+﻿namespace Sunday.CMS.Core.Models.Layout
 {
     public class NavigationItem
     {

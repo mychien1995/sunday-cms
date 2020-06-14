@@ -1,12 +1,9 @@
-﻿using Microsoft.Extensions.Configuration;
-using Sunday.Core;
+﻿using Sunday.Core;
 using Sunday.Core.Ultilities;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
 
 namespace Sunday.DataAccess.SqlServer.Pipelines.Initialization
 {

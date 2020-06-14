@@ -61,11 +61,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sunday.FeatureAccess.Implem
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "VirtualRoles", "VirtualRoles", "{FB9F4F18-6ADF-41A3-A2C5-932F098E9D37}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sunday.VirtualRoles.Core", "Modules\VirtualRoles\Sunday.VirtualRoles.Core\Sunday.VirtualRoles.Core.csproj", "{B2FFC244-FF96-4472-9E31-7DB0593A9A46}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sunday.VirtualRoles.Core", "Modules\VirtualRoles\Sunday.VirtualRoles.Core\Sunday.VirtualRoles.Core.csproj", "{B2FFC244-FF96-4472-9E31-7DB0593A9A46}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sunday.VirtualRoles.Application", "Modules\VirtualRoles\Sunday.VirtualRoles.Application\Sunday.VirtualRoles.Application.csproj", "{5DC16E1F-A083-4907-B92F-9F273BF0F807}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sunday.VirtualRoles.Implementation", "Modules\VirtualRoles\Sunday.VirtualRoles.Implementation\Sunday.VirtualRoles.Implementation.csproj", "{AE23A4BD-A991-4775-99A6-4CF9C7E370B8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sunday.VirtualRoles.Implementation", "Modules\VirtualRoles\Sunday.VirtualRoles.Implementation\Sunday.VirtualRoles.Implementation.csproj", "{AE23A4BD-A991-4775-99A6-4CF9C7E370B8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

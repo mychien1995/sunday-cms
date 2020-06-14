@@ -5,12 +5,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Sunday.Identity.Application;
 using Sunday.Identity.Core;
 using Sunday.Users.Application;
-using Sunday.Users.Core.Models;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
-using System.Text;
 
 namespace Sunday.CMS.Core.Filters
 {

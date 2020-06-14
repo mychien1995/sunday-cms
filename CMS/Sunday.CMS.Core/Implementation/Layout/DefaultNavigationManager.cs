@@ -3,13 +3,8 @@ using Sunday.CMS.Core.Application.Layout;
 using Sunday.CMS.Core.Models.Layout;
 using Sunday.CMS.Core.Pipelines.Arguments;
 using Sunday.Core;
-using Sunday.Core.Domain.Identity;
 using Sunday.Identity.Core;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace Sunday.CMS.Core.Implementation.Layout
@@ -35,7 +30,7 @@ namespace Sunday.CMS.Core.Implementation.Layout
                 Section = x.Key,
                 Items = x.ToList()
             }).ToList();
-            return response;    
+            return response;
         }
     }
 }

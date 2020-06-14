@@ -1,13 +1,11 @@
 ﻿using Microsoft.IdentityModel.Tokens;
-using Sunday.Core.Domain.Users;
-using System;
-using System.Security.Claims;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Text;
-using System.Security.Principal;
 using Sunday.Core;
+using Sunday.Core.Domain.Users;
 using Sunday.Identity.Application;
+using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace Sunday.Identity.Implementation
 {

@@ -46,7 +46,7 @@ export class ApiUrl {
     Lookup: 'cms/api/organizations/lookup',
     Activate: 'cms/api/organizations/activate',
     Deactivate: 'cms/api/organizations/deactivate',
-    GetModules: 'cms/api/organizations/getModules'
+    GetModules: 'cms/api/modules/getByOrganization'
   };
   public static FileUpload = 'cms/api/FileUpload';
 }

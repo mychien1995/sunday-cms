@@ -1,10 +1,7 @@
 ﻿using DbUp;
 using Microsoft.Extensions.Configuration;
 using Sunday.Core;
-using System;
-using System.Collections.Generic;
 using System.Reflection;
-using System.Text;
 
 namespace Sunday.DataAccess.SqlServer.Pipelines.Initialization
 {

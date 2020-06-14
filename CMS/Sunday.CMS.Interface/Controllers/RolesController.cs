@@ -1,8 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Sunday.CMS.Core.Application.Roles;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using Sunday.Users.Application;
 using System.Threading.Tasks;
 
 namespace Sunday.CMS.Interface.Controllers

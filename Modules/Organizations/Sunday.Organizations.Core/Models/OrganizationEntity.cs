@@ -1,11 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Sunday.Core;
-using Sunday.Core.Domain.Organizations;
-using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using System.Text;
 
 namespace Sunday.Organizations.Core.Models
 {

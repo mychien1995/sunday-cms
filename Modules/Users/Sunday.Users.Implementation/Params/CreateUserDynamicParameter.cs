@@ -1,13 +1,7 @@
 ﻿using Dapper;
-using Microsoft.SqlServer.Server;
-using Sunday.Core.Domain.Organizations;
 using Sunday.Users.Core;
-using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
 using static Dapper.SqlMapper;
 
 namespace Sunday.Users.Implementation
@@ -19,7 +13,7 @@ namespace Sunday.Users.Implementation
         {
         }
 
-        public void AddParameters(IDbCommand command, Identity identity)
+        public void AddParameters(IDbCommand command, SqlMapper.Identity identity)
         {
             AddCommonParam(command, identity);
             var sqlCommand = (SqlCommand)command;

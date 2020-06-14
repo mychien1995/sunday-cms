@@ -1,8 +1,5 @@
-﻿using Sunday.Core.Domain.Roles;
-using Sunday.Users.Core;
-using System;
+﻿using Sunday.Users.Core;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Sunday.Users.Application

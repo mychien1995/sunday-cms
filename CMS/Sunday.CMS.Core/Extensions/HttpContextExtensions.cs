@@ -1,10 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using Sunday.Core.Domain.Organizations;
+﻿using Sunday.Core.Domain.Organizations;
 using Sunday.Core.Domain.Users;
-using Sunday.Organizations.Core;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Microsoft.AspNetCore.Http
 {

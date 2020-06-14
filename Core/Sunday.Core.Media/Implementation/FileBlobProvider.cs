@@ -1,10 +1,8 @@
-﻿using Sunday.Core.Media.Application;
+﻿using Microsoft.AspNetCore.Hosting;
+using Sunday.Core.Media.Application;
 using Sunday.Core.Media.Domain;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
-using Microsoft.AspNetCore.Hosting;
 
 namespace Sunday.Core.Media.Implementation
 {

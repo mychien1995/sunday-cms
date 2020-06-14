@@ -1,12 +1,9 @@
 ﻿using Sunday.Core.Domain.Identity;
 using Sunday.Core.Domain.Roles;
 using Sunday.Core.Domain.Users;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
-using System.Text;
 
 namespace Sunday.Identity.Core
 {

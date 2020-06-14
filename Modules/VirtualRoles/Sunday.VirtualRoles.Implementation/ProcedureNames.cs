@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Sunday.VirtualRoles.Implementation
+﻿namespace Sunday.VirtualRoles.Implementation
 {
     internal class ProcedureNames
     {

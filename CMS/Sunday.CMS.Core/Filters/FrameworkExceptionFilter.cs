@@ -2,10 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
-using Sunday.CMS.Core.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Sunday.Core;
 
 namespace Sunday.CMS.Core.Filters
 {
