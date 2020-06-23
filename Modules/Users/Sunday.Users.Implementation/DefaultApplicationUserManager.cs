@@ -22,7 +22,7 @@ namespace Sunday.Users.Implementation
             _identityService = identityService;
             _notificationService = notificationService;
         }
-        public async virtual Task<UserListJsonResult> SearchUsers(SearchUserCriteria criteria)
+        public virtual async Task<UserListJsonResult> SearchUsers(SearchUserCriteria criteria)
         {
             var query = criteria.MapTo<UserQuery>();
             await ApplicationPipelines.RunAsync("cms.users.beforeSearch", new BeforeSearchUserArg(criteria, query));
@@ -33,12 +33,12 @@ namespace Sunday.Users.Implementation
             {
                 var user = x.MapTo<UserItem>();
                 return user;
-            });
+            }).ToList();
             await ApplicationPipelines.RunAsync("cms.users.afterSearch", new AfterSearchUserArg(searchResult, apiResult));
             return apiResult;
         }
 
-        public async virtual Task<CreateUserJsonResult> CreateUser(UserMutationModel userData)
+        public virtual async Task<CreateUserJsonResult> CreateUser(UserMutationModel userData)
         {
             var result = new CreateUserJsonResult();
             var applicationUser = userData.MapTo<ApplicationUser>();
@@ -55,7 +55,7 @@ namespace Sunday.Users.Implementation
             return result;
         }
 
-        public async virtual Task<UpdateUserJsonResult> UpdateUser(UserMutationModel userData)
+        public virtual async Task<UpdateUserJsonResult> UpdateUser(UserMutationModel userData)
         {
             var result = new UpdateUserJsonResult();
             var applicationUser = userData.MapTo<ApplicationUser>();
@@ -71,7 +71,7 @@ namespace Sunday.Users.Implementation
             return result;
         }
 
-        public async virtual Task<UserDetailJsonResult> GetUserById(int userId)
+        public virtual async Task<UserDetailJsonResult> GetUserById(int userId)
         {
             var user = _userRepository.GetUserById(userId);
             var result = user.MapTo<UserDetailJsonResult>();
@@ -87,7 +87,7 @@ namespace Sunday.Users.Implementation
             return await Task.FromResult(result);
         }
 
-        public async virtual Task<BaseApiResponse> DeleteUser(int userId)
+        public virtual async Task<BaseApiResponse> DeleteUser(int userId)
         {
             var result = await _userRepository.DeleteUser(userId);
             var respone = new BaseApiResponse();
@@ -95,14 +95,14 @@ namespace Sunday.Users.Implementation
             return respone;
         }
 
-        public async virtual Task<BaseApiResponse> ActivateUser(int userId)
+        public virtual async Task<BaseApiResponse> ActivateUser(int userId)
         {
             var result = await _userRepository.ActivateUser(userId);
             var respone = new BaseApiResponse();
             respone.Success = result;
             return respone;
         }
-        public async virtual Task<BaseApiResponse> DeactivateUser(int userId)
+        public virtual async Task<BaseApiResponse> DeactivateUser(int userId)
         {
             var result = await _userRepository.DeactivateUser(userId);
             var respone = new BaseApiResponse();
@@ -110,7 +110,7 @@ namespace Sunday.Users.Implementation
             return respone;
         }
 
-        public async virtual Task<BaseApiResponse> ResetUserPassword(int userId)
+        public virtual async Task<BaseApiResponse> ResetUserPassword(int userId)
         {
             var newPassword = await _identityService.ResetPasswordAsync(userId);
             var user = _userRepository.GetUserById(userId);

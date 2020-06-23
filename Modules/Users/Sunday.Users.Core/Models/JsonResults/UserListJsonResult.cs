@@ -11,7 +11,7 @@ namespace Sunday.Users.Core.Models
             Users = new List<UserItem>();
         }
         public int Total { get; set; }
-        public IEnumerable<UserItem> Users { get; set; }
+        public List<UserItem> Users { get; set; }
     }
 
     [MappedTo(typeof(ApplicationUser))]
