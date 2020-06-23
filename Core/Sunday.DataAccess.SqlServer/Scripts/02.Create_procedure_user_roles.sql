@@ -45,8 +45,23 @@ ALTER PROCEDURE [dbo].[sp_users_findbyusername]
 )
 AS
 BEGIN
-	SELECT * FROM [Users] WHERE Username = @Username
-	SELECT * FROM [Roles] WHERE ID IN (SELECT RoleId FROM UserRoles WHERE UserId IN (SELECT ID FROM [Users] WHERE Username = @Username))
+	SELECT * FROM [Users] WHERE Username = @Username AND IsDeleted = 0
+	SELECT * FROM [Roles] WHERE ID IN (SELECT RoleId FROM UserRoles WHERE UserId IN (SELECT ID FROM [Users] WHERE Username = @Username  AND IsDeleted = 0))
+END
+GO
+--------------------------------------------------------------------
+IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_users_findbyemail')
+BEGIN
+	EXEC('CREATE PROCEDURE [dbo].[sp_users_findbyemail] AS BEGIN SET NOCOUNT ON; END')
+END
+GO
+ALTER PROCEDURE [dbo].[sp_users_findbyemail]
+(
+	@Email nvarchar(MAX)
+)
+AS
+BEGIN
+	SELECT * FROM [Users] WHERE Email = @Email AND IsDeleted = 0
 END
 GO
 --------------------------------------------------------------------

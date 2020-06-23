@@ -9,6 +9,7 @@ namespace Sunday.Users.Application
     public interface IUserRepository
     {
         Task<ApplicationUser> FindUserByNameAsync(string username);
+        Task<ApplicationUser> FindUserByEmailAsync(string email);
 
         Task<SearchResult<ApplicationUser>> QueryUsers(UserQuery query);
 

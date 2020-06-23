@@ -9,10 +9,14 @@
                             <div class="position-relative form-group">
                                 <label for="zzzz" class="username">&nbsp;<span class="red">*</span></label>
                                 <input name="zzzz" placeholder="Username here..." type="text" class="form-control"
-                                    formControlName="UserName" autocomplete="off" required [readOnly]="isEdit">
+                                    formControlName="UserName" autocomplete="off" required [readOnly]="isEdit"
+                                    pattern="^(\d|\w)+$">
                                 <span class="text-danger"
                                     [hidden]="!(ngForm.submitted && userForm.controls['UserName'].hasError('required'))">This
                                     field is required</span>
+                                <span class="text-danger"
+                                    [hidden]="!(ngForm.submitted && userForm.controls['UserName'].hasError('pattern'))">Incorrect
+                                    username format</span>
                             </div>
                         </div>
                         <div class="col-md-6">

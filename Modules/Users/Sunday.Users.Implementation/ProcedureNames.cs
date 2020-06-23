@@ -5,6 +5,7 @@
         public class Users
         {
             public const string FindUserByUserName = "sp_users_findbyusername";
+            public const string FindUserByEmail = "sp_users_findbyemail";
             public const string GetById = "sp_users_getById";
             public const string GetByIdWithOptions = "sp_users_getById_withOptions";
             public const string Search = "sp_users_search";

@@ -27,13 +27,20 @@ namespace Sunday.Users.Implementation
         {
             _dbRunner = dbRunner;
         }
-        public async virtual Task<ApplicationUser> FindUserByNameAsync(string username)
+        public virtual async Task<ApplicationUser> FindUserByNameAsync(string username)
         {
-            var queryResult = _dbRunner.ExecuteMultiple(ProcedureNames.Users.FindUserByUserName, new Type[] { typeof(ApplicationUser),
+            var queryResult = await _dbRunner.ExecuteMultipleAsync(ProcedureNames.Users.FindUserByUserName, new Type[] { typeof(ApplicationUser),
                 typeof(ApplicationRole) }, new { Username = username });
             var user = queryResult[0].FirstOrDefault() as ApplicationUser;
             if (user != null)
                 user.Roles = queryResult[1].Select(x => x as ApplicationRole).Cast<IApplicationRole>().ToList();
+            return user;
+        }
+
+        public virtual async Task<ApplicationUser> FindUserByEmailAsync(string email)
+        {
+            var queryResult = await _dbRunner.ExecuteAsync<ApplicationUser>(ProcedureNames.Users.FindUserByEmail, new { Email = email });
+            var user = queryResult.FirstOrDefault();
             return user;
         }
 
@@ -75,7 +82,7 @@ namespace Sunday.Users.Implementation
             return user;
         }
 
-        public async virtual Task<SearchResult<ApplicationUser>> QueryUsers(UserQuery query)
+        public virtual async Task<SearchResult<ApplicationUser>> QueryUsers(UserQuery query)
         {
             var result = new SearchResult<ApplicationUser>();
             var dapperQuery = query.MapTo<DapperUserQuery>();
@@ -86,7 +93,7 @@ namespace Sunday.Users.Implementation
             return result;
         }
 
-        public async virtual Task<ApplicationUser> CreateUser(ApplicationUser user)
+        public virtual async Task<ApplicationUser> CreateUser(ApplicationUser user)
         {
             var RoleIds = string.Join(",", user.Roles.Select(x => x.ID));
             var param = new CreateUserDynamicParameter(user);
@@ -96,7 +103,7 @@ namespace Sunday.Users.Implementation
             return user;
         }
 
-        public async virtual Task<ApplicationUser> UpdateUser(ApplicationUser user)
+        public virtual async Task<ApplicationUser> UpdateUser(ApplicationUser user)
         {
             var RoleIds = string.Join(",", user.Roles.Select(x => x.ID));
             var param = new UpdateUserDynamicParamter(user);
@@ -106,7 +113,7 @@ namespace Sunday.Users.Implementation
             return user;
         }
 
-        public async virtual Task<ApplicationUser> UpdateAvatar(int userId, string blobIdentifier)
+        public virtual async Task<ApplicationUser> UpdateAvatar(int userId, string blobIdentifier)
         {
             var result = await _dbRunner.ExecuteAsync<ApplicationUser>(ProcedureNames.Users.UpdateAvatar, new
             {
@@ -117,13 +124,13 @@ namespace Sunday.Users.Implementation
             return result.FirstOrDefault();
         }
 
-        public async virtual Task<bool> DeleteUser(int userId)
+        public virtual async Task<bool> DeleteUser(int userId)
         {
             await _dbRunner.ExecuteAsync<int>(ProcedureNames.Users.Delete, new { UserId = userId });
             return true;
         }
 
-        public async virtual Task FetchUserRoles(List<ApplicationUser> users)
+        public virtual async Task FetchUserRoles(List<ApplicationUser> users)
         {
             if (users == null || !users.Any()) return;
             var userIds = string.Join(',', users.Select(x => x.ID));
@@ -142,7 +149,7 @@ namespace Sunday.Users.Implementation
             }
         }
 
-        public async virtual Task FetchVirtualRoles(List<ApplicationUser> users)
+        public virtual async Task FetchVirtualRoles(List<ApplicationUser> users)
         {
             if (users == null || !users.Any()) return;
             var userIds = string.Join(',', users.Select(x => x.ID));
@@ -160,7 +167,7 @@ namespace Sunday.Users.Implementation
             }
         }
 
-        public async virtual Task<bool> ActivateUser(int userId)
+        public virtual async Task<bool> ActivateUser(int userId)
         {
             var user = GetUserById(userId);
             if (user == null) throw new EntityNotFoundException("User not found");
@@ -168,7 +175,7 @@ namespace Sunday.Users.Implementation
             await _dbRunner.ExecuteAsync<object>(ProcedureNames.Users.Activate, new { UserId = userId });
             return true;
         }
-        public async virtual Task<bool> DeactivateUser(int userId)
+        public virtual async Task<bool> DeactivateUser(int userId)
         {
             var user = GetUserById(userId);
             if (user == null) throw new EntityNotFoundException("User not found");
@@ -177,7 +184,7 @@ namespace Sunday.Users.Implementation
             return true;
         }
 
-        public async virtual Task<bool> UpdatePassword(ApplicationUser user)
+        public virtual async Task<bool> UpdatePassword(ApplicationUser user)
         {
             await _dbRunner.ExecuteAsync<object>(ProcedureNames.Users.ChangePassword, new
             {
