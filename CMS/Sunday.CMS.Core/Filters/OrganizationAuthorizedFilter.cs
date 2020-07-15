@@ -16,8 +16,7 @@ namespace Sunday.CMS.Core.Filters
         }
         public void OnAuthorization(AuthorizationFilterContext context)
         {
-            var actionDescriptor = context.ActionDescriptor as ControllerActionDescriptor;
-            if (actionDescriptor == null) return;
+            if (!(context.ActionDescriptor is ControllerActionDescriptor actionDescriptor)) return;
             var skipAuthorization = actionDescriptor.MethodInfo.GetCustomAttributes(typeof(AllowAnonymousAttribute), true).Length > 0;
             if (skipAuthorization) return;
             var user = context.HttpContext.User as ApplicationUserPrincipal;
@@ -27,7 +26,6 @@ namespace Sunday.CMS.Core.Filters
                 {
                     message = "You are not allowed to access this hostname"
                 });
-                return;
             }
         }
     }

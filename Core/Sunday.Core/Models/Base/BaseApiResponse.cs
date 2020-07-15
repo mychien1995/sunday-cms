@@ -16,20 +16,20 @@ namespace Sunday.Core
 
         public void AddError(string error)
         {
-            if (Errors == null) Errors = new List<string>();
+            Errors ??= new List<string>();
             Errors.Add(error);
             Success = false;
         }
 
         public void AddErrors(IEnumerable<string> errors)
         {
-            if (Errors == null) Errors = new List<string>();
+            Errors ??= new List<string>();
             Errors.AddRange(errors);
             Success = false;
         }
         public void AddMessage(string message)
         {
-            if (Messages == null) Messages = new List<string>();
+            Messages ??= new List<string>();
             Messages.Add(message);
         }
     }

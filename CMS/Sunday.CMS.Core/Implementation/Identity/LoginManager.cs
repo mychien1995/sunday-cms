@@ -23,8 +23,7 @@ namespace Sunday.CMS.Core.Implementation.Identity
         }
         public async Task<LoginApiResponse> LoginAsync(LoginInputModel credential)
         {
-            var result = new LoginApiResponse();
-            result.Success = false;
+            var result = new LoginApiResponse {Success = false};
             var authenticateResult = await _authenticationService.AuthenticateAsync(credential.Username, credential.Password, true);
             switch (authenticateResult.SignInResult)
             {

@@ -13,7 +13,7 @@ namespace Sunday.Core.Framework.Pipelines.Initialization
     {
         public void Process(PipelineArg arg)
         {
-            var services = (arg as InitializationArg).ServiceCollection;
+            var services = (arg as InitializationArg)?.ServiceCollection;
             var assemblies = AssemblyHelper.GetAllAssemblies(x => !x.StartsWith("api-") && !x.StartsWith("Microsoft") && !x.StartsWith("System") &&
             (x.Contains("Sunday") || x.Contains("Plugin"))).ToArray();
             var types = AssemblyHelper.GetClassesWithAttribute(assemblies, typeof(MappedToAttribute));
@@ -21,15 +21,13 @@ namespace Sunday.Core.Framework.Pipelines.Initialization
             foreach (var type in types)
             {
                 var mappedTypeAttr = type.GetCustomAttribute<MappedToAttribute>();
-                if (mappedTypeAttr?.MappedType != null && mappedTypeAttr.MappedType.Any())
+                if (mappedTypeAttr?.MappedType == null || !mappedTypeAttr.MappedType.Any()) continue;
+                foreach (var mappedType in mappedTypeAttr.MappedType)
                 {
-                    foreach (var mappedType in mappedTypeAttr.MappedType)
+                    var mapExp = mappingProfile.CreateMap(type, mappedType);
+                    if (mappedTypeAttr.TwoWay)
                     {
-                        var mapExp = mappingProfile.CreateMap(type, mappedType);
-                        if (mappedTypeAttr.TwoWay)
-                        {
-                            var reversMapExp = mappingProfile.CreateMap(mappedType, type);
-                        }
+                        var reversMapExp = mappingProfile.CreateMap(mappedType, type);
                     }
                 }
             }
@@ -39,7 +37,7 @@ namespace Sunday.Core.Framework.Pipelines.Initialization
             {
                 mc.AddProfile(mappingProfile);
             });
-            IMapper mapper = mappingConfig.CreateMapper();
+            var mapper = mappingConfig.CreateMapper();
             services.AddSingleton(mapper);
             var serviceProvider = services.BuildServiceProvider();
             ServiceActivator.Configure(serviceProvider);

@@ -27,7 +27,7 @@ namespace Sunday.Identity.Implementation
             else if (!user.IsActive || user.IsLockedOut) status = LoginStatus.LockedOut;
             else
             {
-                var hashed = EncryptUltis.SHA256Encrypt(password, user.SecurityStamp);
+                var hashed = EncryptUltis.Sha256Encrypt(password, user.SecurityStamp);
                 if (hashed != user.PasswordHash) status = LoginStatus.Failure;
                 else if (!user.EmailConfirmed) status = LoginStatus.RequiresVerification;
                 else if (user.Domain != DomainNames.Shell && loginToShell) status = LoginStatus.Failure;
@@ -43,7 +43,7 @@ namespace Sunday.Identity.Implementation
             var user = _userRepository.GetUserById(userId);
             var securityHash = Guid.NewGuid().ToString("N");
             var newPassword = PasswordUltils.RandomString(6);
-            var passwordHash = EncryptUltis.SHA256Encrypt(newPassword, user.SecurityStamp);
+            var passwordHash = EncryptUltis.Sha256Encrypt(newPassword, user.SecurityStamp);
             user.SecurityStamp = securityHash;
             user.PasswordHash = passwordHash;
             await _userRepository.UpdatePassword(user);
@@ -53,9 +53,9 @@ namespace Sunday.Identity.Implementation
         public async virtual Task<bool> ChangePasswordAsync(int userId, string oldPassword, string newPassword)
         {
             var user = _userRepository.GetUserById(userId);
-            var hashed = EncryptUltis.SHA256Encrypt(oldPassword, user.SecurityStamp);
+            var hashed = EncryptUltis.Sha256Encrypt(oldPassword, user.SecurityStamp);
             if (hashed != user.PasswordHash) throw new InvalidDataException("Incorrect old password");
-            var newPasswordHash = EncryptUltis.SHA256Encrypt(newPassword, user.SecurityStamp);
+            var newPasswordHash = EncryptUltis.Sha256Encrypt(newPassword, user.SecurityStamp);
             user.PasswordHash = newPasswordHash;
             await _userRepository.UpdatePassword(user);
             return true;

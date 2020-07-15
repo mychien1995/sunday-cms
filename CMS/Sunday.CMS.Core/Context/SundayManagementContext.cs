@@ -8,38 +8,16 @@ namespace Sunday.CMS.Core.Context
     [ServiceTypeOf(typeof(ISundayContext), LifetimeScope.PerRequest)]
     public class SundayManagementContext : ISundayContext
     {
-        private readonly IManagementContextHelper _contextHelper;
-
-
-        private Lazy<IApplicationOrganization> _currentOrganization;
-        private Lazy<IApplicationUser> _currentUser;
+        private readonly Lazy<IApplicationOrganization> _currentOrganization;
+        private readonly Lazy<IApplicationUser> _currentUser;
 
         public SundayManagementContext(IManagementContextHelper contextHelper)
         {
-            _contextHelper = contextHelper;
-            _currentOrganization = new Lazy<IApplicationOrganization>(() =>
-            {
-                return _contextHelper.GetCurrentOrganization();
-            }, true);
-            _currentUser = new Lazy<IApplicationUser>(() =>
-            {
-                return _contextHelper.GetCurrentUser();
-            }, true);
+            _currentOrganization = new Lazy<IApplicationOrganization>(contextHelper.GetCurrentOrganization, true);
+            _currentUser = new Lazy<IApplicationUser>(contextHelper.GetCurrentUser, true);
         }
-        public IApplicationOrganization CurrentOrganization
-        {
-            get
-            {
-                return this._currentOrganization?.Value;
-            }
-        }
+        public IApplicationOrganization CurrentOrganization => this._currentOrganization?.Value;
 
-        public IApplicationUser CurrentUser
-        {
-            get
-            {
-                return this._currentUser?.Value;
-            }
-        }
+        public IApplicationUser CurrentUser => this._currentUser?.Value;
     }
 }

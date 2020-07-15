@@ -34,7 +34,7 @@ namespace Sunday.CMS.Core.Implementation.Organizations
                 return true;
             var organization = ResolveOrganizationFromRequest();
             if (organization == null) return false;
-            if (!user.OrganizationUsers.Any(c => c.OrganizationId == organization.ID)) return false;
+            if (user.OrganizationUsers.All(c => c.OrganizationId != organization.ID)) return false;
             _httpContextAccessor.HttpContext.AddOrganization(organization);
             return true;
         }
@@ -46,13 +46,11 @@ namespace Sunday.CMS.Core.Implementation.Organizations
                 return null;
             var organization = Task.Run(async () => { return await _organizationRepository.FindOrganizationByHostname(hostName); }).Result;
             if (organization == null || organization.IsDeleted || !organization.IsActive) organization = null;
-            if (organization == null)
+            if (organization != null) return organization;
+            if (_httpContextAccessor.HttpContext.User is ApplicationUserPrincipal user &&
+                (user.IsInRole(SystemRoleCodes.OrganizationAdmin) || user.IsInRole(SystemRoleCodes.OrganizationUser)))
             {
-                var user = _httpContextAccessor.HttpContext.User as ApplicationUserPrincipal;
-                if (user.IsInRole(SystemRoleCodes.OrganizationAdmin) || user.IsInRole(SystemRoleCodes.OrganizationUser))
-                {
-                    organization = user.User.OrganizationUsers.FirstOrDefault().Organization as ApplicationOrganization;
-                }
+                organization = user.User.OrganizationUsers.FirstOrDefault()?.Organization as ApplicationOrganization;
             }
             return organization;
         }
@@ -60,7 +58,7 @@ namespace Sunday.CMS.Core.Implementation.Organizations
         private string GetHostName()
         {
             var origin = _httpContextAccessor.HttpContext.Request.Headers.ContainsKey("origin") ?
-                _httpContextAccessor.HttpContext.Request.Headers["origin"].FirstOrDefault().ToLower() : "";
+                _httpContextAccessor.HttpContext.Request.Headers["origin"].FirstOrDefault()?.ToLower() : "";
             if (string.IsNullOrEmpty(origin))
                 return string.Empty;
             var uri = new Uri(origin);

@@ -18,7 +18,7 @@ namespace Sunday.DataAccess.SqlServer.Pipelines.Initialization
         {
             var adminPassword = ApplicationSettings.Get("Sunday.DefaultAdminPassword") ?? "123456a@";
             var securityHash = Guid.NewGuid().ToString("N");
-            var adminPasswordHash = EncryptUltis.SHA256Encrypt(adminPassword, securityHash);
+            var adminPasswordHash = EncryptUltis.Sha256Encrypt(adminPassword, securityHash);
             var passwordParam = new SqlParameter("@PasswordHash", adminPasswordHash);
             var securityHashParam = new SqlParameter("@SecurityStamp", securityHash);
             var roleType = new DataTable("RoleType");

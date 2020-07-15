@@ -26,13 +26,8 @@ namespace Sunday.Core.Pipelines.EntityChanged
 
         private void DoProcess(PipelineArg arg)
         {
-            IEntity entity;
             var changeArg = arg as IEntityChangedArg;
-            entity = changeArg?.EntityChange;
-            if (entity == null)
-            {
-                entity = arg["EntityChanged"] as IEntity;
-            }
+            var entity = changeArg?.EntityChange ?? arg["EntityChanged"] as IEntity;
             if (entity == null) return;
             var now = DateTime.Now;
             if (entity.ID == 0)
@@ -41,12 +36,10 @@ namespace Sunday.Core.Pipelines.EntityChanged
             }
             entity.UpdatedDate = now;
             var currentUser = _httpContextAccessor.HttpContext.User as IApplicationUserPrincipal;
-            if (currentUser != null)
-            {
-                entity.UpdatedBy = currentUser.Username;
-                if (entity.ID == 0)
-                    entity.CreatedBy = currentUser.Username;
-            }
+            if (currentUser == null) return;
+            entity.UpdatedBy = currentUser.Username;
+            if (entity.ID == 0)
+                entity.CreatedBy = currentUser.Username;
         }
     }
 }

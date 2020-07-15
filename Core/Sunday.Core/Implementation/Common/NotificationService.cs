@@ -13,7 +13,7 @@ namespace Sunday.Core.Implementation.Common
         {
             _mailService = mailService;
         }
-        public async virtual Task NotifyPasswordReset(IApplicationUser user, string newPassword)
+        public virtual async Task NotifyPasswordReset(IApplicationUser user, string newPassword)
         {
             var template = @"Hi {0}. <br/>
                             Your new password is {1}";

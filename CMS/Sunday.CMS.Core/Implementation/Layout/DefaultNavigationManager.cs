@@ -20,16 +20,17 @@ namespace Sunday.CMS.Core.Implementation.Layout
         }
         public async Task<NavigationTreeResponse> GetUserNavigation()
         {
-            var user = (_httpContextAccessor.HttpContext.User as ApplicationUserPrincipal).User;
+            var user = ((ApplicationUserPrincipal) _httpContextAccessor.HttpContext.User).User;
             var arg = new GetNavigationArg(user);
             await ApplicationPipelines.RunAsync("cms.layout.getNavigation", arg);
             var navigationItems = arg.NavigationItems;
-            var response = new NavigationTreeResponse();
-            response.Sections = navigationItems.GroupBy(x => x.Section).Select(x => new NavigationTreeSection()
+            var response = new NavigationTreeResponse
             {
-                Section = x.Key,
-                Items = x.ToList()
-            }).ToList();
+                Sections = navigationItems.GroupBy(x => x.Section).Select(x => new NavigationTreeSection()
+                {
+                    Section = x.Key, Items = x.ToList()
+                }).ToList()
+            };
             return response;
         }
     }

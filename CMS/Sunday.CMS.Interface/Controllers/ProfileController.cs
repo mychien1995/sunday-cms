@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 using Sunday.Users.Application;
 using Sunday.Users.Core.Models;
+using System.Threading.Tasks;
 
 namespace Sunday.CMS.Interface.Controllers
 {

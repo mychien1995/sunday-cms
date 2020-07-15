@@ -18,8 +18,7 @@ namespace Sunday.Core
 
         public static string Get(string key)
         {
-            if (_settings.TryGetValue(key, out string value)) return value;
-            return null;
+            return _settings.TryGetValue(key, out var value) ? value : null;
         }
         public static T Get<T>(string key)
         {

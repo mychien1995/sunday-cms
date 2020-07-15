@@ -6,9 +6,9 @@ namespace System.Reflection
     {
         public static bool IsAsyncMethod(this MethodInfo method)
         {
-            Type attType = typeof(AsyncStateMachineAttribute);
-            var attrib = (AsyncStateMachineAttribute)method.GetCustomAttribute(attType);
-            return (attrib != null);
+            var attType = typeof(AsyncStateMachineAttribute);
+            var attribute = (AsyncStateMachineAttribute)method.GetCustomAttribute(attType);
+            return (attribute != null);
         }
     }
 }

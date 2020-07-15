@@ -13,15 +13,13 @@ namespace Microsoft.AspNetCore.Http
 
         public static IApplicationOrganization GetOrganization(this HttpContext context)
         {
-            context.Items.TryGetValue("current_organization", out object org);
-            if (org == null) return null;
+            context.Items.TryGetValue("current_organization", out var org);
             return org as IApplicationOrganization;
         }
 
         public static IApplicationUser GetCurrentUser(this HttpContext context)
         {
-            context.Items.TryGetValue("current_user", out object user);
-            if (user == null) return null;
+            context.Items.TryGetValue("current_user", out var user);
             return user as IApplicationUser;
         }
 

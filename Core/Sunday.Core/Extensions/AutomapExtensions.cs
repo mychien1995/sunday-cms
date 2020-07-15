@@ -7,11 +7,9 @@ namespace Sunday.Core
     {
         public static T MapTo<T>(this object obj)
         {
-            using (var scope = ServiceActivator.GetScope())
-            {
-                var mapper = scope.ServiceProvider.GetService<IMapper>();
-                return mapper.Map<T>(obj);
-            }
+            using var scope = ServiceActivator.GetScope();
+            var mapper = scope.ServiceProvider.GetService<IMapper>();
+            return mapper.Map<T>(obj);
         }
     }
 }

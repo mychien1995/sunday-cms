@@ -33,7 +33,6 @@ namespace Microsoft.Extensions.DependencyInjection
                 configurationPath = $"\\config\\sunday.config";
                 filePath = hostingEnv.WebRootPath + configurationPath;
             }
-            XDocument finalConfig = new XDocument();
             var configFileContent = File.ReadAllText(filePath);
             var includeFolder = hostingEnv.WebRootPath + "\\config\\include";
             var includeFiles = Directory.GetFiles(includeFolder, "*.config");
@@ -43,16 +42,14 @@ namespace Microsoft.Extensions.DependencyInjection
                 configFileContent = XmlMerger.MergeDocuments(xmlContent, configFileContent);
             }
             var serializer = new XmlSerializer(typeof(ConfigurationNode));
-            using (TextReader reader = new StringReader(configFileContent))
-            {
-                ConfigurationNode configurationNode = (ConfigurationNode)serializer.Deserialize(reader);
-                _configuration = configurationNode;
-                var document = new XmlDocument();
-                document.LoadXml(configFileContent);
-                services.Services.AddSingleton(new ApplicationConfiguration(configurationNode, document));
-                AddSetting(configurationNode);
-                AddPipelines(document);
-            }
+            using TextReader reader = new StringReader(configFileContent);
+            var configurationNode = (ConfigurationNode)serializer.Deserialize(reader);
+            _configuration = configurationNode;
+            var document = new XmlDocument();
+            document.LoadXml(configFileContent);
+            services.Services.AddSingleton(new ApplicationConfiguration(configurationNode, document));
+            AddSetting(configurationNode);
+            AddPipelines(document);
             return services;
         }
 

@@ -33,7 +33,7 @@ namespace Sunday.CMS.Core.Context
             var user = _httpContextAccessor.HttpContext.GetCurrentUser();
             if (user == null)
             {
-                user = (_httpContextAccessor.HttpContext.User as ApplicationUserPrincipal).User;
+                user = ((ApplicationUserPrincipal) _httpContextAccessor.HttpContext.User).User;
                 _httpContextAccessor.HttpContext.SetCurrentUser(user);
             }
             return user;

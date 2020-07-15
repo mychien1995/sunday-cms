@@ -11,7 +11,7 @@ namespace Sunday.Core.Implementation.Common
     [ServiceTypeOf(typeof(IMailService))]
     public class MailService : IMailService
     {
-        public async virtual Task SendEmail(string subject, string template, List<string> recipients, params string[] datas)
+        public virtual async Task SendEmail(string subject, string template, List<string> recipients, params string[] datas)
         {
             var from = ApplicationSettings.Get("Sunday.Email.From");
             var smtpSetting = GetSmtpSettings();
@@ -25,23 +25,16 @@ namespace Sunday.Core.Implementation.Common
             message.Subject = subject;
             message.Body = body;
             message.IsBodyHtml = true;
-            using (var client = new SmtpClient())
+            using var client = new SmtpClient
             {
-                client.Host = smtpSetting.Host;
-                client.Port = smtpSetting.Port;
-                client.EnableSsl = smtpSetting.EnableSsl;
-                client.DeliveryMethod = SmtpDeliveryMethod.Network;
-                client.UseDefaultCredentials = false;
-                client.Credentials = new NetworkCredential(smtpSetting.Username, smtpSetting.Password);
-                try
-                {
-                    await client.SendMailAsync(message);
-                }
-                catch (Exception ex)
-                {
-
-                }
-            }
+                Host = smtpSetting.Host,
+                Port = smtpSetting.Port,
+                EnableSsl = smtpSetting.EnableSsl,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                UseDefaultCredentials = false,
+                Credentials = new NetworkCredential(smtpSetting.Username, smtpSetting.Password)
+            };
+            await client.SendMailAsync(message);
         }
 
         public virtual string BuildBody(string template, string[] data)

@@ -8,7 +8,7 @@ namespace Sunday.CMS.Core.Pipelines.Initialization
     {
         public void Process(PipelineArg arg)
         {
-            var serviceCollection = (arg as InitializationArg).ServiceCollection;
+            var serviceCollection = (arg as InitializationArg)?.ServiceCollection;
             serviceCollection.AddCors(options =>
             {
                 options.AddPolicy("AllowAll",

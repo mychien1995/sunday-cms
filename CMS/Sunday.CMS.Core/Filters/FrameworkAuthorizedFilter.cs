@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -20,18 +21,18 @@ namespace Sunday.CMS.Core.Filters
         }
         public void OnAuthorization(AuthorizationFilterContext context)
         {
-            var actionDescriptor = context.ActionDescriptor as ControllerActionDescriptor;
-            if (actionDescriptor == null) return;
+            if (!(context.ActionDescriptor is ControllerActionDescriptor actionDescriptor)) return;
             var skipAuthorization = actionDescriptor.MethodInfo.GetCustomAttributes(typeof(AllowAnonymousAttribute), true).Length > 0;
             if (skipAuthorization) return;
-            var authToken = context.HttpContext.Request.Headers.FirstOrDefault(x => x.Key.ToUpper() == "Authorization".ToUpper()).Value.ToString();
+            var authToken = context.HttpContext.Request.Headers.FirstOrDefault(x => string.
+                Equals(x.Key, "Authorization", StringComparison.CurrentCultureIgnoreCase)).Value.ToString();
             if (string.IsNullOrEmpty(authToken))
             {
                 context.Result = new UnauthorizedResult();
                 return;
             }
-            int? userId;
-            if (!_accessTokenService.ValidToken(authToken, out userId) || userId == null)
+
+            if (!_accessTokenService.ValidToken(authToken, out var userId) || userId == null)
             {
                 context.Result = new UnauthorizedResult();
                 return;
@@ -43,7 +44,6 @@ namespace Sunday.CMS.Core.Filters
                 return;
             }
             context.HttpContext.User = new ApplicationUserPrincipal(user);
-            return;
         }
     }
 }

@@ -27,7 +27,7 @@ namespace Sunday.CMS.Core.Pipelines.Layout.Navigation
                 organization = _organizationRepository.GetById(organization.ID);
             }
             if (organization == null) return;
-            var modules = organization.Modules.Select(x => x.ModuleCode);
+            var modules = organization.Modules.Select(x => x.ModuleCode).ToList();
             if (modules.Any(c => c == SystemModules.UsersManagement.Code))
             {
                 arg.NavigationItems.Add(new NavigationItem()

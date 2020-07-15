@@ -11,24 +11,15 @@ namespace Sunday.Core.Framework.Helpers
     {
         public static IEnumerable<Assembly> GetAllAssemblies(Expression<Func<string, bool>> predicate)
         {
-            var assemblyPath = System.Reflection.Assembly.GetEntryAssembly().Location;
+            var assemblyPath = Assembly.GetEntryAssembly()?.Location;
             var directory = System.IO.Path.GetDirectoryName(assemblyPath);
             var compiled = predicate.Compile();
             var result = new List<Assembly>();
-            foreach (string dll in Directory.GetFiles(directory, "*.dll", SearchOption.TopDirectoryOnly))
+            foreach (var dll in Directory.GetFiles(directory, "*.dll", SearchOption.TopDirectoryOnly))
             {
-                if (compiled.Invoke(dll))
-                {
-                    try
-                    {
-                        Assembly loadedAssembly = AssemblyLoadContext.Default.LoadFromAssemblyPath(dll);
-                        result.Add(loadedAssembly);
-                    }
-                    catch (Exception ex)
-                    {
-
-                    }
-                }
+                if (!compiled.Invoke(dll)) continue;
+                var loadedAssembly = AssemblyLoadContext.Default.LoadFromAssemblyPath(dll);
+                result.Add(loadedAssembly);
             }
             return result;
         }
@@ -48,11 +39,9 @@ namespace Sunday.Core.Framework.Helpers
                 foreach (var reference in asm.GetReferencedAssemblies())
                     if (compiled.Invoke(reference))
                     {
-                        if (!list.Contains(reference.FullName))
-                        {
-                            stack.Push(Assembly.Load(reference));
-                            list.Add(reference.FullName);
-                        }
+                        if (list.Contains(reference.FullName)) continue;
+                        stack.Push(Assembly.Load(reference));
+                        list.Add(reference.FullName);
                     }
 
             }
@@ -63,7 +52,7 @@ namespace Sunday.Core.Framework.Helpers
         public static IEnumerable<Type> GetClasses(Assembly assembly, Expression<Func<Type, bool>> predicate)
         {
             var compiled = predicate.Compile();
-            foreach (Type type in assembly.GetTypes())
+            foreach (var type in assembly.GetTypes())
             {
                 if (compiled.Invoke(type))
                 {
@@ -77,7 +66,7 @@ namespace Sunday.Core.Framework.Helpers
             var compiled = predicate.Compile();
             foreach (var assembly in assemblies)
             {
-                foreach (Type type in assembly.GetTypes())
+                foreach (var type in assembly.GetTypes())
                 {
                     if (compiled.Invoke(type))
                     {
@@ -91,7 +80,7 @@ namespace Sunday.Core.Framework.Helpers
         {
             foreach (var assembly in assemblies)
             {
-                foreach (Type type in assembly.GetTypes())
+                foreach (var type in assembly.GetTypes())
                 {
                     if (type.GetCustomAttributes(attributeType, true).Length > 0)
                     {

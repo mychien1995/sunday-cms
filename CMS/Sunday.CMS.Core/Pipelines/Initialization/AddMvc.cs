@@ -8,7 +8,7 @@ namespace Sunday.CMS.Core.Pipelines.Initialization
     {
         public void Process(PipelineArg arg)
         {
-            var serviceCollection = (arg as InitializationArg).ServiceCollection;
+            var serviceCollection = (arg as InitializationArg)?.ServiceCollection;
             serviceCollection.AddMvc()
                 .AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
         }
