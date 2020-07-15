@@ -21,7 +21,7 @@ namespace Sunday.Core.Media.Implementation
             var result = new UploadBlobJsonResult();
             var fileInfo = new FileInfo(file.FileName);
             var blob = this._blobProvider.CreateBlob(directory, fileInfo.Extension);
-            using (var stream = file.OpenReadStream())
+            await using (var stream = file.OpenReadStream())
             {
                 blob.Write(stream);
             }

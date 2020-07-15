@@ -22,8 +22,7 @@ namespace Sunday.Core.Media.Implementation
         {
             if (string.IsNullOrEmpty(blobIdentifier)) return string.Empty;
             var blob = _blobProvider.GetBlob(blobIdentifier);
-            if (blob == null) return string.Empty;
-            return GetPreviewLink(blob, absolute);
+            return blob == null ? string.Empty : GetPreviewLink(blob, absolute);
         }
     }
 }

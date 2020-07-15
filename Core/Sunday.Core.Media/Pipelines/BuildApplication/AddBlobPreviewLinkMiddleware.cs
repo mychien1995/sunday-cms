@@ -27,17 +27,12 @@ namespace Sunday.Core.Media.Pipelines.BuildApplication
                 var blob = this._blobProvider.GetBlob(identifier);
                 if (blob != null)
                 {
-                    using (var stream = blob.OpenRead())
-                    {
-                        using (MemoryStream ms = new MemoryStream())
-                        {
-                            stream.CopyTo(ms);
-                            var bytes = ms.ToArray();
-                            string base64String = Convert.ToBase64String(bytes);
-                            context.Response.ContentType = "image/jpeg";
-                            await context.Response.Body.WriteAsync(bytes, 0, bytes.Length);
-                        }
-                    }
+                    await using var stream = blob.OpenRead();
+                    await using var ms = new MemoryStream();
+                    await stream.CopyToAsync(ms);
+                    var bytes = ms.ToArray();
+                    context.Response.ContentType = "image/jpeg";
+                    await context.Response.Body.WriteAsync(bytes, 0, bytes.Length);
                 }
             });
         }

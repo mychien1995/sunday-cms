@@ -25,7 +25,7 @@ namespace Sunday.Core.Media.Pipelines.Initialization
             var blobNode = configXml.SelectSingleNode("/configuration/blob");
             if (blobNode == null)
             {
-                var fileBlobProvider = new FileBlobProvider(_webHostEnvironment, "/Images", "true");
+                var fileBlobProvider = new FileBlobProvider(_webHostEnvironment, "/Images", true);
                 fileBlobProvider.Initialize();
                 arg.ServiceCollection.AddSingleton(typeof(IBlobProvider), fileBlobProvider);
             }
@@ -37,12 +37,10 @@ namespace Sunday.Core.Media.Pipelines.Initialization
                 {
                     parameters.Add(paramNode.InnerText);
                 }
-                using (var scope = ServiceActivator.GetScope())
-                {
-                    var blobProvider = (IBlobProvider)ActivatorUtilities.CreateInstance(scope.ServiceProvider, blobProviderType, parameters.ToArray());
-                    blobProvider.Initialize();
-                    arg.ServiceCollection.AddSingleton(typeof(IBlobProvider), blobProvider);
-                }
+                using var scope = ServiceActivator.GetScope();
+                var blobProvider = (IBlobProvider)ActivatorUtilities.CreateInstance(scope.ServiceProvider, blobProviderType, parameters.ToArray());
+                blobProvider.Initialize();
+                arg.ServiceCollection.AddSingleton(typeof(IBlobProvider), blobProvider);
             }
             var serviceProvider = arg.ServiceCollection.BuildServiceProvider();
             ServiceActivator.Configure(serviceProvider);

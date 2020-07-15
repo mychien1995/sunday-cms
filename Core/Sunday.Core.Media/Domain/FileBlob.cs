@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 namespace Sunday.Core.Media.Domain
 {
@@ -22,7 +23,7 @@ namespace Sunday.Core.Media.Domain
 
         public override Stream OpenWrite()
         {
-            DirectoryInfo directoryInfo = new DirectoryInfo(Path.GetDirectoryName(this.FilePath));
+            var directoryInfo = new DirectoryInfo(Path.GetDirectoryName(this.FilePath)!);
             if (!directoryInfo.Exists)
                 directoryInfo.Create();
             return new FileStream(this.FilePath, FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
@@ -30,8 +31,8 @@ namespace Sunday.Core.Media.Domain
 
         public override void Write(Stream data)
         {
-            using (Stream destination = this.OpenWrite())
-                data.CopyTo(destination);
+            using var destination = this.OpenWrite();
+            data.CopyTo(destination);
         }
     }
 }

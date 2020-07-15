@@ -8,35 +8,24 @@ namespace Sunday.Core.Media.Implementation
 {
     public class FileBlobProvider : BlobProvider
     {
-        private string _path;
-        private bool _useRelativePath;
-        private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly string _path;
 
-        public FileBlobProvider(IWebHostEnvironment webHostEnvironment, string basePath, string useRelativePath)
+        public FileBlobProvider(IWebHostEnvironment webHostEnvironment, string basePath, bool useRelativePath)
         {
-            this._webHostEnvironment = webHostEnvironment;
-            this._useRelativePath = bool.Parse(useRelativePath);
-            if (this._useRelativePath)
-            {
-                this._path = Path.Combine(this._webHostEnvironment.WebRootPath, basePath);
-            }
-            else
-            {
-                this._path = basePath;
-            }
+            this._path = useRelativePath ? Path.Combine(webHostEnvironment.WebRootPath, basePath) : basePath;
         }
 
         public override string Name => nameof(FileBlobProvider);
 
         public override ApplicationBlob CreateBlob(string containerIdentifier, string extension)
         {
-            var newIdentifider = containerIdentifier.TrimEnd('\\') + "/" + Guid.NewGuid().ToString("N") + extension;
-            return new FileBlob(newIdentifider, GetFilePath(newIdentifider));
+            var newIdentifier = containerIdentifier.TrimEnd('\\') + "/" + Guid.NewGuid().ToString("N") + extension;
+            return new FileBlob(newIdentifier, GetFilePath(newIdentifier));
         }
 
         public override void Delete(string identifier)
         {
-            FileInfo fileInfo = new FileInfo(GetFilePath(identifier));
+            var fileInfo = new FileInfo(GetFilePath(identifier));
             if (!fileInfo.Exists)
                 return;
             fileInfo.Delete();
@@ -46,20 +35,16 @@ namespace Sunday.Core.Media.Implementation
         public override ApplicationBlob GetBlob(string identifier)
         {
             var filePath = GetFilePath(identifier);
-            FileInfo fileInfo = new FileInfo(filePath);
-            if (!fileInfo.Exists)
-                return null;
-            return new FileBlob(identifier, filePath);
+            var fileInfo = new FileInfo(filePath);
+            return !fileInfo.Exists ? null : new FileBlob(identifier, filePath);
         }
 
         public override void Initialize()
         {
-            if (!string.IsNullOrEmpty(this._path))
+            if (string.IsNullOrEmpty(this._path)) return;
+            if (!Directory.Exists(this._path))
             {
-                if (!Directory.Exists(this._path))
-                {
-                    Directory.CreateDirectory(this._path);
-                }
+                Directory.CreateDirectory(this._path);
             }
         }
 
