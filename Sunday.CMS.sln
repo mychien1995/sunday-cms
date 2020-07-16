@@ -67,6 +67,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sunday.VirtualRoles.Applica
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sunday.VirtualRoles.Implementation", "Modules\VirtualRoles\Sunday.VirtualRoles.Implementation\Sunday.VirtualRoles.Implementation.csproj", "{AE23A4BD-A991-4775-99A6-4CF9C7E370B8}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Foundation", "Foundation", "{2400ED99-7C8F-4CE4-BC5F-8BAA17134827}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sunday.Foundation", "Foundation\Sunday.Foundation\Sunday.Foundation.csproj", "{C23F0B52-3E31-4E36-B3BB-CB27CF8DB669}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -165,6 +169,10 @@ Global
 		{AE23A4BD-A991-4775-99A6-4CF9C7E370B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AE23A4BD-A991-4775-99A6-4CF9C7E370B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AE23A4BD-A991-4775-99A6-4CF9C7E370B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C23F0B52-3E31-4E36-B3BB-CB27CF8DB669}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C23F0B52-3E31-4E36-B3BB-CB27CF8DB669}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C23F0B52-3E31-4E36-B3BB-CB27CF8DB669}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C23F0B52-3E31-4E36-B3BB-CB27CF8DB669}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -198,6 +206,7 @@ Global
 		{B2FFC244-FF96-4472-9E31-7DB0593A9A46} = {FB9F4F18-6ADF-41A3-A2C5-932F098E9D37}
 		{5DC16E1F-A083-4907-B92F-9F273BF0F807} = {FB9F4F18-6ADF-41A3-A2C5-932F098E9D37}
 		{AE23A4BD-A991-4775-99A6-4CF9C7E370B8} = {FB9F4F18-6ADF-41A3-A2C5-932F098E9D37}
+		{C23F0B52-3E31-4E36-B3BB-CB27CF8DB669} = {2400ED99-7C8F-4CE4-BC5F-8BAA17134827}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B00775C3-EEF6-4883-A795-0C11DB15EC6E}
