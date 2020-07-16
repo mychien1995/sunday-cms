@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using Newtonsoft.Json;
 using Sunday.Core;
 using Sunday.Foundation.Domain;
+using Sunday.Foundation.Implementation.Repositories.Entities;
 
-namespace Sunday.Foundation.Implementation.Repositories.Entities
+namespace Sunday.Foundation.Entities
 {
     [MappedTo(typeof(ApplicationOrganization))]
     public class OrganizationEntity

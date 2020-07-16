@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Sunday.Foundation.Implementation.Repositories.Entities
+﻿namespace Sunday.Foundation.Entities
 {
     public class ModuleEntity
     {
