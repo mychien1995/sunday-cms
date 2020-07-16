@@ -11,7 +11,7 @@ using Sunday.Core.Models;
 using Sunday.DataAccess.SqlServer;
 using Sunday.Foundation.Application.Repositories;
 using Sunday.Foundation.Domain;
-using Sunday.Foundation.Implementation.Repositories.Entities;
+using Sunday.Foundation.Entities;
 using Sunday.Foundation.Models;
 
 namespace Sunday.Foundation.Implementation.Repositories

@@ -5,7 +5,7 @@ using Sunday.Core;
 using Sunday.DataAccess.SqlServer;
 using Sunday.Foundation.Application.Repositories;
 using Sunday.Foundation.Domain;
-using Sunday.Foundation.Implementation.Repositories.Entities;
+using Sunday.Foundation.Entities;
 
 namespace Sunday.Foundation.Implementation.Repositories
 {

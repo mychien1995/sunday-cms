@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Sunday.Core;
 using Sunday.Foundation.Domain;
-using Sunday.Foundation.Implementation.Repositories.Entities;
 
 namespace Sunday.Foundation.Entities
 {
