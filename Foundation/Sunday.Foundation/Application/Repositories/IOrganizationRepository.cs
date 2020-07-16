@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Sunday.Core.Models;
 using Sunday.Foundation.Domain;
-using Sunday.Foundation.Implementation.Repositories.Entities;
+using Sunday.Foundation.Entities;
 using Sunday.Foundation.Models;
 
 namespace Sunday.Foundation.Application.Repositories
