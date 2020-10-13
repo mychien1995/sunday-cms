@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Sunday.Core
+namespace Sunday.Core.Models.Base
 {
     public class BaseApiResponse
     {

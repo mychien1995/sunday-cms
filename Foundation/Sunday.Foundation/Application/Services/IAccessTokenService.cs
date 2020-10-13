@@ -1,11 +1,12 @@
-﻿using Sunday.Core.Domain.Users;
+﻿using System;
+using Sunday.Foundation.Domain;
 
 namespace Sunday.Foundation.Application.Services
 {
     public interface IAccessTokenService
     {
-        string GenerateToken(IApplicationUser user);
+        string GenerateToken(ApplicationUser user);
 
-        bool ValidToken(string token, out int? userId);
+        bool ValidToken(string token, out Guid? userId);
     }
 }

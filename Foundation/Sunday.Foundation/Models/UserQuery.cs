@@ -1,20 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Sunday.Core.Models.Base;
 
 namespace Sunday.Foundation.Models
 {
-    public class UserQuery
+    public class UserQuery : PagingCriteria
     {
-        public UserQuery()
-        {
-            ExcludeIdList = new List<int>();
-            IncludeIdList = new List<int>();
-            OrganizationIds = new List<int>();
-        }
-        public int? PageIndex { get; set; }
-        public int? PageSize { get; set; }
-        public string Text { get; set; }
-        public string SortBy { get; set; }
+        public string? Text { get; set; }
+        public string? SortBy { get; set; }
         public string ExcludeIds
         {
             get
@@ -41,11 +34,11 @@ namespace Sunday.Foundation.Models
             }
         }
 
-        public string RoleIds { get; set; }
+        public string? RoleIds { get; set; }
 
-        public List<int> ExcludeIdList { get; set; }
+        public virtual List<int> ExcludeIdList { get; set; } = new List<int>();
 
-        public List<int> IncludeIdList { get; set; }
-        public List<int> OrganizationIds { get; set; }
+        public virtual List<int> IncludeIdList { get; set; } = new List<int>();
+        public virtual List<int> OrganizationIds { get; set; } = new List<int>();
     }
 }

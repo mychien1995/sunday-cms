@@ -1,6 +1,7 @@
 ﻿using Sunday.Core;
 using Sunday.VirtualRoles.Core.Models;
 using System.Threading.Tasks;
+using Sunday.Core.Models.Base;
 
 namespace Sunday.VirtualRoles.Application
 {

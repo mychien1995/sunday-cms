@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Sunday.Core;
-using Sunday.VirtualRoles.Application;
-using Sunday.VirtualRoles.Core.Models;
 using System.Threading.Tasks;
+using Sunday.CMS.Core.Application;
+using Sunday.CMS.Core.Models.VirtualRoles;
+using Sunday.Foundation.Context;
+using OrganizationRoleQuery = Sunday.Foundation.Models.OrganizationRoleQuery;
 
 namespace Sunday.CMS.Interface.Controllers
 {

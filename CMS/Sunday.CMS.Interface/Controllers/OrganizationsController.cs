@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Sunday.Core;
-using Sunday.Organizations.Application;
-using Sunday.Organizations.Core.Models;
 using System.Threading.Tasks;
+using Sunday.CMS.Core.Application;
+using Sunday.CMS.Core.Models.Organizations;
+using Sunday.Foundation.Context;
+using Sunday.Foundation.Models;
 
 namespace Sunday.CMS.Interface.Controllers
 {
@@ -15,7 +17,7 @@ namespace Sunday.CMS.Interface.Controllers
         }
 
         [HttpPost("search")]
-        public async Task<IActionResult> Search([FromBody] SearchOrganizationCriteria criteria)
+        public async Task<IActionResult> Search([FromBody] OrganizationQuery criteria)
         {
             var result = await _organizationManager.SearchOrganizations(criteria);
             return Ok(result);
@@ -45,7 +47,7 @@ namespace Sunday.CMS.Interface.Controllers
         [HttpDelete]
         public async Task<IActionResult> Delete([FromQuery] int id)
         {
-            var result = await _organizationManager.DeleleOrganization(id);
+            var result = await _organizationManager.DeleteOrganization(id);
             return Ok(result);
         }
 

@@ -1,4 +1,5 @@
 ﻿using Sunday.Core;
+using Sunday.Core.Models.Base;
 
 namespace Sunday.Organizations.Core.Models
 {

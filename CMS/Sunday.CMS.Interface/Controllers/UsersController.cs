@@ -1,20 +1,22 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Sunday.Users.Application;
-using Sunday.Users.Core.Models;
 using System.Threading.Tasks;
+using Sunday.CMS.Core.Application;
+using Sunday.CMS.Core.Models.Users;
+using Sunday.Foundation.Context;
+using Sunday.Foundation.Models;
 
 namespace Sunday.CMS.Interface.Controllers
 {
     public class UsersController : BaseController
     {
         private readonly IApplicationUserManager _userManager;
-        public UsersController(IApplicationUserManager userManager)
+        public UsersController(IApplicationUserManager userManager, ISundayContext context) : base(context)
         {
             _userManager = userManager;
         }
 
         [HttpPost("search")]
-        public async Task<IActionResult> GetUsers([FromBody] SearchUserCriteria criteria)
+        public async Task<IActionResult> GetUsers([FromBody] UserQuery criteria)
         {
             var result = await _userManager.SearchUsers(criteria);
             return Ok(result);

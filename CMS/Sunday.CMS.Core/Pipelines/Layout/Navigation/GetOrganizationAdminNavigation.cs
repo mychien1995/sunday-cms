@@ -1,32 +1,23 @@
 ﻿using Sunday.CMS.Core.Models.Layout;
 using Sunday.CMS.Core.Pipelines.Arguments;
-using Sunday.Core;
-using Sunday.FeatureAccess.Core;
-using Sunday.Organizations.Application;
 using System.Linq;
 using System.Threading.Tasks;
+using Sunday.Core.Constants;
+using Sunday.Foundation.Context;
 
 namespace Sunday.CMS.Core.Pipelines.Layout.Navigation
 {
     public class GetOrganizationAdminNavigation
     {
         private readonly ISundayContext _sundayContext;
-        private readonly IOrganizationRepository _organizationRepository;
-        public GetOrganizationAdminNavigation(ISundayContext sundayContext, IOrganizationRepository organizationRepository)
+        public GetOrganizationAdminNavigation(ISundayContext sundayContext)
         {
             _sundayContext = sundayContext;
-            _organizationRepository = organizationRepository;
         }
         public async Task ProcessAsync(GetNavigationArg arg)
         {
             if (!arg.User.IsInRole(SystemRoleCodes.OrganizationAdmin)) return;
             var organization = _sundayContext.CurrentOrganization;
-            if (organization == null) return;
-            if (organization.Modules.Count == 0)
-            {
-                organization = _organizationRepository.GetById(organization.ID);
-            }
-            if (organization == null) return;
             var modules = organization.Modules.Select(x => x.ModuleCode).ToList();
             if (modules.Any(c => c == SystemModules.UsersManagement.Code))
             {

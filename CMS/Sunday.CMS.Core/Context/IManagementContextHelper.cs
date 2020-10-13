@@ -1,11 +1,10 @@
-﻿using Sunday.Core.Domain.Organizations;
-using Sunday.Core.Domain.Users;
+﻿using Sunday.Foundation.Domain;
 
 namespace Sunday.CMS.Core.Context
 {
     public interface IManagementContextHelper
     {
-        IApplicationOrganization GetCurrentOrganization();
-        IApplicationUser GetCurrentUser();
+        ApplicationOrganization GetCurrentOrganization();
+        ApplicationUser GetCurrentUser();
     }
 }

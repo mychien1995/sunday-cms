@@ -3,21 +3,21 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Sunday.Identity.Application;
-using Sunday.Identity.Core;
-using Sunday.Users.Application;
 using System.Linq;
+using Sunday.Core.Extensions;
+using Sunday.Foundation.Application.Services;
+using Sunday.Foundation.Domain;
 
 namespace Sunday.CMS.Core.Filters
 {
     public class FrameworkAuthorizedFilter : IAuthorizationFilter
     {
         private readonly IAccessTokenService _accessTokenService;
-        private readonly IUserRepository _userRepository;
-        public FrameworkAuthorizedFilter(IAccessTokenService accessTokenService, IUserRepository userRepository)
+        private readonly IUserService _userService;
+        public FrameworkAuthorizedFilter(IAccessTokenService accessTokenService, IUserService userService)
         {
             _accessTokenService = accessTokenService;
-            _userRepository = userRepository;
+            _userService = userService;
         }
         public void OnAuthorization(AuthorizationFilterContext context)
         {
@@ -37,13 +37,13 @@ namespace Sunday.CMS.Core.Filters
                 context.Result = new UnauthorizedResult();
                 return;
             }
-            var user = _userRepository.GetUserById(userId.Value);
-            if (user == null || user.IsDeleted || !user.IsActive || user.IsLockedOut)
+            var user = _userService.GetUserByIdAsync(userId.Value).Result;
+            if (user.IsNone || user.Get().IsDeleted || !user.Get().IsActive || user.Get().IsLockedOut)
             {
                 context.Result = new UnauthorizedResult();
                 return;
             }
-            context.HttpContext.User = new ApplicationUserPrincipal(user);
+            context.HttpContext.User = new ApplicationUserPrincipal(user.Get());
         }
     }
 }

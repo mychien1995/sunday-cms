@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Security.Claims;
 using System.Security.Principal;
 
@@ -9,9 +10,9 @@ namespace Sunday.Foundation.Domain
         public ApplicationUser User { get; set; }
         public ApplicationUserPrincipal(ApplicationUser user)
         {
-            this.Identity = new GenericIdentity(user.ID.ToString());
+            this.Identity = new GenericIdentity(user.Id.ToString());
             this.User = user;
-            this.UserId = user.ID;
+            this.UserId = user.Id;
             this.Username = user.UserName;
             this.Fullname = user.Fullname;
             this.Email = user.Email;
@@ -19,7 +20,7 @@ namespace Sunday.Foundation.Domain
         }
         public override IIdentity Identity { get; }
 
-        public int UserId { get; set; }
+        public Guid UserId { get; set; }
         public string Username { get; set; }
         public string Fullname { get; set; }
         public string Email { get; set; }

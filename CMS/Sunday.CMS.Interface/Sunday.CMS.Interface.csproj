@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Nullable>enable</Nullable>
+    <LangVersion>8</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -11,7 +13,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Sunday.Core.Framework\Sunday.Core.Framework.csproj" />
     <ProjectReference Include="..\..\Core\Sunday.Core\Sunday.Core.csproj" />
-    <ProjectReference Include="..\..\Modules\Sunday.Infrastructure\Sunday.Infrastructure.csproj" />
     <ProjectReference Include="..\Sunday.CMS.Core\Sunday.CMS.Core.csproj" />
   </ItemGroup>
 

@@ -2,8 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Sunday.CMS.Core.Application.Organizations;
-using Sunday.Identity.Core;
+using Sunday.CMS.Core.Application;
+using Sunday.Foundation.Domain;
 
 namespace Sunday.CMS.Core.Filters
 {

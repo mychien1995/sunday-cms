@@ -2,6 +2,8 @@
 using Sunday.Users.Implementation.Pipelines.Arguments;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Sunday.Core.Constants;
+using Sunday.Core.Context;
 
 namespace Sunday.Users.Implementation.Pipelines.BeforeSearch
 {

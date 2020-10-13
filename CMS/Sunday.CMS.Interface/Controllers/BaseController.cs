@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Sunday.CMS.Core.Attributes;
-using Sunday.Core;
 using System;
+using Sunday.Foundation.Context;
 
 namespace Sunday.CMS.Interface.Controllers
 {
@@ -13,21 +13,17 @@ namespace Sunday.CMS.Interface.Controllers
     public class BaseController : ControllerBase
     {
         protected readonly ISundayContext Context;
-        public BaseController()
-        {
-
-        }
         public BaseController(ISundayContext context)
         {
             this.Context = context;
         }
 
 
-        protected int CurrentOrganizationId
+        protected Guid CurrentOrganizationId
         {
             get
             {
-                var currentOrgId = Context.CurrentOrganization?.ID;
+                var currentOrgId = Context.CurrentOrganization?.Id;
                 if (currentOrgId == null) throw new InvalidOperationException("Cannot resolve current organization");
                 return currentOrgId.Value;
             }

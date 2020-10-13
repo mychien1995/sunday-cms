@@ -1,17 +1,19 @@
-﻿using Sunday.Foundation.Domain;
+﻿using LanguageExt;
+using Sunday.Foundation.Domain;
 
 namespace Sunday.Foundation.Models
 {
     public class SignInResult
     {
         private readonly AuthenticationResult _authenticationResult;
-        public LoginStatus Result => _authenticationResult.Status;
-        public ApplicationUser User => _authenticationResult.User;
-        public string AccessToken { get; }
-        public SignInResult(AuthenticationResult authenticationResult, string token)
+        public LoginStatus Status => _authenticationResult.Status;
+        public Option<ApplicationUser> User => _authenticationResult.User;
+        public string AccessToken { get; } = string.Empty;
+        public SignInResult(AuthenticationResult authenticationResult, string? token = null)
         {
-            AccessToken = token;
             this._authenticationResult = authenticationResult;
+            if (token != null)
+                AccessToken = token;
         }
     }
 }

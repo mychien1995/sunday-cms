@@ -2,13 +2,14 @@
 using Sunday.CMS.Core.Models.Media;
 using Sunday.Core.Media.Application;
 using System.Threading.Tasks;
+using Sunday.Foundation.Context;
 
 namespace Sunday.CMS.Interface.Controllers
 {
     public class FileUploadController : BaseController
     {
         private readonly IApplicationMediaManager _applicationMediaManager;
-        public FileUploadController(IApplicationMediaManager applicationMediaManager)
+        public FileUploadController(IApplicationMediaManager applicationMediaManager, ISundayContext context) : base(context)
         {
             _applicationMediaManager = applicationMediaManager;
         }

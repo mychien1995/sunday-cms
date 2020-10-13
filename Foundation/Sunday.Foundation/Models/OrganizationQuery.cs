@@ -1,11 +1,11 @@
-﻿namespace Sunday.Foundation.Models
+﻿using Sunday.Core.Models.Base;
+
+namespace Sunday.Foundation.Models
 {
-    public class OrganizationQuery
+    public class OrganizationQuery : PagingCriteria
     {
-        public int? PageIndex { get; set; }
-        public int? PageSize { get; set; }
-        public string Text { get; set; }
-        public string SortBy { get; set; }
+        public string? Text { get; set; }
+        public string? SortBy { get; set; }
         public bool? IsActive { get; set; }
     }
 }

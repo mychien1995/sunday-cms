@@ -1,6 +1,7 @@
 ﻿using Sunday.Core;
 using Sunday.VirtualRoles.Core;
 using System.Collections.Generic;
+using Sunday.Core.Models.Base;
 
 namespace Sunday.Users.Core.Models
 {

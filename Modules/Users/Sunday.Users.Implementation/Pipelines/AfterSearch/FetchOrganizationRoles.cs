@@ -6,6 +6,8 @@ using Sunday.VirtualRoles.Core;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Sunday.Core.Constants;
+using Sunday.Core.Context;
 
 namespace Sunday.Users.Implementation.Pipelines.AfterSearch
 {

@@ -1,4 +1,6 @@
-﻿namespace Sunday.Core.Media.Models
+﻿using Sunday.Core.Models.Base;
+
+namespace Sunday.Core.Media.Models
 {
     public class UploadBlobJsonResult : BaseApiResponse
     {

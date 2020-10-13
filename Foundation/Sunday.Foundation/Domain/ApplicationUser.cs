@@ -6,13 +6,30 @@ namespace Sunday.Foundation.Domain
 {
     public class ApplicationUser
     {
-        public ApplicationUser()
+        public ApplicationUser(Guid id, string userName, DateTime createdDate, DateTime updatedDate, string createdBy, 
+            string updatedBy, bool isActive, bool isDeleted, bool isLockedOut, bool emailConfirmed, 
+            string securityStamp, string passwordHash, string domain, string email, string? phone, string? avatarBlobUri, string fullname)
         {
-            Roles = new List<ApplicationRole>();
-            OrganizationUsers = new List<ApplicationOrganizationUser>();
-            VirtualRoles = new List<ApplicationOrganizationRole>();
+            Id = id;
+            UserName = userName;
+            CreatedDate = createdDate;
+            UpdatedDate = updatedDate;
+            CreatedBy = createdBy;
+            UpdatedBy = updatedBy;
+            IsActive = isActive;
+            IsDeleted = isDeleted;
+            IsLockedOut = isLockedOut;
+            EmailConfirmed = emailConfirmed;
+            SecurityStamp = securityStamp;
+            PasswordHash = passwordHash;
+            Domain = domain;
+            Email = email;
+            Phone = phone;
+            AvatarBlobUri = avatarBlobUri;
+            Fullname = fullname;
         }
-        public int ID { get; set; }
+
+        public Guid Id { get; set; }
         public string UserName { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime UpdatedDate { get; set; }
@@ -26,12 +43,12 @@ namespace Sunday.Foundation.Domain
         public string PasswordHash { get; set; }
         public string Domain { get; set; }
         public string Email { get; set; }
-        public string Phone { get; set; }
-        public string AvatarBlobUri { get; set; }
+        public string? Phone { get; set; }
+        public string? AvatarBlobUri { get; set; }
         public string Fullname { get; set; }
-        public List<ApplicationRole> Roles { get; set; }
-        public List<ApplicationOrganizationRole> VirtualRoles { get; set; }
-        public List<ApplicationOrganizationUser> OrganizationUsers { get; set; }
+        public List<ApplicationRole> Roles { get; set; } = new List<ApplicationRole>();
+        public List<ApplicationOrganizationRole> VirtualRoles { get; set; } = new List<ApplicationOrganizationRole>();
+        public List<ApplicationOrganizationUser> OrganizationUsers { get; set; } = new List<ApplicationOrganizationUser>();
 
         public bool IsInRole(string roleCode)
         {

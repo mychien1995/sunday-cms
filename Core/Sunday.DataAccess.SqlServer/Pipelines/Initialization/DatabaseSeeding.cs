@@ -4,6 +4,8 @@ using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using Sunday.Core.Constants;
+using Sunday.DataAccess.SqlServer.Database;
 
 namespace Sunday.DataAccess.SqlServer.Pipelines.Initialization
 {

@@ -2,6 +2,7 @@
 using Sunday.Organizations.Core;
 using Sunday.Organizations.Core.Models;
 using System.Threading.Tasks;
+using Sunday.Core.Models.Base;
 
 namespace Sunday.Organizations.Application
 {

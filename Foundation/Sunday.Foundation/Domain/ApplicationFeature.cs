@@ -1,11 +1,22 @@
-﻿namespace Sunday.Foundation.Domain
+﻿using System;
+
+namespace Sunday.Foundation.Domain
 {
     public class ApplicationFeature
     {
-        public int ID { get; set; }
+        public Guid Id { get; set; }
         public string FeatureName { get; set; }
         public string FeatureCode { get; set; }
         public int ModuleId { get; set; }
         public ApplicationModule Module { get; set; }
+
+        public ApplicationFeature(Guid id, string featureName, string featureCode, int moduleId, ApplicationModule module)
+        {
+            Id = id;
+            FeatureName = featureName;
+            FeatureCode = featureCode;
+            ModuleId = moduleId;
+            Module = module;
+        }
     }
 }

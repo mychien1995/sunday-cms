@@ -1,14 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Sunday.Users.Application;
-using Sunday.Users.Core.Models;
 using System.Threading.Tasks;
+using Sunday.CMS.Core.Application;
+using Sunday.CMS.Core.Models.Users;
+using Sunday.Foundation.Context;
 
 namespace Sunday.CMS.Interface.Controllers
 {
     public class ProfileController : BaseController
     {
         private readonly IProfileManager _profileManager;
-        public ProfileController(IProfileManager profileManager)
+        public ProfileController(IProfileManager profileManager, ISundayContext context) : base(context)
         {
             _profileManager = profileManager;
         }

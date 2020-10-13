@@ -4,6 +4,7 @@ using Sunday.FeatureAccess.Core.Models;
 using Sunday.Organizations.Application;
 using System.Linq;
 using System.Threading.Tasks;
+using Sunday.Core.Extensions;
 
 namespace Sunday.FeatureAccess.Implementation
 {

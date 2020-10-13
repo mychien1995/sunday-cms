@@ -1,5 +1,6 @@
 ﻿using Sunday.Core;
 using System.Collections.Generic;
+using Sunday.Core.Models.Base;
 
 namespace Sunday.Organizations.Core.Models
 {

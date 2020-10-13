@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Sunday.Core;
-using Sunday.FeatureAccess.Application;
 using System.Threading.Tasks;
+using Sunday.CMS.Core.Application;
+using Sunday.Foundation.Context;
 
 namespace Sunday.CMS.Interface.Controllers
 {
@@ -16,8 +17,7 @@ namespace Sunday.CMS.Interface.Controllers
         [HttpGet("getByOrganization")]
         public async Task<IActionResult> GetByOrganization()
         {
-            int organizationId = CurrentOrganizationId;
-            var result = await _featureManager.GetOrganizationFeatures(organizationId);
+            var result = await _featureManager.GetOrganizationFeatures(CurrentOrganizationId);
             return Ok(result);
         }
     }

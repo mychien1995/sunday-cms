@@ -1,23 +1,23 @@
 ﻿using Sunday.Core;
-using Sunday.Core.Domain.Organizations;
-using Sunday.Core.Domain.Users;
 using System;
+using Sunday.Foundation.Context;
+using Sunday.Foundation.Domain;
 
 namespace Sunday.CMS.Core.Context
 {
     [ServiceTypeOf(typeof(ISundayContext), LifetimeScope.PerRequest)]
     public class SundayManagementContext : ISundayContext
     {
-        private readonly Lazy<IApplicationOrganization> _currentOrganization;
-        private readonly Lazy<IApplicationUser> _currentUser;
+        private readonly Lazy<ApplicationOrganization> _currentOrganization;
+        private readonly Lazy<ApplicationUser> _currentUser;
 
         public SundayManagementContext(IManagementContextHelper contextHelper)
         {
-            _currentOrganization = new Lazy<IApplicationOrganization>(contextHelper.GetCurrentOrganization, true);
-            _currentUser = new Lazy<IApplicationUser>(contextHelper.GetCurrentUser, true);
+            _currentOrganization = new Lazy<ApplicationOrganization>(contextHelper.GetCurrentOrganization, true);
+            _currentUser = new Lazy<ApplicationUser>(contextHelper.GetCurrentUser, true);
         }
-        public IApplicationOrganization CurrentOrganization => this._currentOrganization?.Value;
+        public ApplicationOrganization CurrentOrganization => this._currentOrganization.Value;
 
-        public IApplicationUser CurrentUser => this._currentUser?.Value;
+        public ApplicationUser CurrentUser => this._currentUser.Value;
     }
 }

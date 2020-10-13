@@ -6,6 +6,8 @@ using Sunday.Users.Application;
 using Sunday.Users.Core.Models;
 using System.Linq;
 using System.Threading.Tasks;
+using Sunday.Core.Extensions;
+using Sunday.Core.Models.Base;
 
 namespace Sunday.Users.Implementation
 {

@@ -12,6 +12,8 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
+using Sunday.Core.Models.Base;
+using Sunday.DataAccess.SqlServer.Database;
 
 namespace Sunday.VirtualRoles.Implementation
 {

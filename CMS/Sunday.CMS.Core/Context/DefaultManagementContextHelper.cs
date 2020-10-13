@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
-using Sunday.CMS.Core.Application.Organizations;
+﻿using System;
+using LanguageExt;
+using Microsoft.AspNetCore.Http;
+using Sunday.CMS.Core.Application;
+using Sunday.CMS.Core.Extensions;
 using Sunday.Core;
-using Sunday.Core.Domain.Organizations;
-using Sunday.Core.Domain.Users;
-using Sunday.Identity.Core;
+using Sunday.Core.Extensions;
+using Sunday.Foundation.Domain;
 
 namespace Sunday.CMS.Core.Context
 {
@@ -17,26 +19,22 @@ namespace Sunday.CMS.Core.Context
             _httpContextAccessor = httpContextAccessor;
             _organizationAccessManager = organizationManager;
         }
-        public IApplicationOrganization GetCurrentOrganization()
+        public ApplicationOrganization GetCurrentOrganization()
         {
-            var organization = _httpContextAccessor.HttpContext.GetOrganization();
-            if (organization == null)
-            {
-                organization = _organizationAccessManager.ResolveOrganizationFromRequest();
-                _httpContextAccessor.HttpContext.AddOrganization(organization);
-            }
-            return organization;
+            var organization = _httpContextAccessor.HttpContext.GetCurrentOrganization();
+            if (!organization.IsNone) throw new InvalidOperationException("Current Organization Unidentified");
+            organization = _organizationAccessManager.ResolveOrganizationFromRequest();
+            _httpContextAccessor.HttpContext.AddOrganization(organization.Get());
+            return organization.Get();
         }
 
-        public IApplicationUser GetCurrentUser()
+        public ApplicationUser GetCurrentUser()
         {
             var user = _httpContextAccessor.HttpContext.GetCurrentUser();
-            if (user == null)
-            {
-                user = ((ApplicationUserPrincipal) _httpContextAccessor.HttpContext.User).User;
-                _httpContextAccessor.HttpContext.SetCurrentUser(user);
-            }
-            return user;
+            if (!user.IsNone) throw new InvalidOperationException("Current User Unidentified");
+            user = ((ApplicationUserPrincipal)_httpContextAccessor.HttpContext.User).User;
+            _httpContextAccessor.HttpContext.SetCurrentUser(user.Get());
+            return user.Get();
         }
     }
 }

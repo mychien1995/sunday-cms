@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Sunday.CMS.Core.Application.Identity;
 using Sunday.CMS.Core.Models;
 using System.Threading.Tasks;
+using Sunday.CMS.Core.Application;
 
 namespace Sunday.CMS.Interface.Controllers
 {
@@ -10,10 +10,10 @@ namespace Sunday.CMS.Interface.Controllers
     [Route("[controller]")]
     public class AuthenticationController : ControllerBase
     {
-        private readonly ILoginManager _loginRepository;
-        public AuthenticationController(ILoginManager loginRepository)
+        private readonly ILoginManager _loginManager;
+        public AuthenticationController(ILoginManager loginManager)
         {
-            _loginRepository = loginRepository;
+            _loginManager = loginManager;
         }
 
         [AllowAnonymous]
@@ -21,7 +21,7 @@ namespace Sunday.CMS.Interface.Controllers
         public async Task<IActionResult> Authenticate([FromBody] LoginInputModel loginInputModel)
         {
             if (!ModelState.IsValid) return BadRequest();
-            var result = await _loginRepository.LoginAsync(loginInputModel);
+            var result = await _loginManager.LoginAsync(loginInputModel);
             if (!result.Success)
             {
                 return Unauthorized(result);

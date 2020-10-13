@@ -1,13 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Sunday.Users.Application;
+﻿using System;
+using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using Sunday.CMS.Core.Application;
+using Sunday.Foundation.Context;
 
 namespace Sunday.CMS.Interface.Controllers
 {
     public class RolesController : BaseController
     {
         private readonly IApplicationRoleManager _rolesManager;
-        public RolesController(IApplicationRoleManager roleManager)
+        public RolesController(IApplicationRoleManager roleManager, ISundayContext context) : base(context)
         {
             _rolesManager = roleManager;
         }
@@ -20,7 +22,7 @@ namespace Sunday.CMS.Interface.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
+        public async Task<IActionResult> Get(Guid id)
         {
             var result = await _rolesManager.GetRoleById(id);
             return Ok(result);

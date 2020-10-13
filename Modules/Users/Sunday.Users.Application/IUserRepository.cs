@@ -3,6 +3,7 @@ using Sunday.Users.Core;
 using Sunday.Users.Core.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Sunday.Core.Models.Base;
 
 namespace Sunday.Users.Application
 {

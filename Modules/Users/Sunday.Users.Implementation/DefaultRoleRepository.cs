@@ -6,6 +6,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Sunday.DataAccess.SqlServer.Database;
 
 namespace Sunday.Users.Implementation
 {

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Sunday.CMS.Core.Application.Layout;
 using System.Threading.Tasks;
+using Sunday.CMS.Core.Application;
+using Sunday.Foundation.Context;
 
 namespace Sunday.CMS.Interface.Controllers
 {
@@ -8,7 +9,7 @@ namespace Sunday.CMS.Interface.Controllers
     {
         private readonly INavigationManager _navigationManager;
 
-        public LayoutController(INavigationManager navigationManager)
+        public LayoutController(INavigationManager navigationManager, ISundayContext context) : base(context)
         {
             _navigationManager = navigationManager;
         }
