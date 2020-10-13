@@ -55,7 +55,7 @@ namespace Sunday.CMS.Core.Implementation
             result.Username = credential.Username;
             result.Token = authenticateResult.AccessToken;
             if (user.AvatarBlobUri != null)
-                result.AvatarLink = _blobLinkManager.GetPreviewLink(user.AvatarBlobUri, true);
+                result.AvatarLink = _blobLinkManager.GetPreviewLink(user.AvatarBlobUri);
             return result;
         }
     }

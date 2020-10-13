@@ -7,10 +7,10 @@ namespace Sunday.Foundation.Domain
         public Guid Id { get; set; }
         public string FeatureName { get; set; }
         public string FeatureCode { get; set; }
-        public int ModuleId { get; set; }
+        public Guid ModuleId { get; set; }
         public ApplicationModule Module { get; set; }
 
-        public ApplicationFeature(Guid id, string featureName, string featureCode, int moduleId, ApplicationModule module)
+        public ApplicationFeature(Guid id, string featureName, string featureCode, Guid moduleId, ApplicationModule module)
         {
             Id = id;
             FeatureName = featureName;

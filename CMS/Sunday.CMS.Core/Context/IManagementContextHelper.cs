@@ -4,7 +4,7 @@ namespace Sunday.CMS.Core.Context
 {
     public interface IManagementContextHelper
     {
-        ApplicationOrganization GetCurrentOrganization();
-        ApplicationUser GetCurrentUser();
+        ApplicationOrganization? GetCurrentOrganization();
+        ApplicationUser? GetCurrentUser();
     }
 }

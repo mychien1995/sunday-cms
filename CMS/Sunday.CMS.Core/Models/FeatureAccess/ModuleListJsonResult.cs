@@ -19,7 +19,7 @@ namespace Sunday.CMS.Core.Models.FeatureAccess
         public string ModuleName { get; }
         public string ModuleCode { get; }
 
-        public List<FeatureItem> Features { get; } = new List<FeatureItem>();
+        public List<FeatureItem> Features { get; set; } = new List<FeatureItem>();
 
         public ModuleItem(Guid id, string moduleName, string moduleCode)
         {

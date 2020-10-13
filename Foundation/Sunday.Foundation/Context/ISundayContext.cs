@@ -4,8 +4,8 @@ namespace Sunday.Foundation.Context
 {
     public interface ISundayContext
     {
-        ApplicationOrganization CurrentOrganization { get; }
+        ApplicationOrganization? CurrentOrganization { get; }
 
-        ApplicationUser CurrentUser { get; }
+        ApplicationUser? CurrentUser { get; }
     }
 }

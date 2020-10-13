@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using LanguageExt;
+using Sunday.Core;
 using Sunday.Core.Extensions;
 using Sunday.Core.Models.Base;
 using Sunday.Foundation.Application.Services;
@@ -11,6 +12,7 @@ using Sunday.Foundation.Persistence.Entities;
 
 namespace Sunday.Foundation.Implementation.Services
 {
+    [ServiceTypeOf(typeof(IOrganizationService))]
     public class DefaultOrganizationService : IOrganizationService
     {
         private readonly IOrganizationRepository _organizationRepository;

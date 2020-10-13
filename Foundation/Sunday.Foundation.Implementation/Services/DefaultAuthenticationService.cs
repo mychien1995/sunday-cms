@@ -1,10 +1,12 @@
 ﻿using System.Threading.Tasks;
+using Sunday.Core;
 using Sunday.Core.Extensions;
 using Sunday.Foundation.Application.Services;
 using Sunday.Foundation.Models;
 
 namespace Sunday.Foundation.Implementation.Services
 {
+    [ServiceTypeOf(typeof(IAuthenticationService))]
     public class DefaultAuthenticationService : IAuthenticationService
     {
         private readonly IIdentityService _identityService;

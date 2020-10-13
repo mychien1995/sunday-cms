@@ -12,6 +12,7 @@ using Sunday.Foundation.Persistence.Application.Repositories;
 
 namespace Sunday.Foundation.Implementation.Services
 {
+    [ServiceTypeOf(typeof(IIdentityService))]
     public class DefaultIdentityService : IIdentityService
     {
         private readonly IUserRepository _userRepository;
