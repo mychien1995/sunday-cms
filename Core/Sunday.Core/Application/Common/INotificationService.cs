@@ -1,5 +1,5 @@
-﻿using Sunday.Core.Domain.Users;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Sunday.Core.Domain;
 
 namespace Sunday.Core.Application.Common
 {

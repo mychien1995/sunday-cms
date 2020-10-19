@@ -23,58 +23,6 @@ namespace Sunday.Core.Framework.Helpers
             }
             return result;
         }
-        public static IEnumerable<Assembly> GetAssemblies(Expression<Func<AssemblyName, bool>> predicate)
-        {
-            var list = new List<string>();
-            var stack = new Stack<Assembly>();
-            var compiled = predicate.Compile();
-            stack.Push(Assembly.GetEntryAssembly());
-
-            do
-            {
-                var asm = stack.Pop();
-
-                yield return asm;
-
-                foreach (var reference in asm.GetReferencedAssemblies())
-                    if (compiled.Invoke(reference))
-                    {
-                        if (list.Contains(reference.FullName)) continue;
-                        stack.Push(Assembly.Load(reference));
-                        list.Add(reference.FullName);
-                    }
-
-            }
-            while (stack.Count > 0);
-
-        }
-
-        public static IEnumerable<Type> GetClasses(Assembly assembly, Expression<Func<Type, bool>> predicate)
-        {
-            var compiled = predicate.Compile();
-            foreach (var type in assembly.GetTypes())
-            {
-                if (compiled.Invoke(type))
-                {
-                    yield return type;
-                }
-            }
-        }
-
-        public static IEnumerable<Type> GetClasses(Assembly[] assemblies, Expression<Func<Type, bool>> predicate)
-        {
-            var compiled = predicate.Compile();
-            foreach (var assembly in assemblies)
-            {
-                foreach (var type in assembly.GetTypes())
-                {
-                    if (compiled.Invoke(type))
-                    {
-                        yield return type;
-                    }
-                }
-            }
-        }
 
         public static IEnumerable<Type> GetClassesWithAttribute(Assembly[] assemblies, Type attributeType)
         {

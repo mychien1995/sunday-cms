@@ -1,7 +1,8 @@
-﻿using Sunday.Core;
+﻿using Microsoft.AspNetCore.Builder;
+using Sunday.Core.Pipelines;
 using Sunday.Core.Pipelines.Arguments;
 
-namespace Microsoft.AspNetCore.Builder
+namespace Sunday.Core.Framework
 {
     public static class ApplicationBuilderExtensions
     {

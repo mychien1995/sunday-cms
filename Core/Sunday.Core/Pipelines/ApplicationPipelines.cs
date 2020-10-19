@@ -1,23 +1,22 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Sunday.Core.Configuration;
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace Sunday.Core
+namespace Sunday.Core.Pipelines
 {
     public class ApplicationPipelines
     {
-        private static ConcurrentDictionary<string, List<Type>> _pipelineTypes = new ConcurrentDictionary<string, List<Type>>();
-        private static ConcurrentDictionary<string, List<string>> _pipelineDefinitions = new ConcurrentDictionary<string, List<string>>();
+        private static readonly ConcurrentDictionary<string, List<Type>> PipelineTypes = new ConcurrentDictionary<string, List<Type>>();
+        private static readonly ConcurrentDictionary<string, List<string>> PipelineDefinitions = new ConcurrentDictionary<string, List<string>>();
         public static void Initialize(XmlDocument configFile)
         {
-            var piplinesNode = configFile.SelectSingleNode("/configuration/pipelines");
-            if (piplinesNode == null || !piplinesNode.HasChildNodes) return;
-            var childNodes = piplinesNode.ChildNodes;
+            var pipelinesNode = configFile.SelectSingleNode("/configuration/pipelines");
+            if (pipelinesNode == null || !pipelinesNode.HasChildNodes) return;
+            var childNodes = pipelinesNode.ChildNodes;
             foreach (var node in childNodes)
             {
                 var pipelineNode = node as XmlNode;
@@ -28,53 +27,41 @@ namespace Sunday.Core
                 {
                     foreach (var childNode in pipelineNode.ChildNodes)
                     {
-                        var processorNode = childNode as XmlNode;
-                        if (processorNode.Name == "processor" && !string.IsNullOrEmpty(processorNode.Attributes["type"]?.Value))
+                        if (childNode is XmlNode processorNode &&
+                            processorNode.Name == "processor" && !string.IsNullOrEmpty(processorNode.Attributes["type"]?.Value))
                         {
-                            processorList.Add(processorNode.Attributes["type"]?.Value);
+                            processorList.Add(processorNode.Attributes["type"].Value);
                         }
                     }
                 }
 
                 if (!processorList.Any()) continue;
-                if (_pipelineDefinitions.ContainsKey(pipelineName))
+                if (PipelineDefinitions.ContainsKey(pipelineName))
                 {
-                    _pipelineDefinitions.TryRemove(pipelineName, out List<string> tmp);
+                    PipelineDefinitions.TryRemove(pipelineName, out _);
                 }
-                _pipelineDefinitions.TryAdd(pipelineName, processorList);
+                PipelineDefinitions.TryAdd(pipelineName, processorList);
             }
         }
 
-        public static void Initialize(ConfigurationNode configurationNode)
-        {
-            if (configurationNode?.Pipelines == null || !configurationNode.Pipelines.Any()) return;
-            foreach (var pipeline in configurationNode.Pipelines.Where(x => !string.IsNullOrEmpty(x.Name)))
-            {
-                if (_pipelineDefinitions.ContainsKey(pipeline.Name))
-                {
-                    _pipelineDefinitions.TryRemove(pipeline.Name, out List<string> tmp);
-                }
-                _pipelineDefinitions.TryAdd(pipeline.Name, pipeline.Processors.Where(x => !string.IsNullOrEmpty(x?.Type)).Select(x => x.Type).ToList());
-            }
-        }
         public static void Run(string pipelineName, PipelineArg arg)
         {
             using var scope = ServiceActivator.GetScope();
-            if (_pipelineTypes.TryGetValue(pipelineName, out List<Type> types))
+            if (PipelineTypes.TryGetValue(pipelineName, out var types))
             {
                 foreach (var type in types)
                 {
                     var processMethod = type.GetMethod("Process");
                     if (processMethod == null) continue;
                     var executor = ActivatorUtilities.CreateInstance(scope.ServiceProvider, type);
-                    processMethod.Invoke(executor, new object[1] { arg });
+                    processMethod.Invoke(executor, new object?[] { arg });
                     if (arg != null && arg.Aborted) break;
                 }
             }
-            else if (_pipelineDefinitions.TryGetValue(pipelineName, out List<string> definitions))
+            else if (PipelineDefinitions.TryGetValue(pipelineName, out var definitions))
             {
-                var executorObjs = definitions.Select(x => Type.GetType(x, true, true)).ToList();
-                _pipelineTypes.TryAdd(pipelineName, executorObjs);
+                var executorTypes = definitions.Select(x => Type.GetType(x, true, true)!).ToList();
+                PipelineTypes.TryAdd(pipelineName, executorTypes);
                 Run(pipelineName, arg);
             }
         }
@@ -82,22 +69,22 @@ namespace Sunday.Core
         public static async Task RunAsync(string pipelineName, PipelineArg arg)
         {
             using var scope = ServiceActivator.GetScope();
-            if (_pipelineTypes.TryGetValue(pipelineName, out List<Type> types))
+            if (PipelineTypes.TryGetValue(pipelineName, out var types))
             {
                 foreach (var type in types)
                 {
                     var processMethod = type.GetMethod("ProcessAsync");
                     if (processMethod == null) continue;
                     var executor = ActivatorUtilities.CreateInstance(scope.ServiceProvider, type);
-                    var task = (Task)processMethod.Invoke(executor, new object[1] { arg });
+                    var task = (Task)processMethod.Invoke(executor, new object?[] { arg })!;
                     await task;
                     if (arg != null && arg.Aborted) break;
                 }
             }
-            else if (_pipelineDefinitions.TryGetValue(pipelineName, out List<string> definitions))
+            else if (PipelineDefinitions.TryGetValue(pipelineName, out var definitions))
             {
-                var executorObjs = definitions.Select(x => Type.GetType(x, true, true)).ToList();
-                _pipelineTypes.TryAdd(pipelineName, executorObjs);
+                var executorTypes = definitions.Select(x => Type.GetType(x, true, true)!).ToList();
+                PipelineTypes.TryAdd(pipelineName, executorTypes);
                 await RunAsync(pipelineName, arg);
             }
         }

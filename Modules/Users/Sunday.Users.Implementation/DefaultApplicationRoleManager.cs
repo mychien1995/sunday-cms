@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Sunday.Core.Constants;
 using Sunday.Core.Extensions;
+using Sunday.Core.Pipelines;
 
 namespace Sunday.Users.Implementation
 {

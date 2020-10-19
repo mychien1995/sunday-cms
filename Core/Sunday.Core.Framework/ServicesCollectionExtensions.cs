@@ -1,19 +1,20 @@
-﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Sunday.Core;
-using Sunday.Core.Configuration;
-using Sunday.Core.Framework.Helpers;
-using Sunday.Core.Pipelines.Arguments;
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Xml;
-using System.Xml.Linq;
 using System.Xml.Serialization;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Sunday.Core.Configuration;
+using Sunday.Core.Framework.Helpers;
+using Sunday.Core.Pipelines;
+using Sunday.Core.Pipelines.Arguments;
 using XmlDocumentMerger;
 
-namespace Microsoft.Extensions.DependencyInjection
+namespace Sunday.Core.Framework
 {
     public static class ServicesCollectionExtensions
     {
@@ -26,7 +27,7 @@ namespace Microsoft.Extensions.DependencyInjection
         public static ISundayServicesConfiguration LoadConfiguration(this ISundayServicesConfiguration services, IWebHostEnvironment hostingEnv, IConfiguration configuration)
         {
             var environment = configuration.GetValue<string>("Environment");
-            var configurationPath = string.IsNullOrEmpty(environment) ? $"\\config\\sunday.config" : $"\\config\\sunday.{environment.ToLower()}.config";
+            var configurationPath = string.IsNullOrEmpty(environment) ? "\\config\\sunday.config" : $"\\config\\sunday.{environment.ToLower()}.config";
             var filePath = hostingEnv.WebRootPath + configurationPath;
             if (!string.IsNullOrEmpty(environment) && !File.Exists(filePath))
             {
@@ -36,11 +37,8 @@ namespace Microsoft.Extensions.DependencyInjection
             var configFileContent = File.ReadAllText(filePath);
             var includeFolder = hostingEnv.WebRootPath + "\\config\\include";
             var includeFiles = Directory.GetFiles(includeFolder, "*.config");
-            foreach (var includeFile in includeFiles)
-            {
-                var xmlContent = File.ReadAllText(includeFile);
-                configFileContent = XmlMerger.MergeDocuments(xmlContent, configFileContent);
-            }
+            configFileContent = includeFiles.Select(File.ReadAllText)
+                .Aggregate(configFileContent, (current, xmlContent) => XmlMerger.MergeDocuments(xmlContent, current));
             var serializer = new XmlSerializer(typeof(ConfigurationNode));
             using TextReader reader = new StringReader(configFileContent);
             var configurationNode = (ConfigurationNode)serializer.Deserialize(reader);
@@ -53,10 +51,10 @@ namespace Microsoft.Extensions.DependencyInjection
             return services;
         }
 
-        public static ISundayServicesConfiguration Initialize(this ISundayServicesConfiguration services)
+        public static IApplicationBuilder InitializeSunday(this IApplicationBuilder application)
         {
-            ApplicationPipelines.Run("initialize", new InitializationArg(services.Services));
-            return services;
+            ApplicationPipelines.Run("initialize", new InitializationArg());
+            return application;
         }
 
         public static ISundayServicesConfiguration LoadServices(this ISundayServicesConfiguration serviceConf)
@@ -68,7 +66,7 @@ namespace Microsoft.Extensions.DependencyInjection
             var types = AssemblyHelper.GetClassesWithAttribute(assemblies, typeof(ServiceTypeOfAttribute));
             foreach (var type in types)
             {
-                var attr = ((ServiceTypeOfAttribute)type.GetCustomAttribute(typeof(ServiceTypeOfAttribute)));
+                var attr = ((ServiceTypeOfAttribute)type.GetCustomAttribute(typeof(ServiceTypeOfAttribute))!);
                 var parentType = attr.ServiceType;
                 var scope = attr.LifetimeScope;
                 switch (scope)
@@ -101,9 +99,9 @@ namespace Microsoft.Extensions.DependencyInjection
             return serviceConf;
         }
 
-        public static void AddConfiguredServices(ConfigurationNode configurationNode, IServiceCollection serviceCollection)
+        private static void AddConfiguredServices(ConfigurationNode configurationNode, IServiceCollection serviceCollection)
         {
-            if (configurationNode == null || configurationNode.Services == null || !configurationNode.Services.Any())
+            if (configurationNode?.Services == null || !configurationNode.Services.Any())
                 return;
             foreach (var service in configurationNode.Services.Where(x => !string.IsNullOrEmpty(x?.ServiceType) || !string.IsNullOrEmpty(x?.ImplementationType)))
             {
@@ -125,12 +123,10 @@ namespace Microsoft.Extensions.DependencyInjection
         }
         private static void AddSetting(ConfigurationNode configurationNode)
         {
-            if (configurationNode == null || configurationNode.Settings == null || !configurationNode.Settings.Any())
+            if (configurationNode?.Settings == null || !configurationNode.Settings.Any())
                 return;
-            foreach (var setting in configurationNode.Settings.Where(x => !string.IsNullOrEmpty(x?.Key)))
-            {
-                ApplicationSettings.Set(setting.Key, setting.Value);
-            }
+            configurationNode.Settings.Where(x => !string.IsNullOrEmpty(x?.Key))
+                .Iter(setting => ApplicationSettings.Set(setting.Key, setting.Value));
         }
 
         private static void AddPipelines(XmlDocument document)

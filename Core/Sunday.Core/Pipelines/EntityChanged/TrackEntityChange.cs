@@ -4,6 +4,7 @@ using Sunday.Core.Domain.Identity;
 using Sunday.Core.Pipelines.Arguments;
 using System;
 using System.Threading.Tasks;
+using Sunday.Core.Domain.Interfaces;
 
 namespace Sunday.Core.Pipelines.EntityChanged
 {

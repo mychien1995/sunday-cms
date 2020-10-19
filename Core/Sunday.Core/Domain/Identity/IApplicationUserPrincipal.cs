@@ -1,5 +1,4 @@
-﻿using Sunday.Core.Domain.Roles;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Sunday.Core.Domain.Identity
 {

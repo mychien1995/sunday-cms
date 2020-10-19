@@ -5,6 +5,7 @@ using Sunday.CMS.Core.Application;
 using Sunday.CMS.Core.Models.Layout;
 using Sunday.CMS.Core.Pipelines.Arguments;
 using Sunday.Core;
+using Sunday.Core.Pipelines;
 using Sunday.Foundation.Domain;
 
 namespace Sunday.CMS.Core.Implementation

@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Sunday.Core.Framework;
 
 namespace Sunday.CMS.Interface
 {
@@ -29,8 +30,7 @@ namespace Sunday.CMS.Interface
             services.AddSingleton(typeof(ILogger<>), typeof(Logger<>));
             services.Sunday()
                 .LoadConfiguration(Environment, Configuration)
-                .LoadServices()
-                .Initialize();
+                .LoadServices();
 
         }
 
@@ -51,8 +51,8 @@ namespace Sunday.CMS.Interface
             {
                 endpoints.MapControllers();
             });
-
-            app.UseSundayMiddleware();
+            app.InitializeSunday()
+                .UseSundayMiddleware();
         }
     }
 }

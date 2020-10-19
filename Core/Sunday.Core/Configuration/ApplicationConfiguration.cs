@@ -6,8 +6,8 @@ namespace Sunday.Core.Configuration
     {
         public ApplicationConfiguration(ConfigurationNode confNode, XmlDocument xmlFile)
         {
-            this.ConfigurationNode = confNode;
-            this.ConfigurationXml = xmlFile;
+            ConfigurationNode = confNode;
+            ConfigurationXml = xmlFile;
         }
         public ConfigurationNode ConfigurationNode { get; set; }
         public XmlDocument ConfigurationXml { get; set; }

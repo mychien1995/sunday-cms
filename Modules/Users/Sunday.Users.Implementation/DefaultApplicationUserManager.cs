@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Sunday.Core.Extensions;
 using Sunday.Core.Models.Base;
+using Sunday.Core.Pipelines;
 
 namespace Sunday.Users.Implementation
 {

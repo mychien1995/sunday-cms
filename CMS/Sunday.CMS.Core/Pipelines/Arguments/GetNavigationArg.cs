@@ -1,6 +1,5 @@
 ﻿using Sunday.CMS.Core.Models.Layout;
 using Sunday.Core;
-using Sunday.Core.Domain.Users;
 using System.Collections.Generic;
 using Sunday.Foundation.Domain;
 

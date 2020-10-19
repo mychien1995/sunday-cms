@@ -1,7 +1,7 @@
 ﻿using Sunday.Core.Application.Common;
-using Sunday.Core.Domain.Users;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Sunday.Core.Domain;
 
 namespace Sunday.Core.Implementation.Common
 {
