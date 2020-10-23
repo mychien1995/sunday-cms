@@ -1,4 +1,5 @@
-﻿using Sunday.CMS.Core.Models.Layout;
+﻿using System;
+using Sunday.CMS.Core.Models.Layout;
 using Sunday.CMS.Core.Pipelines.Arguments;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,10 +15,11 @@ namespace Sunday.CMS.Core.Pipelines.Layout.Navigation
         {
             _sundayContext = sundayContext;
         }
-        public async Task ProcessAsync(GetNavigationArg arg)
+        public Task ProcessAsync(GetNavigationArg arg)
         {
-            if (!arg.User.IsInRole(SystemRoleCodes.OrganizationAdmin)) return;
+            if (!arg.User.IsInRole(SystemRoleCodes.OrganizationAdmin)) return Task.CompletedTask;
             var organization = _sundayContext.CurrentOrganization;
+            if (organization == null) throw new InvalidOperationException("Current Organization is undefined");
             var modules = organization.Modules.Select(x => x.ModuleCode).ToList();
             if (modules.Any(c => c == SystemModules.UsersManagement.Code))
             {
@@ -39,23 +41,22 @@ namespace Sunday.CMS.Core.Pipelines.Layout.Navigation
                     IconClass = "pe-7s-car"
                 });
             }
-            if (modules.Any(c => c == SystemModules.RolesManagement.Code))
+            if (modules.All(c => c != SystemModules.RolesManagement.Code)) return Task.CompletedTask;
+            arg.NavigationItems.Add(new NavigationItem()
             {
-                arg.NavigationItems.Add(new NavigationItem()
-                {
-                    Link = "/organization-roles",
-                    Section = "Manage Roles",
-                    Title = "Manage Roles",
-                    IconClass = "pe-7s-browser"
-                });
-                arg.NavigationItems.Add(new NavigationItem()
-                {
-                    Link = "/permissions-manager",
-                    Section = "Manage Roles",
-                    Title = "Permissions Manager",
-                    IconClass = "pe-7s-display2"
-                });
-            }
+                Link = "/organization-roles",
+                Section = "Manage Roles",
+                Title = "Manage Roles",
+                IconClass = "pe-7s-browser"
+            });
+            arg.NavigationItems.Add(new NavigationItem()
+            {
+                Link = "/permissions-manager",
+                Section = "Manage Roles",
+                Title = "Permissions Manager",
+                IconClass = "pe-7s-display2"
+            });
+            return Task.CompletedTask;
         }
     }
 }

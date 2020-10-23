@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Sunday.Core;
 using System.Reflection;
+using Sunday.Core.Pipelines;
 using Sunday.DataAccess.SqlServer.Database;
 
 namespace Sunday.DataAccess.SqlServer.Pipelines.Initialization

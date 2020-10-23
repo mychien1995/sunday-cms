@@ -11,44 +11,41 @@ namespace Sunday.Core.Framework.Pipelines.Initialization
 {
     public class AutomapBootstrap
     {
-        public void Process(PipelineArg arg)
+        public void Process(ConfigureServicesArg arg)
         {
-            var services = (arg as InitializationArg)?.ServiceCollection;
-            var assemblies = AssemblyHelper.GetAllAssemblies(x => !x.StartsWith("api-") && !x.StartsWith("Microsoft") && !x.StartsWith("System") &&
-            (x.Contains("Sunday") || x.Contains("Plugin"))).ToArray();
-            var types = AssemblyHelper.GetClassesWithAttribute(assemblies, typeof(MappedToAttribute));
-            var mappingProfile = new MappingProfile();
-            foreach (var type in types)
+            var services = arg.ServicesCollection;
+            services.AddSingleton(_ =>
             {
-                var mappedTypeAttr = type.GetCustomAttribute<MappedToAttribute>();
-                if (mappedTypeAttr?.MappedType == null || !mappedTypeAttr.MappedType.Any()) continue;
-                foreach (var mappedType in mappedTypeAttr.MappedType)
+                var assemblies = AssemblyHelper.GetAllAssemblies(x => !x.StartsWith("api-") && !x.StartsWith("Microsoft") && !x.StartsWith("System") &&
+                                                                      (x.Contains("Sunday") || x.Contains("Plugin"))).ToArray();
+                var types = AssemblyHelper.GetClassesWithAttribute(assemblies, typeof(MappedToAttribute));
+                var mappingProfile = new MappingProfile();
+                foreach (var type in types)
                 {
-                    var mapExp = mappingProfile.CreateMap(type, mappedType);
-                    if (mappedTypeAttr.TwoWay)
+                    var mappedTypeAttr = type.GetCustomAttribute<MappedToAttribute>();
+                    if (mappedTypeAttr?.MappedType == null || !mappedTypeAttr.MappedType.Any()) continue;
+                    foreach (var mappedType in mappedTypeAttr.MappedType)
                     {
-                        var reversMapExp = mappingProfile.CreateMap(mappedType, type);
+                        mappingProfile.CreateMap(type, mappedType);
+                        if (mappedTypeAttr.TwoWay)
+                        {
+                            mappingProfile.CreateMap(mappedType, type);
+                        }
                     }
                 }
-            }
-            mappingProfile.CreateMap<long, DateTime>().ConvertUsing<TicksToDateTimeConverter>();
-            mappingProfile.CreateMap<DateTime, long>().ConvertUsing<DatetimeToTicksConverter>();
-            var mappingConfig = new MapperConfiguration(mc =>
-            {
-                mc.AddProfile(mappingProfile);
+                mappingProfile.CreateMap<long, DateTime>().ConvertUsing<TicksToDateTimeConverter>();
+                mappingProfile.CreateMap<DateTime, long>().ConvertUsing<DatetimeToTicksConverter>();
+                var mappingConfig = new MapperConfiguration(mc =>
+                {
+                    mc.AddProfile(mappingProfile);
+                });
+                var mapper = mappingConfig.CreateMapper();
+                return mapper;
             });
-            var mapper = mappingConfig.CreateMapper();
-            services.AddSingleton(mapper);
-            var serviceProvider = services.BuildServiceProvider();
-            ServiceActivator.Configure(serviceProvider);
         }
     }
 
     public class MappingProfile : Profile
     {
-        public MappingProfile()
-        {
-
-        }
     }
 }

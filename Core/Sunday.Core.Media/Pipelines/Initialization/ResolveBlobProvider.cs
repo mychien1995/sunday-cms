@@ -12,38 +12,33 @@ namespace Sunday.Core.Media.Pipelines.Initialization
 {
     public class ResolveBlobProvider
     {
-        private readonly ApplicationConfiguration _applicationConfiguration;
-        private readonly IWebHostEnvironment _webHostEnvironment;
-        public ResolveBlobProvider(ApplicationConfiguration applicationConfiguration, IWebHostEnvironment webHostEnvironment)
+        public void Process(ConfigureServicesArg arg)
         {
-            _applicationConfiguration = applicationConfiguration;
-            _webHostEnvironment = webHostEnvironment;
-        }
-        public void Process(InitializationArg arg)
-        {
-            var configXml = _applicationConfiguration.ConfigurationXml;
-            var blobNode = configXml.SelectSingleNode("/configuration/blob");
-            if (blobNode == null)
+            var serviceCollection = arg.ServicesCollection;
+            serviceCollection.AddSingleton(typeof(IBlobProvider), serviceProvider =>
             {
-                var fileBlobProvider = new FileBlobProvider(_webHostEnvironment, "/Images", true);
-                fileBlobProvider.Initialize();
-                arg.ServiceCollection.AddSingleton(typeof(IBlobProvider), fileBlobProvider);
-            }
-            else
-            {
+                var applicationConfiguration = serviceProvider.GetService<ApplicationConfiguration>();
+                var webHostEnv = serviceProvider.GetService<IWebHostEnvironment>();
+                var configXml = applicationConfiguration.ConfigurationXml;
+                var blobNode = configXml.SelectSingleNode("/configuration/blob");
+                if (blobNode == null)
+                {
+                    var fileBlobProvider = new FileBlobProvider(webHostEnv, "/Images", true);
+                    fileBlobProvider.Initialize();
+                    return fileBlobProvider;
+                }
+
                 var blobProviderType = Type.GetType(blobNode.Attributes["provider"].Value);
                 var parameters = new List<object>();
-                foreach (XmlNode paramNode in blobNode.ChildNodes)
+                foreach (XmlNode? paramNode in blobNode.ChildNodes)
                 {
-                    parameters.Add(paramNode.InnerText);
+                    parameters.Add(paramNode?.InnerText!);
                 }
                 using var scope = ServiceActivator.GetScope();
                 var blobProvider = (IBlobProvider)ActivatorUtilities.CreateInstance(scope.ServiceProvider, blobProviderType, parameters.ToArray());
                 blobProvider.Initialize();
-                arg.ServiceCollection.AddSingleton(typeof(IBlobProvider), blobProvider);
-            }
-            var serviceProvider = arg.ServiceCollection.BuildServiceProvider();
-            ServiceActivator.Configure(serviceProvider);
+                return blobProvider;
+            });
         }
     }
 }

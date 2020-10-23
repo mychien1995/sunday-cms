@@ -6,6 +6,7 @@ using Sunday.Organizations.Core.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Sunday.Core.Pipelines;
 
 namespace Sunday.Organizations.Implementation.Pipelines
 {

@@ -1,6 +1,5 @@
 ﻿using Sunday.CMS.Core.Models.Layout;
 using Sunday.CMS.Core.Pipelines.Arguments;
-using Sunday.Core;
 using System.Threading.Tasks;
 using Sunday.Core.Constants;
 
@@ -8,9 +7,9 @@ namespace Sunday.CMS.Core.Pipelines.Layout.Navigation
 {
     public class GetSystemAdminNavigation
     {
-        public async Task ProcessAsync(GetNavigationArg arg)
+        public Task ProcessAsync(GetNavigationArg arg)
         {
-            if (!arg.User.IsInRole(SystemRoleCodes.SystemAdmin)) return;
+            if (!arg.User.IsInRole(SystemRoleCodes.SystemAdmin)) return Task.CompletedTask;
             arg.NavigationItems.Add(new NavigationItem()
             {
                 Link = "/users",
@@ -25,6 +24,7 @@ namespace Sunday.CMS.Core.Pipelines.Layout.Navigation
                 Title = "Manage Organizations",
                 IconClass = "pe-7s-car"
             });
+            return Task.CompletedTask;
         }
     }
 }

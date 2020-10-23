@@ -36,7 +36,7 @@ namespace Sunday.Core.Media.Implementation
         {
             var filePath = GetFilePath(identifier);
             var fileInfo = new FileInfo(filePath);
-            return !fileInfo.Exists ? null : new FileBlob(identifier, filePath);
+            return (!fileInfo.Exists ? null : new FileBlob(identifier, filePath)) ?? throw new InvalidOperationException($"File path {filePath} not found");
         }
 
         public override void Initialize()

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Sunday.CMS.Core.Models;
 using System.Threading.Tasks;
 using Sunday.CMS.Core.Application;
+using Sunday.CMS.Core.Models.Login;
 
 namespace Sunday.CMS.Interface.Controllers
 {

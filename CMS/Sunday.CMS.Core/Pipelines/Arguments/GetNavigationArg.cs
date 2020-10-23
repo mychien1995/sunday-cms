@@ -1,6 +1,7 @@
 ﻿using Sunday.CMS.Core.Models.Layout;
 using Sunday.Core;
 using System.Collections.Generic;
+using Sunday.Core.Pipelines;
 using Sunday.Foundation.Domain;
 
 namespace Sunday.CMS.Core.Pipelines.Arguments

@@ -1,5 +1,4 @@
-﻿using Sunday.Core;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Sunday.Core.Models.Base;
 
 namespace Sunday.CMS.Core.Models.Layout
@@ -19,7 +18,8 @@ namespace Sunday.CMS.Core.Models.Layout
         {
             Items = new List<NavigationItem>();
         }
-        public string Section { get; set; }
+
+        public string Section { get; set; } = string.Empty;
         public List<NavigationItem> Items { get; set; }
     }
 }

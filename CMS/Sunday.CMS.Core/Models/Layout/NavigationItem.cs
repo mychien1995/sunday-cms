@@ -2,9 +2,9 @@
 {
     public class NavigationItem
     {
-        public string Section { get; set; }
-        public string Title { get; set; }
-        public string Link { get; set; }
-        public string IconClass { get; set; }
+        public string Section { get; set; } = string.Empty;
+        public string Title { get; set; } = string.Empty;
+        public string Link { get; set; } = string.Empty;
+        public string IconClass { get; set; } = string.Empty;
     }
 }

@@ -1,9 +1,8 @@
-﻿using Sunday.Core;
-using System.Collections.Generic;
-using Sunday.CMS.Core.Models.Users.JsonResults;
+﻿using System.Collections.Generic;
+using Sunday.Core;
 using Sunday.Core.Models.Base;
 
-namespace Sunday.Users.Core.Models
+namespace Sunday.CMS.Core.Models.Users.JsonResults
 {
     [MappedTo(typeof(UserDetailJsonResult))]
     public class UserProfileJsonResult : BaseApiResponse
@@ -12,12 +11,13 @@ namespace Sunday.Users.Core.Models
         {
             RoleIds = new List<int>();
         }
-        public string UserName { get; set; }
-        public string Fullname { get; set; }
-        public string Email { get; set; }
-        public string Phone { get; set; }
+
+        public string UserName { get; set; } = string.Empty;
+        public string Fullname { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
+        public string? Phone { get; set; }
         public bool IsActive { get; set; }
-        public string Domain { get; set; }
+        public string Domain { get; set; } = string.Empty;
 
         public List<int> RoleIds { get; set; }
     }

@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LanguageExt;
 using Sunday.Core;
 using Sunday.DataAccess.SqlServer.Database;
 using Sunday.Foundation.Implementation;
@@ -30,7 +31,7 @@ namespace Sunday.Foundation.Persistence.Implementation.Repositories
             return result;
         }
 
-        public async Task<RoleEntity?> GetRoleByIdAsync(Guid roleId)
+        public async Task<Option<RoleEntity>> GetRoleByIdAsync(Guid roleId)
         {
             var (_, value) = _roleLookup.FirstOrDefault(c => c.Value.Id == roleId);
             if (value != null) return value;
@@ -38,7 +39,7 @@ namespace Sunday.Foundation.Persistence.Implementation.Repositories
             return result.Single();
         }
 
-        public async Task<RoleEntity?> GetRoleByCodeAsync(string roleCode)
+        public async Task<Option<RoleEntity>> GetRoleByCodeAsync(string roleCode)
         {
             if (_roleLookup.ContainsKey(roleCode)) return _roleLookup[roleCode];
             await GetAllAsync();

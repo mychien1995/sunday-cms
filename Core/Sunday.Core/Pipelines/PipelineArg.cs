@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Sunday.Core
+namespace Sunday.Core.Pipelines
 {
     public class PipelineArg
     {
@@ -15,8 +15,7 @@ namespace Sunday.Core
 
         public PipelineArg AddProperty(string key, object value)
         {
-            if (PropertyBag == null)
-                PropertyBag = new Dictionary<string, object>();
+            PropertyBag ??= new Dictionary<string, object>();
             if (PropertyBag.ContainsKey(key))
                 PropertyBag.Remove(key);
             PropertyBag.Add(key, value);
@@ -24,25 +23,18 @@ namespace Sunday.Core
         }
         public void AddMessage(string msg)
         {
-            if (Messages == null)
-                Messages = new List<string>();
+            Messages ??= new List<string>();
             Messages.Add(msg);
         }
 
-        public object this[string key]
+        public object? this[string key]
         {
             get
             {
-                if (PropertyBag == null)
-                    PropertyBag = new Dictionary<string, object>();
-                if (PropertyBag.ContainsKey(key))
-                    return PropertyBag[key];
-                return null;
+                PropertyBag ??= new Dictionary<string, object>();
+                return PropertyBag.ContainsKey(key) ? PropertyBag[key] : null;
             }
-            set
-            {
-                AddProperty(key, value);
-            }
+            set => AddProperty(key, value!);
         }
     }
 }

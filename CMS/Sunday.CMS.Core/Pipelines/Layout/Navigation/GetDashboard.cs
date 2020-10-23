@@ -6,7 +6,7 @@ namespace Sunday.CMS.Core.Pipelines.Layout.Navigation
 {
     public class GetDashboard
     {
-        public async Task ProcessAsync(GetNavigationArg arg)
+        public Task ProcessAsync(GetNavigationArg arg)
         {
             arg.NavigationItems.Add(new NavigationItem()
             {
@@ -15,6 +15,7 @@ namespace Sunday.CMS.Core.Pipelines.Layout.Navigation
                 Title = "Dashboard",
                 IconClass = "pe-7s-rocket"
             });
+            return Task.CompletedTask;
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Sunday.Core;
 using Sunday.Core.Models;
 using Sunday.Core.Models.Base;
+using Sunday.Core.Pipelines;
 using Sunday.Users.Core;
 using Sunday.Users.Core.Models;
 

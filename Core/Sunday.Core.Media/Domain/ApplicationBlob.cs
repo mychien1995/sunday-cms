@@ -6,10 +6,6 @@ namespace Sunday.Core.Media.Domain
     public class ApplicationBlob
     {
         public string Identifier { get; set; }
-        public ApplicationBlob()
-        {
-
-        }
         public ApplicationBlob(string identifier)
         {
             this.Identifier = identifier;

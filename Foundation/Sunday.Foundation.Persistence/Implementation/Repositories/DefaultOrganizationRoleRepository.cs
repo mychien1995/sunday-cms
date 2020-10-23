@@ -25,7 +25,7 @@ namespace Sunday.Foundation.Persistence.Implementation.Repositories
         {
             _dbRunner = dbRunner;
         }
-        public async Task<ISearchResult<OrganizationRoleEntity>> QueryAsync(OrganizationRoleQuery query)
+        public async Task<SearchResult<OrganizationRoleEntity>> QueryAsync(OrganizationRoleQuery query)
         {
             var result = new SearchResult<OrganizationRoleEntity>();
             var queryResult = await _dbRunner.ExecuteMultipleAsync<int, OrganizationRoleEntity>(ProcedureNames.OrganizationRoles.GetByOrganization, query);

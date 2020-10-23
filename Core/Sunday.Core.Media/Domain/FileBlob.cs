@@ -6,10 +6,6 @@ namespace Sunday.Core.Media.Domain
     public class FileBlob : ApplicationBlob
     {
         public string FilePath { get; set; }
-        public FileBlob()
-        {
-
-        }
         public FileBlob(string identifier, string filePath)
          : base(identifier)
         {

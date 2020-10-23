@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -20,7 +21,7 @@ namespace Sunday.CMS.Core.Filters
             var skipAuthorization = actionDescriptor.MethodInfo.GetCustomAttributes(typeof(AllowAnonymousAttribute), true).Length > 0;
             if (skipAuthorization) return;
             var user = context.HttpContext.User as ApplicationUserPrincipal;
-            if (!_accessManager.AllowAccess(user.User))
+            if (user == null || !_accessManager.AllowAccess(user.User))
             {
                 context.Result = new UnauthorizedObjectResult(new
                 {

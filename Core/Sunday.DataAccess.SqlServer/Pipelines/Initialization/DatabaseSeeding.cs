@@ -5,6 +5,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using Sunday.Core.Constants;
+using Sunday.Core.Pipelines;
 using Sunday.DataAccess.SqlServer.Database;
 
 namespace Sunday.DataAccess.SqlServer.Pipelines.Initialization
@@ -51,11 +52,9 @@ namespace Sunday.DataAccess.SqlServer.Pipelines.Initialization
                     default:
                         break;
                 }
-                if (!string.IsNullOrEmpty(roleCode))
-                {
-                    row["Code"] = roleCode;
-                    roleType.Rows.Add(row);
-                }
+                if (string.IsNullOrEmpty(roleCode)) continue;
+                row["Code"] = roleCode;
+                roleType.Rows.Add(row);
             }
             var roleTypeParam = new SqlParameter
             {
@@ -65,7 +64,7 @@ namespace Sunday.DataAccess.SqlServer.Pipelines.Initialization
                 TypeName = "dbo.RoleType",
                 Direction = ParameterDirection.Input
             };
-            _databaseRunner.Execute(ProcedureNames.DatabaseSeeding, passwordParam, securityHashParam, roleTypeParam);
+            _databaseRunner.Execute(ProcedureNames.DatabaseSeeding, passwordParam, securityHashParam, roleTypeParam).Wait();
         }
     }
 }

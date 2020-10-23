@@ -1,6 +1,7 @@
 ﻿using Sunday.Core;
 using Sunday.Users.Core;
 using System.Collections.Generic;
+using Sunday.Core.Pipelines;
 
 namespace Sunday.Users.Implementation.Pipelines.Arguments
 {

@@ -1,4 +1,5 @@
 ﻿using Sunday.Core;
+using Sunday.Core.Pipelines;
 using Sunday.Users.Core.Models;
 
 namespace Sunday.Users.Implementation.Pipelines.Arguments
