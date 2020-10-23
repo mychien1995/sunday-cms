@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Sunday.Core.Models.Base
 {
     public class BaseApiResponse
     {
+        public static readonly BaseApiResponse SuccessResult = new BaseApiResponse();
         public BaseApiResponse()
         {
             Errors = new List<string>();
@@ -31,6 +33,13 @@ namespace Sunday.Core.Models.Base
         {
             Messages ??= new List<string>();
             Messages.Add(message);
+        }
+
+        public static T ErrorResult<T>(params string[] errors) where T : BaseApiResponse
+        {
+            var instance = (T)Activator.CreateInstance(typeof(T))!;
+            instance.AddErrors(errors);
+            return instance;
         }
     }
 }

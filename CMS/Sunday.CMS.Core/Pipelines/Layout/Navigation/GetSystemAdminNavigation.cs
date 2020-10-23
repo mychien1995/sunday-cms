@@ -2,13 +2,15 @@
 using Sunday.CMS.Core.Pipelines.Arguments;
 using System.Threading.Tasks;
 using Sunday.Core.Constants;
+using Sunday.Core.Pipelines;
 
 namespace Sunday.CMS.Core.Pipelines.Layout.Navigation
 {
-    public class GetSystemAdminNavigation
+    public class GetSystemAdminNavigation : IAsyncPipelineProcessor
     {
-        public Task ProcessAsync(GetNavigationArg arg)
+        public Task ProcessAsync(PipelineArg pipelineArg)
         {
+            var arg = (GetNavigationArg) pipelineArg;
             if (!arg.User.IsInRole(SystemRoleCodes.SystemAdmin)) return Task.CompletedTask;
             arg.NavigationItems.Add(new NavigationItem()
             {

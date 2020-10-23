@@ -1,5 +1,6 @@
 ﻿using System;
 using Sunday.Core;
+using Sunday.Core.Models.Base;
 using Sunday.Foundation.Domain;
 
 namespace Sunday.CMS.Core.Models.Roles

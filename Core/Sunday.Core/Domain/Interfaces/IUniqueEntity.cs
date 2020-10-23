@@ -1,7 +1,9 @@
-﻿namespace Sunday.Core.Domain
+﻿using System;
+
+namespace Sunday.Core.Domain.Interfaces
 {
     public interface IUniqueEntity
     {
-        public int ID { get; set; }
+        public Guid Id { get; set; }
     }
 }

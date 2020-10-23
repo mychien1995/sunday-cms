@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using Sunday.Core.Domain.Interfaces;
 
 namespace Sunday.Foundation.Domain
 {
-    public class ApplicationOrganization
+    public class ApplicationOrganization : IEntity
     {
         public Guid Id { get; set; }
         public string OrganizationName { get; set; }

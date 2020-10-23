@@ -1,13 +1,13 @@
-﻿using DbUp;
+﻿using System;
+using DbUp;
 using Microsoft.Extensions.Configuration;
-using Sunday.Core;
 using System.Reflection;
 using Sunday.Core.Pipelines;
 using Sunday.DataAccess.SqlServer.Database;
 
 namespace Sunday.DataAccess.SqlServer.Pipelines.Initialization
 {
-    public class UpdateDatabaseSchema
+    public class UpdateDatabaseSchema : IPipelineProcessor
     {
         private readonly IConfiguration _configuration;
         private readonly StoredProcedureRunner _storedProcedureRunner;
@@ -28,7 +28,8 @@ namespace Sunday.DataAccess.SqlServer.Pipelines.Initialization
                    .Build();
             var result = upgrader.PerformUpgrade();
             if (result.Successful)
-                _storedProcedureRunner.Execute(ProcedureNames.ClearSchemaVersion);
+                _storedProcedureRunner.Execute(ProcedureNames.ClearSchemaVersion).Wait();
+            else throw new ApplicationException($"Error on update schema", result.Error);
         }
     }
 }

@@ -10,7 +10,7 @@ using Sunday.DataAccess.SqlServer.Database;
 
 namespace Sunday.DataAccess.SqlServer.Pipelines.Initialization
 {
-    public class DatabaseSeeding
+    public class DatabaseSeeding : IPipelineProcessor
     {
         private readonly StoredProcedureRunner _databaseRunner;
         public DatabaseSeeding(StoredProcedureRunner storeProcRunner)

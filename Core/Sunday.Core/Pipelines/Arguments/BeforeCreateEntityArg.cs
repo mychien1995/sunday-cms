@@ -2,9 +2,9 @@
 
 namespace Sunday.Core.Pipelines.Arguments
 {
-    public class BeforeUpdateEntityArg : PipelineArg
+    public class BeforeCreateEntityArg : PipelineArg
     {
-        public BeforeUpdateEntityArg(IEntity entity)
+        public BeforeCreateEntityArg(IEntity entity)
         {
             Entity = entity;
         }

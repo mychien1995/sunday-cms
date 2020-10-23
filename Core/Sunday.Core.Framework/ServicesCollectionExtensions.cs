@@ -53,7 +53,7 @@ namespace Sunday.Core.Framework
 
         public static IApplicationBuilder InitializeSunday(this IApplicationBuilder application)
         {
-            ApplicationPipelines.Run("initialize", new InitializationArg());
+            ApplicationPipelines.RunAsync("initialize", new InitializationArg(application)).Wait();
             return application;
         }
 
@@ -94,6 +94,7 @@ namespace Sunday.Core.Framework
                 }
             }
             AddConfiguredServices(_configuration, services);
+            ApplicationPipelines.RunAsync("configureServices", new ConfigureServicesArg(services)).Wait();
             var serviceProvider = services.BuildServiceProvider();
             ServiceActivator.Configure(serviceProvider);
             return serviceConf;

@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Xml;
 using Microsoft.Extensions.DependencyInjection;
@@ -44,28 +45,6 @@ namespace Sunday.Core.Pipelines
             }
         }
 
-        public static void Run(string pipelineName, PipelineArg arg)
-        {
-            using var scope = ServiceActivator.GetScope();
-            if (PipelineTypes.TryGetValue(pipelineName, out var types))
-            {
-                foreach (var type in types)
-                {
-                    var processMethod = type.GetMethod("Process");
-                    if (processMethod == null) continue;
-                    var executor = ActivatorUtilities.CreateInstance(scope.ServiceProvider, type);
-                    processMethod.Invoke(executor, new object?[] { arg });
-                    if (arg != null && arg.Aborted) break;
-                }
-            }
-            else if (PipelineDefinitions.TryGetValue(pipelineName, out var definitions))
-            {
-                var executorTypes = definitions.Select(x => Type.GetType(x, true, true)!).ToList();
-                PipelineTypes.TryAdd(pipelineName, executorTypes);
-                Run(pipelineName, arg);
-            }
-        }
-
         public static async Task RunAsync(string pipelineName, PipelineArg arg)
         {
             using var scope = ServiceActivator.GetScope();
@@ -73,11 +52,23 @@ namespace Sunday.Core.Pipelines
             {
                 foreach (var type in types)
                 {
-                    var processMethod = type.GetMethod("ProcessAsync");
-                    if (processMethod == null) continue;
+                    var isAsync = false;
+                    MethodInfo processMethod;
+                    if (typeof(IPipelineProcessor).IsAssignableFrom(type))
+                    {
+                        processMethod = type.GetMethod(nameof(IPipelineProcessor.Process))!;
+                    }
+                    else if (typeof(IAsyncPipelineProcessor).IsAssignableFrom(type))
+                    {
+                        processMethod = type.GetMethod(nameof(IAsyncPipelineProcessor.ProcessAsync))!;
+                        isAsync = true;
+                    }
+                    else throw new InvalidOperationException($"Processor {type.Name} must be inherited from IPipelineProcessor or IAsyncPipelineProcessor");
                     var executor = ActivatorUtilities.CreateInstance(scope.ServiceProvider, type);
-                    var task = (Task)processMethod.Invoke(executor, new object?[] { arg })!;
-                    await task;
+                    if (!isAsync)
+                        processMethod.Invoke(executor, new object?[] { arg });
+                    else
+                        await (Task)processMethod.Invoke(executor, new object?[] { arg })!;
                     if (arg != null && arg.Aborted) break;
                 }
             }

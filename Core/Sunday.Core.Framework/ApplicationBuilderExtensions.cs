@@ -8,7 +8,7 @@ namespace Sunday.Core.Framework
     {
         public static void UseSundayMiddleware(this IApplicationBuilder app)
         {
-            ApplicationPipelines.Run("buildApplication", new BuildApplicationArg(app));
+            ApplicationPipelines.RunAsync("buildApplication", new BuildApplicationArg(app)).Wait();
         }
     }
 }

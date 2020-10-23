@@ -7,13 +7,15 @@ using Sunday.Core.Pipelines.Arguments;
 using System;
 using System.Collections.Generic;
 using System.Xml;
+using Sunday.Core.Pipelines;
 
-namespace Sunday.Core.Media.Pipelines.Initialization
+namespace Sunday.Core.Media.Pipelines.ConfigureServices
 {
-    public class ResolveBlobProvider
+    public class ResolveBlobProvider : IPipelineProcessor
     {
-        public void Process(ConfigureServicesArg arg)
+        public void Process(PipelineArg pipelineArg)
         {
+            var arg = (ConfigureServicesArg) pipelineArg;
             var serviceCollection = arg.ServicesCollection;
             serviceCollection.AddSingleton(typeof(IBlobProvider), serviceProvider =>
             {

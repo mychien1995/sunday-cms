@@ -1,14 +1,15 @@
 ﻿using Sunday.CMS.Core.Models.Layout;
 using Sunday.CMS.Core.Pipelines.Arguments;
 using System.Threading.Tasks;
+using Sunday.Core.Pipelines;
 
 namespace Sunday.CMS.Core.Pipelines.Layout.Navigation
 {
-    public class GetDashboard
+    public class GetDashboard : IAsyncPipelineProcessor
     {
-        public Task ProcessAsync(GetNavigationArg arg)
+        public Task ProcessAsync(PipelineArg arg)
         {
-            arg.NavigationItems.Add(new NavigationItem()
+            ((GetNavigationArg)arg).NavigationItems.Add(new NavigationItem()
             {
                 Link = "/",
                 Section = "Dashboard",

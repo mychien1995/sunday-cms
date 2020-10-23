@@ -1,13 +1,14 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Sunday.Core.Pipelines;
 using Sunday.Core.Pipelines.Arguments;
 
-namespace Sunday.CMS.Core.Pipelines.Initialization
+namespace Sunday.CMS.Core.Pipelines.ConfigureServices
 {
-    public class AddMvc
+    public class AddMvc : IPipelineProcessor
     {
-        public void Process(ConfigureServicesArg arg)
+        public void Process(PipelineArg arg)
         {
-            var serviceCollection = arg.ServicesCollection;
+            var serviceCollection = ((ConfigureServicesArg)arg).ServicesCollection;
             serviceCollection.AddMvc()
                 .AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
         }

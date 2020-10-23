@@ -1,21 +1,21 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Sunday.Core.Media.Application;
 using Sunday.Core.Pipelines.Arguments;
-using System;
 using System.IO;
+using Sunday.Core.Pipelines;
 
 namespace Sunday.Core.Media.Pipelines.BuildApplication
 {
-    public class AddBlobPreviewLinkMiddleware
+    public class AddBlobPreviewLinkMiddleware : IPipelineProcessor
     {
         private readonly IBlobProvider _blobProvider;
         public AddBlobPreviewLinkMiddleware(IBlobProvider blobProvider)
         {
             _blobProvider = blobProvider;
         }
-        public void Process(BuildApplicationArg arg)
+        public void Process(PipelineArg arg)
         {
-            var app = arg.AppBuilder;
+            var app = ((BuildApplicationArg)arg).AppBuilder;
             app.Map($"{RoutePaths.BlobPreviewRoute}", HandlePreviewLink);
         }
 

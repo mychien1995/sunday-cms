@@ -6,13 +6,15 @@ using Sunday.Core.Pipelines.Arguments;
 using System;
 using System.Linq;
 using System.Reflection;
+using Sunday.Core.Pipelines;
 
-namespace Sunday.Core.Framework.Pipelines.Initialization
+namespace Sunday.Core.Framework.Pipelines.ConfigureServices
 {
-    public class AutomapBootstrap
+    public class AutomapBootstrap : IPipelineProcessor
     {
-        public void Process(ConfigureServicesArg arg)
+        public void Process(PipelineArg pipelineArg)
         {
+            var arg = (ConfigureServicesArg) pipelineArg;
             var services = arg.ServicesCollection;
             services.AddSingleton(_ =>
             {
