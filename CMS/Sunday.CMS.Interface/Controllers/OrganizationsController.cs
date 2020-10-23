@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Sunday.Core;
+﻿using System;
+using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Sunday.CMS.Core.Application;
 using Sunday.CMS.Core.Models.Organizations;
@@ -38,28 +38,28 @@ namespace Sunday.CMS.Interface.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetById([FromQuery] int id)
+        public async Task<IActionResult> GetById([FromQuery] Guid id)
         {
             var result = await _organizationManager.GetOrganizationById(id);
             return Ok(result);
         }
 
         [HttpDelete]
-        public async Task<IActionResult> Delete([FromQuery] int id)
+        public async Task<IActionResult> Delete([FromQuery] Guid id)
         {
             var result = await _organizationManager.DeleteOrganization(id);
             return Ok(result);
         }
 
         [HttpPut("activate")]
-        public async Task<IActionResult> Activate([FromQuery] int id)
+        public async Task<IActionResult> Activate([FromQuery] Guid id)
         {
             var result = await _organizationManager.ActivateOrganization(id);
             return Ok(result);
         }
 
         [HttpPut("deactivate")]
-        public async Task<IActionResult> Deactivate([FromQuery] int id)
+        public async Task<IActionResult> Deactivate([FromQuery] Guid id)
         {
             var result = await _organizationManager.DeactivateOrganization(id);
             return Ok(result);

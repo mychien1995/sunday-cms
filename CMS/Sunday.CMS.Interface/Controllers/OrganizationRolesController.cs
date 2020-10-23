@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using Microsoft.AspNetCore.Mvc;
 using Sunday.Core;
 using System.Threading.Tasks;
 using Sunday.CMS.Core.Application;
@@ -41,14 +42,14 @@ namespace Sunday.CMS.Interface.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetById([FromQuery] int id)
+        public async Task<IActionResult> GetById([FromQuery] Guid id)
         {
             var result = await _organizationRoleManager.GetRoleById(id);
             return Ok(result);
         }
 
         [HttpDelete]
-        public async Task<IActionResult> Delete([FromQuery] int id)
+        public async Task<IActionResult> Delete([FromQuery] Guid id)
         {
             var result = await _organizationRoleManager.DeleteRole(id);
             return Ok(result);

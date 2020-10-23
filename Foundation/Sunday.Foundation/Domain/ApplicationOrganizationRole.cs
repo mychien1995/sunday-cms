@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using Sunday.Core.Domain.Interfaces;
 
 namespace Sunday.Foundation.Domain
 {
-    public class ApplicationOrganizationRole
+    public class ApplicationOrganizationRole : IEntity
     {
         public ApplicationOrganizationRole(Guid id, string roleCode, string roleName, int organizationId, ApplicationOrganization organization,
             string? description, DateTime createdDate, DateTime updatedDate, string createdBy, string updatedBy)

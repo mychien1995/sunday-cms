@@ -20,6 +20,6 @@ namespace Sunday.CMS.Core.Models.VirtualRoles
         public string RoleName { get; set; }
         public Guid OrganizationId { get; set; }
 
-        public List<int> FeatureIds { get; set; } = new List<int>();
+        public List<Guid> FeatureIds { get; set; } = new List<Guid>();
     }
 }
