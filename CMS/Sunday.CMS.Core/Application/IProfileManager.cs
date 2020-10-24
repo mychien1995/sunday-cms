@@ -2,7 +2,6 @@
 using Sunday.CMS.Core.Models.Users;
 using Sunday.CMS.Core.Models.Users.JsonResults;
 using Sunday.Core.Models.Base;
-using Sunday.Users.Core.Models;
 
 namespace Sunday.CMS.Core.Application
 {

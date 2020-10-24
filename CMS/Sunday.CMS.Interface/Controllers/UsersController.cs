@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Sunday.CMS.Core.Application;
 using Sunday.CMS.Core.Models.Users;
@@ -37,35 +38,35 @@ namespace Sunday.CMS.Interface.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetUserById([FromQuery] int id)
+        public async Task<IActionResult> GetUserById([FromQuery] Guid id)
         {
             var result = await _userManager.GetUserById(id);
             return Ok(result);
         }
 
         [HttpDelete]
-        public async Task<IActionResult> DeleteUser([FromQuery] int id)
+        public async Task<IActionResult> DeleteUser([FromQuery] Guid id)
         {
             var result = await _userManager.DeleteUser(id);
             return Ok(result);
         }
 
         [HttpPut("activate")]
-        public async Task<IActionResult> ActivateUser([FromQuery] int id)
+        public async Task<IActionResult> ActivateUser([FromQuery] Guid id)
         {
             var result = await _userManager.ActivateUser(id);
             return Ok(result);
         }
 
         [HttpPut("deactivate")]
-        public async Task<IActionResult> DeactivateUser([FromQuery] int id)
+        public async Task<IActionResult> DeactivateUser([FromQuery] Guid id)
         {
             var result = await _userManager.DeactivateUser(id);
             return Ok(result);
         }
 
         [HttpPut("resetPassword")]
-        public async Task<IActionResult> ResetPassword([FromQuery] int id)
+        public async Task<IActionResult> ResetPassword([FromQuery] Guid id)
         {
             var result = await _userManager.ResetUserPassword(id);
             return Ok(result);

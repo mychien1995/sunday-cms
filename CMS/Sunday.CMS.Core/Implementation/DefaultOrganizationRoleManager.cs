@@ -68,7 +68,7 @@ namespace Sunday.CMS.Core.Implementation
         private OrganizationRoleDetailJsonResult ToJsonResult(ApplicationOrganizationRole role)
         => role.MapTo<OrganizationRoleDetailJsonResult>();
 
-        private ApplicationOrganizationRole ToOrganizationRole(OrganizationRoleMutationModel role)
+        private static ApplicationOrganizationRole ToOrganizationRole(OrganizationRoleMutationModel role)
         {
             var model = role.MapTo<ApplicationOrganizationRole>();
             model.Features = role.FeatureIds
@@ -77,7 +77,7 @@ namespace Sunday.CMS.Core.Implementation
             return model;
         }
 
-        private IEnumerable<ApplicationOrganizationRole> ToBulkUpdateData(OrganizationRoleBulkUpdateModel data)
+        private static IEnumerable<ApplicationOrganizationRole> ToBulkUpdateData(OrganizationRoleBulkUpdateModel data)
             => data.Roles.Select(ToOrganizationRole);
     }
 }

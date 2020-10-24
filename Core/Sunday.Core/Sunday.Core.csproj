@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <Folder Include="Domain\Identity\" />
+    <Folder Include="Pipelines\EntityChanged\" />
   </ItemGroup>
 
 </Project>

@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Sunday.Core.Domain.Interfaces;
 
 namespace Sunday.Foundation.Domain
 {
-    public class ApplicationUser
+    public class ApplicationUser : IEntity
     {
         public ApplicationUser(Guid id, string userName, DateTime createdDate, DateTime updatedDate, string createdBy, 
             string updatedBy, bool isActive, bool isDeleted, bool isLockedOut, bool emailConfirmed, 
-            string securityStamp, string passwordHash, string domain, string email, string? phone, string? avatarBlobUri, string fullname)
+            string securityStamp, string password, string domain, string email, string? phone, string? avatarBlobUri, string fullname)
         {
             Id = id;
             UserName = userName;
@@ -21,7 +22,7 @@ namespace Sunday.Foundation.Domain
             IsLockedOut = isLockedOut;
             EmailConfirmed = emailConfirmed;
             SecurityStamp = securityStamp;
-            PasswordHash = passwordHash;
+            Password = password;
             Domain = domain;
             Email = email;
             Phone = phone;
@@ -40,7 +41,7 @@ namespace Sunday.Foundation.Domain
         public bool IsLockedOut { get; set; }
         public bool EmailConfirmed { get; set; }
         public string SecurityStamp { get; set; }
-        public string PasswordHash { get; set; }
+        public string Password { get; set; }
         public string Domain { get; set; }
         public string Email { get; set; }
         public string? Phone { get; set; }

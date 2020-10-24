@@ -1,5 +1,6 @@
 ﻿using System;
 
+// ReSharper disable once CheckNamespace
 namespace Sunday.Core
 {
     public class ServiceTypeOfAttribute : Attribute

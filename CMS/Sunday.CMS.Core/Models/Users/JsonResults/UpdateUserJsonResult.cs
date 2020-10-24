@@ -1,16 +1,12 @@
-﻿using Sunday.Core;
+﻿using System;
 using Sunday.Core.Models.Base;
 
-namespace Sunday.Users.Core.Models
+namespace Sunday.CMS.Core.Models.Users.JsonResults
 {
     public class UpdateUserJsonResult : BaseApiResponse
     {
-        public int UserId { get; set; }
-        public UpdateUserJsonResult()
-        {
-
-        }
-        public UpdateUserJsonResult(int userId)
+        public Guid UserId { get; set; }
+        public UpdateUserJsonResult(Guid userId)
         {
             this.UserId = userId;
         }

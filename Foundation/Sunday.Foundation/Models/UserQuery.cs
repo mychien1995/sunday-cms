@@ -8,31 +8,11 @@ namespace Sunday.Foundation.Models
     {
         public string? Text { get; set; }
         public string? SortBy { get; set; }
-        public string ExcludeIds
-        {
-            get
-            {
-                if (ExcludeIdList == null || !ExcludeIdList.Any()) return string.Empty;
-                return string.Join(',', ExcludeIdList);
-            }
-        }
-        public string IncludeIds
-        {
-            get
-            {
-                if (IncludeIdList == null || !IncludeIdList.Any()) return string.Empty;
-                return string.Join(',', IncludeIdList);
-            }
-        }
+        public string ExcludeIds => !ExcludeIdList.Any() ? string.Empty : string.Join(',', ExcludeIdList);
 
-        public string OrganizationIdList
-        {
-            get
-            {
-                if (OrganizationIds == null || !OrganizationIds.Any()) return string.Empty;
-                return string.Join(',', OrganizationIds);
-            }
-        }
+        public string IncludeIds => !IncludeIdList.Any() ? string.Empty : string.Join(',', IncludeIdList);
+
+        public string OrganizationIdList => !OrganizationIds.Any() ? string.Empty : string.Join(',', OrganizationIds);
 
         public string? RoleIds { get; set; }
 
@@ -40,5 +20,8 @@ namespace Sunday.Foundation.Models
 
         public virtual List<int> IncludeIdList { get; set; } = new List<int>();
         public virtual List<int> OrganizationIds { get; set; } = new List<int>();
+
+        public string Username { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
     }
 }

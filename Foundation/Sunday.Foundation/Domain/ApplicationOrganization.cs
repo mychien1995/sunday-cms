@@ -20,6 +20,13 @@ namespace Sunday.Foundation.Domain
         public bool IsDeleted { get; set; }
         public List<ApplicationModule> Modules { get; set; } = new List<ApplicationModule>();
 
+        public ApplicationOrganization(Guid id)
+        {
+            OrganizationName = string.Empty;
+            CreatedBy = string.Empty;
+            UpdatedBy = string.Empty;
+        }
+
         public ApplicationOrganization(Guid id, string organizationName, string? description, string? logoBlobUri,
             DateTime createdDate, DateTime updatedDate, string createdBy, string updatedBy, bool isActive, bool isDeleted)
         {
