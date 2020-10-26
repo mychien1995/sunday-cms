@@ -6,13 +6,13 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Xml;
 using Microsoft.Extensions.DependencyInjection;
+using Sunday.Core.Pipelines.Arguments;
 
 namespace Sunday.Core.Pipelines
 {
     public class ApplicationPipelines
     {
         private static readonly ConcurrentDictionary<string, List<Type>> PipelineTypes = new ConcurrentDictionary<string, List<Type>>();
-        private static readonly ConcurrentDictionary<string, List<string>> PipelineDefinitions = new ConcurrentDictionary<string, List<string>>();
         public static void Initialize(XmlDocument configFile)
         {
             var pipelinesNode = configFile.SelectSingleNode("/configuration/pipelines");
@@ -37,11 +37,12 @@ namespace Sunday.Core.Pipelines
                 }
 
                 if (!processorList.Any()) continue;
-                if (PipelineDefinitions.ContainsKey(pipelineName))
+                if (PipelineTypes.ContainsKey(pipelineName))
                 {
-                    PipelineDefinitions.TryRemove(pipelineName, out _);
+                    PipelineTypes.TryRemove(pipelineName, out _);
                 }
-                PipelineDefinitions.TryAdd(pipelineName, processorList);
+                var executorTypes = processorList.Select(p =>  Type.GetType(p, true, true)!).ToList();
+                PipelineTypes.TryAdd(pipelineName, executorTypes);
             }
         }
 
@@ -71,12 +72,6 @@ namespace Sunday.Core.Pipelines
                         await (Task)processMethod.Invoke(executor, new object?[] { arg })!;
                     if (arg != null && arg.Aborted) break;
                 }
-            }
-            else if (PipelineDefinitions.TryGetValue(pipelineName, out var definitions))
-            {
-                var executorTypes = definitions.Select(x => Type.GetType(x, true, true)!).ToList();
-                PipelineTypes.TryAdd(pipelineName, executorTypes);
-                await RunAsync(pipelineName, arg);
             }
         }
     }

@@ -12,13 +12,15 @@ ALTER PROCEDURE [dbo].[sp_database_seeding]
 AS
 BEGIN
 	DECLARE @UserExist bit = 1
-	DECLARE @UserId int
+	DECLARE @UserId uniqueidentifier
+	SET @UserId = NEWID()
+	DECLARE @RoleId integer
+	SET @RoleId = (SELECT TOP 1 Id FROM @RoleType WHERE Code = 'SA')
 	IF NOT EXISTS (select 1 from dbo.Users WHERE Username = 'admin' and Domain = 'CMS')
 	BEGIN
 		SET @UserExist = 0
-		INSERT INTO Users(Username, FullName, Domain, EmailConfirmed, CreatedBy, UpdatedBy, SecurityStamp, PasswordHash)
-		VALUES ('admin', N'System Admin', 'CMS', 1, 'System' , 'System', @SecurityStamp, @PasswordHash)
-		SET @UserId = SCOPE_IDENTITY() 
+		INSERT INTO Users(Id, Username, FullName, Domain, EmailConfirmed, CreatedBy, UpdatedBy, SecurityStamp, PasswordHash)
+		VALUES (@UserId, 'admin', N'System Admin', 'CMS', 1, 'System' , 'System', @SecurityStamp, @PasswordHash)
 	END
 
 	IF NOT EXISTS (select TOP 1 * from dbo.Roles)
@@ -29,7 +31,7 @@ BEGIN
 
 	IF (@UserExist = 0)
 	BEGIN
-		INSERT INTO UserRoles (UserId, RoleId) VALUES (@UserId, 1)
+		INSERT INTO UserRoles (UserId, RoleId) VALUES (@UserId, @RoleId)
 	END
 END
 GO
@@ -72,7 +74,7 @@ END
 GO
 ALTER PROCEDURE [dbo].[sp_users_getById]
 (
-	@UserId int
+	@UserId uniqueidentifier
 )
 AS
 BEGIN
@@ -176,6 +178,7 @@ END
 GO
 ALTER PROCEDURE [dbo].[sp_users_insert]
 (
+	@Id uniqueidentifier,
 	@UserName nvarchar(500),
 	@Fullname nvarchar(500),
 	@Email nvarchar(500),
@@ -193,20 +196,17 @@ ALTER PROCEDURE [dbo].[sp_users_insert]
 )
 AS
 BEGIN
-	DECLARE @UserId int
-	INSERT INTO Users(Username, FullName, Email, Phone, Domain, IsActive, EmailConfirmed, CreatedBy, UpdatedBy, SecurityStamp, PasswordHash)
-	VALUES (@UserName, @Fullname, @Email, @Phone , @Domain, @IsActive, @EmailConfirmed, @CreatedBy, @UpdatedBy, @SecurityStamp, @PasswordHash)
-	SET @UserId = SCOPE_IDENTITY() 
-	SELECT @UserId
+	INSERT INTO Users(Id, Username, FullName, Email, Phone, Domain, IsActive, EmailConfirmed, CreatedBy, UpdatedBy, SecurityStamp, PasswordHash)
+	VALUES (@Id, @UserName, @Fullname, @Email, @Phone , @Domain, @IsActive, @EmailConfirmed, @CreatedBy, @UpdatedBy, @SecurityStamp, @PasswordHash)
 
 	DECLARE @tblRoleIds TABLE (RoleId varchar(100))
-	INSERT INTO @tblRoleIds SELECT value  FROM STRING_SPLIT(@RoleIds, ',')
-	INSERT INTO UserRoles (UserId, RoleId) SELECT @UserId, RoleId FROM @tblRoleIds
+	INSERT INTO @tblRoleIds SELECT value  FROM STRING_SPLIT(@RoleIds, '|')
+	INSERT INTO UserRoles (UserId, RoleId) SELECT @Id, RoleId FROM @tblRoleIds
 
-	INSERT INTO OrganizationUsers(UserId, OrganizationId, IsActive) SELECT @UserId, OrganizationId, IsActive FROM @Organizations
+	INSERT INTO OrganizationUsers(UserId, OrganizationId, IsActive) SELECT @Id, OrganizationId, IsActive FROM @Organizations
 
 
-	DECLARE @OrganizationId int
+	DECLARE @OrganizationId uniqueidentifier
 	DECLARE @OrganizationRolesId nvarchar(MAX)
 	DECLARE OrganizationCursor CURSOR FOR SELECT OrganizationId, OrganizationRolesId FROM @OrganizationRoles
 	OPEN OrganizationCursor
@@ -214,10 +214,10 @@ BEGIN
 	WHILE @@FETCH_STATUS = 0  
     BEGIN
 		DECLARE @tblOrgRole TABLE (OrgRoleId varchar(100))
-		INSERT INTO @tblOrgRole SELECT value  FROM STRING_SPLIT(@OrganizationRolesId, ',')
+		INSERT INTO @tblOrgRole SELECT value  FROM STRING_SPLIT(@OrganizationRolesId, '|')
 		
-		DECLARE @OrganizationUserId int
-		SET @OrganizationUserId = (SELECT TOP 1 ID FROM OrganizationUsers WHERE UserId = @UserId AND OrganizationId = @OrganizationId)
+		DECLARE @OrganizationUserId uniqueidentifier
+		SET @OrganizationUserId = (SELECT TOP 1 ID FROM OrganizationUsers WHERE UserId = @Id AND OrganizationId = @OrganizationId)
 
 		INSERT INTO OrganizationUserRoles (OrganizationUserId, OrganizationRoleId)
 		SELECT @OrganizationUserId, OrgRoleId FROM @tblOrgRole
@@ -248,7 +248,7 @@ END
 GO
 ALTER PROCEDURE [dbo].[sp_users_getById_withOptions]
 (
-	@UserId integer,
+	@UserId uniqueidentifier,
 	@FetchRoles bit = 0,
 	@FetchOrganizations bit = 0,
 	@FetchVirtualRoles bit = 0
@@ -285,7 +285,7 @@ END
 GO
 ALTER PROCEDURE [dbo].[sp_users_update]
 (
-	@ID int,
+	@ID uniqueidentifier,
 	@Fullname nvarchar(500),
 	@Email nvarchar(500) = NULL,
 	@Phone nvarchar(500) = NULL,
@@ -310,7 +310,7 @@ BEGIN
 	IF(@RoleIds IS NOT NULL AND LEN(TRIM(@RoleIds)) > 0)
 	BEGIN
 		DECLARE @tblRoleIds TABLE (RoleId varchar(100))
-		INSERT INTO @tblRoleIds SELECT value  FROM STRING_SPLIT(@RoleIds, ',')
+		INSERT INTO @tblRoleIds SELECT value  FROM STRING_SPLIT(@RoleIds, '|')
 		DELETE FROM UserRoles WHERE UserId = @ID
 		INSERT INTO UserRoles (UserId, RoleId) SELECT @ID, RoleId FROM @tblRoleIds
 	END
@@ -331,7 +331,7 @@ BEGIN
 	END
 
 	BEGIN
-		DECLARE @OrganizationId int
+		DECLARE @OrganizationId uniqueidentifier
 		DECLARE @OrganizationRolesId nvarchar(MAX)
 		DECLARE OrganizationCursor CURSOR FOR SELECT OrganizationId, OrganizationRolesId FROM @OrganizationRoles
 		OPEN OrganizationCursor
@@ -339,9 +339,9 @@ BEGIN
 		WHILE @@FETCH_STATUS = 0  
 		BEGIN
 			DECLARE @tblOrgRole TABLE (OrgRoleId varchar(100))
-			INSERT INTO @tblOrgRole SELECT value  FROM STRING_SPLIT(@OrganizationRolesId, ',')
+			INSERT INTO @tblOrgRole SELECT value  FROM STRING_SPLIT(@OrganizationRolesId, '|')
 		
-			DECLARE @OrganizationUserId int
+			DECLARE @OrganizationUserId uniqueidentifier
 			SET @OrganizationUserId = (SELECT TOP 1 ID FROM OrganizationUsers WHERE UserId = @ID AND OrganizationId = @OrganizationId)
 
 			DELETE FROM OrganizationUserRoles WHERE OrganizationUserId = @OrganizationUserId 
@@ -368,7 +368,7 @@ END
 GO
 ALTER PROCEDURE [dbo].[sp_users_updateAvatar]
 (
-	@UserId int,
+	@UserId uniqueidentifier,
 	@BlobUri nvarchar(MAX)
 )
 AS
@@ -385,7 +385,7 @@ END
 GO
 ALTER PROCEDURE [dbo].[sp_users_delete]
 (
-	@UserId integer
+	@UserId uniqueidentifier
 )
 AS
 BEGIN
@@ -409,7 +409,7 @@ BEGIN
 		SELECT * FROM Roles WHERE 1 = 2
 	END
 	DECLARE @tblUserIds TABLE (ID varchar(100))
-	INSERT INTO @tblUserIds SELECT value  FROM STRING_SPLIT(@UserIds, ',')
+	INSERT INTO @tblUserIds SELECT value  FROM STRING_SPLIT(@UserIds, '|')
 
 	SELECT UserId, RoleId, Code, RoleName 
 	FROM UserRoles, Roles 
@@ -426,7 +426,7 @@ END
 GO
 ALTER PROCEDURE dbo.sp_users_activate
 (
-	@UserId int
+	@UserId uniqueidentifier
 )
 AS
 BEGIN
@@ -441,7 +441,7 @@ END
 GO
 ALTER PROCEDURE dbo.sp_users_deactivate
 (
-	@UserId int
+	@UserId uniqueidentifier
 )
 AS
 BEGIN
@@ -456,7 +456,7 @@ END
 GO
 ALTER PROCEDURE dbo.sp_users_changePassword
 (
-	@UserId int,
+	@UserId uniqueidentifier,
 	@SecurityHash nvarchar(MAX),
 	@PasswordHash nvarchar(MAX)
 )
@@ -473,7 +473,7 @@ END
 GO
 ALTER PROCEDURE dbo.sp_roles_getById
 (
-	@RoleId int
+	@RoleId integer
 )
 AS
 BEGIN

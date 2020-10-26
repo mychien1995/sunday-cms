@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using LanguageExt;
+using Sunday.Core;
 using Sunday.Core.Extensions;
 using Sunday.Core.Models.Base;
 using Sunday.Core.Pipelines;
@@ -14,6 +15,7 @@ using Sunday.Foundation.Persistence.Entities;
 
 namespace Sunday.Foundation.Implementation.Services
 {
+    [ServiceTypeOf(typeof(IOrganizationRoleService))]
     public class DefaultOrganizationRoleService : IOrganizationRoleService
     {
         private readonly IOrganizationRoleRepository _organizationRoleRepository;

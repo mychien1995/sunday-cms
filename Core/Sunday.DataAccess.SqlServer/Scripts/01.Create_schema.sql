@@ -2,7 +2,7 @@
 BEGIN
     CREATE TABLE Users
 	(
-		ID integer primary key identity(1,1),
+		Id uniqueidentifier primary key default(NEWID()),
 		Domain varchar(100) NOT NULL,
 		Username nvarchar(100) NOT NULL,
 		FullName nvarchar(500),
@@ -26,7 +26,7 @@ IF (NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'db
 BEGIN
 	CREATE TABLE Roles
 	(
-		ID integer primary key,
+		Id integer primary key,
 		Code varchar(20) NOT NULL UNIQUE,
 		RoleName nvarchar(500),
 		[Description] nvarchar(MAX)
@@ -37,9 +37,9 @@ IF (NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'db
 BEGIN
 	CREATE TABLE UserRoles
 	(
-		ID integer primary key identity(1,1),
+		Id uniqueidentifier primary key default(NEWID()),
 		RoleId integer NOT NULL,
-		UserId integer NOT NULL,
+		UserId uniqueidentifier NOT NULL,
 		CONSTRAINT FK_UserRoles_Role FOREIGN KEY (RoleId) REFERENCES Roles(ID),
 		CONSTRAINT FK_UserRoles_User FOREIGN KEY (UserId) REFERENCES Users(ID),
 	);
@@ -49,7 +49,7 @@ IF TYPE_ID(N'RoleType') IS NULL
 BEGIN
 	CREATE TYPE RoleType AS TABLE
 	(
-		ID integer,
+		Id integer primary key,
 		Code varchar(20),
 		RoleName nvarchar(500),
 		[Description] nvarchar(MAX)
@@ -60,7 +60,7 @@ IF (NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'db
 BEGIN
 	CREATE TABLE Organizations
 	(
-		ID integer primary key identity(1,1),
+		Id uniqueidentifier primary key default(NEWID()),
 		OrganizationName nvarchar(500),
 		[Description] nvarchar(MAX),
 		ExtraProperties nvarchar(MAX),
@@ -79,9 +79,9 @@ IF (NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'db
 BEGIN
 	CREATE TABLE OrganizationUsers
 	(
-		ID integer primary key identity(1,1),
-		UserId integer NOT NULL,
-		OrganizationId integer NOT NULL,
+		Id uniqueidentifier primary key default(NEWID()),
+		UserId uniqueidentifier NOT NULL,
+		OrganizationId uniqueidentifier NOT NULL,
 		IsActive bit NOT NULL default(1),
 		CONSTRAINT FK_OrganizationUsers_Users FOREIGN KEY (UserId) REFERENCES Users(ID),
 		CONSTRAINT FK_OrganizationUsers_Organization FOREIGN KEY (OrganizationId) REFERENCES Organizations(ID),
@@ -92,10 +92,10 @@ IF (NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'db
 BEGIN
 	CREATE TABLE OrganizationRoles
 	(
-		ID integer primary key identity(1,1),
+		Id uniqueidentifier primary key default(NEWID()),
 		RoleCode varchar(20),
 		RoleName nvarchar(500),
-		OrganizationId integer NOT NULL,
+		OrganizationId uniqueidentifier NOT NULL,
 		[Description] nvarchar(MAX),
 		CreatedDate datetime NOT NULL default(GETDATE()),
 		CreatedBy nvarchar(100),
@@ -110,9 +110,9 @@ IF (NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'db
 BEGIN
 	CREATE TABLE OrganizationUserRoles
 	(
-		ID integer primary key identity(1,1),
-		OrganizationUserId integer NOT NULL,
-		OrganizationRoleId integer NOT NULL,
+		Id uniqueidentifier primary key default(NEWID()),
+		OrganizationUserId uniqueidentifier NOT NULL,
+		OrganizationRoleId uniqueidentifier NOT NULL,
 		CONSTRAINT FK_OrganizationUserRoles_OrganizationUser FOREIGN KEY (OrganizationUserId) REFERENCES OrganizationUsers(ID),
 		CONSTRAINT FK_OrganizationUserRoles_OrganizationRole FOREIGN KEY (OrganizationRoleId) REFERENCES OrganizationRoles(ID)
 	);
@@ -123,7 +123,7 @@ IF (NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'db
 BEGIN
 	CREATE TABLE Modules
 	(
-		ID int primary key identity(1,1),
+		Id uniqueidentifier primary key default(NEWID()),
 		ModuleName nvarchar(500),
 		ModuleCode varchar(100) UNIQUE,
 		IsActive bit
@@ -134,9 +134,9 @@ IF (NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'db
 BEGIN
 	CREATE TABLE OrganizationModules
 	(
-		ID integer primary key identity(1,1),
-		ModuleId int,
-		OrganizationId int,
+		Id uniqueidentifier primary key default(NEWID()),
+		ModuleId uniqueidentifier,
+		OrganizationId uniqueidentifier,
 		CONSTRAINT FK_OrganizationModule_Module FOREIGN KEY (ModuleId) REFERENCES Modules(ID),
 		CONSTRAINT FK_OrganizationModule_Organization FOREIGN KEY (OrganizationId) REFERENCES Organizations(ID)
 	);
@@ -146,11 +146,11 @@ IF (NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'db
 BEGIN
 	CREATE TABLE Features
 	(
-		ID integer primary key identity(1,1),
+		Id uniqueidentifier primary key default(NEWID()),
 		FeatureCode varchar(20) UNIQUE,
 		FeatureName nvarchar(500),
 		[Description] nvarchar(MAX),
-		ModuleId int NULL,
+		ModuleId uniqueidentifier NULL,
 		CONSTRAINT FK_Feature_Module FOREIGN KEY (ModuleId) REFERENCES Modules(ID)
 	);
 END
@@ -159,9 +159,9 @@ IF (NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'db
 BEGIN
 	CREATE TABLE OrganizationRolesMapping
 	(
-		ID integer primary key identity(1,1),
-		OrganizationRoleId integer NOT NULL,
-		FeatureId integer NOT NULL,
+		Id uniqueidentifier primary key default(NEWID()),
+		OrganizationRoleId uniqueidentifier NOT NULL,
+		FeatureId uniqueidentifier NOT NULL,
 		CONSTRAINT FK_OrganizationRolesMapping_OrganizationRole FOREIGN KEY (OrganizationRoleId) REFERENCES OrganizationRoles(ID),
 		CONSTRAINT FK_OrganizationRolesMapping_Feature FOREIGN KEY (FeatureId) REFERENCES Features(ID),
 	);
@@ -171,7 +171,7 @@ IF TYPE_ID(N'OrganizationUserType') IS NULL
 BEGIN
 	CREATE TYPE OrganizationUserType AS TABLE
 	(
-		OrganizationId int,
+		OrganizationId uniqueidentifier,
 		IsActive bit
 	);
 END
@@ -199,14 +199,14 @@ IF TYPE_ID(N'OrganizationRoleType') IS NULL
 BEGIN
 	CREATE TYPE OrganizationRoleType AS TABLE
 	(
-		OrganizationRoleId int,
+		OrganizationRoleId uniqueidentifier,
 		Features nvarchar(MAX)
 	);
 END
 
 IF TYPE_ID(N'OrganizationUserRoleType') IS NULL
 CREATE TYPE [dbo].[OrganizationUserRoleType] AS TABLE(
-	[OrganizationId] [int] NULL,
+	[OrganizationId] [uniqueidentifier] NULL,
 	[OrganizationRolesId] [nvarchar](max) NULL
 )
 GO

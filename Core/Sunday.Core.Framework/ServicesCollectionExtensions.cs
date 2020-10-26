@@ -94,9 +94,9 @@ namespace Sunday.Core.Framework
                 }
             }
             AddConfiguredServices(_configuration, services);
+            ServiceActivator.Configure(services.BuildServiceProvider());
             ApplicationPipelines.RunAsync("configureServices", new ConfigureServicesArg(services)).Wait();
-            var serviceProvider = services.BuildServiceProvider();
-            ServiceActivator.Configure(serviceProvider);
+            ServiceActivator.Configure(services.BuildServiceProvider());
             return serviceConf;
         }
 

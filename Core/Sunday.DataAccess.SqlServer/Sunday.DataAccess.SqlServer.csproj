@@ -16,8 +16,6 @@
   <ItemGroup>
     <None Remove="Scripts\01.Create_schema.sql" />
     <None Remove="Scripts\02.Create_procedure_user_roles.sql" />
-    <None Remove="Scripts\03.Create_procedure_organizations.sql" />
-    <None Remove="Scripts\04.Create_procedure_features_roles.sql" />
     <None Remove="Scripts\Clear_version.sql" />
   </ItemGroup>
 
@@ -26,8 +24,6 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Scripts\02.Create_procedure_user_roles.sql" />
-    <EmbeddedResource Include="Scripts\04.Create_procedure_features_roles.sql" />
-    <EmbeddedResource Include="Scripts\03.Create_procedure_organizations.sql" />
     <EmbeddedResource Include="Scripts\Clear_version.sql">
       <SubType>Designer</SubType>
     </EmbeddedResource>

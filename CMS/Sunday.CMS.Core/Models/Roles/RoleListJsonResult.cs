@@ -12,7 +12,7 @@ namespace Sunday.CMS.Core.Models.Roles
     [MappedTo(typeof(ApplicationRole))]
     public class RoleItem
     {
-        public RoleItem(Guid id, string code, string roleName, bool requireOrganization)
+        public RoleItem(int id, string code, string roleName, bool requireOrganization)
         {
             Id = id;
             Code = code;
@@ -20,7 +20,7 @@ namespace Sunday.CMS.Core.Models.Roles
             RequireOrganization = requireOrganization;
         }
 
-        public Guid Id { get; set; }
+        public int Id { get; set; }
         public string Code { get; set; }
         public string RoleName { get; set; }
 
