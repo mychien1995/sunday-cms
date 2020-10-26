@@ -24,7 +24,7 @@ BEGIN
 	IF(@ModulesIds IS NOT NULL AND LEN(TRIM(@ModulesIds)) > 0)
 	BEGIN
 		DECLARE @tblModuleIds TABLE (ModuleId varchar(100))
-		INSERT INTO @tblModuleIds SELECT value  FROM STRING_SPLIT(@ModulesIds, ',')
+		INSERT INTO @tblModuleIds SELECT value  FROM STRING_SPLIT(@ModulesIds, '|')
 		SELECT * FROM Features WHERE ModuleId IN (SELECT ModuleId FROM @tblModuleIds)
 		ORDER BY ModuleId ASC, ID ASC
 	END
@@ -42,7 +42,7 @@ END
 GO
 ALTER PROCEDURE [dbo].sp_organizationRoles_getByOrganization
 (
-	@OrganizationId int,
+	@OrganizationId uniqueidentifier,
 	@PageIndex int = 0,
 	@PageSize int = 10
 )
@@ -68,7 +68,7 @@ END
 GO
 ALTER PROCEDURE [dbo].sp_organizationRoles_getById
 (
-	@OrganizationRoleId int
+	@OrganizationRoleId uniqueidentifier
 )
 AS
 BEGIN
@@ -84,9 +84,10 @@ END
 GO
 ALTER PROCEDURE [dbo].sp_organizationRoles_create
 (
+	@Id uniqueidentifier,
 	@RoleCode nvarchar(100) = NULL,
 	@RoleName nvarchar(MAX),
-	@OrganizationId int,
+	@OrganizationId uniqueidentifier,
 	@Description nvarchar(MAX),
 	@CreatedDate datetime,
 	@CreatedBy nvarchar(MAX),
@@ -96,21 +97,18 @@ ALTER PROCEDURE [dbo].sp_organizationRoles_create
 )
 AS
 BEGIN
-	DECLARE @OrganizationRoleId int
+	DECLARE @OrganizationRoleId uniqueidentifier
 
 	INSERT INTO OrganizationRoles
-	(RoleCode, RoleName, OrganizationId, [Description], CreatedDate, CreatedBy, UpdatedDate, UpdatedBy)
+	(Id, RoleCode, RoleName, OrganizationId, [Description], CreatedDate, CreatedBy, UpdatedDate, UpdatedBy)
 	VALUES
-	(@RoleCode, @RoleName, @OrganizationId, @Description, @CreatedDate, @CreatedBy, @UpdatedDate, @UpdatedBy)
-
-	SET @OrganizationRoleId = SCOPE_IDENTITY()
-	SELECT @OrganizationRoleId
+	(@Id, @RoleCode, @RoleName, @OrganizationId, @Description, @CreatedDate, @CreatedBy, @UpdatedDate, @UpdatedBy)
 
 	IF(@FeatureIds IS NOT NULL AND LEN(TRIM(@FeatureIds)) > 0)
 	BEGIN
-		DECLARE @tblFeatureId TABLE (FeatureId Int)
-		INSERT INTO @tblFeatureId  SELECT value  FROM STRING_SPLIT(@FeatureIds, ',')
-		INSERT INTO OrganizationRolesMapping (OrganizationRoleId, FeatureId) SELECT @OrganizationRoleId, FeatureId FROM @tblFeatureId
+		DECLARE @tblFeatureId TABLE (FeatureId uniqueidentifier)
+		INSERT INTO @tblFeatureId  SELECT value  FROM STRING_SPLIT(@FeatureIds, '|')
+		INSERT INTO OrganizationRolesMapping (OrganizationRoleId, FeatureId) SELECT @Id, FeatureId FROM @tblFeatureId
 	END
 END
 GO
@@ -122,7 +120,7 @@ END
 GO
 ALTER PROCEDURE [dbo].sp_organizationRoles_update
 (
-	@RoleId int,
+	@RoleId uniqueidentifier,
 	@RoleName nvarchar(MAX),
 	@Description nvarchar(MAX),
 	@UpdatedDate datetime,
@@ -138,8 +136,8 @@ BEGIN
 
 	IF(@FeatureIds IS NOT NULL AND LEN(TRIM(@FeatureIds)) > 0)
 	BEGIN
-		DECLARE @tblFeatureId TABLE (FeatureId Int)
-		INSERT INTO @tblFeatureId  SELECT value  FROM STRING_SPLIT(@FeatureIds, ',')
+		DECLARE @tblFeatureId TABLE (FeatureId uniqueidentifier)
+		INSERT INTO @tblFeatureId  SELECT value  FROM STRING_SPLIT(@FeatureIds, '|')
 
 		DELETE FROM OrganizationRolesMapping WHERE OrganizationRoleId = @RoleId AND FeatureId NOT IN (SELECT FeatureId FROM @tblFeatureId)
 
@@ -162,7 +160,7 @@ END
 GO
 ALTER PROCEDURE [dbo].sp_organizationRoles_delete
 (
-	@RoleId int
+	@RoleId uniqueidentifier
 )
 AS
 BEGIN
@@ -215,7 +213,7 @@ ALTER PROCEDURE dbo.sp_organizationRoles_bulkUpdate
 )
 AS
 BEGIN
-	DECLARE @RoleId int
+	DECLARE @RoleId uniqueidentifier
 	DECLARE @FeaturesIds nvarchar(MAX)
 	DECLARE RoleCursor CURSOR 
 		FOR SELECT * FROM @Roles
@@ -230,8 +228,8 @@ BEGIN
 		END
 		ELSE
 		BEGIN
-			DECLARE @tblFeatureIds TABLE (FeatureId int)
-			INSERT INTO @tblFeatureIds select value from string_split(@FeaturesIds, ',');
+			DECLARE @tblFeatureIds TABLE (FeatureId uniqueidentifier)
+			INSERT INTO @tblFeatureIds select value from string_split(@FeaturesIds, '|');
 		
 			DELETE OrganizationRolesMapping WHERE OrganizationRoleId = @RoleId AND FeatureId NOT IN (SELECT FeatureId FROM @tblFeatureIds)
 

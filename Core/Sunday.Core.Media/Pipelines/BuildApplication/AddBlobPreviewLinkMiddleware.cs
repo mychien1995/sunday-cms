@@ -15,7 +15,7 @@ namespace Sunday.Core.Media.Pipelines.BuildApplication
         }
         public void Process(PipelineArg arg)
         {
-            var app = ((BuildApplicationArg)arg).AppBuilder;
+            var app = ((InitializationArg)arg).AppBuilder;
             app.Map($"{RoutePaths.BlobPreviewRoute}", HandlePreviewLink);
         }
 

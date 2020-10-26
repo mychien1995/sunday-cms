@@ -40,7 +40,7 @@ namespace Sunday.CMS.Core.Implementation
             return result;
         }
 
-        public async Task<RoleDetailJsonResult> GetRoleById(Guid id)
+        public async Task<RoleDetailJsonResult> GetRoleById(int id)
         {
             var role = await _roleService.GetRoleByIdAsync(id);
             if (role.IsNone) return BaseApiResponse.ErrorResult<RoleDetailJsonResult>("Role not found");

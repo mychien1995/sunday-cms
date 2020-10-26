@@ -47,23 +47,8 @@ ALTER PROCEDURE [dbo].[sp_users_findbyusername]
 )
 AS
 BEGIN
-	SELECT * FROM [Users] WHERE Username = @Username AND IsDeleted = 0
-	SELECT * FROM [Roles] WHERE ID IN (SELECT RoleId FROM UserRoles WHERE UserId IN (SELECT ID FROM [Users] WHERE Username = @Username  AND IsDeleted = 0))
-END
-GO
---------------------------------------------------------------------
-IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_users_findbyemail')
-BEGIN
-	EXEC('CREATE PROCEDURE [dbo].[sp_users_findbyemail] AS BEGIN SET NOCOUNT ON; END')
-END
-GO
-ALTER PROCEDURE [dbo].[sp_users_findbyemail]
-(
-	@Email nvarchar(MAX)
-)
-AS
-BEGIN
-	SELECT * FROM [Users] WHERE Email = @Email AND IsDeleted = 0
+	SELECT * FROM [Users] WHERE Username = @Username AND IsDeleted = 0;
+	SELECT * FROM [Roles] WHERE ID IN (SELECT RoleId FROM UserRoles WHERE UserId IN (SELECT ID FROM [Users] WHERE Username = @Username  AND IsDeleted = 0));
 END
 GO
 --------------------------------------------------------------------
@@ -79,6 +64,8 @@ ALTER PROCEDURE [dbo].[sp_users_getById]
 AS
 BEGIN
 	SELECT * FROM [Users] WHERE ID = @UserId AND IsDeleted = 0;
+	SELECT * FROM [Roles] WHERE ID IN (SELECT RoleId FROM UserRoles WHERE UserId = @UserId);
+	SELECT * FROM [OrganizationUsers] WHERE UserId = @UserId;
 END
 GO
 --------------------------------------------------------------------
@@ -249,9 +236,9 @@ GO
 ALTER PROCEDURE [dbo].[sp_users_getById_withOptions]
 (
 	@UserId uniqueidentifier,
-	@FetchRoles bit = 0,
-	@FetchOrganizations bit = 0,
-	@FetchVirtualRoles bit = 0
+	@FetchRoles bit = 1,
+	@FetchOrganizations bit = 1,
+	@FetchVirtualRoles bit = 1
 )
 AS
 BEGIN

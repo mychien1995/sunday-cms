@@ -10,7 +10,7 @@ namespace Sunday.Foundation.Persistence.Application.Repositories
     {
         Task<IEnumerable<RoleEntity>> GetAllAsync();
 
-        Task<Option<RoleEntity>> GetRoleByIdAsync(Guid roleId);
+        Task<Option<RoleEntity>> GetRoleByIdAsync(int roleId);
 
         Task<Option<RoleEntity>> GetRoleByCodeAsync(string roleCode);
     }

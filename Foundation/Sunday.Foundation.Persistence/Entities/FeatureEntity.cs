@@ -1,20 +1,15 @@
 ﻿using System;
+using Sunday.Core;
+using Sunday.Foundation.Domain;
 
 namespace Sunday.Foundation.Persistence.Entities
 {
+    [MappedTo(typeof(ApplicationFeature))]
     public class FeatureEntity
     {
         public Guid Id { get; set; }
-        public string FeatureName { get; set; }
-        public string FeatureCode { get; set; }
-        public int ModuleId { get; set; }
-
-        public FeatureEntity(Guid id, string featureName, string featureCode, int moduleId)
-        {
-            Id = id;
-            FeatureName = featureName;
-            FeatureCode = featureCode;
-            ModuleId = moduleId;
-        }
+        public string FeatureName { get; set; } = string.Empty;
+        public string FeatureCode { get; set; } = string.Empty;
+        public Guid ModuleId { get; set; }
     }
 }

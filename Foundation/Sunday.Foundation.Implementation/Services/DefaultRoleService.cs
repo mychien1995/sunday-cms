@@ -23,7 +23,7 @@ namespace Sunday.Foundation.Implementation.Services
         public Task<IEnumerable<ApplicationRole>> GetAllAsync()
             => _roleRepository.GetAllAsync().MapResultTo(rs => rs.CastListTo<ApplicationRole>());
 
-        public Task<Option<ApplicationRole>> GetRoleByIdAsync(Guid roleId)
+        public Task<Option<ApplicationRole>> GetRoleByIdAsync(int roleId)
             => _roleRepository.GetRoleByIdAsync(roleId)
                 .MapResultTo(rs => rs.Map(role => role.MapTo<ApplicationRole>()));
 

@@ -7,46 +7,24 @@ namespace Sunday.Foundation.Domain
 {
     public class ApplicationUser : IEntity
     {
-        public ApplicationUser(Guid id, string userName, DateTime createdDate, DateTime updatedDate, string createdBy, 
-            string updatedBy, bool isActive, bool isDeleted, bool isLockedOut, bool emailConfirmed, 
-            string securityStamp, string password, string domain, string email, string? phone, string? avatarBlobUri, string fullname)
-        {
-            Id = id;
-            UserName = userName;
-            CreatedDate = createdDate;
-            UpdatedDate = updatedDate;
-            CreatedBy = createdBy;
-            UpdatedBy = updatedBy;
-            IsActive = isActive;
-            IsDeleted = isDeleted;
-            IsLockedOut = isLockedOut;
-            EmailConfirmed = emailConfirmed;
-            SecurityStamp = securityStamp;
-            Password = password;
-            Domain = domain;
-            Email = email;
-            Phone = phone;
-            AvatarBlobUri = avatarBlobUri;
-            Fullname = fullname;
-        }
 
         public Guid Id { get; set; }
-        public string UserName { get; set; }
+        public string UserName { get; set; } = string.Empty;
         public DateTime CreatedDate { get; set; }
         public DateTime UpdatedDate { get; set; }
-        public string CreatedBy { get; set; }
-        public string UpdatedBy { get; set; }
+        public string CreatedBy { get; set; } = string.Empty;
+        public string UpdatedBy { get; set; } = string.Empty;
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }
         public bool IsLockedOut { get; set; }
         public bool EmailConfirmed { get; set; }
-        public string SecurityStamp { get; set; }
-        public string Password { get; set; }
-        public string Domain { get; set; }
-        public string Email { get; set; }
+        public string SecurityStamp { get; set; } = string.Empty;
+        public string Password { get; set; } = string.Empty;
+        public string Domain { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
         public string? Phone { get; set; }
         public string? AvatarBlobUri { get; set; }
-        public string Fullname { get; set; }
+        public string Fullname { get; set; } = string.Empty;
         public List<ApplicationRole> Roles { get; set; } = new List<ApplicationRole>();
         public List<ApplicationOrganizationRole> VirtualRoles { get; set; } = new List<ApplicationOrganizationRole>();
         public List<ApplicationOrganizationUser> OrganizationUsers { get; set; } = new List<ApplicationOrganizationUser>();

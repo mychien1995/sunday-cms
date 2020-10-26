@@ -25,7 +25,7 @@ namespace Sunday.Core.Media.Pipelines.ConfigureServices
                 var blobNode = configXml.SelectSingleNode("/configuration/blob");
                 if (blobNode == null)
                 {
-                    var fileBlobProvider = new FileBlobProvider(webHostEnv, "/Images", true);
+                    var fileBlobProvider = new FileBlobProvider(webHostEnv, "/Images", "true");
                     fileBlobProvider.Initialize();
                     return fileBlobProvider;
                 }

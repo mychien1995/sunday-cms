@@ -72,9 +72,15 @@ namespace Sunday.Foundation.Persistence.Implementation.Repositories
             user.PasswordHash
         });
 
-        public Task<Option<UserEntity>> FindUserByNameAsync(string userName)
+        public async Task<Option<UserEntity>> FindUserByNameAsync(string userName)
         {
-            throw new NotImplementedException();
+            var queryResult =
+                await _dbRunner
+                    .ExecuteMultipleAsync<UserEntity, RoleEntity>(
+                        ProcedureNames.Users.FindUserByUserName, new { Username = userName }); if (!queryResult.Item1.Any()) return Option<UserEntity>.None;
+            var user = queryResult.Item1.Single();
+            user.Roles = queryResult.Item2.ToList();
+            return user;
         }
     }
 }

@@ -5,6 +5,7 @@ END
 GO
 ALTER PROCEDURE [dbo].[sp_organizations_create]
 (
+	@Id uniqueidentifier,
 	@OrganizationName nvarchar(500),
 	@Description nvarchar(MAX),
 	@Properties nvarchar(MAX),
@@ -28,9 +29,9 @@ BEGIN
 	IF @ModuleIds IS NULL
 		SET @ModuleIds  = ''
 
-	DECLARE @OrganizationId int
 	INSERT INTO [dbo].[Organizations]
-           ([OrganizationName]
+           ([Id],
+			[OrganizationName]
            ,[Description]
            ,[ExtraProperties]
            ,[Hosts]
@@ -42,7 +43,8 @@ BEGIN
            ,[UpdatedBy]
            ,[IsDeleted])
      VALUES
-           (@OrganizationName
+           (@Id
+		   ,@OrganizationName
            ,@Description
            ,@Properties
            ,@HostNames
@@ -53,13 +55,10 @@ BEGIN
            ,@UpdatedDate
            ,@UpdatedBy
            ,0)
-	
-	SET @OrganizationId = SCOPE_IDENTITY()
-	SELECT @OrganizationId
 
 	DECLARE @tblModules TABLE (ModuleId varchar(100))
-	INSERT INTO @tblModules SELECT value FROM STRING_SPLIT(@ModuleIds, ',')
-	INSERT INTO OrganizationModules (OrganizationId, ModuleId) SELECT @OrganizationId, ModuleId FROM @tblModules
+	INSERT INTO @tblModules SELECT value FROM STRING_SPLIT(@ModuleIds, '|')
+	INSERT INTO OrganizationModules (OrganizationId, ModuleId) SELECT @Id, ModuleId FROM @tblModules
 
 END
 GO
@@ -71,7 +70,7 @@ END
 GO
 ALTER PROCEDURE [dbo].[sp_organizations_update]
 (
-	@ID int,
+	@ID uniqueidentifier,
 	@OrganizationName nvarchar(500),
 	@Description nvarchar(MAX),
 	@Properties nvarchar(MAX),
@@ -108,7 +107,7 @@ BEGIN
 	DELETE FROM OrganizationModules WHERE OrganizationId = @ID
 	BEGIN
 		DECLARE @tblModules TABLE (ModuleId varchar(100))
-		INSERT INTO @tblModules SELECT value FROM STRING_SPLIT(@ModuleIds, ',')
+		INSERT INTO @tblModules SELECT value FROM STRING_SPLIT(@ModuleIds, '|')
 		INSERT INTO OrganizationModules (OrganizationId, ModuleId) SELECT @ID, ModuleId FROM @tblModules
 	END
 
@@ -122,7 +121,7 @@ END
 GO
 ALTER PROCEDURE [dbo].[sp_organizations_activate]
 (
-	@OrganizationId int
+	@OrganizationId uniqueidentifier
 )
 AS
 BEGIN
@@ -137,7 +136,7 @@ END
 GO
 ALTER PROCEDURE [dbo].[sp_organizations_deactivate]
 (
-	@OrganizationId int
+	@OrganizationId uniqueidentifier
 )
 AS
 BEGIN
@@ -152,7 +151,7 @@ END
 GO
 ALTER PROCEDURE [dbo].[sp_organizations_delete]
 (
-	@OrganizationId int
+	@OrganizationId uniqueidentifier
 )
 AS
 BEGIN
@@ -167,7 +166,7 @@ END
 GO
 ALTER PROCEDURE [dbo].[sp_organizations_getById]
 (
-	@OrganizationId int
+	@OrganizationId uniqueidentifier
 )
 AS
 BEGIN

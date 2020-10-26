@@ -1,18 +1,14 @@
 ﻿using System;
+using Sunday.Core;
+using Sunday.Foundation.Domain;
 
 namespace Sunday.Foundation.Persistence.Entities
 {
+    [MappedTo(typeof(ApplicationRole))]
     public class RoleEntity
     {
-        public Guid Id { get; set; }
-        public string Code { get; set; }
-        public string RoleName { get; set; }
-
-        public RoleEntity(Guid id, string code, string roleName)
-        {
-            Id = id;
-            Code = code;
-            RoleName = roleName;
-        }
+        public int Id { get; set; }
+        public string Code { get; set; } = string.Empty;
+        public string RoleName { get; set; } = string.Empty;
     }
 }

@@ -5,5 +5,5 @@
 
 export const environment = {
   production: false,
-  apiUrl : 'http://sunday-cms.local/'
+  apiUrl : 'https://localhost:6001/'
 };

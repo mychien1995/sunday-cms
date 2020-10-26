@@ -10,9 +10,9 @@ namespace Sunday.Core.Media.Implementation
     {
         private readonly string _path;
 
-        public FileBlobProvider(IWebHostEnvironment webHostEnvironment, string basePath, bool useRelativePath)
+        public FileBlobProvider(IWebHostEnvironment webHostEnvironment, string basePath, string useRelativePath)
         {
-            this._path = useRelativePath ? Path.Combine(webHostEnvironment.WebRootPath, basePath) : basePath;
+            this._path = useRelativePath == "true" ? Path.Combine(webHostEnvironment.WebRootPath, basePath) : basePath;
         }
 
         public override string Name => nameof(FileBlobProvider);

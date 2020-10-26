@@ -31,7 +31,7 @@ namespace Sunday.Foundation.Persistence.Implementation.Repositories
             return result;
         }
 
-        public async Task<Option<RoleEntity>> GetRoleByIdAsync(Guid roleId)
+        public async Task<Option<RoleEntity>> GetRoleByIdAsync(int roleId)
         {
             var (_, value) = _roleLookup.FirstOrDefault(c => c.Value.Id == roleId);
             if (value != null) return value;

@@ -7,7 +7,7 @@ using Sunday.DataAccess.SqlServer.Database;
 
 namespace Sunday.Foundation.Implementation.Pipelines.Initialization
 {
-    public class FeaturesSeeding
+    public class FeaturesSeeding : IPipelineProcessor
     {
         private readonly StoredProcedureRunner _databaseRunner;
         public FeaturesSeeding(StoredProcedureRunner storeProcRunner)

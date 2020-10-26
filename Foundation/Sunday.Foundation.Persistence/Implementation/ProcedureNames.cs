@@ -26,6 +26,7 @@ namespace Sunday.Foundation.Implementation
             public const string Activate = "sp_users_activate";
             public const string Deactivate = "sp_users_deactivate";
             public const string ChangePassword = "sp_users_changePassword";
+            public const string FindUserByUserName = "sp_users_findbyusername";
         }
         public class System
         {

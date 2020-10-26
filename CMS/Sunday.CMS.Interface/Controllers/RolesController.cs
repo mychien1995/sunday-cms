@@ -22,7 +22,7 @@ namespace Sunday.CMS.Interface.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(Guid id)
+        public async Task<IActionResult> Get(int id)
         {
             var result = await _rolesManager.GetRoleById(id);
             return Ok(result);

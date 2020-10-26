@@ -7,6 +7,6 @@ namespace Sunday.CMS.Core.Application
     public interface IApplicationRoleManager
     {
         Task<RoleListJsonResult> GetAvailableRoles();
-        Task<RoleDetailJsonResult> GetRoleById(Guid id);
+        Task<RoleDetailJsonResult> GetRoleById(int id);
     }
 }

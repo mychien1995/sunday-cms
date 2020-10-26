@@ -1,11 +1,12 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
 
+// ReSharper disable once CheckNamespace
 namespace Sunday.Core
 {
     public class ServiceActivator
     {
-        internal static IServiceProvider _serviceProvider = null;
+        internal static IServiceProvider ServiceProvider = null!;
 
         /// <summary>
         /// Configure ServiceActivator with full serviceProvider
@@ -13,7 +14,7 @@ namespace Sunday.Core
         /// <param name="serviceProvider"></param>
         public static void Configure(IServiceProvider serviceProvider)
         {
-            _serviceProvider = serviceProvider;
+            ServiceProvider = serviceProvider;
         }
 
         /// <summary>
@@ -21,10 +22,10 @@ namespace Sunday.Core
         /// </summary>
         /// <param name="serviceProvider"></param>
         /// <returns></returns>
-        public static IServiceScope GetScope(IServiceProvider serviceProvider = null)
+        public static IServiceScope GetScope(IServiceProvider? serviceProvider = null)
         {
-            var provider = serviceProvider ?? _serviceProvider;
-            return provider?
+            var provider = serviceProvider ?? ServiceProvider;
+            return provider
                 .GetRequiredService<IServiceScopeFactory>()
                 .CreateScope();
         }

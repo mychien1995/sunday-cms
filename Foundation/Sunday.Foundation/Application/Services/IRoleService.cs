@@ -10,7 +10,7 @@ namespace Sunday.Foundation.Application.Services
     {
         Task<IEnumerable<ApplicationRole>> GetAllAsync();
 
-        Task<Option<ApplicationRole>> GetRoleByIdAsync(Guid roleId);
+        Task<Option<ApplicationRole>> GetRoleByIdAsync(int roleId);
 
         Task<Option<ApplicationRole>> GetRoleByCodeAsync(string roleCode);
     }

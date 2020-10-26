@@ -70,7 +70,7 @@ namespace Sunday.DataAccess.SqlServer.Database
         {
             var returnTypes = new[] { typeof(T1), typeof(T2), typeof(T3) };
             var queryResult = await ExecuteMultipleAsync(storeName, returnTypes, parameter);
-            if (queryResult.Count != 2) throw new InvalidOperationException($"Expect 3 return types, got {queryResult.Count}");
+            if (queryResult.Count != 3) throw new InvalidOperationException($"Expect 3 return types, got {queryResult.Count}");
             return (queryResult[0].Select(item => (T1)item), queryResult[1].Select(item => (T2)item), queryResult[2].Select(item => (T3)item));
         }
 
@@ -78,7 +78,7 @@ namespace Sunday.DataAccess.SqlServer.Database
         {
             var returnTypes = new[] { typeof(T1), typeof(T2), typeof(T3), typeof(T4) };
             var queryResult = await ExecuteMultipleAsync(storeName, returnTypes, parameter);
-            if (queryResult.Count != 2) throw new InvalidOperationException($"Expect 4 return types, got {queryResult.Count}");
+            if (queryResult.Count != 4) throw new InvalidOperationException($"Expect 4 return types, got {queryResult.Count}");
             return (queryResult[0].Select(item => (T1)item), queryResult[1].Select(item => (T2)item)
                 , queryResult[2].Select(item => (T3)item), queryResult[3].Select(item => (T4)item));
         }

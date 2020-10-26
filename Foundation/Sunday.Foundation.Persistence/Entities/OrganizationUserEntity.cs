@@ -11,13 +11,5 @@ namespace Sunday.Foundation.Persistence.Entities
         public Guid OrganizationId { get; set; }
         public Guid UserId { get; set; }
         public bool IsActive { get; set; }
-
-        public OrganizationUserEntity(Guid id, Guid organizationId, Guid userId, bool isActive)
-        {
-            Id = id;
-            OrganizationId = organizationId;
-            UserId = userId;
-            IsActive = isActive;
-        }
     }
 }
