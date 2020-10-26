@@ -50,7 +50,7 @@ namespace Sunday.Foundation.Implementation.Services
         {
             var organizations = await _organizationRepository.QueryAsync(new OrganizationQuery()
             {
-                HostNames = new[] {hostName}
+                HostName = hostName
             });
             return Optional(organizations.Result.FirstOrDefault()).Map(ToDomainModel);
         }

@@ -145,12 +145,13 @@ BEGIN
 END
 GO
 --------------------------------------------------------------------
-CREATE OR ALTER  PROCEDURE [dbo].[sp_organizations_search]
+CREATE OR ALTER PROCEDURE [dbo].[sp_organizations_search]
 (
 	@PageIndex int = 0,
 	@PageSize int = 10,
 	@Text nvarchar(MAX) = '',
-	@IsActive bit,
+	@IsActive bit = 1,
+	@HostName nvarchar(MAX) = '',
 	@SortBy nvarchar(MAX) = 'UpdatedDate',
 	@SortDirection nvarchar(MAX) = 'DESC'
 )
@@ -183,6 +184,13 @@ BEGIN
 		SET @WhereClause = @WhereClause + ' (IsActive = @IsActive) ' ;
 	END
 
+	IF(@HostName IS NOT NULL AND LEN(TRIM(@HostName)) > 0)
+	BEGIN
+		IF LEN(TRIM(@WhereClause)) > 0
+			SET @WhereClause = @WhereClause + ' AND ';
+		SET @WhereClause = @WhereClause + ' (Hosts LIKE ''%'+ @Hostname + '|%'' OR Hosts LIKE ''%|' + @Hostname + '%'' OR Hosts = ''' + @Hostname + ''') ';
+	END
+
 	IF(LEN(TRIM(@WhereClause)) > 0)
 		SET @WhereClause = ' WHERE ' + @WhereClause
 	DECLARE @CountQuery nvarchar(MAX);
@@ -192,13 +200,15 @@ BEGIN
 	SET @DataQuery = 'SELECT * FROM [Organizations] ' + @WhereClause  + ' ORDER BY ' + @SortBy + ' ' + @SortDirection
 	+ ' OFFSET ' + CAST(@PageIndex AS VARCHAR(100)) + ' ROWS FETCH NEXT '+ CAST(@PageSize AS VARCHAR(100)) +' ROWS ONLY'
 
+	PRINT @CountQuery
+
 	exec sp_executesql @CountQuery, 
-	N'@Text nvarchar(MAX), @IsActive bit',
-	@Text, @IsActive
+	N'@Text nvarchar(MAX), @IsActive bit, @HostName nvarchar(MAX)',
+	@Text, @IsActive, @HostName
 
 	exec sp_executesql @DataQuery, 
-	N'@Text nvarchar(MAX), @IsActive bit',
-	@Text, @IsActive
+	N'@Text nvarchar(MAX), @IsActive bit, @HostName nvarchar(MAX)',
+	@Text, @IsActive, @HostName
 END
 GO
 --------------------------------------------------------------------

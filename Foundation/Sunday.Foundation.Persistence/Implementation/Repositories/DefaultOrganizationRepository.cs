@@ -70,16 +70,7 @@ namespace Sunday.Foundation.Persistence.Implementation.Repositories
                 query.Text,
                 query.PageSize,
                 query.PageIndex,
-                HostNames = query.HostNames.ToDatabaseList(),
+                query.HostName,
             };
-    }
-
-    [MappedTo(typeof(OrganizationQuery))]
-    internal class DapperOrganizationQuery : OrganizationQuery
-    {
-        [DapperIgnoreParam]
-        public override string[] HostNames { get; set; } = Array.Empty<string>();
-
-        public string Hosts => HostNames.ToDatabaseList();
     }
 }
