@@ -46,13 +46,13 @@ namespace Sunday.CMS.Core.Implementation
                 return Option<ApplicationOrganization>.None;
             //TODO: Fix this
             var organization = _organizationService.FindOrganizationByHostname(hostName).Result;
-            if (organization.IsNone || organization.Get().IsDeleted || !organization.Get().IsActive) return Option<ApplicationOrganization>.None;
+            if (!organization.Any(o => o.IsActive)) return Option<ApplicationOrganization>.None;
             if (_httpContextAccessor.HttpContext.User is ApplicationUserPrincipal user &&
                 (user.IsInRole(SystemRoleCodes.OrganizationAdmin) || user.IsInRole(SystemRoleCodes.OrganizationUser)))
             {
-                organization = user.User.OrganizationUsers.FirstOrDefault().Organization;
+                return user.User.OrganizationUsers.FirstOrDefault()!.Organization!;
             }
-            return organization;
+            return Option<ApplicationOrganization>.None;
         }
 
         private string GetHostName()

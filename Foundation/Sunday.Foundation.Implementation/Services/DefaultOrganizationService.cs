@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LanguageExt;
@@ -46,13 +47,13 @@ namespace Sunday.Foundation.Implementation.Services
         public Task DeactivateAsync(Guid organizationId)
             => _organizationRepository.DeactivateAsync(organizationId);
 
-        public async Task<Option<ApplicationOrganization>> FindOrganizationByHostname(string hostName)
+        public async Task<List<ApplicationOrganization>> FindOrganizationByHostname(string hostName)
         {
             var organizations = await _organizationRepository.QueryAsync(new OrganizationQuery()
             {
                 HostName = hostName
             });
-            return Optional(organizations.Result.FirstOrDefault()).Map(ToDomainModel);
+            return organizations.Result.Select(ToDomainModel).ToList();
         }
 
         private static ApplicationOrganization ToDomainModel(OrganizationEntity entity)

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using LanguageExt;
 using Sunday.Core.Models.Base;
@@ -24,6 +25,6 @@ namespace Sunday.Foundation.Application.Services
 
         Task DeactivateAsync(Guid organizationId);
 
-        Task<Option<ApplicationOrganization>> FindOrganizationByHostname(string hostName);
+        Task<List<ApplicationOrganization>> FindOrganizationByHostname(string hostName);
     }
 }
