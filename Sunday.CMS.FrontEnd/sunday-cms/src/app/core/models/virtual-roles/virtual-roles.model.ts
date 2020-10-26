@@ -1,7 +1,7 @@
 import { ApiResponse } from '@models/common/response.model';
 
 export class OrganizationRoleItem {
-  ID?: number;
+  ID?: string;
   RoleName?: string;
   CreatedBy?: string;
   UpdatedBy?: string;
@@ -16,13 +16,13 @@ export class OrganizationRoleListApiResponse extends ApiResponse {
 }
 
 export class OrganizationRoleDetailApiResponse extends ApiResponse {
-  ID?: number;
+  ID?: string;
   RoleName?: string;
   FeatureIds: number[] = [];
 }
 
 export class OrganizationRoleMutationData {
-  ID?: number;
+  ID?: string;
   RoleName?: string;
   FeatureIds: number[] = [];
 }

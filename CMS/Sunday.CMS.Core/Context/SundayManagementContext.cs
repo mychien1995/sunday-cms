@@ -28,7 +28,7 @@ namespace Sunday.CMS.Core.Context
         private ApplicationOrganization? GetCurrentOrganization()
         {
             var organization = _httpContextAccessor.HttpContext.GetCurrentOrganization();
-            if (organization.IsNone) return null;
+            if (organization.IsSome) return organization.Get();
             organization = _organizationAccessManager.ResolveOrganizationFromRequest();
             if (organization.IsNone) return null;
             _httpContextAccessor.HttpContext.AddOrganization(organization.Get());
@@ -38,7 +38,7 @@ namespace Sunday.CMS.Core.Context
         private ApplicationUser? GetCurrentUser()
         {
             var user = _httpContextAccessor.HttpContext.GetCurrentUser();
-            if (user.IsNone) return null;
+            if (user.IsSome) return user.Get();
             user = ((ApplicationUserPrincipal)_httpContextAccessor.HttpContext.User).User;
             if (user.IsNone) return null;
             _httpContextAccessor.HttpContext.SetCurrentUser(user.Get());

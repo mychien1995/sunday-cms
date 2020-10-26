@@ -18,7 +18,7 @@ export class UserItem {
 }
 
 export class UserMutationModel {
-  ID?: number;
+  ID?: string;
   UserName: string;
   Fullname: string;
   Email: string;
@@ -27,12 +27,12 @@ export class UserMutationModel {
   IsActive: boolean;
   Domain: string;
   RoleIds: string[] = [];
-  OrganizationRoleIds?: number[] = [];
+  OrganizationRoleIds?: string[] = [];
   Organizations: OrganizationUserItem[] = [];
 }
 
 export class CreateUserResponse extends ApiResponse {
-  UserId: number;
+  UserId: string;
 }
 
 export class UserDetailResponse extends ApiResponse {
@@ -42,7 +42,7 @@ export class UserDetailResponse extends ApiResponse {
     this.RoleIds = [];
     this.OrganizationRoleIds = [];
   }
-  ID?: number;
+  ID?: string;
   UserName: string;
   Fullname: string;
   Email: string;
@@ -50,7 +50,7 @@ export class UserDetailResponse extends ApiResponse {
   IsActive: boolean;
   Domain: string;
   RoleIds: number[] = [];
-  OrganizationRoleIds?: number[] = [];
+  OrganizationRoleIds?: string[] = [];
   Organizations: OrganizationUserItem[] = [];
   AvatarLink?: string;
 }

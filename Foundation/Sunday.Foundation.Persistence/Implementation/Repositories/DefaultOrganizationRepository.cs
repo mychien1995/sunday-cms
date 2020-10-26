@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using LanguageExt;
 using Sunday.Core;
-using Sunday.Core.Extensions;
 using Sunday.Core.Models.Base;
 using Sunday.DataAccess.SqlServer.Attributes;
 using Sunday.DataAccess.SqlServer.Database;
@@ -27,8 +26,8 @@ namespace Sunday.Foundation.Persistence.Implementation.Repositories
         public async Task<SearchResult<OrganizationEntity>> QueryAsync(OrganizationQuery query)
         {
             var result = new SearchResult<OrganizationEntity>();
-            var searchResult = await _dbRunner.ExecuteMultipleAsync<int, OrganizationEntity>(ProcedureNames.Organizations.Search, 
-                query.MapTo<DapperOrganizationQuery>());
+            var searchResult = await _dbRunner.ExecuteMultipleAsync<int, OrganizationEntity>(ProcedureNames.Organizations.Search,
+                GetOrganizationQuery(query));
             result.Total = searchResult.Item1.Single();
             result.Result = searchResult.Item2.ToList();
             return result;
@@ -62,6 +61,17 @@ namespace Sunday.Foundation.Persistence.Implementation.Repositories
 
         public Task DeactivateAsync(Guid organizationId)
         => _dbRunner.ExecuteAsync(ProcedureNames.Organizations.Deactivate, new { OrganizationId = organizationId });
+
+        private static object GetOrganizationQuery(OrganizationQuery query)
+            => new
+            {
+                query.SortBy,
+                query.IsActive,
+                query.Text,
+                query.PageSize,
+                query.PageIndex,
+                HostNames = query.HostNames.ToDatabaseList(),
+            };
     }
 
     [MappedTo(typeof(OrganizationQuery))]

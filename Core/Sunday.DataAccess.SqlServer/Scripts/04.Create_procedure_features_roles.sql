@@ -1,21 +1,11 @@
-﻿IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_modules_getAll')
-BEGIN
-	EXEC('CREATE PROCEDURE [dbo].[sp_modules_getAll] AS BEGIN SET NOCOUNT ON; END')
-END
-GO
-ALTER PROCEDURE [dbo].sp_modules_getAll
+﻿CREATE OR ALTER PROCEDURE [dbo].sp_modules_getAll
 AS
 BEGIN
 	SELECT * FROM Modules WHERE IsActive = 1
 END
 GO
 --------------------------------------------------------------------
-IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_features_getByModules')
-BEGIN
-	EXEC('CREATE PROCEDURE [dbo].[sp_features_getByModules] AS BEGIN SET NOCOUNT ON; END')
-END
-GO
-ALTER PROCEDURE [dbo].sp_features_getByModules
+CREATE OR ALTER PROCEDURE [dbo].sp_features_getByModules
 (
 	@ModulesIds nvarchar(MAX)
 )
@@ -35,12 +25,7 @@ BEGIN
 END
 GO
 --------------------------------------------------------------------
-IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_organizationRoles_getByOrganization')
-BEGIN
-	EXEC('CREATE PROCEDURE [dbo].[sp_organizationRoles_getByOrganization] AS BEGIN SET NOCOUNT ON; END')
-END
-GO
-ALTER PROCEDURE [dbo].sp_organizationRoles_getByOrganization
+CREATE OR ALTER PROCEDURE [dbo].sp_organizationRoles_getByOrganization
 (
 	@OrganizationId uniqueidentifier,
 	@PageIndex int = 0,
@@ -61,12 +46,7 @@ BEGIN
 END
 GO
 --------------------------------------------------------------------
-IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_organizationRoles_getById')
-BEGIN
-	EXEC('CREATE PROCEDURE [dbo].[sp_organizationRoles_getById] AS BEGIN SET NOCOUNT ON; END')
-END
-GO
-ALTER PROCEDURE [dbo].sp_organizationRoles_getById
+CREATE OR ALTER  PROCEDURE [dbo].sp_organizationRoles_getById
 (
 	@OrganizationRoleId uniqueidentifier
 )
@@ -77,12 +57,7 @@ BEGIN
 END
 GO
 --------------------------------------------------------------------
-IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_organizationRoles_create')
-BEGIN
-	EXEC('CREATE PROCEDURE [dbo].[sp_organizationRoles_create] AS BEGIN SET NOCOUNT ON; END')
-END
-GO
-ALTER PROCEDURE [dbo].sp_organizationRoles_create
+CREATE OR ALTER PROCEDURE [dbo].sp_organizationRoles_create
 (
 	@Id uniqueidentifier,
 	@RoleCode nvarchar(100) = NULL,
@@ -113,12 +88,7 @@ BEGIN
 END
 GO
 --------------------------------------------------------------------
-IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_organizationRoles_update')
-BEGIN
-	EXEC('CREATE PROCEDURE [dbo].[sp_organizationRoles_update] AS BEGIN SET NOCOUNT ON; END')
-END
-GO
-ALTER PROCEDURE [dbo].sp_organizationRoles_update
+CREATE OR ALTER PROCEDURE [dbo].sp_organizationRoles_update
 (
 	@RoleId uniqueidentifier,
 	@RoleName nvarchar(MAX),
@@ -153,12 +123,7 @@ BEGIN
 END
 GO
 --------------------------------------------------------------------
-IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_organizationRoles_delete')
-BEGIN
-	EXEC('CREATE PROCEDURE [dbo].[sp_organizationRoles_delete] AS BEGIN SET NOCOUNT ON; END')
-END
-GO
-ALTER PROCEDURE [dbo].sp_organizationRoles_delete
+CREATE OR ALTER PROCEDURE [dbo].sp_organizationRoles_delete
 (
 	@RoleId uniqueidentifier
 )
@@ -168,12 +133,7 @@ BEGIN
 END
 GO
 --------------------------------------------------------------------
-IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_modules_seeding')
-BEGIN
-	EXEC('CREATE PROCEDURE [dbo].[sp_modules_seeding] AS BEGIN SET NOCOUNT ON; END')
-END
-GO
-ALTER PROCEDURE [dbo].[sp_modules_seeding]
+CREATE OR ALTER PROCEDURE [dbo].[sp_modules_seeding]
 (
 	@Modules ModuleType READONLY
 )
@@ -184,12 +144,7 @@ BEGIN
 END
 GO
 --------------------------------------------------------------------
-IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_features_seeding')
-BEGIN
-	EXEC('CREATE PROCEDURE [dbo].[sp_features_seeding] AS BEGIN SET NOCOUNT ON; END')
-END
-GO
-ALTER PROCEDURE [dbo].[sp_features_seeding]
+CREATE OR ALTER PROCEDURE [dbo].[sp_features_seeding]
 (
 	@Features FeatureType READONLY
 )
@@ -202,12 +157,7 @@ BEGIN
 END
 GO
 --------------------------------------------------------------------
-IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_organizationRoles_bulkUpdate')
-BEGIN
-	EXEC('CREATE PROCEDURE [dbo].[sp_organizationRoles_bulkUpdate] AS BEGIN SET NOCOUNT ON; END')
-END
-GO
-ALTER PROCEDURE dbo.sp_organizationRoles_bulkUpdate
+CREATE OR ALTER PROCEDURE dbo.sp_organizationRoles_bulkUpdate
 (
 	@Roles OrganizationRoleType READONLY
 )
@@ -245,12 +195,7 @@ BEGIN
 END
 GO
 --------------------------------------------------------------------
-IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_clean')
-BEGIN
-	EXEC('CREATE PROCEDURE [dbo].[sp_clean] AS BEGIN SET NOCOUNT ON; END')
-END
-GO
-ALTER PROCEDURE dbo.sp_clean
+CREATE OR ALTER PROCEDURE dbo.sp_clean
 AS
 BEGIN
 	DELETE FROM OrganizationRolesMapping

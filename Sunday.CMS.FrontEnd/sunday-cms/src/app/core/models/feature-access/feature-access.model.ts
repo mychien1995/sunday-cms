@@ -1,7 +1,7 @@
 import { ApiResponse } from '@models/common/response.model';
 
 export class ModuleModel {
-  ID?: number;
+  ID?: string;
   ModuleName?: string;
   ModuleCode?: string;
   Features?: FeatureItem[];
@@ -13,7 +13,7 @@ export class ModuleListApiResponse extends ApiResponse {
 }
 
 export class FeatureItem {
-  ID?: number;
+  ID?: string;
   FeatureCode?: string;
   FeatureName?: string;
 }

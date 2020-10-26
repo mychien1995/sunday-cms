@@ -18,10 +18,14 @@
     <None Remove="Scripts\02.Create_procedure_user_roles.sql" />
     <None Remove="Scripts\03.Create_procedure_organizations.sql" />
     <None Remove="Scripts\04.Create_procedure_features_roles.sql" />
+    <None Remove="Scripts\05.Create_common_functions.sql" />
     <None Remove="Scripts\Clear_version.sql" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Scripts\05.Create_common_functions.sql">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Scripts\01.Create_schema.sql">
       <SubType>Designer</SubType>
     </EmbeddedResource>

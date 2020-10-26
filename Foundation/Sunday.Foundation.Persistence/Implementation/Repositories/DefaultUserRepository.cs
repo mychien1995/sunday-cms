@@ -9,6 +9,7 @@ using Sunday.Foundation.Implementation;
 using Sunday.Foundation.Models;
 using Sunday.Foundation.Persistence.Application.Repositories;
 using Sunday.Foundation.Persistence.Entities;
+using Sunday.Foundation.Persistence.Extensions;
 
 namespace Sunday.Foundation.Persistence.Implementation.Repositories
 {
@@ -25,7 +26,8 @@ namespace Sunday.Foundation.Persistence.Implementation.Repositories
         public async Task<SearchResult<UserEntity>> QueryAsync(UserQuery query)
         {
             var result = new SearchResult<UserEntity>();
-            var searchResult = await _dbRunner.ExecuteMultipleAsync<int, UserEntity>(ProcedureNames.Users.Search, query);
+            var searchResult = await _dbRunner.ExecuteMultipleAsync<int, UserEntity>(ProcedureNames.Users.Search, 
+                GetUserQuery(query));
             result.Total = searchResult.Item1.Single();
             result.Result = searchResult.Item2.ToList();
             return result;
@@ -82,5 +84,19 @@ namespace Sunday.Foundation.Persistence.Implementation.Repositories
             user.Roles = queryResult.Item2.ToList();
             return user;
         }
+
+        private static object GetUserQuery(UserQuery query)
+        => new
+        {
+            query.Username,
+            query.Email,
+            ExcludeIds = query.ExcludeIdList.ToDatabaseList(),
+            IncludeIds = query.IncludeIdList.ToDatabaseList(),
+            OrganizationIds = query.OrganizationIds.ToDatabaseList(),
+            query.SortBy,
+            query.Text,
+            query.PageIndex,
+            query.PageSize
+        };
     }
 }

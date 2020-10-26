@@ -6,7 +6,7 @@ export class OrganizationList extends ApiResponse {
 }
 
 export class OrganizationItem {
-  ID: number;
+  ID: string;
   OrganizationName: string;
   LogoLink: string;
   CreatedBy: string;
@@ -17,7 +17,7 @@ export class OrganizationItem {
 }
 
 export class OrganizationMutationModel {
-  ID?: number;
+  ID?: string;
   OrganizationName: string;
   LogoBlobUri: string;
   Description: string;
@@ -28,7 +28,7 @@ export class OrganizationMutationModel {
 }
 
 export class OrganizationDetailResponse extends ApiResponse {
-  ID?: number;
+  ID?: string;
   OrganizationName: string;
   LogoLink: string;
   Description: string;
@@ -36,7 +36,7 @@ export class OrganizationDetailResponse extends ApiResponse {
   ColorScheme: string;
   IsActive: boolean;
   HostNames: string[];
-  ModuleIds: number[];
+  ModuleIds: string[];
 }
 
 export class OrganizationLookupResponse extends ApiResponse {

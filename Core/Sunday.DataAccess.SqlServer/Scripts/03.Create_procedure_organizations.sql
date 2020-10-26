@@ -1,9 +1,4 @@
-﻿IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_organizations_create')
-BEGIN
-	EXEC('CREATE PROCEDURE [dbo].[sp_organizations_create] AS BEGIN SET NOCOUNT ON; END')
-END
-GO
-ALTER PROCEDURE [dbo].[sp_organizations_create]
+﻿CREATE OR ALTER PROCEDURE [dbo].[sp_organizations_create]
 (
 	@Id uniqueidentifier,
 	@OrganizationName nvarchar(500),
@@ -63,12 +58,7 @@ BEGIN
 END
 GO
 --------------------------------------------------------------------
-IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_organizations_update')
-BEGIN
-	EXEC('CREATE PROCEDURE [dbo].[sp_organizations_update] AS BEGIN SET NOCOUNT ON; END')
-END
-GO
-ALTER PROCEDURE [dbo].[sp_organizations_update]
+CREATE OR ALTER PROCEDURE [dbo].[sp_organizations_update]
 (
 	@ID uniqueidentifier,
 	@OrganizationName nvarchar(500),
@@ -114,12 +104,7 @@ BEGIN
 END
 GO
 --------------------------------------------------------------------
-IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_organizations_activate')
-BEGIN
-	EXEC('CREATE PROCEDURE [dbo].[sp_organizations_activate] AS BEGIN SET NOCOUNT ON; END')
-END
-GO
-ALTER PROCEDURE [dbo].[sp_organizations_activate]
+CREATE OR ALTER PROCEDURE [dbo].[sp_organizations_activate]
 (
 	@OrganizationId uniqueidentifier
 )
@@ -129,12 +114,7 @@ BEGIN
 END
 GO
 --------------------------------------------------------------------
-IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_organizations_deactivate')
-BEGIN
-	EXEC('CREATE PROCEDURE [dbo].[sp_organizations_deactivate] AS BEGIN SET NOCOUNT ON; END')
-END
-GO
-ALTER PROCEDURE [dbo].[sp_organizations_deactivate]
+CREATE OR ALTER PROCEDURE [dbo].[sp_organizations_deactivate]
 (
 	@OrganizationId uniqueidentifier
 )
@@ -144,12 +124,7 @@ BEGIN
 END
 GO
 --------------------------------------------------------------------
-IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_organizations_delete')
-BEGIN
-	EXEC('CREATE PROCEDURE [dbo].[sp_organizations_delete] AS BEGIN SET NOCOUNT ON; END')
-END
-GO
-ALTER PROCEDURE [dbo].[sp_organizations_delete]
+CREATE OR ALTER PROCEDURE [dbo].[sp_organizations_delete]
 (
 	@OrganizationId uniqueidentifier
 )
@@ -159,12 +134,7 @@ BEGIN
 END
 GO
 --------------------------------------------------------------------
-IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_organizations_getById')
-BEGIN
-	EXEC('CREATE PROCEDURE [dbo].[sp_organizations_getById] AS BEGIN SET NOCOUNT ON; END')
-END
-GO
-ALTER PROCEDURE [dbo].[sp_organizations_getById]
+CREATE OR ALTER PROCEDURE [dbo].[sp_organizations_getById]
 (
 	@OrganizationId uniqueidentifier
 )
@@ -175,12 +145,7 @@ BEGIN
 END
 GO
 --------------------------------------------------------------------
-IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_organizations_search')
-BEGIN
-	EXEC('CREATE PROCEDURE [dbo].[sp_organizations_search] AS BEGIN SET NOCOUNT ON; END')
-END
-GO
-ALTER PROCEDURE [dbo].[sp_organizations_search]
+CREATE OR ALTER  PROCEDURE [dbo].[sp_organizations_search]
 (
 	@PageIndex int = 0,
 	@PageSize int = 10,
@@ -237,12 +202,7 @@ BEGIN
 END
 GO
 --------------------------------------------------------------------
-IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_organizations_findByHostName')
-BEGIN
-	EXEC('CREATE PROCEDURE [dbo].[sp_organizations_findByHostName] AS BEGIN SET NOCOUNT ON; END')
-END
-GO
-ALTER PROCEDURE dbo.sp_organizations_findByHostName
+CREATE OR ALTER PROCEDURE dbo.sp_organizations_findByHostName
 (
 	@Hostname nvarchar(MAX)
 )

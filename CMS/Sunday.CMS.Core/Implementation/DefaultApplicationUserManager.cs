@@ -5,9 +5,11 @@ using Sunday.CMS.Core.Application;
 using Sunday.CMS.Core.Models.Users;
 using Sunday.CMS.Core.Models.Users.JsonResults;
 using Sunday.Core;
+using Sunday.Core.Constants;
 using Sunday.Core.Extensions;
 using Sunday.Core.Models.Base;
 using Sunday.Foundation.Application.Services;
+using Sunday.Foundation.Context;
 using Sunday.Foundation.Domain;
 using Sunday.Foundation.Models;
 
@@ -19,16 +21,18 @@ namespace Sunday.CMS.Core.Implementation
         private readonly IUserService _userService;
         private readonly IIdentityService _identityService;
         private readonly INotificationService _notificationService;
+        private readonly ISundayContext _sundayContext;
 
-        public DefaultApplicationUserManager(IUserService userService, INotificationService notificationService, IIdentityService identityService)
+        public DefaultApplicationUserManager(IUserService userService, INotificationService notificationService, IIdentityService identityService, ISundayContext sundayContext)
         {
             _userService = userService;
             _notificationService = notificationService;
             _identityService = identityService;
+            _sundayContext = sundayContext;
         }
 
         public Task<UserListJsonResult> SearchUsers(UserQuery criteria)
-            => _userService.QueryAsync(criteria).MapResultTo(list => new UserListJsonResult()
+            => _userService.QueryAsync(EnsureQuery(criteria)).MapResultTo(list => new UserListJsonResult()
             {
                 Users = list.Result.Select(ToJsonResult).ToList(),
                 Total = list.Total
@@ -76,7 +80,7 @@ namespace Sunday.CMS.Core.Implementation
         public async Task<BaseApiResponse> ResetUserPassword(Guid userId)
         {
             var user = await _userService.GetUserByIdAsync(userId);
-            if(user.IsNone) return BaseApiResponse.ErrorResult<BaseApiResponse>("User not found");
+            if (user.IsNone) return BaseApiResponse.ErrorResult<BaseApiResponse>("User not found");
             var newPassword = await _identityService.ResetPasswordAsync(userId);
             _ = Task.Run(async () => await _notificationService.NotifyPasswordReset(user.Get(), newPassword));
             return BaseApiResponse.SuccessResult;
@@ -95,6 +99,17 @@ namespace Sunday.CMS.Core.Implementation
         private static UserDetailJsonResult ToDetailJsonResult(ApplicationUser user)
         {
             return user.MapTo<UserDetailJsonResult>();
+        }
+
+        private UserQuery EnsureQuery(UserQuery query)
+        {
+            var currentUser = _sundayContext.CurrentUser!;
+            query.ExcludeIdList.Add(currentUser.Id);
+            query.PageSize = 10;
+            if (currentUser.IsInRole(SystemRoleCodes.Developer) || currentUser.IsInRole(SystemRoleCodes.SystemAdmin))
+                return query;
+            query.OrganizationIds.Add(_sundayContext.CurrentOrganization!.Id);
+            return query;
         }
     }
 }

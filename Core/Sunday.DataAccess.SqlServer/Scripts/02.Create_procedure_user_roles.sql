@@ -1,9 +1,4 @@
-﻿IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_database_seeding')
-BEGIN
-	EXEC('CREATE PROCEDURE [dbo].[sp_database_seeding] AS BEGIN SET NOCOUNT ON; END')
-END
-GO
-ALTER PROCEDURE [dbo].[sp_database_seeding]
+﻿CREATE OR ALTER PROCEDURE [dbo].[sp_database_seeding]
 (
 	@PasswordHash nvarchar(MAX),
 	@SecurityStamp nvarchar(500),
@@ -36,12 +31,7 @@ BEGIN
 END
 GO
 --------------------------------------------------------------------
-IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_users_findbyusername')
-BEGIN
-	EXEC('CREATE PROCEDURE [dbo].[sp_users_findbyusername] AS BEGIN SET NOCOUNT ON; END')
-END
-GO
-ALTER PROCEDURE [dbo].[sp_users_findbyusername]
+CREATE OR ALTER PROCEDURE [dbo].[sp_users_findbyusername]
 (
 	@Username nvarchar(MAX)
 )
@@ -52,12 +42,7 @@ BEGIN
 END
 GO
 --------------------------------------------------------------------
-IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_users_getById')
-BEGIN
-	EXEC('CREATE PROCEDURE [dbo].[sp_users_getById] AS BEGIN SET NOCOUNT ON; END')
-END
-GO
-ALTER PROCEDURE [dbo].[sp_users_getById]
+CREATE OR ALTER PROCEDURE [dbo].[sp_users_getById]
 (
 	@UserId uniqueidentifier
 )
@@ -69,20 +54,17 @@ BEGIN
 END
 GO
 --------------------------------------------------------------------
-IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_users_search')
-BEGIN
-	EXEC('CREATE PROCEDURE [dbo].[sp_users_search] AS BEGIN SET NOCOUNT ON; END')
-END
-GO
-ALTER PROCEDURE [dbo].[sp_users_search]
+CREATE OR ALTER PROCEDURE [dbo].[sp_users_search]
 (
 	@PageIndex int = 0,
 	@PageSize int = 10,
 	@ExcludeIds nvarchar(MAX) = '',
 	@IncludeIds nvarchar(MAX) = '',
-	@Text nvarchar(MAX) = '',
+	@OrganizationIds nvarchar(MAX) = '',
 	@RoleIds nvarchar(MAX) = '',
-	@OrganizationIdList nvarchar(MAX) = '',
+	@Text nvarchar(MAX) = '',
+	@Username nvarchar(MAX) = '',
+	@Email nvarchar(MAX) = '',
 	@SortBy nvarchar(MAX) = 'UpdatedDate',
 	@SortDirection nvarchar(MAX) = 'DESC'
 )
@@ -106,14 +88,14 @@ BEGIN
 	BEGIN
 		IF LEN(TRIM(@WhereClause)) > 0
 			SET @WhereClause = @WhereClause + ' AND ';
-		SET @WhereClause = @WhereClause + ' ID NOT IN (' + @ExcludeIds + ') ';
+		SET @WhereClause = @WhereClause + ' ID NOT IN (' + dbo.ParseIdList(@ExcludeIds) + ') ';
 	END
 
 	IF(@IncludeIds IS NOT NULL AND LEN(TRIM(@IncludeIds)) > 0)
 	BEGIN
 		IF LEN(TRIM(@WhereClause)) > 0
 			SET @WhereClause = @WhereClause + ' AND ';
-		SET @WhereClause = @WhereClause + ' ID IN (' + @IncludeIds + ') ';
+		SET @WhereClause = @WhereClause + ' ID IN (' + dbo.ParseIdList(@IncludeIds) + ') ';
 	END
 
 	IF(@Text IS NOT NULL AND LEN(TRIM(@Text)) > 0)
@@ -127,14 +109,14 @@ BEGIN
 	BEGIN
 		IF LEN(TRIM(@WhereClause)) > 0
 			SET @WhereClause = @WhereClause + ' AND ';
-		SET @WhereClause = @WhereClause + ' ID IN (SELECT UserId FROM UserRoles WHERE RoleId IN ('+@RoleIds+')) ';
+		SET @WhereClause = @WhereClause + ' ID IN (SELECT UserId FROM UserRoles WHERE RoleId IN (' + dbo.ParseIdList(@RoleIds) + ')) ';
 	END
 
-	IF(@OrganizationIdList IS NOT NULL AND LEN(TRIM(@OrganizationIdList)) > 0)
+	IF(@OrganizationIds IS NOT NULL AND LEN(TRIM(@OrganizationIds)) > 0)
 	BEGIN
 		IF LEN(TRIM(@WhereClause)) > 0
 			SET @WhereClause = @WhereClause + ' AND ';
-		SET @WhereClause = @WhereClause + ' ID IN (SELECT UserId FROM OrganizationUsers WHERE OrganizationId IN ('+@OrganizationIdList+')) ';
+		SET @WhereClause = @WhereClause + ' ID IN (SELECT UserId FROM OrganizationUsers WHERE OrganizationId IN (' + dbo.ParseIdList(@OrganizationIds) + ')) ';
 	END
 
 	IF(LEN(TRIM(@WhereClause)) > 0)
@@ -158,12 +140,7 @@ BEGIN
 END
 GO
 --------------------------------------------------------------------
-IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_users_insert')
-BEGIN
-	EXEC('CREATE PROCEDURE [dbo].[sp_users_insert] AS BEGIN SET NOCOUNT ON; END')
-END
-GO
-ALTER PROCEDURE [dbo].[sp_users_insert]
+CREATE OR ALTER PROCEDURE [dbo].[sp_users_insert]
 (
 	@Id uniqueidentifier,
 	@UserName nvarchar(500),
@@ -216,24 +193,14 @@ BEGIN
 END
 GO
 --------------------------------------------------------------------
-IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_roles_getAll')
-BEGIN
-	EXEC('CREATE PROCEDURE [dbo].[sp_roles_getAll] AS BEGIN SET NOCOUNT ON; END')
-END
-GO
-ALTER PROCEDURE [dbo].[sp_roles_getAll]
+CREATE OR ALTER PROCEDURE [dbo].[sp_roles_getAll]
 AS
 BEGIN
 	SELECT * FROM [Roles];
 END
 GO
-
-IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_users_getById_withOptions')
-BEGIN
-	EXEC('CREATE PROCEDURE [dbo].[sp_users_getById_withOptions] AS BEGIN SET NOCOUNT ON; END')
-END
-GO
-ALTER PROCEDURE [dbo].[sp_users_getById_withOptions]
+--------------------------------------------------------------------
+CREATE OR ALTER PROCEDURE [dbo].[sp_users_getById_withOptions]
 (
 	@UserId uniqueidentifier,
 	@FetchRoles bit = 1,
@@ -265,12 +232,7 @@ BEGIN
 END
 GO
 --------------------------------------------------------------------
-IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_users_update')
-BEGIN
-	EXEC('CREATE PROCEDURE [dbo].[sp_users_update] AS BEGIN SET NOCOUNT ON; END')
-END
-GO
-ALTER PROCEDURE [dbo].[sp_users_update]
+CREATE OR ALTER PROCEDURE [dbo].[sp_users_update]
 (
 	@ID uniqueidentifier,
 	@Fullname nvarchar(500),
@@ -348,12 +310,7 @@ BEGIN
 END
 GO
 --------------------------------------------------------------------
-IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_users_updateAvatar')
-BEGIN
-	EXEC('CREATE PROCEDURE [dbo].[sp_users_updateAvatar] AS BEGIN SET NOCOUNT ON; END')
-END
-GO
-ALTER PROCEDURE [dbo].[sp_users_updateAvatar]
+CREATE OR ALTER PROCEDURE [dbo].[sp_users_updateAvatar]
 (
 	@UserId uniqueidentifier,
 	@BlobUri nvarchar(MAX)
@@ -365,12 +322,7 @@ BEGIN
 END
 GO
 --------------------------------------------------------------------
-IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_users_delete')
-BEGIN
-	EXEC('CREATE PROCEDURE [dbo].[sp_users_delete] AS BEGIN SET NOCOUNT ON; END')
-END
-GO
-ALTER PROCEDURE [dbo].[sp_users_delete]
+CREATE OR ALTER PROCEDURE [dbo].[sp_users_delete]
 (
 	@UserId uniqueidentifier
 )
@@ -380,12 +332,7 @@ BEGIN
 END
 GO
 --------------------------------------------------------------------
-IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_users_fetchRoles')
-BEGIN
-	EXEC('CREATE PROCEDURE [dbo].[sp_users_fetchRoles] AS BEGIN SET NOCOUNT ON; END')
-END
-GO
-ALTER PROCEDURE dbo.sp_users_fetchRoles
+CREATE OR ALTER PROCEDURE dbo.sp_users_fetchRoles
 (
 	@UserIds nvarchar(MAX)
 )
@@ -406,12 +353,7 @@ BEGIN
 END
 GO
 --------------------------------------------------------------------
-IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_users_activate')
-BEGIN
-	EXEC('CREATE PROCEDURE [dbo].[sp_users_activate] AS BEGIN SET NOCOUNT ON; END')
-END
-GO
-ALTER PROCEDURE dbo.sp_users_activate
+CREATE OR ALTER PROCEDURE dbo.sp_users_activate
 (
 	@UserId uniqueidentifier
 )
@@ -420,13 +362,8 @@ BEGIN
 	UPDATE Users SET IsActive = 1 WHERE ID = @UserId
 END
 GO
-
-IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_users_deactivate')
-BEGIN
-	EXEC('CREATE PROCEDURE [dbo].[sp_users_deactivate] AS BEGIN SET NOCOUNT ON; END')
-END
-GO
-ALTER PROCEDURE dbo.sp_users_deactivate
+--------------------------------------------------------------------
+CREATE OR ALTER PROCEDURE dbo.sp_users_deactivate
 (
 	@UserId uniqueidentifier
 )
@@ -436,12 +373,7 @@ BEGIN
 END
 GO
 --------------------------------------------------------------------
-IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_users_changePassword')
-BEGIN
-	EXEC('CREATE PROCEDURE [dbo].[sp_users_changePassword] AS BEGIN SET NOCOUNT ON; END')
-END
-GO
-ALTER PROCEDURE dbo.sp_users_changePassword
+CREATE OR ALTER PROCEDURE dbo.sp_users_changePassword
 (
 	@UserId uniqueidentifier,
 	@SecurityHash nvarchar(MAX),
@@ -453,12 +385,7 @@ BEGIN
 END
 GO
 --------------------------------------------------------------------
-IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_roles_getById')
-BEGIN
-	EXEC('CREATE PROCEDURE [dbo].[sp_roles_getById] AS BEGIN SET NOCOUNT ON; END')
-END
-GO
-ALTER PROCEDURE dbo.sp_roles_getById
+CREATE OR ALTER PROCEDURE dbo.sp_roles_getById
 (
 	@RoleId integer
 )
@@ -468,12 +395,7 @@ BEGIN
 END
 GO
 --------------------------------------------------------------------
-IF NOT EXISTS (select 1 from sys.procedures where name = 'sp_users_fetchOrganizationRoles')
-BEGIN
-	EXEC('CREATE PROCEDURE [dbo].[sp_users_fetchOrganizationRoles] AS BEGIN SET NOCOUNT ON; END')
-END
-GO
-ALTER PROCEDURE [dbo].[sp_users_fetchOrganizationRoles]
+CREATE OR ALTER PROCEDURE [dbo].[sp_users_fetchOrganizationRoles]
 (
 	@UserIds nvarchar(MAX)
 )
@@ -484,7 +406,7 @@ BEGIN
 		SELECT * FROM OrganizationRoles WHERE 1 = 2
 	END
 	DECLARE @tblUserIds TABLE (ID varchar(100))
-	INSERT INTO @tblUserIds SELECT value  FROM STRING_SPLIT(@UserIds, ',')
+	INSERT INTO @tblUserIds SELECT value  FROM STRING_SPLIT(@UserIds, '|')
 
 	SELECT UserId, OrganizationRoles.ID, OrganizationRoles.RoleCode, OrganizationRoles.RoleName 
 	FROM OrganizationRoles, OrganizationUserRoles, OrganizationUsers 
@@ -493,3 +415,4 @@ BEGIN
 	AND OrganizationUserRoles.OrganizationRoleId = OrganizationRoles.ID
 
 END
+GO
