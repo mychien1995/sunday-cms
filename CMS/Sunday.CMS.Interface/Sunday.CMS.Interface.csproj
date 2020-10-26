@@ -13,6 +13,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Sunday.Core.Framework\Sunday.Core.Framework.csproj" />
     <ProjectReference Include="..\..\Core\Sunday.Core\Sunday.Core.csproj" />
+    <ProjectReference Include="..\..\Foundation\Sunday.Foundation.Implementation\Sunday.Foundation.Implementation.csproj" />
     <ProjectReference Include="..\Sunday.CMS.Core\Sunday.CMS.Core.csproj" />
   </ItemGroup>
 

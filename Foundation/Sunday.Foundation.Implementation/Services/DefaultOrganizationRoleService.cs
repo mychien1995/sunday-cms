@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using LanguageExt;
 using Sunday.Core.Extensions;
 using Sunday.Core.Models.Base;
+using Sunday.Core.Pipelines;
+using Sunday.Core.Pipelines.Arguments;
 using Sunday.Foundation.Application.Services;
 using Sunday.Foundation.Domain;
 using Sunday.Foundation.Models;
@@ -28,11 +30,17 @@ namespace Sunday.Foundation.Implementation.Services
             => _organizationRoleRepository.GetRoleByIdAsync(organizationRoleId)
                 .MapResultTo(org => org.Map(o => o.MapTo<ApplicationOrganizationRole>()));
 
-        public Task<Guid> CreateAsync(ApplicationOrganizationRole role)
-            => _organizationRoleRepository.CreateAsync(role.MapTo<OrganizationRoleEntity>());
+        public async Task<Guid> CreateAsync(ApplicationOrganizationRole role)
+        {
+            await ApplicationPipelines.RunAsync("cms.entity.beforeCreate", new BeforeCreateEntityArg(role));
+            return await _organizationRoleRepository.CreateAsync(role.MapTo<OrganizationRoleEntity>());
+        }
 
-        public Task UpdateAsync(ApplicationOrganizationRole role)
-            => _organizationRoleRepository.UpdateAsync(role.MapTo<OrganizationRoleEntity>());
+        public async Task UpdateAsync(ApplicationOrganizationRole role)
+        {
+            await ApplicationPipelines.RunAsync("cms.entity.beforeUpdate", new BeforeUpdateEntityArg(role));
+            await _organizationRoleRepository.UpdateAsync(role.MapTo<OrganizationRoleEntity>());
+        }
 
         public Task DeleteAsync(Guid roleId)
             => _organizationRoleRepository.DeleteAsync(roleId);

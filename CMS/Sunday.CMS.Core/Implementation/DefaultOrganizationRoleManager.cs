@@ -41,14 +41,14 @@ namespace Sunday.CMS.Core.Implementation
         public async Task<BaseApiResponse> CreateRole(OrganizationRoleMutationModel mutationData)
         {
             var role = ToOrganizationRole(mutationData);
-            await ApplicationPipelines.RunAsync("cms.entity.beforeCreate", new BeforeCreateEntityArg(role));
+            await _organizationRoleService.CreateAsync(role);
             return BaseApiResponse.SuccessResult;
         }
 
         public async Task<BaseApiResponse> UpdateRole(OrganizationRoleMutationModel mutationData)
         {
             var role = ToOrganizationRole(mutationData);
-            await ApplicationPipelines.RunAsync("cms.entity.beforeUpdate", new BeforeUpdateEntityArg(role));
+            await _organizationRoleService.UpdateAsync(role);
             return BaseApiResponse.SuccessResult;
         }
 
@@ -65,8 +65,13 @@ namespace Sunday.CMS.Core.Implementation
         }
 
         private OrganizationRoleItem ToJsonItem(ApplicationOrganizationRole role) => role.MapTo<OrganizationRoleItem>();
+
         private OrganizationRoleDetailJsonResult ToJsonResult(ApplicationOrganizationRole role)
-        => role.MapTo<OrganizationRoleDetailJsonResult>();
+        {
+            var model = role.MapTo<OrganizationRoleDetailJsonResult>();
+            model.FeatureIds = role.Features.Select(f => f.Id).ToList();
+            return model;
+        }
 
         private static ApplicationOrganizationRole ToOrganizationRole(OrganizationRoleMutationModel role)
         {
