@@ -25,7 +25,7 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let org of selectedOrganizations; let i = index" [class]="tableRowClass(org.OrganizationId)">
-                        <td (click)="selectCurrentOrganization(org.OrganizationId)">{{org.OrganizationName}}</td>
+                        <td (click)="selectCurrentOrganization(org.OrganizationId)">{{getOrganizationName(org)}}</td>
                         <td align="center">
                             <div class="position-relative custom-checkbox custom-control">
                                 <input type="checkbox" id="customCheckbox{{i}}" class="custom-control-input" [checked]="org.IsActive"

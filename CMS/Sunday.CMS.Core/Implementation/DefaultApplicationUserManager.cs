@@ -88,7 +88,9 @@ namespace Sunday.CMS.Core.Implementation
 
         private static UserItem ToJsonResult(ApplicationUser user)
         {
-            return user.MapTo<UserItem>();
+            var model = user.MapTo<UserItem>();
+            model.OrganizationIds = user.OrganizationUsers.Select(o => o.OrganizationId).ToList();
+            return model;
         }
 
         private static ApplicationUser ToUser(UserMutationModel data)
@@ -112,7 +114,14 @@ namespace Sunday.CMS.Core.Implementation
 
         private static UserDetailJsonResult ToDetailJsonResult(ApplicationUser user)
         {
-            return user.MapTo<UserDetailJsonResult>();
+            var result = user.MapTo<UserDetailJsonResult>();
+            result.RoleIds = user.Roles.Select(r => r.Id).ToList();
+            result.OrganizationRoleIds = user.VirtualRoles.Select(r => r.Id).ToList();
+            result.Organizations = user.OrganizationUsers.Select(o => new OrganizationsUserItem(
+                    o.Organization?.OrganizationName!
+                    , o.OrganizationId, o.IsActive))
+                .ToList();
+            return result;
         }
 
         private UserQuery EnsureQuery(UserQuery query)
@@ -121,7 +130,12 @@ namespace Sunday.CMS.Core.Implementation
             query.ExcludeIdList.Add(currentUser.Id);
             query.PageSize = 10;
             if (currentUser.IsInRole(SystemRoleCodes.Developer) || currentUser.IsInRole(SystemRoleCodes.SystemAdmin))
+            {
+                query.IncludeVirtualRoles = false;
                 return query;
+            }
+            query.IncludeOrganizations = false;
+            query.IncludeRoles = false;
             query.OrganizationIds.Add(_sundayContext.CurrentOrganization!.Id);
             return query;
         }

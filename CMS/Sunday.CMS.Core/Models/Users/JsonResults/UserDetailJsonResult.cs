@@ -30,20 +30,24 @@ namespace Sunday.CMS.Core.Models.Users.JsonResults
         public string Domain { get; set; }
         public List<OrganizationsUserItem> Organizations { get; set; } = new List<OrganizationsUserItem>();
         public List<int> RoleIds { get; set; } = new List<int>();
-        public List<int> OrganizationRoleIds { get; set; } = new List<int>();
+        public List<Guid> OrganizationRoleIds { get; set; } = new List<Guid>();
     }
 
     public class OrganizationsUserItem
     {
-        public OrganizationsUserItem(string organizationName, int organizationId, bool isActive)
+        public OrganizationsUserItem()
+        {
+            
+        }
+        public OrganizationsUserItem(string organizationName, Guid organizationId, bool isActive)
         {
             OrganizationName = organizationName;
             OrganizationId = organizationId;
             IsActive = isActive;
         }
 
-        public string OrganizationName { get; set; }
-        public int OrganizationId { get; set; }
+        public string OrganizationName { get; set; } = string.Empty;
+        public Guid OrganizationId { get; set; }
         public bool IsActive { get; set; }
     }
 }

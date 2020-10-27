@@ -48,9 +48,12 @@ CREATE OR ALTER PROCEDURE [dbo].[sp_users_getById]
 )
 AS
 BEGIN
-	SELECT * FROM [Users] WHERE ID = @UserId AND IsDeleted = 0;
-	SELECT * FROM [Roles] WHERE ID IN (SELECT RoleId FROM UserRoles WHERE UserId = @UserId);
-	SELECT * FROM [OrganizationUsers] WHERE UserId = @UserId;
+	SELECT * FROM Users WHERE ID = @UserId AND IsDeleted = 0;
+	SELECT Id, RoleName, Code FROM [Roles] WHERE Id IN (SELECT RoleId FROM [UserRoles] WHERE UserId = @UserId);
+	SELECT OrganizationId, IsActive FROM [OrganizationUsers] WHERE UserId = @UserId;
+	SELECT OrganizationRoleId, [OrganizationRoles].RoleName FROM [OrganizationUserRoles], [OrganizationRoles]
+	WHERE OrganizationUserId IN (SELECT Id FROM [OrganizationUsers] WHERE UserId = @UserId)
+	AND [OrganizationUserRoles].OrganizationRoleId = [OrganizationRoles].Id;
 END
 GO
 --------------------------------------------------------------------
@@ -66,59 +69,70 @@ CREATE OR ALTER  PROCEDURE [dbo].[sp_users_search]
 	@Username nvarchar(MAX) = '',
 	@Email nvarchar(MAX) = '',
 	@SortBy nvarchar(MAX) = 'UpdatedDate',
-	@SortDirection nvarchar(MAX) = 'DESC'
+	@SortDirection nvarchar(MAX) = 'DESC',
+	@IncludeRoles bit = 1,
+	@IncludeOrganizations bit = 1,
+	@IncludeVirtualRoles bit = 1
 )
 AS
 BEGIN
 	IF @PageIndex IS NULL
 		SET @PageIndex = 0
-
 	IF @PageSize IS NULL
 		SET @PageSize = 10
-
 	SET @PageIndex = @PageIndex * @PageSize
-
 	IF @SortBy IS NULL
 		SET @SortBy = 'UpdatedDate'
-
 	DECLARE @WhereClause nvarchar(MAX);
 	SET @WhereClause = ' IsDeleted = 0 ';
-
 	IF(@ExcludeIds IS NOT NULL AND LEN(TRIM(@ExcludeIds)) > 0)
 		SET @WhereClause = @WhereClause + ' AND ID NOT IN (' + dbo.ParseIdList(@ExcludeIds) + ') ';
-
 	IF(@IncludeIds IS NOT NULL AND LEN(TRIM(@IncludeIds)) > 0)
 		SET @WhereClause = @WhereClause + ' AND ID IN (' + dbo.ParseIdList(@IncludeIds) + ') ';
-
 	IF(@Text IS NOT NULL AND LEN(TRIM(@Text)) > 0)
 		SET @WhereClause = @WhereClause + ' AND (Username LIKE ''%'' + @Text + ''%'' OR FullName LIKE ''%'' + @Text + ''%'' OR Email LIKE ''%'' + @Text + ''%'') ' ;
-
 	IF(@RoleIds IS NOT NULL AND LEN(TRIM(@RoleIds)) > 0)
 		SET @WhereClause = @WhereClause + ' AND ID IN (SELECT UserId FROM UserRoles WHERE RoleId IN (' + dbo.ParseIdList(@RoleIds) + ')) ';
-
 	IF(@OrganizationIds IS NOT NULL AND LEN(TRIM(@OrganizationIds)) > 0)
 		SET @WhereClause = @WhereClause + ' AND ID IN (SELECT UserId FROM OrganizationUsers WHERE OrganizationId IN (' + dbo.ParseIdList(@OrganizationIds) + ')) ';
-
 	IF(LEN(TRIM(@WhereClause)) > 0)
 		SET @WhereClause = ' WHERE ' + @WhereClause
 	DECLARE @CountQuery nvarchar(MAX);
 	SET @CountQuery = 'SELECT COUNT(*) FROM [Users] ' + @WhereClause
-
+	--select total--
 	exec sp_executesql @CountQuery, N'@Text nvarchar(MAX)', @Text
-
 	
+	SELECT [Id],[Domain],[Username],[FullName],[Email],[Phone],[AvatarBlobUri],[IsActive]
+		,[IsLockedOut],[EmailConfirmed],[CreatedDate],[CreatedBy],[UpdatedDate],[UpdatedBy] into  #tmpUsers 
+		FROM [Users] WHERE 1 = 2;
+	DELETE FROM #tmpUsers
 	DECLARE @DataQuery nvarchar(MAX);
-	SET @DataQuery = 'SELECT * into #tmpUsers FROM [Users] ' + @WhereClause  + ' ORDER BY ' + @SortBy + ' ' + @SortDirection
+	SET @DataQuery = 'SELECT [Id],[Domain],[Username],[FullName],[Email],[Phone],[AvatarBlobUri],[IsActive]
+		,[IsLockedOut],[EmailConfirmed],[CreatedDate],[CreatedBy],[UpdatedDate],[UpdatedBy]
+		FROM [Users] ' + @WhereClause  + ' ORDER BY ' + @SortBy + ' ' + @SortDirection
 	+ ' OFFSET ' + CAST(@PageIndex AS VARCHAR(100)) + ' ROWS FETCH NEXT '+ CAST(@PageSize AS VARCHAR(100)) +' ROWS ONLY '
 	PRINT @DataQuery
-
-	exec sp_executesql @DataQuery, N'@Text nvarchar(MAX)', @Text
+	INSERT INTO #tmpUsers exec sp_executesql @DataQuery, N'@Text nvarchar(MAX)', @Text
+	
+	--select users---
 	SELECT * FROM #tmpUsers;
-	SELECT Id, RoleName, Code FROM [Roles] WHERE Id IN (SELECT RoleId FROM [UserRoles] WHERE UserId IN (SELECT Id FROM #tmpUsers));
-	SELECT OrganizationId, IsActive FROM [OrganizationUsers] WHERE UserId IN (SELECT Id FROM #tmpUsers);
-	SELECT OrganizationRoleId, [OrganizationRoles].RoleName FROM [OrganizationUserRoles], [OrganizationRoles]
-		WHERE OrganizationUserId IN (SELECT Id FROM [OrganizationUsers] WHERE UserId IN (SELECT Id FROM #tmpUsers))
-		AND [OrganizationUserRoles].OrganizationRoleId = [OrganizationRoles].Id;
+	--select system role--
+	IF (@IncludeRoles = 1)
+		SELECT [UserRoles].UserId, [UserRoles].RoleId, RoleName, Code FROM [Roles], [UserRoles] 
+			WHERE [UserRoles].RoleId = [Roles].Id
+			AND [UserRoles].UserId IN (SELECT Id FROM #tmpUsers);
+
+	--select organizations--
+	IF (@IncludeOrganizations = 1)
+		SELECT UserId, OrganizationId, [OrganizationUsers].IsActive FROM [OrganizationUsers]
+			WHERE UserId IN (SELECT Id FROM #tmpUsers);
+
+	--select organizations roles--
+	IF(@IncludeVirtualRoles = 1)
+		SELECT [OrganizationUserRoles].OrganizationUserId,
+			OrganizationRoleId, [OrganizationRoles].RoleName FROM [OrganizationUserRoles], [OrganizationRoles]
+			WHERE OrganizationUserId IN (SELECT Id FROM [OrganizationUsers] WHERE UserId IN (SELECT Id FROM #tmpUsers))
+			AND [OrganizationUserRoles].OrganizationRoleId = [OrganizationRoles].Id;
 END
 GO
 --------------------------------------------------------------------
@@ -184,33 +198,16 @@ GO
 --------------------------------------------------------------------
 CREATE OR ALTER PROCEDURE [dbo].[sp_users_getById_withOptions]
 (
-	@UserId uniqueidentifier,
-	@FetchRoles bit = 1,
-	@FetchOrganizations bit = 1,
-	@FetchVirtualRoles bit = 1
+	@UserId uniqueidentifier
 )
 AS
 BEGIN
 	SELECT * FROM Users WHERE ID = @UserId AND IsDeleted = 0;
-	IF @FetchRoles = 1
-	BEGIN
-		SELECT * FROM Roles WHERE ID IN (SELECT RoleId FROM UserRoles WHERE UserId = @UserId)
-	END
-	IF @FetchOrganizations = 1
-	BEGIN
-		SELECT OrganizationUsers.ID, OrganizationUsers.OrganizationId, OrganizationUsers.UserId,
-		OrganizationUsers.IsActive, Organizations.OrganizationName
-		FROM OrganizationUsers, Organizations
-			WHERE OrganizationUsers.UserId = @UserId
-			AND Organizations.ID = OrganizationUsers.OrganizationId
-	END
-	IF @FetchVirtualRoles = 1
-	BEGIN
-		SELECT ID, RoleName FROM OrganizationRoles WHERE ID IN 
-		(SELECT OrganizationRoleId FROM OrganizationUserRoles WHERE OrganizationUserId IN 
-			(SELECT ID FROM OrganizationUsers WHERE UserId = @UserId AND IsActive = 1)
-		)
-	END
+	SELECT Id, RoleName, Code FROM [Roles] WHERE Id IN (SELECT RoleId FROM [UserRoles] WHERE UserId = @UserId);
+	SELECT OrganizationId, [OrganizationUsers].IsActive FROM [OrganizationUsers] WHERE UserId = @UserId;
+	SELECT OrganizationRoleId, [OrganizationRoles].RoleName FROM [OrganizationUserRoles], [OrganizationRoles]
+		WHERE OrganizationUserId IN (SELECT Id FROM [OrganizationUsers] WHERE UserId = @UserId)
+		AND [OrganizationUserRoles].OrganizationRoleId = [OrganizationRoles].Id;
 END
 GO
 --------------------------------------------------------------------

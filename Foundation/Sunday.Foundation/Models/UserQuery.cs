@@ -18,6 +18,7 @@ namespace Sunday.Foundation.Models
         public string Username { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public bool IncludeRoles { get; set; } = true;
-        public bool IncludeOrganizationRoles { get; set; } = true;
+        public bool IncludeOrganizations { get; set; } = true;
+        public bool IncludeVirtualRoles { get; set; } = true;
     }
 }

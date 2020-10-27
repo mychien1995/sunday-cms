@@ -41,12 +41,6 @@ namespace Sunday.CMS.Core.Implementation
 
         public Option<ApplicationOrganization> ResolveOrganizationFromRequest()
         {
-            var hostName = GetHostName();
-            if (string.IsNullOrEmpty(hostName))
-                return Option<ApplicationOrganization>.None;
-            //TODO: Fix this
-            var organization = _organizationService.FindOrganizationByHostname(hostName).Result;
-            if (!organization.Any(o => o.IsActive)) return Option<ApplicationOrganization>.None;
             if (_httpContextAccessor.HttpContext.User is ApplicationUserPrincipal user &&
                 (user.IsInRole(SystemRoleCodes.OrganizationAdmin) || user.IsInRole(SystemRoleCodes.OrganizationUser)))
             {

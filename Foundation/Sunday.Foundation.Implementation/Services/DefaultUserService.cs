@@ -78,7 +78,12 @@ namespace Sunday.Foundation.Implementation.Services
             var user = entity.MapTo<ApplicationUser>();
             user.VirtualRoles = entity.VirtualRoles.CastListTo<ApplicationOrganizationRole>().ToList();
             user.Roles = entity.Roles.CastListTo<ApplicationRole>().ToList();
-            user.OrganizationUsers = entity.OrganizationUsers.CastListTo<ApplicationOrganizationUser>().ToList();
+            user.OrganizationUsers = entity.OrganizationUsers.Select(u =>
+            {
+                var model = u.MapTo<ApplicationOrganizationUser>();
+                model.Organization = new ApplicationOrganization(u.OrganizationId, u.OrganizationName);
+                return model;
+            }).ToList();
             return user;
         }
 

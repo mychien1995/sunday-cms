@@ -15,6 +15,7 @@ export class UserItem {
   Roles?: RoleModel[];
   Fullname: string;
   IsActive: boolean;
+  OrganizationIds : string[];
 }
 
 export class UserMutationModel {

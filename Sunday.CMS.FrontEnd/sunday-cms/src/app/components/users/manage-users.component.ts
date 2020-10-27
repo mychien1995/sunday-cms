@@ -5,8 +5,13 @@ import {
   TemplateRef,
 } from '@angular/core';
 import { ClientState } from '@services/layout/clientstate.service';
-import { UserService } from '@services/index';
-import { UserList, UserItem } from '@models/index';
+import { OrganizationService, UserService } from '@services/index';
+import {
+  UserList,
+  UserItem,
+  OrganizationList,
+  OrganizationItem,
+} from '@models/index';
 import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 
@@ -17,13 +22,15 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class ManageUsersComponent implements OnInit {
   userList: UserList = new UserList();
+  organizationList: OrganizationItem[] = [];
   activeUserId?: number;
 
   constructor(
     private userService: UserService,
     private clientState: ClientState,
     private modalService: NgbModal,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private organizationService: OrganizationService
   ) {}
 
   ngOnInit(): void {
@@ -35,6 +42,9 @@ export class ManageUsersComponent implements OnInit {
     this.userService.getUsers(userQuery).subscribe((res) => {
       this.userList = <UserList>res;
       this.clientState.isBusy = false;
+    });
+    this.organizationService.getOrganizations().subscribe((res) => {
+      this.organizationList = (<OrganizationList>res).Organizations;
     });
   }
 
@@ -101,5 +111,9 @@ export class ManageUsersComponent implements OnInit {
         this.clientState.isBusy = false;
       });
     }
+  }
+
+  displayOrganizations(user: UserItem): string {
+    return user.OrganizationIds.map(id => this.organizationList.find(o => o.Id === id)?.OrganizationName).join(', ');
   }
 }

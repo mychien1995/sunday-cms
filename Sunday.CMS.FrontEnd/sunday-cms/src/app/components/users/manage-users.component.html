@@ -23,9 +23,9 @@
                         <th mat-header-cell *matHeaderCellDef>Phone Number</th>
                         <td mat-cell *matCellDef="let user">{{ user.Phone }}</td>
                     </ng-container>
-                    <ng-container matColumnDef="Domain">
-                        <th mat-header-cell *matHeaderCellDef>Domain</th>
-                        <td mat-cell *matCellDef="let user">{{ user.Domain }}</td>
+                    <ng-container matColumnDef="Organizations">
+                        <th mat-header-cell *matHeaderCellDef>Organizations</th>
+                        <td mat-cell *matCellDef="let user">{{ displayOrganizations(user) }}</td>
                     </ng-container>
                     <ng-container matColumnDef="Roles">
                         <th mat-header-cell *matHeaderCellDef>Roles</th>
@@ -63,10 +63,10 @@
                         </td>
                     </ng-container>
                     <tr mat-header-row
-                        *matHeaderRowDef="['UserName', 'Fullname', 'Domain', 'Roles', 'Email', 'Phone', 'IsActive', 'Action']">
+                        *matHeaderRowDef="['UserName', 'Fullname', 'Organizations', 'Roles', 'Email', 'Phone', 'IsActive', 'Action']">
                     </tr>
                     <tr mat-row
-                        *matRowDef="let myRowData; columns: ['UserName', 'Fullname', 'Domain', 'Roles', 'Email', 'Phone', 'IsActive', 'Action']">
+                        *matRowDef="let myRowData; columns: ['UserName', 'Fullname', 'Organizations', 'Roles', 'Email', 'Phone', 'IsActive', 'Action']">
                     </tr>
                 </table>
                 <mat-paginator [length]="userList.Total" [pageSize]="10"

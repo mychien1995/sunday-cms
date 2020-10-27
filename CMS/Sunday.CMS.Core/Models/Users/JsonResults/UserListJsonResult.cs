@@ -37,6 +37,7 @@ namespace Sunday.CMS.Core.Models.Users.JsonResults
         public bool IsActive { get; set; }
         public bool IsLockedOut { get; set; }
         public List<ApplicationRole> Roles { get; set; } = new List<ApplicationRole>();
+        public List<Guid> OrganizationIds { get; set; } = new List<Guid>();
         public List<ApplicationOrganizationRole> OrganizationRoles { get; set; } = new List<ApplicationOrganizationRole>();
     }
 }

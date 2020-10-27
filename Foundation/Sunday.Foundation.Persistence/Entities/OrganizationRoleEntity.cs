@@ -19,5 +19,17 @@ namespace Sunday.Foundation.Persistence.Entities
         public DateTime UpdatedDate { get; set; }
         public string CreatedBy { get; set; } = string.Empty;
         public string UpdatedBy { get; set; } = string.Empty;
+
+        public OrganizationRoleEntity()
+        {
+            
+        }
+
+        public OrganizationRoleEntity(Guid id, Guid organizationId, string name)
+        {
+            Id = id;
+            OrganizationId = organizationId;
+            RoleName = name;
+        }
     }
 }

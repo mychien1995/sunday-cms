@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LanguageExt;
@@ -27,13 +28,40 @@ namespace Sunday.Foundation.Persistence.Implementation.Repositories
         public async Task<SearchResult<UserEntity>> QueryAsync(UserQuery query)
         {
             var result = new SearchResult<UserEntity>();
-            var searchResult = await _dbRunner.ExecuteMultipleAsync<int, UserEntity>(ProcedureNames.Users.Search,
-                DbQuery(query));
-            result.Total = searchResult.Item1.Single();
-            result.Result = searchResult.Item2.ToList();
+            var returnTypes = new List<Type>() { typeof(int), typeof(UserEntity) };
+            if (query.IncludeRoles) returnTypes.Add(typeof(UserRoleEntity));
+            if (query.IncludeOrganizations) returnTypes.Add(typeof(OrganizationUserEntity));
+            if (query.IncludeVirtualRoles) returnTypes.Add(typeof(OrganizationUserRoleEntity));
+            var searchResult = await _dbRunner.ExecuteMultipleAsync(ProcedureNames.Users.Search, returnTypes, DbQuery(query));
+            result.Total = (int)searchResult[0].Single();
+            var users = searchResult[1].Select(u => (UserEntity)u).ToList();
+            var roles = new List<UserRoleEntity>();
+            var organizationUsers = new List<OrganizationUserEntity>();
+            var virtualRoles = new List<OrganizationUserRoleEntity>();
+            if (query.IncludeRoles)
+                roles = searchResult[2].Select(r => (UserRoleEntity)r).ToList();
+            if (query.IncludeOrganizations)
+                organizationUsers = searchResult[3].Select(r => (OrganizationUserEntity)r).ToList();
+            if (query.IncludeVirtualRoles)
+                virtualRoles = searchResult[4].Select(r => (OrganizationUserRoleEntity)r).ToList();
+            users.Iter(user =>
+            {
+                user.Roles = roles.Where(ur => ur.UserId == user.Id)
+                    .Select(ur => new RoleEntity(ur.RoleId, ur.Code, ur.RoleName)).ToList();
+                user.OrganizationUsers = organizationUsers.Where(ou => ou.UserId == user.Id).ToList();
+                user.VirtualRoles = virtualRoles.Select(or =>
+                        (Role: or, User: user.OrganizationUsers.FirstOrDefault(ou => ou.Id == or.OrganizationUserId)))
+                    .Where(or => or.User != null)
+                    .Select(or =>
+                        new OrganizationRoleEntity(or.Role.OrganizationRoleId, or.User.OrganizationId,
+                            or.Role.RoleName))
+                    .ToList();
+            });
+            result.Result = users;
             return result;
         }
 
+        //TODO: optimize this
         public async Task<Option<UserEntity>> GetUserByIdAsync(Guid userId)
         {
             var queryResult =
@@ -97,7 +125,10 @@ namespace Sunday.Foundation.Persistence.Implementation.Repositories
             query.SortBy,
             query.Text,
             query.PageIndex,
-            query.PageSize
+            query.PageSize,
+            query.IncludeRoles,
+            query.IncludeVirtualRoles,
+            query.IncludeOrganizations
         };
     }
 }

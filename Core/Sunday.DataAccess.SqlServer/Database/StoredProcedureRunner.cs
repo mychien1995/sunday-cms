@@ -45,7 +45,7 @@ namespace Sunday.DataAccess.SqlServer.Database
             await connection.ExecuteAsync(storeName, parameter, commandType: CommandType.StoredProcedure);
         }
 
-        public async Task<List<IEnumerable<object>>> ExecuteMultipleAsync(string storeName, Type[] returnTypes, object? parameter = null)
+        public async Task<List<IEnumerable<object>>> ExecuteMultipleAsync(string storeName, IEnumerable<Type> returnTypes, object? parameter = null)
         {
             var finalResult = new List<IEnumerable<object>>();
             await using var connection = GetConnection();
@@ -81,6 +81,17 @@ namespace Sunday.DataAccess.SqlServer.Database
             if (queryResult.Count != 4) throw new InvalidOperationException($"Expect 4 return types, got {queryResult.Count}");
             return (queryResult[0].Select(item => (T1)item), queryResult[1].Select(item => (T2)item)
                 , queryResult[2].Select(item => (T3)item), queryResult[3].Select(item => (T4)item));
+        }
+
+        public async Task<(IEnumerable<T1>, IEnumerable<T2>, IEnumerable<T3>, IEnumerable<T4>, IEnumerable<T5>)> ExecuteMultipleAsync<T1, T2, T3, T4, T5>
+            (string storeName, object? parameter = null)
+        {
+            var returnTypes = new[] { typeof(T1), typeof(T2), typeof(T3), typeof(T4), typeof(T5) };
+            var queryResult = await ExecuteMultipleAsync(storeName, returnTypes, parameter);
+            if (queryResult.Count != 5) throw new InvalidOperationException($"Expect 5 return types, got {queryResult.Count}");
+            return (queryResult[0].Select(item => (T1)item), queryResult[1].Select(item => (T2)item)
+                , queryResult[2].Select(item => (T3)item), queryResult[3].Select(item => (T4)item)
+                , queryResult[4].Select(item => (T5)item));
         }
 
         public List<IEnumerable<object>> ExecuteMultiple(string storeName, Type[] returnTypes, object? parameter = null)

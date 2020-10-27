@@ -85,5 +85,11 @@ export class OrganizationAssignBoardComponent implements OnInit {
     this.selectedOrganizationChanged.emit(this.selectedOrganizations);
   }
 
+  getOrganizationName(org: OrganizationUserItem): string {
+    if (org.OrganizationName) { return org.OrganizationName; }
+    const organization = this.organizationList.find(o => o.Id == org.OrganizationId);
+    return organization ? organization.OrganizationName : '';
+  }
+
   ngOnInit(): void {}
 }

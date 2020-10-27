@@ -10,6 +10,7 @@ namespace Sunday.Foundation.Persistence.Entities
         public Guid Id { get; set; }
         public Guid OrganizationId { get; set; }
         public Guid UserId { get; set; }
+        public string OrganizationName { get; set; } = string.Empty;
         public bool IsActive { get; set; }
     }
 }

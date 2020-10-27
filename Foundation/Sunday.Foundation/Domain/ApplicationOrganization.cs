@@ -19,5 +19,16 @@ namespace Sunday.Foundation.Domain
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }
         public List<ApplicationModule> Modules { get; set; } = new List<ApplicationModule>();
+
+        public ApplicationOrganization()
+        {
+            
+        }
+
+        public ApplicationOrganization(Guid id, string name)
+        {
+            Id = id;
+            OrganizationName = name;
+        }
     }
 }

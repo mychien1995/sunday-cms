@@ -7,6 +7,10 @@ namespace Sunday.CMS.Core.Models.Roles
     [MappedTo(typeof(ApplicationRole))]
     public class RoleDetailJsonResult : BaseApiResponse
     {
+        public RoleDetailJsonResult()
+        {
+            
+        }
         public RoleDetailJsonResult(int id, string code, string roleName, bool requireOrganization)
         {
             Id = id;
@@ -16,8 +20,8 @@ namespace Sunday.CMS.Core.Models.Roles
         }
 
         public int Id { get; set; }
-        public string Code { get; set; }
-        public string RoleName { get; set; }
+        public string Code { get; set; } = string.Empty;
+        public string RoleName { get; set; } = string.Empty;
 
         public bool RequireOrganization { get; set; }
 
