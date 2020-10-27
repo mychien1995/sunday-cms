@@ -48,16 +48,16 @@
                     <ng-container matColumnDef="Action">
                         <th mat-header-cell *matHeaderCellDef>Action</th>
                         <td mat-cell *matCellDef="let org">
-                            <a title="Edit" [routerLink]="['/organizations/edit/' + org.ID]"><i
+                            <a title="Edit" [routerLink]="['/organizations/edit/' + org.Id]"><i
                                     class="fa fa-edit"></i></a>
                             <a title="Delete" class="ml-2" href="javascript:void(0)"
-                                (click)="deleteOrganization(org.ID, confirmDeleteDialog)"><i class="fa fa-times"></i></a>
+                                (click)="deleteOrganization(org.Id, confirmDeleteDialog)"><i class="fa fa-times"></i></a>
                             <a title="Activate" class="ml-2" href="javascript:void(0)" [hidden]="org.IsActive"
-                                (click)="activateOrganization(org.ID)">
+                                (click)="activateOrganization(org.Id)">
                                 <i class="fa fa-unlock"></i>
                             </a>
                             <a title="Dectivate" class="ml-2" href="javascript:void(0)" [hidden]="!org.IsActive"
-                                (click)="deactivateOrganization(org.ID)">
+                                (click)="deactivateOrganization(org.Id)">
                                 <i class="fa fa-lock"></i>
                             </a>
                         </td>

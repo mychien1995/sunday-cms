@@ -4,13 +4,14 @@
 	@OrganizationName nvarchar(500),
 	@Description nvarchar(MAX),
 	@Properties nvarchar(MAX),
-	@HostNames nvarchar(MAX),
+	@Hosts nvarchar(MAX),
 	@LogoBlobUri nvarchar(MAX),
 	@IsActive bit = 0,
 	@CreatedDate datetime,
 	@CreatedBy nvarchar(100),
 	@UpdatedDate datetime,
 	@UpdatedBy nvarchar(100),
+	@IsDeleted bit = 0,
 	@ModuleIds nvarchar(MAX) = ''
 )
 AS
@@ -42,7 +43,7 @@ BEGIN
 		   ,@OrganizationName
            ,@Description
            ,@Properties
-           ,@HostNames
+           ,@Hosts
            ,@LogoBlobUri
            ,@IsActive
            ,@CreatedDate
@@ -60,11 +61,11 @@ GO
 --------------------------------------------------------------------
 CREATE OR ALTER PROCEDURE [dbo].[sp_organizations_update]
 (
-	@ID uniqueidentifier,
+	@Id uniqueidentifier,
 	@OrganizationName nvarchar(500),
 	@Description nvarchar(MAX),
 	@Properties nvarchar(MAX),
-	@HostNames nvarchar(MAX),
+	@Hosts nvarchar(MAX),
 	@LogoBlobUri nvarchar(MAX),
 	@IsActive bit = 0,
 	@UpdatedDate datetime,
@@ -85,7 +86,7 @@ BEGIN
 	SET [OrganizationName] = @OrganizationName
 		  ,[Description] = @Description
 		  ,[ExtraProperties] = @Properties
-		  ,[Hosts] = @HostNames
+		  ,[Hosts] = @Hosts
 		  ,[LogoBlobUri] = @LogoBlobUri
 		  ,[IsActive] = @IsActive
 		  ,[UpdatedDate] = @UpdatedDate

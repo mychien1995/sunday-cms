@@ -18,7 +18,7 @@ export class UserItem {
 }
 
 export class UserMutationModel {
-  ID?: string;
+  Id?: string;
   UserName: string;
   Fullname: string;
   Email: string;
@@ -42,7 +42,7 @@ export class UserDetailResponse extends ApiResponse {
     this.RoleIds = [];
     this.OrganizationRoleIds = [];
   }
-  ID?: string;
+  Id?: string;
   UserName: string;
   Fullname: string;
   Email: string;

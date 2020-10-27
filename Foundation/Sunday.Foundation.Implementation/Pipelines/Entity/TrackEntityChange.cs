@@ -1,10 +1,10 @@
 ﻿using System;
 using Microsoft.AspNetCore.Http;
-using Sunday.Core.Framework.Extensions;
 using Sunday.Core.Pipelines;
 using Sunday.Core.Pipelines.Arguments;
+using Sunday.Foundation.Extensions;
 
-namespace Sunday.Core.Framework.Pipelines.Entity
+namespace Sunday.Foundation.Implementation.Pipelines.Entity
 {
     public class TrackEntityChange : IPipelineProcessor
     {

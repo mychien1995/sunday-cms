@@ -108,6 +108,7 @@ namespace Sunday.CMS.Core.Implementation
             result.Properties.Add("color", mutationData.ColorScheme);
             result.Modules = mutationData.ModuleIds.Select(m => new ApplicationModule(m, string.Empty, string.Empty))
                 .ToList();
+            result.HostNames = mutationData.HostNames.Where(h => !string.IsNullOrWhiteSpace(h)).ToList();
             return result;
         }
     }

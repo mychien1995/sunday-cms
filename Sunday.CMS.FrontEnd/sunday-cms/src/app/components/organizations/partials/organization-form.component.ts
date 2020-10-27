@@ -67,7 +67,7 @@ export class OrganizationFormComponent implements OnInit {
           this.selectedModules = data.organization.ModuleIds.map(
             (c) =>
               <ModuleModel>{
-                ID: c,
+                Id: c,
               }
           );
         }
@@ -125,8 +125,8 @@ export class OrganizationFormComponent implements OnInit {
           IsActive: formValue.IsActive,
           HostNames: this.hostNames,
           LogoBlobUri: blobIdentifier,
-          ID: this.currentOrganization?.ID || 0,
-          ModuleIds: this.selectedModules.map((c) => c.ID),
+          Id: this.currentOrganization?.Id || '',
+          ModuleIds: this.selectedModules.map((c) => c.Id),
         };
         (this.isEdit
           ? this.organizationService.updateOrganization(mutationData)
@@ -139,7 +139,7 @@ export class OrganizationFormComponent implements OnInit {
             this.router.navigate(['/organizations']);
           }
           this.clientState.isBusy = false;
-        });
+        }, err => this.clientState.isBusy = false);
       }
     });
   }
@@ -152,9 +152,9 @@ export class OrganizationFormComponent implements OnInit {
     this.moduleService.getModules().subscribe((res) => {
       if (res.Success) {
         this.modules = res.Modules;
-        const moduleIds = this.selectedModules.map((c) => c.ID);
+        const moduleIds = this.selectedModules.map((c) => c.Id);
         this.selectedModules = this.modules.filter(
-          (c) => moduleIds.indexOf(c.ID) > -1
+          (c) => moduleIds.indexOf(c.Id) > -1
         );
       }
     });

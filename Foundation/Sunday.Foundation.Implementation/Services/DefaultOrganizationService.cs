@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LanguageExt;
+using Newtonsoft.Json;
 using Sunday.Core;
 using Sunday.Core.Extensions;
 using Sunday.Core.Models.Base;
@@ -11,8 +12,7 @@ using Sunday.Foundation.Domain;
 using Sunday.Foundation.Models;
 using Sunday.Foundation.Persistence.Application.Repositories;
 using Sunday.Foundation.Persistence.Entities;
-using static LanguageExt.Prelude;
-
+using Sunday.Foundation.Persistence.Extensions;
 namespace Sunday.Foundation.Implementation.Services
 {
     [ServiceTypeOf(typeof(IOrganizationService))]
@@ -26,17 +26,21 @@ namespace Sunday.Foundation.Implementation.Services
         }
 
         public Task<SearchResult<ApplicationOrganization>> QueryAsync(OrganizationQuery query)
-            => _organizationRepository.QueryAsync(query).MapResultTo(rs => rs.CloneTo<ApplicationOrganization>());
+            => _organizationRepository.QueryAsync(query).MapResultTo(rs => new SearchResult<ApplicationOrganization>
+            {
+                Result = rs.Result.Select(ToDomainModel).ToList(),
+                Total = rs.Total
+            });
 
         public Task<Option<ApplicationOrganization>> GetOrganizationByIdAsync(Guid organizationId)
             => _organizationRepository.GetOrganizationByIdAsync(organizationId)
-                .MapResultTo(org => org.Map(o => o.MapTo<ApplicationOrganization>()));
+                .MapResultTo(org => org.Map(ToDomainModel));
 
         public Task<Guid> CreateAsync(ApplicationOrganization organization)
-            => _organizationRepository.CreateAsync(organization.MapTo<OrganizationEntity>());
+            => _organizationRepository.CreateAsync(ToEntity(organization));
 
         public Task UpdateAsync(ApplicationOrganization organization)
-            => _organizationRepository.UpdateAsync(organization.MapTo<OrganizationEntity>());
+            => _organizationRepository.UpdateAsync(ToEntity(organization));
 
         public Task DeleteAsync(Guid organizationId)
             => _organizationRepository.DeleteAsync(organizationId);
@@ -58,7 +62,21 @@ namespace Sunday.Foundation.Implementation.Services
 
         private static ApplicationOrganization ToDomainModel(OrganizationEntity entity)
         {
-            return entity.MapTo<ApplicationOrganization>();
+            var model = entity.MapTo<ApplicationOrganization>();
+            model.Modules = entity.Modules.CastListTo<ApplicationModule>().ToList();
+            model.HostNames = entity.Hosts != null ? entity.Hosts.ToStringList() : new List<string>();
+            model.Properties = entity.ExtraProperties != null
+                ? JsonConvert.DeserializeObject<Dictionary<string, object>>(entity.ExtraProperties)
+                : new Dictionary<string, object>();
+            return model;
+        }
+        private static OrganizationEntity ToEntity(ApplicationOrganization model)
+        {
+            var entity = model.MapTo<OrganizationEntity>();
+            entity.Modules = model.Modules.CastListTo<ModuleEntity>().ToList();
+            entity.Hosts = model.HostNames.ToDatabaseList();
+            entity.ExtraProperties = model.Properties.Any() ? JsonConvert.SerializeObject(model.Properties) : null;
+            return entity;
         }
     }
 }

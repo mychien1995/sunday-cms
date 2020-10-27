@@ -27,7 +27,7 @@ namespace Sunday.Foundation.Persistence.Implementation.Repositories
         {
             var result = new SearchResult<OrganizationEntity>();
             var searchResult = await _dbRunner.ExecuteMultipleAsync<int, OrganizationEntity>(ProcedureNames.Organizations.Search,
-                GetOrganizationQuery(query));
+                DbQuery(query));
             result.Total = searchResult.Item1.Single();
             result.Result = searchResult.Item2.ToList();
             return result;
@@ -46,12 +46,12 @@ namespace Sunday.Foundation.Persistence.Implementation.Repositories
         public async Task<Guid> CreateAsync(OrganizationEntity organization)
         {
             if (organization.Id == Guid.Empty) organization.Id = Guid.NewGuid();
-            await _dbRunner.ExecuteAsync(ProcedureNames.Organizations.Insert, organization);
+            await _dbRunner.ExecuteAsync(ProcedureNames.Organizations.Insert, DbInsert(organization));
             return organization.Id;
         }
 
         public Task UpdateAsync(OrganizationEntity organization)
-        => _dbRunner.ExecuteAsync(ProcedureNames.Organizations.Update, organization);
+        => _dbRunner.ExecuteAsync(ProcedureNames.Organizations.Update, DbUpdate(organization));
 
         public Task DeleteAsync(Guid organizationId)
         => _dbRunner.ExecuteAsync(ProcedureNames.Organizations.Delete, new { OrganizationId = organizationId });
@@ -62,7 +62,7 @@ namespace Sunday.Foundation.Persistence.Implementation.Repositories
         public Task DeactivateAsync(Guid organizationId)
         => _dbRunner.ExecuteAsync(ProcedureNames.Organizations.Deactivate, new { OrganizationId = organizationId });
 
-        private static object GetOrganizationQuery(OrganizationQuery query)
+        private static object DbQuery(OrganizationQuery query)
             => new
             {
                 query.SortBy,
@@ -72,5 +72,11 @@ namespace Sunday.Foundation.Persistence.Implementation.Repositories
                 query.PageIndex,
                 query.HostName,
             };
+
+        private static object DbInsert(OrganizationEntity entity)
+            => entity.ToDapperParameters(DbOperation.Create);
+
+        private static object DbUpdate(OrganizationEntity entity)
+            => entity.ToDapperParameters(DbOperation.Update);
     }
 }

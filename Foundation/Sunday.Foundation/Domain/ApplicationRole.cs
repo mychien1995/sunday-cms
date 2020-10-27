@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Sunday.Foundation.Domain
+﻿namespace Sunday.Foundation.Domain
 {
     public class ApplicationRole
     {

@@ -1,5 +1,5 @@
 export class RoleModel {
-  ID?: number;
+  Id?: number;
   Code?: string;
   RoleName?: string;
   RequireOrganization?: boolean;

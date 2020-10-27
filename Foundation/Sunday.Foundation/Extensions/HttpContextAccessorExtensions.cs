@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Sunday.Core.Domain.Identity;
+using Sunday.Foundation.Domain;
 
-namespace Sunday.Core.Framework.Extensions
+namespace Sunday.Foundation.Extensions
 {
     public static class HttpContextAccessorExtensions
     {
