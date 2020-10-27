@@ -27,34 +27,19 @@ namespace Sunday.Foundation.Persistence.Implementation.DapperParameters
                 {
                     var rec = new SqlDataRecord(
                         new SqlMetaData("OrganizationId", SqlDbType.UniqueIdentifier),
+                        new SqlMetaData("OrganizationRolesId", SqlDbType.NVarChar, 1000),
                         new SqlMetaData("IsActive", SqlDbType.Bit)
                        );
                     rec.SetValue(0, param.OrganizationId);
-                    rec.SetValue(1, param.IsActive);
+                    var virtualRoles = User.VirtualRoles.Where(r => r.OrganizationId == param.OrganizationId);
+                    rec.SetValue(1, virtualRoles.Select(r => r.Id).ToDatabaseList());
+                    rec.SetBoolean(2, param.IsActive);
                     organizationUserRecords.Add(rec);
                 }
                 var organizationUserParam = sqlCommand.Parameters.Add("@Organizations", SqlDbType.Structured);
                 organizationUserParam.Direction = ParameterDirection.Input;
-                organizationUserParam.TypeName = "OrganizationUserType";
+                organizationUserParam.TypeName = "OrganizationUserRoleType";
                 organizationUserParam.Value = organizationUserRecords;
-            }
-            if (User.VirtualRoles.Any())
-            {
-                var organizationRoleRecords = new List<SqlDataRecord>();
-                foreach (var param in User.VirtualRoles)
-                {
-                    var rec = new SqlDataRecord(
-                        new SqlMetaData("OrganizationId", SqlDbType.UniqueIdentifier),
-                        new SqlMetaData("OrganizationRolesId", SqlDbType.NVarChar, 1000)
-                       );
-                    rec.SetValue(0, param.Organization?.Id ?? param.OrganizationId);
-                    rec.SetValue(1, User.VirtualRoles.Select(r => r.OrganizationId).ToDatabaseList());
-                    organizationRoleRecords.Add(rec);
-                }
-                var organizationRoleParam = sqlCommand.Parameters.Add("@OrganizationRoles", SqlDbType.Structured);
-                organizationRoleParam.Direction = ParameterDirection.Input;
-                organizationRoleParam.TypeName = "OrganizationUserRoleType";
-                organizationRoleParam.Value = organizationRoleRecords;
             }
             if (User.Roles.Any())
             {

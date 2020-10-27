@@ -57,7 +57,7 @@ BEGIN
 END
 GO
 --------------------------------------------------------------------
-CREATE OR ALTER  PROCEDURE [dbo].[sp_users_search]
+CREATE OR ALTER PROCEDURE [dbo].[sp_users_search]
 (
 	@PageIndex int = 0,
 	@PageSize int = 10,
@@ -91,6 +91,10 @@ BEGIN
 		SET @WhereClause = @WhereClause + ' AND ID IN (' + dbo.ParseIdList(@IncludeIds) + ') ';
 	IF(@Text IS NOT NULL AND LEN(TRIM(@Text)) > 0)
 		SET @WhereClause = @WhereClause + ' AND (Username LIKE ''%'' + @Text + ''%'' OR FullName LIKE ''%'' + @Text + ''%'' OR Email LIKE ''%'' + @Text + ''%'') ' ;
+	IF(@Email IS NOT NULL AND LEN(TRIM(@Email)) > 0)
+		SET @WhereClause = @WhereClause + ' AND (Email = @Email) ' ;
+	IF(@Username IS NOT NULL AND LEN(TRIM(@Username)) > 0)
+		SET @WhereClause = @WhereClause + ' AND (Username = @Username) ' ;
 	IF(@RoleIds IS NOT NULL AND LEN(TRIM(@RoleIds)) > 0)
 		SET @WhereClause = @WhereClause + ' AND ID IN (SELECT UserId FROM UserRoles WHERE RoleId IN (' + dbo.ParseIdList(@RoleIds) + ')) ';
 	IF(@OrganizationIds IS NOT NULL AND LEN(TRIM(@OrganizationIds)) > 0)
@@ -100,7 +104,7 @@ BEGIN
 	DECLARE @CountQuery nvarchar(MAX);
 	SET @CountQuery = 'SELECT COUNT(*) FROM [Users] ' + @WhereClause
 	--select total--
-	exec sp_executesql @CountQuery, N'@Text nvarchar(MAX)', @Text
+	exec sp_executesql @CountQuery, N'@Text nvarchar(MAX), @Email nvarchar(MAX), @Username nvarchar(MAX)', @Text, @Email, @Username
 	
 	SELECT [Id],[Domain],[Username],[FullName],[Email],[Phone],[AvatarBlobUri],[IsActive]
 		,[IsLockedOut],[EmailConfirmed],[CreatedDate],[CreatedBy],[UpdatedDate],[UpdatedBy] into  #tmpUsers 
@@ -112,7 +116,7 @@ BEGIN
 		FROM [Users] ' + @WhereClause  + ' ORDER BY ' + @SortBy + ' ' + @SortDirection
 	+ ' OFFSET ' + CAST(@PageIndex AS VARCHAR(100)) + ' ROWS FETCH NEXT '+ CAST(@PageSize AS VARCHAR(100)) +' ROWS ONLY '
 	PRINT @DataQuery
-	INSERT INTO #tmpUsers exec sp_executesql @DataQuery, N'@Text nvarchar(MAX)', @Text
+	INSERT INTO #tmpUsers exec sp_executesql @DataQuery, N'@Text nvarchar(MAX), @Email nvarchar(MAX), @Username nvarchar(MAX)', @Text, @Email, @Username
 	
 	--select users---
 	SELECT * FROM #tmpUsers;
@@ -124,7 +128,7 @@ BEGIN
 
 	--select organizations--
 	IF (@IncludeOrganizations = 1)
-		SELECT UserId, OrganizationId, [OrganizationUsers].IsActive FROM [OrganizationUsers]
+		SELECT * FROM [OrganizationUsers]
 			WHERE UserId IN (SELECT Id FROM #tmpUsers);
 
 	--select organizations roles--
@@ -151,8 +155,7 @@ CREATE OR ALTER PROCEDURE [dbo].[sp_users_insert]
 	@SecurityStamp nvarchar(500),
 	@PasswordHash nvarchar(1000),
 	@RoleIds nvarchar(MAX),
-	@OrganizationRoles OrganizationUserRoleType READONLY,
-	@Organizations OrganizationUserType READONLY
+	@Organizations OrganizationUserRoleType READONLY
 )
 AS
 BEGIN
@@ -163,25 +166,25 @@ BEGIN
 	INSERT INTO @tblRoleIds SELECT value  FROM STRING_SPLIT(@RoleIds, '|')
 	INSERT INTO UserRoles (UserId, RoleId) SELECT @Id, RoleId FROM @tblRoleIds
 
-	INSERT INTO OrganizationUsers(UserId, OrganizationId, IsActive) SELECT @Id, OrganizationId, IsActive FROM @Organizations
-
-
 	DECLARE @OrganizationId uniqueidentifier
 	DECLARE @OrganizationRolesId nvarchar(MAX)
-	DECLARE OrganizationCursor CURSOR FOR SELECT OrganizationId, OrganizationRolesId FROM @OrganizationRoles
+	DECLARE @UserActive bit
+	DECLARE OrganizationCursor CURSOR FOR SELECT OrganizationId, IsActive, OrganizationRolesId FROM @Organizations
 	OPEN OrganizationCursor
-	FETCH NEXT FROM OrganizationCursor INTO @OrganizationId, @OrganizationRolesId
+	FETCH NEXT FROM OrganizationCursor INTO @OrganizationId, @UserActive, @OrganizationRolesId
 	WHILE @@FETCH_STATUS = 0  
     BEGIN
-		DECLARE @tblOrgRole TABLE (OrgRoleId uniqueidentifier)
-		INSERT INTO @tblOrgRole SELECT Cast(value as uniqueidentifier)  FROM STRING_SPLIT(@OrganizationRolesId, '|')
-		
-		DECLARE @OrganizationUserId uniqueidentifier
-		SET @OrganizationUserId = (SELECT TOP 1 ID FROM OrganizationUsers WHERE UserId = @Id AND OrganizationId = @OrganizationId)
-
-		INSERT INTO OrganizationUserRoles (OrganizationUserId, OrganizationRoleId)
-		SELECT @OrganizationUserId, OrgRoleId FROM @tblOrgRole
-		FETCH NEXT FROM OrganizationCursor INTO @OrganizationUserId, @OrganizationId
+		DECLARE @OrganizationUserId uniqueidentifier;
+		SET @OrganizationUserId = NEWID()
+		INSERT INTO OrganizationUsers (Id, UserId, OrganizationId, IsActive) VALUES (@OrganizationUserId, @Id, @OrganizationId, @UserActive)
+		IF @OrganizationRolesId IS NOT NULL AND LEN(TRIM(@OrganizationRolesId)) > 0
+		BEGIN
+			DECLARE @tblOrgRole TABLE (OrgRoleId uniqueidentifier)
+			INSERT INTO @tblOrgRole SELECT Cast(value as uniqueidentifier) FROM STRING_SPLIT(@OrganizationRolesId, '|')
+			INSERT INTO OrganizationUserRoles (OrganizationUserId, OrganizationRoleId)
+			SELECT @OrganizationUserId, OrgRoleId FROM @tblOrgRole
+		END
+		FETCH NEXT FROM OrganizationCursor INTO @OrganizationId, @UserActive, @OrganizationRolesId
 	END
 
 	CLOSE OrganizationCursor
@@ -205,15 +208,15 @@ BEGIN
 	SELECT * FROM Users WHERE ID = @UserId AND IsDeleted = 0;
 	SELECT Id, RoleName, Code FROM [Roles] WHERE Id IN (SELECT RoleId FROM [UserRoles] WHERE UserId = @UserId);
 	SELECT OrganizationId, [OrganizationUsers].IsActive FROM [OrganizationUsers] WHERE UserId = @UserId;
-	SELECT OrganizationRoleId, [OrganizationRoles].RoleName FROM [OrganizationUserRoles], [OrganizationRoles]
+	SELECT [OrganizationRoles].Id, [OrganizationRoles].RoleName FROM [OrganizationUserRoles], [OrganizationRoles]
 		WHERE OrganizationUserId IN (SELECT Id FROM [OrganizationUsers] WHERE UserId = @UserId)
 		AND [OrganizationUserRoles].OrganizationRoleId = [OrganizationRoles].Id;
 END
 GO
 --------------------------------------------------------------------
-CREATE OR ALTER PROCEDURE [dbo].[sp_users_update]
+CREATE OR ALTER   PROCEDURE [dbo].[sp_users_update]
 (
-	@ID uniqueidentifier,
+	@Id uniqueidentifier,
 	@Fullname nvarchar(500),
 	@Email nvarchar(500) = NULL,
 	@Phone nvarchar(500) = NULL,
@@ -222,8 +225,7 @@ CREATE OR ALTER PROCEDURE [dbo].[sp_users_update]
 	@UpdatedDate datetime,
 	@AvatarBlobUri nvarchar(MAX) = NULL,
 	@RoleIds nvarchar(MAX) = NULL,
-	@OrganizationRoles OrganizationUserRoleType READONLY,
-	@Organizations OrganizationUserType READONLY
+	@Organizations OrganizationUserRoleType READONLY
 )
 AS
 BEGIN
@@ -232,9 +234,8 @@ BEGIN
 
 	UPDATE [Users] SET FullName = @Fullname, Email = @Email, Phone = @Phone, IsActive = @IsActive, UpdatedBy = @UpdatedBy,
 	UpdatedDate = @UpdatedDate, AvatarBlobUri = @AvatarBlobUri
-	WHERE ID = @ID
-	SELECT @ID
-	
+	WHERE Id = @Id
+
 	IF(@RoleIds IS NOT NULL AND LEN(TRIM(@RoleIds)) > 0)
 	BEGIN
 		DECLARE @tblRoleIds TABLE (RoleId varchar(100))
@@ -244,43 +245,42 @@ BEGIN
 	END
 
 	BEGIN
-		DELETE FROM OrganizationUsers WHERE UserId = @ID AND OrganizationId NOT IN (SELECT OrganizationId FROM @Organizations)
+		DELETE FROM OrganizationUserRoles WHERE OrganizationUserId NOT IN (SELECT OrganizationUserId FROM OrganizationUsers WHERE UserId = @Id AND 
+			OrganizationId IN (SELECT OrganizationId FROM @Organizations))
+		DELETE FROM OrganizationUsers WHERE UserId = @Id AND OrganizationId NOT IN (SELECT OrganizationId FROM @Organizations)
 
-		INSERT INTO OrganizationUsers(UserId, OrganizationId, IsActive) SELECT @ID, OrganizationId, IsActive FROM 
-			(SELECT OrganizationId, IsActive FROM @Organizations WHERE OrganizationId NOT IN 
-				(SELECT OrganizationId FROM OrganizationUsers WHERE UserId = @ID)) B
-
-		MERGE INTO OrganizationUsers AS tgt
-			USING @Organizations AS src
-		ON tgt.OrganizationId = src.OrganizationId AND tgt.UserId = @ID
-		WHEN MATCHED THEN
-        UPDATE 
-            SET tgt.IsActive = src.IsActive;
-	END
-
-	BEGIN
 		DECLARE @OrganizationId uniqueidentifier
 		DECLARE @OrganizationRolesId nvarchar(MAX)
-		DECLARE OrganizationCursor CURSOR FOR SELECT OrganizationId, OrganizationRolesId FROM @OrganizationRoles
+		DECLARE @UserActive nvarchar(MAX)
+		DECLARE OrganizationCursor CURSOR FOR SELECT OrganizationId, OrganizationRolesId, IsActive FROM @Organizations
 		OPEN OrganizationCursor
-		FETCH NEXT FROM OrganizationCursor INTO @OrganizationId, @OrganizationRolesId
+		FETCH NEXT FROM OrganizationCursor INTO @OrganizationId, @OrganizationRolesId, @UserActive
 		WHILE @@FETCH_STATUS = 0  
 		BEGIN
-			DECLARE @tblOrgRole TABLE (OrgRoleId varchar(100))
-			INSERT INTO @tblOrgRole SELECT value  FROM STRING_SPLIT(@OrganizationRolesId, '|')
-		
-			DECLARE @OrganizationUserId uniqueidentifier
-			SET @OrganizationUserId = (SELECT TOP 1 ID FROM OrganizationUsers WHERE UserId = @ID AND OrganizationId = @OrganizationId)
-
-			DELETE FROM OrganizationUserRoles WHERE OrganizationUserId = @OrganizationUserId 
-			AND OrganizationRoleId IN (SELECT ID FROM OrganizationRoles WHERE OrganizationId = @OrganizationId)
-			AND OrganizationRoleId NOT IN (SELECT OrgRoleId FROM @tblOrgRole)
-
-			INSERT INTO OrganizationUserRoles (OrganizationUserId, OrganizationRoleId)
-			SELECT @OrganizationUserId, OrgRoleId FROM @tblOrgRole
-			WHERE OrgRoleId NOT IN (SELECT OrganizationRoleId FROM OrganizationUserRoles WHERE OrganizationUserId = @OrganizationUserId)
-
-			FETCH NEXT FROM OrganizationCursor INTO @OrganizationUserId, @OrganizationId
+			DECLARE @OrganizationUserId uniqueidentifier;
+			SELECT @OrganizationUserId = Id FROM OrganizationUsers WHERE OrganizationId = @OrganizationId AND UserId = @Id
+			IF @OrganizationUserId IS NULL
+			BEGIN
+				SET @OrganizationUserId = NEWID()
+				INSERT INTO OrganizationUsers (Id, UserId, OrganizationId, IsActive) VALUES (@OrganizationUserId, @Id, @OrganizationId, @UserActive)
+				IF @OrganizationRolesId IS NOT NULL AND LEN(TRIM(@OrganizationRolesId)) > 0
+				BEGIN
+					DECLARE @tblOrgRole TABLE (OrgRoleId varchar(100))
+					INSERT INTO @tblOrgRole SELECT value  FROM STRING_SPLIT(@OrganizationRolesId, '|')
+					INSERT INTO OrganizationUserRoles (OrganizationUserId, OrganizationRoleId) SELECT @OrganizationUserId, OrgRoleId FROM @tblOrgRole
+				END
+			END
+			ELSE
+			BEGIN
+				UPDATE OrganizationUsers SET IsActive = @UserActive WHERE Id = @OrganizationUserId;
+				IF @OrganizationRolesId <> NULL AND LEN(TRIM(@OrganizationRolesId)) > 0
+				BEGIN
+					DELETE FROM OrganizationUserRoles WHERE OrganizationUserId = @OrganizationUserId AND OrganizationRoleId NOT IN (SELECT OrgRoleId FROM @tblOrgRole)
+					INSERT INTO OrganizationUserRoles (OrganizationUserId, OrganizationRoleId) SELECT @OrganizationUserId, OrgRoleId FROM @tblOrgRole
+					WHERE OrgRoleId NOT IN (SELECT OrganizationRoleId FROM OrganizationUserRoles WHERE OrganizationUserId = @OrganizationUserId)
+				END
+			END
+			FETCH NEXT FROM OrganizationCursor INTO @OrganizationUserId, @OrganizationId, @UserActive
 		END
 
 		CLOSE OrganizationCursor

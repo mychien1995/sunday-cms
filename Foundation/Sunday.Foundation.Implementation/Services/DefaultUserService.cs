@@ -47,7 +47,7 @@ namespace Sunday.Foundation.Implementation.Services
 
         public async Task<Guid> CreateAsync(ApplicationUser user)
         {
-            await ApplicationPipelines.RunAsync("cms.user.beforeCreate", new BeforeCreateUserArg(user));
+            await ApplicationPipelines.RunAsync("cms.users.beforeCreate", new BeforeCreateUserArg(user));
             await ApplicationPipelines.RunAsync("cms.entity.beforeCreate", new BeforeCreateEntityArg(user));
             var entity = ToEntity(user);
             HashPassword(entity, user.Password);
@@ -56,7 +56,7 @@ namespace Sunday.Foundation.Implementation.Services
 
         public async Task UpdateAsync(ApplicationUser user)
         {
-            await ApplicationPipelines.RunAsync("cms.user.beforeUpdate", new BeforeUpdateUserArg(user));
+            await ApplicationPipelines.RunAsync("cms.users.beforeUpdate", new BeforeUpdateUserArg(user));
             await ApplicationPipelines.RunAsync("cms.entity.beforeUpdate", new BeforeUpdateEntityArg(user));
             await _userRepository.UpdateAsync(ToEntity(user));
         }

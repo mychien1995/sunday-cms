@@ -167,14 +167,6 @@ BEGIN
 	);
 END
 
-IF TYPE_ID(N'OrganizationUserType') IS NULL
-BEGIN
-	CREATE TYPE OrganizationUserType AS TABLE
-	(
-		OrganizationId uniqueidentifier,
-		IsActive bit
-	);
-END
 
 IF TYPE_ID(N'ModuleType') IS NULL
 BEGIN
@@ -207,6 +199,7 @@ END
 IF TYPE_ID(N'OrganizationUserRoleType') IS NULL
 CREATE TYPE [dbo].[OrganizationUserRoleType] AS TABLE(
 	[OrganizationId] [uniqueidentifier] NULL,
-	[OrganizationRolesId] [nvarchar](max) NULL
+	[OrganizationRolesId] [nvarchar](max) NULL,
+	[IsActive] [bit] NULL
 )
 GO

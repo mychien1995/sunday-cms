@@ -41,13 +41,13 @@ namespace Sunday.CMS.Core.Implementation
         public async Task<CreateUserJsonResult> CreateUser(UserMutationModel userData)
         {
             var user = ToUser(userData);
-            user.EmailConfirmed = false;
+            user.EmailConfirmed = true;
             return new CreateUserJsonResult(await _userService.CreateAsync(user));
         }
 
         public async Task<UpdateUserJsonResult> UpdateUser(UserMutationModel userData)
         {
-            var user = ToUser(userData);
+            var user = ToUser(userData, true);
             await _userService.UpdateAsync(user);
             return new UpdateUserJsonResult(user.Id);
         }
@@ -90,10 +90,11 @@ namespace Sunday.CMS.Core.Implementation
         {
             var model = user.MapTo<UserItem>();
             model.OrganizationIds = user.OrganizationUsers.Select(o => o.OrganizationId).ToList();
+            model.OrganizationRoles = user.VirtualRoles;
             return model;
         }
 
-        private static ApplicationUser ToUser(UserMutationModel data)
+        private ApplicationUser ToUser(UserMutationModel data, bool isUpdate = false)
         {
             var user = data.MapTo<ApplicationUser>();
             user.OrganizationUsers = data.Organizations.Select(o => new ApplicationOrganizationUser()
@@ -107,8 +108,16 @@ namespace Sunday.CMS.Core.Implementation
             }).ToList();
             user.VirtualRoles = data.OrganizationRoleIds.Select(r => new ApplicationOrganizationRole()
             {
-                Id = r
+                Id = r,
+                OrganizationId = _sundayContext.CurrentOrganization!.Id
             }).ToList();
+            if (!isUpdate) return user;
+            var actualUser = _userService.GetUserByIdAsync(data.Id!.Value).Result;
+            actualUser.IfSome(u =>
+            {
+                if (u.VirtualRoles.Any())
+                    user.VirtualRoles.AddRange(u.VirtualRoles.Where(r => r.OrganizationId != _sundayContext.CurrentOrganization!.Id));
+            });
             return user;
         }
 
@@ -131,10 +140,10 @@ namespace Sunday.CMS.Core.Implementation
             query.PageSize = 10;
             if (currentUser.IsInRole(SystemRoleCodes.Developer) || currentUser.IsInRole(SystemRoleCodes.SystemAdmin))
             {
+                query.IncludeOrganizations = false;
                 query.IncludeVirtualRoles = false;
                 return query;
             }
-            query.IncludeOrganizations = false;
             query.IncludeRoles = false;
             query.OrganizationIds.Add(_sundayContext.CurrentOrganization!.Id);
             return query;
