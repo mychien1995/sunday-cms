@@ -2,7 +2,7 @@
     <div class="select-group">
         <label class="hint-text">Available Organizations</label>
         <select multiple class="form-control" style="height: 200px;" [(ngModel)]="selectedAvailableOrganizationIds">
-            <option *ngFor="let org of availableOrganizations" value="{{org.ID}}">{{org.OrganizationName}}</option>
+            <option *ngFor="let org of availableOrganizations" value="{{org.Id}}">{{org.OrganizationName}}</option>
         </select>
     </div>
     <div class="arrow-btn-group">

@@ -93,7 +93,21 @@ namespace Sunday.CMS.Core.Implementation
 
         private static ApplicationUser ToUser(UserMutationModel data)
         {
-            return data.MapTo<ApplicationUser>();
+            var user = data.MapTo<ApplicationUser>();
+            user.OrganizationUsers = data.Organizations.Select(o => new ApplicationOrganizationUser()
+            {
+                OrganizationId = o.OrganizationId,
+                IsActive = o.IsActive
+            }).ToList();
+            user.Roles = data.RoleIds.Select(r => new ApplicationRole()
+            {
+                Id = r
+            }).ToList();
+            user.VirtualRoles = data.OrganizationRoleIds.Select(r => new ApplicationOrganizationRole()
+            {
+                Id = r
+            }).ToList();
+            return user;
         }
 
         private static UserDetailJsonResult ToDetailJsonResult(ApplicationUser user)

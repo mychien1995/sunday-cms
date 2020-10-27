@@ -89,7 +89,7 @@ export class AddUserComponent implements OnInit {
       if (response[0].Success) {
         this.roleLookup = <RoleModel[]>response[0].List;
         const currentRole = this.roleLookup.find(
-          (c) => c.ID === this.currentUser.RoleIds[0]
+          (c) => c.Id === this.currentUser.RoleIds[0]
         );
         if (currentRole && currentRole.RequireOrganization) {
           this.showOrganization = true;
@@ -104,7 +104,7 @@ export class AddUserComponent implements OnInit {
 
   onRoleChange(): void {
     const roleId = this.userForm.controls['RoleId'].value;
-    const role = this.roleLookup.find((c) => c.ID === roleId);
+    const role = this.roleLookup.find((c) => c.Id === roleId);
     if (role.RequireOrganization) {
       this.showOrganization = true;
     } else {
@@ -127,7 +127,7 @@ export class AddUserComponent implements OnInit {
     userData.RoleIds = [];
     userData.RoleIds.push(formValue.RoleId);
     if (this.currentUser) {
-      userData.ID = this.currentUser.ID;
+      userData.Id = this.currentUser.Id;
     }
     userData.Organizations = this.currentUser.Organizations;
     this.clientState.isBusy = true;
@@ -140,6 +140,6 @@ export class AddUserComponent implements OnInit {
         this.router.navigate(['/users']);
       }
       this.clientState.isBusy = false;
-    });
+    }, ex => this.clientState.isBusy = false);
   }
 }

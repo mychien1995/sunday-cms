@@ -43,7 +43,7 @@ export class ManageUsersComponent implements OnInit {
   }
 
   deleteUser(user: UserItem, template: any): void {
-    this.activeUserId = user.ID;
+    this.activeUserId = user.Id;
     this.modalService.open(template);
   }
 

@@ -41,19 +41,19 @@
                     <ng-container matColumnDef="Action">
                         <th mat-header-cell *matHeaderCellDef>Action</th>
                         <td mat-cell *matCellDef="let user">
-                            <a title="Edit" [routerLink]="['/organization-users/edit/' + user.ID]"><i class="fa fa-edit"></i></a>
+                            <a title="Edit" [routerLink]="['/organization-users/edit/' + user.Id]"><i class="fa fa-edit"></i></a>
                             <a title="Delete" class="m-lg-2" (click)="deleteUser(user, confirmDeleteDialog)"
                                 href="javascript:void(0)"><i class="fa fa-times"></i></a>
                             <a title="Activate" class="m-lg-2" href="javascript:void(0)" [hidden]="user.IsActive"
-                                (click)="activeUser(user.ID)">
+                                (click)="activeUser(user.Id)">
                                 <i class="fa fa-unlock"></i>
                             </a>
                             <a title="Dectivate" class="m-lg-2" href="javascript:void(0)" [hidden]="!user.IsActive"
-                                (click)="deactiveUser(user.ID)">
+                                (click)="deactiveUser(user.Id)">
                                 <i class="fa fa-lock"></i>
                             </a>
                             <a title="Reset Password" class="m-lg-2" href="javascript:void(0)"
-                                (click)="resetPassword(user.ID, confirmResetPasswordDialog)">
+                                (click)="resetPassword(user.Id, confirmResetPasswordDialog)">
                                 <i class="fa fa-key"></i>
                             </a>
                         </td>

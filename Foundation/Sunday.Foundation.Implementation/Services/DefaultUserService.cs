@@ -94,7 +94,6 @@ namespace Sunday.Foundation.Implementation.Services
         {
             var entity = user.MapTo<UserEntity>();
             var currentUser = _sundayContext.CurrentUser!;
-            var currentOrgId = _sundayContext.CurrentOrganization!.Id;
             entity.VirtualRoles = user.VirtualRoles.CastListTo<OrganizationRoleEntity>().ToList();
             entity.Domain = currentUser.Domain;
             entity.Roles = user.Roles.CastListTo<RoleEntity>().ToList();
@@ -103,7 +102,7 @@ namespace Sunday.Foundation.Implementation.Services
                 entity.OrganizationUsers = user.OrganizationUsers.Select(u =>
                 {
                     var orgUserEntity = u.MapTo<OrganizationUserEntity>();
-                    orgUserEntity.OrganizationId = currentOrgId;
+                    orgUserEntity.OrganizationId = _sundayContext.CurrentOrganization!.Id;
                     return orgUserEntity;
                 }).ToList();
                 entity.Roles = new List<RoleEntity>()

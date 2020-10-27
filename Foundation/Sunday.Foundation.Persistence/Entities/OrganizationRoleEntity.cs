@@ -11,7 +11,7 @@ namespace Sunday.Foundation.Persistence.Entities
         public Guid Id { get; set; }
         public string RoleCode { get; set; } = string.Empty;
         public string RoleName { get; set; } = string.Empty;
-        public int OrganizationId { get; set; }
+        public Guid OrganizationId { get; set; }
         public OrganizationEntity? Organization { get; set; }
         public List<FeatureEntity> Features { get; set; } = new List<FeatureEntity>();
         public string? Description { get; set; }

@@ -8,7 +8,7 @@ export class UserList extends ApiResponse {
 }
 
 export class UserItem {
-  ID: number;
+  Id: number;
   UserName: string;
   Email: string;
   Domain: string;

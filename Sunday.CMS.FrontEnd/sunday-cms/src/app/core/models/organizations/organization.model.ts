@@ -45,6 +45,6 @@ export class OrganizationLookupResponse extends ApiResponse {
 
 export class OrganizationUserItem {
   OrganizationName: string;
-  OrganizationId: number;
+  OrganizationId: string;
   IsActive: boolean;
 }

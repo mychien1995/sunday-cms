@@ -6,7 +6,7 @@
                     <div class="position-relative form-group">
                         <label for="Name">Organization Name<span class="red">*</span></label>
                         <input name="Name" placeholder="Name here..." type="text" class="form-control"
-                            formControlName="Name" autocomplete="off" required>
+                            formControlName="Name" autocomplete="no" required>
                         <span class="text-danger"
                             [hidden]="!(ngForm.submitted && organizationForm.controls['Name'].hasError('required'))">This
                             field is required</span>
@@ -55,7 +55,7 @@
                             [(ngModel)]="hostNames[i]"
                             *ngFor="let hostName of hostNames; let i = index; trackBy:trackByFn"
                             (blur)="addHostNames(i)" [ngModelOptions]="{standalone: true}"
-                            [class]="'form-control ' + (i !== 0 ? 'mt-2' : '')">
+                            [class]="'form-control ' + (i !== 0 ? 'mt-2' : '')" autocomplete="no">
                         <span class="text-danger"
                             [hidden]="!(ngForm.submitted && (hostNames | filterEmptyString).length === 0)">This
                             field is required</span>

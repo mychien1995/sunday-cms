@@ -18,12 +18,12 @@ export class OrganizationAssignBoardComponent implements OnInit {
   @Input() selectedOrganizations: OrganizationUserItem[] = [];
   @Output() selectedOrganizationChanged: EventEmitter<any> = new EventEmitter();
 
-  selectedAvailableOrganizationIds: number[] = [];
-  selectedOrganizationIds: number[] = [];
+  selectedAvailableOrganizationIds: string[] = [];
+  selectedOrganizationIds: string[] = [];
 
   get availableOrganizations() {
     return this.organizationList.filter(
-      (c) => !this.selectedOrganizations.find((e) => e.OrganizationId === c.ID)
+      (c) => !this.selectedOrganizations.find((e) => e.OrganizationId === c.Id)
     );
   }
 
@@ -32,11 +32,11 @@ export class OrganizationAssignBoardComponent implements OnInit {
       this.selectedOrganizations = this.selectedOrganizations.concat(
         this.selectedAvailableOrganizationIds.map((c) => {
           const organizationName = this.organizationList.find(
-            (o) => o.ID.toString() === c.toString()
+            (o) => o.Id.toString() === c.toString()
           ).OrganizationName;
           return <OrganizationUserItem>{
             OrganizationName: organizationName,
-            OrganizationId: parseInt(c.toString(), null),
+            OrganizationId: c.toString(),
             IsActive: true,
           };
         })
@@ -59,10 +59,8 @@ export class OrganizationAssignBoardComponent implements OnInit {
     }
   }
 
-  selectCurrentOrganization(id: number): void {
-    const index = this.selectedOrganizationIds.indexOf(
-      parseInt(id.toString(), null)
-    );
+  selectCurrentOrganization(id: string): void {
+    const index = this.selectedOrganizationIds.indexOf(id);
     if (index > -1) {
       this.selectedOrganizationIds.splice(index, 1);
     } else {
@@ -70,20 +68,18 @@ export class OrganizationAssignBoardComponent implements OnInit {
     }
   }
 
-  tableRowClass(id: number): string {
-    const index = this.selectedOrganizationIds.indexOf(
-      parseInt(id.toString(), null)
-    );
+  tableRowClass(id: string): string {
+    const index = this.selectedOrganizationIds.indexOf(id);
     if (index > -1) {
       return 'selected';
     }
     return '';
   }
 
-  onActiveChange($event: any, orgId: number): void {
+  onActiveChange($event: any, orgId: string): void {
     const checked = $event.target.checked;
     const organizationUser = this.selectedOrganizations.find(
-      (c) => c.OrganizationId.toString() === orgId.toString()
+      (c) => c.OrganizationId === orgId
     );
     organizationUser.IsActive = checked;
     this.selectedOrganizationChanged.emit(this.selectedOrganizations);

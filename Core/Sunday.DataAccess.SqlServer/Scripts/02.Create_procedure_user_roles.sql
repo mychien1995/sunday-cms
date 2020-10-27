@@ -54,7 +54,7 @@ BEGIN
 END
 GO
 --------------------------------------------------------------------
-CREATE OR ALTER PROCEDURE [dbo].[sp_users_search]
+CREATE OR ALTER  PROCEDURE [dbo].[sp_users_search]
 (
 	@PageIndex int = 0,
 	@PageSize int = 10,
@@ -85,58 +85,40 @@ BEGIN
 	SET @WhereClause = ' IsDeleted = 0 ';
 
 	IF(@ExcludeIds IS NOT NULL AND LEN(TRIM(@ExcludeIds)) > 0)
-	BEGIN
-		IF LEN(TRIM(@WhereClause)) > 0
-			SET @WhereClause = @WhereClause + ' AND ';
-		SET @WhereClause = @WhereClause + ' ID NOT IN (' + dbo.ParseIdList(@ExcludeIds) + ') ';
-	END
+		SET @WhereClause = @WhereClause + ' AND ID NOT IN (' + dbo.ParseIdList(@ExcludeIds) + ') ';
 
 	IF(@IncludeIds IS NOT NULL AND LEN(TRIM(@IncludeIds)) > 0)
-	BEGIN
-		IF LEN(TRIM(@WhereClause)) > 0
-			SET @WhereClause = @WhereClause + ' AND ';
-		SET @WhereClause = @WhereClause + ' ID IN (' + dbo.ParseIdList(@IncludeIds) + ') ';
-	END
+		SET @WhereClause = @WhereClause + ' AND ID IN (' + dbo.ParseIdList(@IncludeIds) + ') ';
 
 	IF(@Text IS NOT NULL AND LEN(TRIM(@Text)) > 0)
-	BEGIN
-		IF LEN(TRIM(@WhereClause)) > 0
-			SET @WhereClause = @WhereClause + ' AND ';
-		SET @WhereClause = @WhereClause + ' (Username LIKE ''%'' + @Text + ''%'' OR FullName LIKE ''%'' + @Text + ''%'' OR Email LIKE ''%'' + @Text + ''%'') ' ;
-	END
+		SET @WhereClause = @WhereClause + ' AND (Username LIKE ''%'' + @Text + ''%'' OR FullName LIKE ''%'' + @Text + ''%'' OR Email LIKE ''%'' + @Text + ''%'') ' ;
 
 	IF(@RoleIds IS NOT NULL AND LEN(TRIM(@RoleIds)) > 0)
-	BEGIN
-		IF LEN(TRIM(@WhereClause)) > 0
-			SET @WhereClause = @WhereClause + ' AND ';
-		SET @WhereClause = @WhereClause + ' ID IN (SELECT UserId FROM UserRoles WHERE RoleId IN (' + dbo.ParseIdList(@RoleIds) + ')) ';
-	END
+		SET @WhereClause = @WhereClause + ' AND ID IN (SELECT UserId FROM UserRoles WHERE RoleId IN (' + dbo.ParseIdList(@RoleIds) + ')) ';
 
 	IF(@OrganizationIds IS NOT NULL AND LEN(TRIM(@OrganizationIds)) > 0)
-	BEGIN
-		IF LEN(TRIM(@WhereClause)) > 0
-			SET @WhereClause = @WhereClause + ' AND ';
-		SET @WhereClause = @WhereClause + ' ID IN (SELECT UserId FROM OrganizationUsers WHERE OrganizationId IN (' + dbo.ParseIdList(@OrganizationIds) + ')) ';
-	END
+		SET @WhereClause = @WhereClause + ' AND ID IN (SELECT UserId FROM OrganizationUsers WHERE OrganizationId IN (' + dbo.ParseIdList(@OrganizationIds) + ')) ';
 
 	IF(LEN(TRIM(@WhereClause)) > 0)
 		SET @WhereClause = ' WHERE ' + @WhereClause
 	DECLARE @CountQuery nvarchar(MAX);
 	SET @CountQuery = 'SELECT COUNT(*) FROM [Users] ' + @WhereClause
+
+	exec sp_executesql @CountQuery, N'@Text nvarchar(MAX)', @Text
+
 	
 	DECLARE @DataQuery nvarchar(MAX);
-	SET @DataQuery = 'SELECT * FROM [Users] ' + @WhereClause  + ' ORDER BY ' + @SortBy + ' ' + @SortDirection
-	+ ' OFFSET ' + CAST(@PageIndex AS VARCHAR(100)) + ' ROWS FETCH NEXT '+ CAST(@PageSize AS VARCHAR(100)) +' ROWS ONLY'
-
+	SET @DataQuery = 'SELECT * into #tmpUsers FROM [Users] ' + @WhereClause  + ' ORDER BY ' + @SortBy + ' ' + @SortDirection
+	+ ' OFFSET ' + CAST(@PageIndex AS VARCHAR(100)) + ' ROWS FETCH NEXT '+ CAST(@PageSize AS VARCHAR(100)) +' ROWS ONLY '
 	PRINT @DataQuery
 
-	exec sp_executesql @CountQuery, 
-	N'@Text nvarchar(MAX)',
-	@Text
-
-	exec sp_executesql @DataQuery, 
-	N'@Text nvarchar(MAX)',
-	@Text
+	exec sp_executesql @DataQuery, N'@Text nvarchar(MAX)', @Text
+	SELECT * FROM #tmpUsers;
+	SELECT Id, RoleName, Code FROM [Roles] WHERE Id IN (SELECT RoleId FROM [UserRoles] WHERE UserId IN (SELECT Id FROM #tmpUsers));
+	SELECT OrganizationId, IsActive FROM [OrganizationUsers] WHERE UserId IN (SELECT Id FROM #tmpUsers);
+	SELECT OrganizationRoleId, [OrganizationRoles].RoleName FROM [OrganizationUserRoles], [OrganizationRoles]
+		WHERE OrganizationUserId IN (SELECT Id FROM [OrganizationUsers] WHERE UserId IN (SELECT Id FROM #tmpUsers))
+		AND [OrganizationUserRoles].OrganizationRoleId = [OrganizationRoles].Id;
 END
 GO
 --------------------------------------------------------------------

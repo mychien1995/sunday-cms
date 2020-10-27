@@ -10,6 +10,7 @@ using Sunday.Foundation.Models;
 using Sunday.Foundation.Persistence.Application.Repositories;
 using Sunday.Foundation.Persistence.Entities;
 using Sunday.Foundation.Persistence.Extensions;
+using Sunday.Foundation.Persistence.Implementation.DapperParameters;
 
 namespace Sunday.Foundation.Persistence.Implementation.Repositories
 {
@@ -26,8 +27,8 @@ namespace Sunday.Foundation.Persistence.Implementation.Repositories
         public async Task<SearchResult<UserEntity>> QueryAsync(UserQuery query)
         {
             var result = new SearchResult<UserEntity>();
-            var searchResult = await _dbRunner.ExecuteMultipleAsync<int, UserEntity>(ProcedureNames.Users.Search, 
-                GetUserQuery(query));
+            var searchResult = await _dbRunner.ExecuteMultipleAsync<int, UserEntity>(ProcedureNames.Users.Search,
+                DbQuery(query));
             result.Total = searchResult.Item1.Single();
             result.Result = searchResult.Item2.ToList();
             return result;
@@ -50,12 +51,12 @@ namespace Sunday.Foundation.Persistence.Implementation.Repositories
         public async Task<Guid> CreateAsync(UserEntity user)
         {
             if (user.Id == Guid.Empty) user.Id = Guid.NewGuid();
-            await _dbRunner.ExecuteAsync(ProcedureNames.Users.Insert, user);
+            await _dbRunner.ExecuteAsync(ProcedureNames.Users.Insert, new CreateUserDynamicParameter(user));
             return user.Id;
         }
 
         public Task UpdateAsync(UserEntity user)
-            => _dbRunner.ExecuteAsync(ProcedureNames.Users.Update, user);
+            => _dbRunner.ExecuteAsync(ProcedureNames.Users.Update, new UpdateUserDynamicParameter(user));
 
         public Task DeleteAsync(Guid userId)
             => _dbRunner.ExecuteAsync(ProcedureNames.Users.Delete, new { UserId = userId });
@@ -85,7 +86,7 @@ namespace Sunday.Foundation.Persistence.Implementation.Repositories
             return user;
         }
 
-        private static object GetUserQuery(UserQuery query)
+        private static object DbQuery(UserQuery query)
         => new
         {
             query.Username,

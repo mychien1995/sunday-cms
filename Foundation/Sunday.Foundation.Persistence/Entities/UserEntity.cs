@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using Dapper;
 using Sunday.Core;
+using Sunday.DataAccess.SqlServer.Attributes;
 using Sunday.Foundation.Domain;
+using Sunday.Foundation.Persistence.Extensions;
 
 namespace Sunday.Foundation.Persistence.Entities
 {
@@ -25,9 +29,14 @@ namespace Sunday.Foundation.Persistence.Entities
         public string? Phone { get; set; }
         public string? AvatarBlobUri { get; set; }
         public string Fullname { get; set; } = string.Empty;
+        [DapperIgnoreParam]
         public List<RoleEntity> Roles { get; set; } = new List<RoleEntity>();
+        [DapperIgnoreParam]
         public List<OrganizationRoleEntity> VirtualRoles { get; set; } = new List<OrganizationRoleEntity>();
+        [DapperIgnoreParam]
         public List<OrganizationUserEntity> OrganizationUsers { get; set; } = new List<OrganizationUserEntity>();
+
+        public string RoleIds => Roles.Select(r => r.Id).ToDatabaseList();
 
     }
 }
