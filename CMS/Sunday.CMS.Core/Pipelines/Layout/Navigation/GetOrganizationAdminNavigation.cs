@@ -33,16 +33,6 @@ namespace Sunday.CMS.Core.Pipelines.Layout.Navigation
                     IconClass = "pe-7s-diamond"
                 });
             }
-            if (modules.Any(c => c == SystemModules.OrganizationProfileManagement.Code))
-            {
-                arg.NavigationItems.Add(new NavigationItem()
-                {
-                    Link = "/organization-profile",
-                    Section = "Organization Profile",
-                    Title = "Organization Profile",
-                    IconClass = "pe-7s-car"
-                });
-            }
             if (modules.All(c => c != SystemModules.RolesManagement.Code)) return Task.CompletedTask;
             arg.NavigationItems.Add(new NavigationItem()
             {

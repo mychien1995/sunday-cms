@@ -17,11 +17,5 @@
             public const string DisplayName = "Roles Management";
             public const string Code = "ORM";
         }
-        public static class OrganizationProfileManagement
-        {
-            public const string DisplayName = "Organization Profile Management";
-            public const string Code = "OPM";
-
-        }
     }
 }

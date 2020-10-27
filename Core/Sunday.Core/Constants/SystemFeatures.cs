@@ -84,15 +84,5 @@
                 public const string Code = "ORM_D";
             }
         }
-
-        public static class OrganizationProfileManagement
-        {
-            public const string Code = SystemModules.OrganizationProfileManagement.Code;
-            public static class UpdateProfile
-            {
-                public const string DisplayName = "Update Profile";
-                public const string Code = "OPM_U";
-            }
-        }
     }
 }
