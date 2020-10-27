@@ -7,8 +7,6 @@ using Sunday.CMS.Core.Models.VirtualRoles;
 using Sunday.Core;
 using Sunday.Core.Extensions;
 using Sunday.Core.Models.Base;
-using Sunday.Core.Pipelines;
-using Sunday.Core.Pipelines.Arguments;
 using Sunday.Foundation.Application.Services;
 using Sunday.Foundation.Domain;
 using Sunday.Foundation.Models;
@@ -64,7 +62,12 @@ namespace Sunday.CMS.Core.Implementation
             return BaseApiResponse.SuccessResult;
         }
 
-        private OrganizationRoleItem ToJsonItem(ApplicationOrganizationRole role) => role.MapTo<OrganizationRoleItem>();
+        private OrganizationRoleItem ToJsonItem(ApplicationOrganizationRole role)
+        {
+            var item = role.MapTo<OrganizationRoleItem>();
+            item.FeatureIds = role.Features.Select(f => f.Id).ToList();
+            return item;
+        }
 
         private OrganizationRoleDetailJsonResult ToJsonResult(ApplicationOrganizationRole role)
         {

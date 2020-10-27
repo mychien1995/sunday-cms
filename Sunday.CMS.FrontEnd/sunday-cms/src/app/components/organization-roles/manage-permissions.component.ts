@@ -67,7 +67,7 @@ export class ManagePermissionsComponent implements OnInit {
     });
   }
 
-  selectFeature(role: OrganizationRoleItem, featureId: number): void {
+  selectFeature(role: OrganizationRoleItem, featureId: string): void {
     const index = role.FeatureIds.indexOf(featureId);
     if (index > -1) {
       role.FeatureIds.splice(index, 1);

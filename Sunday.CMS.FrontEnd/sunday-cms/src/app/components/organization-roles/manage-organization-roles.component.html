@@ -29,10 +29,10 @@
                     <ng-container matColumnDef="Action">
                         <th mat-header-cell *matHeaderCellDef>Action</th>
                         <td mat-cell *matCellDef="let role">
-                            <a title="Edit" [routerLink]="['/organization-roles/edit/' + role.ID]"><i
+                            <a title="Edit" [routerLink]="['/organization-roles/edit/' + role.Id]"><i
                                     class="fa fa-edit"></i></a>
                             <a title="Delete" class="ml-2" href="javascript:void(0)"
-                                (click)="deleteRole(role.ID, confirmDeleteDialog)"><i class="fa fa-times"></i></a>
+                                (click)="deleteRole(role.Id, confirmDeleteDialog)"><i class="fa fa-times"></i></a>
                         </td>
                     </ng-container>
                     <tr mat-header-row

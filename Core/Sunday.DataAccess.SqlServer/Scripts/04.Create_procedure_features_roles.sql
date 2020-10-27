@@ -39,10 +39,18 @@ BEGIN
 		SET @PageSize = 10
 
 	SELECT COUNT(*) FROM OrganizationRoles  WHERE OrganizationId = @OrganizationId AND IsDeleted = 0
+
 	SELECT * FROM OrganizationRoles WHERE OrganizationId = @OrganizationId AND IsDeleted = 0
 	ORDER BY UpdatedDate DESC
 	OFFSET @PageIndex ROWS
-	FETCH NEXT @PageSize ROWS ONLY
+	FETCH NEXT @PageSize ROWS ONLY;
+
+	SELECT OrganizationRolesMapping.FeatureId, OrganizationRolesMapping.OrganizationRoleId FROM OrganizationRolesMapping, Features 
+		WHERE OrganizationRolesMapping.FeatureId = Features.Id
+		AND OrganizationRolesMapping.OrganizationRoleId IN (SELECT Id FROM OrganizationRoles WHERE OrganizationId = @OrganizationId AND IsDeleted = 0
+			ORDER BY UpdatedDate DESC
+			OFFSET @PageIndex ROWS
+			FETCH NEXT @PageSize ROWS ONLY)
 END
 GO
 --------------------------------------------------------------------
@@ -90,7 +98,7 @@ GO
 --------------------------------------------------------------------
 CREATE OR ALTER PROCEDURE [dbo].sp_organizationRoles_update
 (
-	@RoleId uniqueidentifier,
+	@Id uniqueidentifier,
 	@RoleName nvarchar(MAX),
 	@Description nvarchar(MAX),
 	@UpdatedDate datetime,
@@ -102,24 +110,24 @@ BEGIN
 
 	UPDATE OrganizationRoles
 	SET RoleName = @RoleName, [Description] = @Description, UpdatedBy = @UpdatedBy, UpdatedDate = @UpdatedDate
-	WHERE ID = @RoleId
+	WHERE ID = @Id
 
 	IF(@FeatureIds IS NOT NULL AND LEN(TRIM(@FeatureIds)) > 0)
 	BEGIN
 		DECLARE @tblFeatureId TABLE (FeatureId uniqueidentifier)
 		INSERT INTO @tblFeatureId  SELECT value  FROM STRING_SPLIT(@FeatureIds, '|')
 
-		DELETE FROM OrganizationRolesMapping WHERE OrganizationRoleId = @RoleId AND FeatureId NOT IN (SELECT FeatureId FROM @tblFeatureId)
+		DELETE FROM OrganizationRolesMapping WHERE OrganizationRoleId = @Id AND FeatureId NOT IN (SELECT FeatureId FROM @tblFeatureId)
 
-		INSERT INTO OrganizationRolesMapping (OrganizationRoleId, FeatureId) SELECT @RoleId, FeatureId FROM @tblFeatureId
-		WHERE FeatureId NOT IN (SELECT FeatureId FROM OrganizationRolesMapping WHERE OrganizationRoleId = @RoleId)
+		INSERT INTO OrganizationRolesMapping (OrganizationRoleId, FeatureId) SELECT @Id, FeatureId FROM @tblFeatureId
+		WHERE FeatureId NOT IN (SELECT FeatureId FROM OrganizationRolesMapping WHERE OrganizationRoleId = @Id)
 	END
 	ELSE
 	BEGIN
-		DELETE FROM OrganizationRolesMapping WHERE OrganizationRoleId = @RoleId
+		DELETE FROM OrganizationRolesMapping WHERE OrganizationRoleId = @Id
 	END
 
-	SELECT * FROM OrganizationRoles WHERE ID = @RoleId
+	SELECT * FROM OrganizationRoles WHERE ID = @Id
 END
 GO
 --------------------------------------------------------------------
@@ -157,7 +165,7 @@ BEGIN
 END
 GO
 --------------------------------------------------------------------
-CREATE OR ALTER PROCEDURE dbo.sp_organizationRoles_bulkUpdate
+CREATE OR ALTER PROCEDURE [dbo].[sp_organizationRoles_bulkUpdate]
 (
 	@Roles OrganizationRoleType READONLY
 )
@@ -179,7 +187,7 @@ BEGIN
 		ELSE
 		BEGIN
 			DECLARE @tblFeatureIds TABLE (FeatureId uniqueidentifier)
-			INSERT INTO @tblFeatureIds select value from string_split(@FeaturesIds, '|');
+			INSERT INTO @tblFeatureIds select CAST(value as uniqueidentifier) from string_split(@FeaturesIds, '|');
 		
 			DELETE OrganizationRolesMapping WHERE OrganizationRoleId = @RoleId AND FeatureId NOT IN (SELECT FeatureId FROM @tblFeatureIds)
 

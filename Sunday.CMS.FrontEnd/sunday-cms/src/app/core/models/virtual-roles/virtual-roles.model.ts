@@ -7,7 +7,7 @@ export class OrganizationRoleItem {
   UpdatedBy?: string;
   CreatedDate?: number;
   UpdatedDate?: number;
-  FeatureIds?: number[] = [];
+  FeatureIds?: string[] = [];
 }
 
 export class OrganizationRoleListApiResponse extends ApiResponse {
@@ -18,11 +18,11 @@ export class OrganizationRoleListApiResponse extends ApiResponse {
 export class OrganizationRoleDetailApiResponse extends ApiResponse {
   Id?: string;
   RoleName?: string;
-  FeatureIds: number[] = [];
+  FeatureIds: string[] = [];
 }
 
 export class OrganizationRoleMutationData {
   Id?: string;
   RoleName?: string;
-  FeatureIds: number[] = [];
+  FeatureIds: string[] = [];
 }

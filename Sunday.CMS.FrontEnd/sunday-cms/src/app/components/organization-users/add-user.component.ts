@@ -92,7 +92,7 @@ export class AddOrganizationUserComponent implements OnInit {
     const userData = <UserMutationModel>formValue;
     userData.OrganizationRoleIds = this.currentUser.OrganizationRoleIds;
     if (this.currentUser) {
-      userData.ID = this.currentUser.ID;
+      userData.Id = this.currentUser.Id;
     }
     this.clientState.isBusy = true;
     const observ = this.isEdit
@@ -104,6 +104,6 @@ export class AddOrganizationUserComponent implements OnInit {
         this.router.navigate(['/organization-users']);
       }
       this.clientState.isBusy = false;
-    });
+    }, ex => this.clientState.isBusy = false);
   }
 }

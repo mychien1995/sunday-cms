@@ -45,7 +45,7 @@ namespace Sunday.Foundation.Persistence.Implementation.DapperParameters
                 {
                     var rec = new SqlDataRecord(
                         new SqlMetaData("OrganizationId", SqlDbType.UniqueIdentifier),
-                        new SqlMetaData("OrganizationRolesId", SqlDbType.NVarChar, 10000)
+                        new SqlMetaData("OrganizationRolesId", SqlDbType.NVarChar, 1000)
                        );
                     rec.SetValue(0, param.Organization?.Id ?? param.OrganizationId);
                     rec.SetValue(1, User.VirtualRoles.Select(r => r.OrganizationId).ToDatabaseList());

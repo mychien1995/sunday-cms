@@ -41,9 +41,9 @@ namespace Sunday.Foundation.Persistence.Implementation.Repositories
             if (query.IncludeRoles)
                 roles = searchResult[2].Select(r => (UserRoleEntity)r).ToList();
             if (query.IncludeOrganizations)
-                organizationUsers = searchResult[3].Select(r => (OrganizationUserEntity)r).ToList();
+                organizationUsers = searchResult[query.IncludeRoles ? 3 : 2].Select(r => (OrganizationUserEntity)r).ToList();
             if (query.IncludeVirtualRoles)
-                virtualRoles = searchResult[4].Select(r => (OrganizationUserRoleEntity)r).ToList();
+                virtualRoles = searchResult[query.IncludeRoles ? query.IncludeOrganizations ? 4 : 3 : 2].Select(r => (OrganizationUserRoleEntity)r).ToList();
             users.Iter(user =>
             {
                 user.Roles = roles.Where(ur => ur.UserId == user.Id)

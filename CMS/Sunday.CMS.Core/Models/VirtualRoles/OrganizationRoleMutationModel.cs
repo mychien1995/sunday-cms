@@ -8,17 +8,10 @@ namespace Sunday.CMS.Core.Models.VirtualRoles
     [MappedTo(typeof(ApplicationOrganizationRole))]
     public class OrganizationRoleMutationModel
     {
-        public OrganizationRoleMutationModel(Guid id, 
-            string roleName, Guid organizationId)
-        {
-            Id = id;
-            RoleName = roleName;
-            OrganizationId = organizationId;
-        }
 
-        public Guid Id { get; set; }
-        public string RoleName { get; set; }
-        public Guid OrganizationId { get; set; }
+        public Guid? Id { get; set; }
+        public Guid? OrganizationId { get; set; }
+        public string RoleName { get; set; } = string.Empty;
 
         public List<Guid> FeatureIds { get; set; } = new List<Guid>();
     }

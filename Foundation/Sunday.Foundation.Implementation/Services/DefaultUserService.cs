@@ -110,6 +110,11 @@ namespace Sunday.Foundation.Implementation.Services
                     orgUserEntity.OrganizationId = _sundayContext.CurrentOrganization!.Id;
                     return orgUserEntity;
                 }).ToList();
+                if (!entity.OrganizationUsers.Any())
+                {
+                    entity.OrganizationUsers = new List<OrganizationUserEntity>
+                        { new OrganizationUserEntity{OrganizationId =_sundayContext.CurrentOrganization!.Id, IsActive = true}};
+                }
                 entity.Roles = new List<RoleEntity>()
                     {_roleRepository.GetRoleByCodeAsync(SystemRoleCodes.OrganizationUser).Result.Get()};
             }

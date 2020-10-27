@@ -20,7 +20,7 @@
                         <div class="col-md-6">
                             <div class="position-relative form-group">
                                 <label>Features <span class="red">*</span></label>
-                                <app-two-sides-select [datasource]="moduleLookup" [bindValue]="'ID'"
+                                <app-two-sides-select [datasource]="moduleLookup" [bindValue]="'Id'"
                                     [(values)]="currentRole.FeatureIds" [bindLabel]="'FeatureName'" [nested]="true" [nestedChild]="'Features'" [nestedLabel]="'ModuleName'">
                                 </app-two-sides-select>
                                 <span class="text-danger"

@@ -173,8 +173,8 @@ BEGIN
 	FETCH NEXT FROM OrganizationCursor INTO @OrganizationId, @OrganizationRolesId
 	WHILE @@FETCH_STATUS = 0  
     BEGIN
-		DECLARE @tblOrgRole TABLE (OrgRoleId varchar(100))
-		INSERT INTO @tblOrgRole SELECT value  FROM STRING_SPLIT(@OrganizationRolesId, '|')
+		DECLARE @tblOrgRole TABLE (OrgRoleId uniqueidentifier)
+		INSERT INTO @tblOrgRole SELECT Cast(value as uniqueidentifier)  FROM STRING_SPLIT(@OrganizationRolesId, '|')
 		
 		DECLARE @OrganizationUserId uniqueidentifier
 		SET @OrganizationUserId = (SELECT TOP 1 ID FROM OrganizationUsers WHERE UserId = @Id AND OrganizationId = @OrganizationId)

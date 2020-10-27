@@ -10,7 +10,7 @@ namespace Sunday.Foundation.Domain
         public Guid Id { get; set; }
         public string RoleCode { get; set; } = string.Empty;
         public string RoleName { get; set; } = string.Empty;
-        public int OrganizationId { get; set; }
+        public Guid OrganizationId { get; set; }
         public ApplicationOrganization? Organization { get; set; }
         public List<ApplicationFeature> Features { get; set; } = new List<ApplicationFeature>();
         public string? Description { get; set; }

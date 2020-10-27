@@ -44,7 +44,9 @@ namespace Sunday.CMS.Core.Implementation
             if (_httpContextAccessor.HttpContext.User is ApplicationUserPrincipal user &&
                 (user.IsInRole(SystemRoleCodes.OrganizationAdmin) || user.IsInRole(SystemRoleCodes.OrganizationUser)))
             {
-                return user.User.OrganizationUsers.FirstOrDefault()!.Organization!;
+                var organizationId = user.User.OrganizationUsers.FirstOrDefault()!.Organization!.Id;
+                return _organizationService.GetOrganizationByIdAsync(organizationId).MapResultTo(o => o.Get())
+                    .Result;
             }
             return Option<ApplicationOrganization>.None;
         }

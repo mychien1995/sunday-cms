@@ -83,7 +83,7 @@ export class AddOrganizationRoleComponent implements OnInit {
     }
     const data = <OrganizationRoleMutationData>formValue;
     data.FeatureIds = this.currentRole.FeatureIds;
-    data.ID = this.isEdit ? this.currentRole.ID : 0;
+    data.Id = this.isEdit ? this.currentRole.Id : '';
     this.clientState.isBusy = true;
     const observ = this.isEdit
       ? this.roleService.updateRole(data)
@@ -94,6 +94,6 @@ export class AddOrganizationRoleComponent implements OnInit {
         this.router.navigate(['/organization-roles']);
       }
       this.clientState.isBusy = false;
-    });
+    }, ex => this.clientState.isBusy = false);
   }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using LanguageExt;
 using Sunday.Core;
@@ -26,22 +27,27 @@ namespace Sunday.Foundation.Implementation.Services
         }
 
         public Task<SearchResult<ApplicationOrganizationRole>> QueryAsync(OrganizationRoleQuery query)
-          => _organizationRoleRepository.QueryAsync(query).MapResultTo(rs => rs.CloneTo<ApplicationOrganizationRole>());
+          => _organizationRoleRepository.QueryAsync(query).MapResultTo(rs => new SearchResult<ApplicationOrganizationRole>
+          {
+              Result = rs.Result.Select(ToDomainModel).ToList(),
+              Total = rs.Total
+          });
 
         public Task<Option<ApplicationOrganizationRole>> GetRoleByIdAsync(Guid organizationRoleId)
             => _organizationRoleRepository.GetRoleByIdAsync(organizationRoleId)
-                .MapResultTo(org => org.Map(o => o.MapTo<ApplicationOrganizationRole>()));
+                .MapResultTo(org => org.Map(ToDomainModel));
 
         public async Task<Guid> CreateAsync(ApplicationOrganizationRole role)
         {
+            role.Id = Guid.NewGuid();
             await ApplicationPipelines.RunAsync("cms.entity.beforeCreate", new BeforeCreateEntityArg(role));
-            return await _organizationRoleRepository.CreateAsync(role.MapTo<OrganizationRoleEntity>());
+            return await _organizationRoleRepository.CreateAsync(ToEntity(role));
         }
 
         public async Task UpdateAsync(ApplicationOrganizationRole role)
         {
             await ApplicationPipelines.RunAsync("cms.entity.beforeUpdate", new BeforeUpdateEntityArg(role));
-            await _organizationRoleRepository.UpdateAsync(role.MapTo<OrganizationRoleEntity>());
+            await _organizationRoleRepository.UpdateAsync(ToEntity(role));
         }
 
         public Task DeleteAsync(Guid roleId)
@@ -49,5 +55,19 @@ namespace Sunday.Foundation.Implementation.Services
 
         public Task BulkUpdateAsync(IEnumerable<ApplicationOrganizationRole> roles)
             => _organizationRoleRepository.BulkUpdateAsync(roles.CastListTo<OrganizationRoleEntity>());
+
+        private static OrganizationRoleEntity ToEntity(ApplicationOrganizationRole model)
+        {
+            var role = model.MapTo<OrganizationRoleEntity>();
+            role.Features = model.Features.CastListTo<FeatureEntity>().ToList();
+            return role;
+        }
+
+        private static ApplicationOrganizationRole ToDomainModel(OrganizationRoleEntity roleEntity)
+        {
+            var model = roleEntity.MapTo<ApplicationOrganizationRole>();
+            model.Features = roleEntity.Features.CastListTo<ApplicationFeature>().ToList();
+            return model;
+        }
     }
 }

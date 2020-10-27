@@ -6,8 +6,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using LanguageExt;
 using Sunday.Core;
-using Sunday.Core.Models;
 using Sunday.Core.Models.Base;
+using Sunday.DataAccess.SqlServer.Attributes;
 using Sunday.DataAccess.SqlServer.Database;
 using Sunday.Foundation.Implementation;
 using Sunday.Foundation.Models;
@@ -28,9 +28,16 @@ namespace Sunday.Foundation.Persistence.Implementation.Repositories
         public async Task<SearchResult<OrganizationRoleEntity>> QueryAsync(OrganizationRoleQuery query)
         {
             var result = new SearchResult<OrganizationRoleEntity>();
-            var queryResult = await _dbRunner.ExecuteMultipleAsync<int, OrganizationRoleEntity>(ProcedureNames.OrganizationRoles.GetByOrganization, query);
+            var queryResult = await _dbRunner.ExecuteMultipleAsync<int, OrganizationRoleEntity, OrganizationRoleMappingEntity>(ProcedureNames.OrganizationRoles.GetByOrganization, query);
             result.Total = queryResult.Item1.Single();
-            result.Result = queryResult.Item2.ToList();
+            var roles = queryResult.Item2.ToList();
+            var features = queryResult.Item3.ToList();
+            roles.Iter(role =>
+            {
+                role.Features = features.Where(f => f.OrganizationRoleId == role.Id)
+                    .Select(f => new FeatureEntity { Id = f.FeatureId }).ToList();
+            });
+            result.Result = roles;
             return result;
         }
 
@@ -50,12 +57,12 @@ namespace Sunday.Foundation.Persistence.Implementation.Repositories
         public async Task<Guid> CreateAsync(OrganizationRoleEntity role)
         {
             if (role.Id == Guid.Empty) role.Id = Guid.NewGuid();
-            await _dbRunner.ExecuteAsync(ProcedureNames.OrganizationRoles.Create, role);
+            await _dbRunner.ExecuteAsync(ProcedureNames.OrganizationRoles.Create, role.ToDapperParameters());
             return role.Id;
         }
 
         public Task UpdateAsync(OrganizationRoleEntity role)
-        => _dbRunner.ExecuteAsync(ProcedureNames.OrganizationRoles.Update, role);
+        => _dbRunner.ExecuteAsync(ProcedureNames.OrganizationRoles.Update, role.ToDapperParameters(DbOperation.Update));
 
         public Task DeleteAsync(Guid roleId)
         => _dbRunner.ExecuteAsync(ProcedureNames.OrganizationRoles.Delete, new { RoleId = roleId });
@@ -63,13 +70,13 @@ namespace Sunday.Foundation.Persistence.Implementation.Repositories
         public async Task BulkUpdateAsync(IEnumerable<OrganizationRoleEntity> roles)
         {
             var dbRoleType = new DataTable("OrganizationRoleType");
-            dbRoleType.Columns.Add("OrganizationRoleId", typeof(int));
+            dbRoleType.Columns.Add("OrganizationRoleId", typeof(Guid));
             dbRoleType.Columns.Add("Features", typeof(string));
             foreach (var role in roles)
             {
                 var row = dbRoleType.NewRow();
                 row["OrganizationRoleId"] = role.Id;
-                row["Features"] = role.Features.ToDatabaseList();
+                row["Features"] = role.Features.Select(f => f.Id).ToDatabaseList();
                 dbRoleType.Rows.Add(row);
             }
             var param = new SqlParameter

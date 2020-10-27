@@ -9,7 +9,7 @@
                             <div class="position-relative form-group">
                                 <label for="zzzz" class="username">&nbsp;<span class="red">*</span></label>
                                 <input name="zzzz" placeholder="Username here..." type="text" class="form-control"
-                                    formControlName="UserName" autocomplete="off" required [readOnly]="isEdit"
+                                    formControlName="UserName" autocomplete="no" required [readOnly]="isEdit"
                                     pattern="^(\d|\w)+$">
                                 <span class="text-danger"
                                     [hidden]="!(ngForm.submitted && userForm.controls['UserName'].hasError('required'))">This
@@ -23,7 +23,7 @@
                             <div class="position-relative form-group">
                                 <label for="Fullname" class="">Full Name <span class="red">*</span></label>
                                 <input name="Fullname" placeholder="Fullname here..." type="text" class="form-control"
-                                    formControlName="Fullname" autocomplete="off" required>
+                                    formControlName="Fullname" autocomplete="no" required>
                                 <span class="text-danger"
                                     [hidden]="!(ngForm.submitted && userForm.controls['Fullname'].hasError('required'))">This
                                     field is required</span>
@@ -61,7 +61,7 @@
                             <div class="position-relative form-group">
                                 <label for="Email" class="">Email</label>
                                 <input name="Email" placeholder="Email here..." type="text" class="form-control"
-                                    formControlName="Email" autocomplete="off" [email]="true">
+                                    formControlName="Email" autocomplete="no" [email]="true">
                                 <span class="text-danger"
                                     [hidden]="!(ngForm.submitted && userForm.controls['Email'].hasError('email'))">Incorrect
                                     email format</span>
@@ -83,7 +83,7 @@
                         <div class="col-md-6">
                             <div class="position-relative form-group">
                                 <label for="Roles" class="">Roles <span class="red">*</span></label>
-                                <app-two-sides-select [datasource]="roleLookup" [bindValue]="'ID'"
+                                <app-two-sides-select [datasource]="roleLookup" [bindValue]="'Id'"
                                     [(values)]="currentUser.OrganizationRoleIds" [bindLabel]="'RoleName'">
                                 </app-two-sides-select>
                                 <span class="text-danger"
