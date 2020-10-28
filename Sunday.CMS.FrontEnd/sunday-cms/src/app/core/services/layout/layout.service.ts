@@ -1,11 +1,11 @@
 import { Injectable, Output, EventEmitter } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, forkJoin } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { ApiUrl } from '@core/constants';
 import { ApiService } from '@services/api.service';
 import { ApiHelper } from '@services/api.helper';
 import { map, catchError } from 'rxjs/operators';
-import { ApiResponse, NavigationTree } from '@models/index';
+import { ApiResponse, LayoutModel, NavigationTree } from '@models/index';
 import { StorageKey } from 'app/core/constants';
 import { ClientState } from './clientstate.service';
 
@@ -22,52 +22,79 @@ export class LayoutService {
     this.layoutBus.emit(data);
   }
 
-  clearNavigationCache() {
+  clearCache() {
     localStorage.removeItem(StorageKey.NavigationData);
+    localStorage.removeItem(StorageKey.LayoutData);
+  }
+
+  private getInternalData<T>(cacheKey: string): T {
+    const storageItem = localStorage.getItem(cacheKey);
+    if (!storageItem) {
+      this.refresh();
+      return null;
+    }
+    const data = JSON.parse(storageItem);
+    const now = new Date().getTime();
+    if (now - data.CreatedDate > 300000) {
+      this.refresh();
+      return null;
+    }
+    return <T>data;
   }
 
   getNavigation(): NavigationTree {
-    const storageItem = localStorage.getItem(StorageKey.NavigationData);
-    if (!storageItem) {
-      this.refreshNavigation();
-      return null;
-    }
-    const navigationData = JSON.parse(storageItem);
-    const now = new Date().getTime();
-    if (now - navigationData.CreatedDate > 300000) {
-      this.refreshNavigation();
-      return null;
-    }
-    return <NavigationTree>navigationData;
+    return this.getInternalData<NavigationTree>(StorageKey.NavigationData);
   }
 
-  refreshNavigation(callback?: any): void {
-    this.clearNavigationCache();
+  getLayout(): LayoutModel {
+    return this.getInternalData<LayoutModel>(StorageKey.LayoutData);
+  }
+
+  refresh(callback?: any): void {
+    this.clearCache();
     this.clientState.isNavigationBusy = true;
-    this.getNavigationData().subscribe((res) => {
-      if (res.Success) {
-        this.saveNavigation(<NavigationTree>res);
-        this.layoutUpdated({
-          event: 'navigation-updated',
-        });
+    forkJoin([this.getNavigationData(), this.getLayoutData()]).subscribe(
+      (response) => {
+        if (response[0].Success) {
+          this.saveInternalData<NavigationTree>(
+            <NavigationTree>response[0],
+            StorageKey.NavigationData
+          );
+          this.layoutUpdated({
+            event: 'navigation-updated',
+          });
+        }
+        if (response[1].Success) {
+          this.saveInternalData<LayoutModel>(
+            <LayoutModel>response[1],
+            StorageKey.LayoutData
+          );
+          this.layoutUpdated({
+            event: 'layout-updated',
+          });
+        }
         this.clientState.isNavigationBusy = false;
         if (callback) {
           callback();
         }
       }
-    });
+    );
   }
 
-  private saveNavigation(data: NavigationTree): void {
-    this.clearNavigationCache();
-    data.CreatedDate = new Date().getTime();
-    const navigationStr = JSON.stringify(data);
-    localStorage.setItem(StorageKey.NavigationData, navigationStr);
+  private saveInternalData<T>(data: T, key: string): void {
+    data['CreatedDate'] = new Date().getTime();
+    localStorage.setItem(key, JSON.stringify(data));
   }
 
-  getNavigationData(): Observable<ApiResponse> {
+  private getNavigationData(): Observable<ApiResponse> {
     return this.apiService
       .get(ApiUrl.Layout.GetNavigation)
+      .pipe(map(ApiHelper.onSuccess), catchError(ApiHelper.onFail));
+  }
+
+  private getLayoutData(): Observable<ApiResponse> {
+    return this.apiService
+      .get(ApiUrl.Layout.GetLayout)
       .pipe(map(ApiHelper.onSuccess), catchError(ApiHelper.onFail));
   }
 }

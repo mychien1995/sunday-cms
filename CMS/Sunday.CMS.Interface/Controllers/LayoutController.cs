@@ -7,17 +7,24 @@ namespace Sunday.CMS.Interface.Controllers
 {
     public class LayoutController : BaseController
     {
-        private readonly INavigationManager _navigationManager;
+        private readonly ILayoutManager _layoutManager;
 
-        public LayoutController(INavigationManager navigationManager, ISundayContext context) : base(context)
+        public LayoutController(ILayoutManager layoutManager, ISundayContext context) : base(context)
         {
-            _navigationManager = navigationManager;
+            _layoutManager = layoutManager;
         }
 
         [HttpGet("getNavigation")]
         public async Task<IActionResult> GetNavigation()
         {
-            var result = await _navigationManager.GetUserNavigation();
+            var result = await _layoutManager.GetUserNavigation();
+            return Ok(result);
+        }
+
+        [HttpGet("getLayout")]
+        public IActionResult GetLayout()
+        {
+            var result = _layoutManager.GetLayout();
             return Ok(result);
         }
     }

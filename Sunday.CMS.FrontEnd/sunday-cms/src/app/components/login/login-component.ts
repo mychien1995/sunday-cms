@@ -60,7 +60,7 @@ export class LoginComponent implements OnInit {
         this.layoutService.layoutUpdated({
           event: 'user-updated',
         });
-        this.layoutService.refreshNavigation(() => {
+        this.layoutService.refresh(() => {
           this.clientState.isBusy = false;
           this.router.navigate(['/']);
         });

@@ -1,49 +1,57 @@
 {
   "red": {
     "bgClass": "bg-danger",
-    "textClass": "header-text-light",
+    "headerTextClass": "header-text-light",
+    "sideBarTextClass": "sidebar-text-light",
     "name" : "Red",
     "hex" : "#d92550" 
   },
   "blue": {
     "bgClass": "bg-primary",
-    "textClass": "header-text-light",
+    "headerTextClass": "header-text-light",
+    "sideBarTextClass": "sidebar-text-dark",
     "name" : "Blue",
     "hex" : "#3f6ad8" 
   },
   "green": {
     "bgClass": "bg-success",
-    "textClass": "header-text-light",
+    "headerTextClass": "header-text-light",
+    "sideBarTextClass": "sidebar-text-dark",
     "name" : "Green",
     "hex" : "#3ac47d" 
   },
   "light-blue": {
     "bgClass": "bg-info",
-    "textClass": "header-text-light",
+    "headerTextClass": "header-text-light",
+    "sideBarTextClass": "sidebar-text-dark",
     "name" : "Light Blue",
     "hex" : "#16aaff" 
   },
   "yellow": {
     "bgClass": "bg-warning",
-    "textClass": "header-text-dark",
+    "headerTextClass": "header-text-dark",
+    "sideBarTextClass": "sidebar-text-dark",
     "name" : "Yellow",
     "hex" : "#f7b924" 
   },
   "light-grey": {
     "bgClass": "bg-light",
-    "textClass": "header-text-dark",
+    "headerTextClass": "header-text-dark",
+    "sideBarTextClass": "sidebar-text-light",
     "name" : "Light Grey",
     "hex" : "#eee" 
   },
   "black": {
     "bgClass": "bg-dark",
-    "textClass": "header-text-light",
+    "headerTextClass": "header-text-light",
+    "sideBarTextClass": "sidebar-text-light",
     "name" : "Black",
     "hex" : "#343a40" 
   },
   "purple": {
     "bgClass": "bg-alternate",
-    "textClass": "header-text-light",
+    "headerTextClass": "header-text-light",
+    "sideBarTextClass": "sidebar-text-light",
     "name" : "Purple",
     "hex" : "#794c8a" 
   }

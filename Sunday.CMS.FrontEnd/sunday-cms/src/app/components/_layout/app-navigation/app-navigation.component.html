@@ -3,6 +3,7 @@
 </div>
 <div class="app-sidebar__inner">
   <ul class="vertical-nav-menu" [hidden]="clientState.isNavigationBusy">
+    <li [hidden]="!layoutModel.OrganizationName" class="app-sidebar__heading org-name">{{layoutModel.OrganizationName}}</li>
     <ng-container *ngFor="let section of navigationTree.Sections">
       <li class="app-sidebar__heading">
         {{section.Section}}

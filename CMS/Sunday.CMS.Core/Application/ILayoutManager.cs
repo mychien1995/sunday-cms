@@ -3,8 +3,9 @@ using Sunday.CMS.Core.Models.Layout;
 
 namespace Sunday.CMS.Core.Application
 {
-    public interface INavigationManager
+    public interface ILayoutManager
     {
         Task<NavigationTreeResponse> GetUserNavigation();
+        GetLayoutResponse GetLayout();
     }
 }

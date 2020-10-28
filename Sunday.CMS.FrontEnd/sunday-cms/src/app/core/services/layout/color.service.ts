@@ -9,7 +9,8 @@ export class ColorService {
   getColors(): any[] {
     const list: any = [];
     const colors = Color;
-    for (var key in colors) {
+    // tslint:disable-next-line: forin
+    for (const key in colors) {
       list.push({
         code: key,
         name: colors[key] && colors[key].name ? colors[key].name : key,
