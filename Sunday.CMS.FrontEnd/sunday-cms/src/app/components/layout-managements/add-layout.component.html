@@ -1,0 +1,45 @@
+<app-page-heading [title]="formTitle" [icon]="'bg-happy-itmeo'"></app-page-heading>
+<div class="row">
+    <div class="col-12">
+        <div class="main-card mb-3 card">
+            <div class="card-body">
+                <form (ngSubmit)="onSubmit(dataForm.value)" [formGroup]="dataForm" autocomplete="off" #ngForm="ngForm">
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <div class="position-relative form-group">
+                                <label for="LayoutName">Layout Name<span class="red">*</span></label>
+                                <input name="LayoutName" placeholder="Layout Name here..." type="text" class="form-control"
+                                    formControlName="LayoutName" autocomplete="off" required>
+                                <span class="text-danger"
+                                    [hidden]="!(ngForm.submitted && dataForm.controls['LayoutName'].hasError('required'))">This
+                                    field is required</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="position-relative form-group">
+                                <label for="LayoutPath">Layout Path<span class="red">*</span></label>
+                                <input name="LayoutPath" placeholder="Layout Path here..." type="text" class="form-control"
+                                    formControlName="LayoutPath" autocomplete="off" required>
+                                <span class="text-danger"
+                                    [hidden]="!(ngForm.submitted && dataForm.controls['LayoutPath'].hasError('required'))">This
+                                    field is required</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <div class="position-relative form-group">
+                                <label>Restrict To Organizations <span class="red">*</span></label>
+                                <app-two-sides-select [datasource]="organizationLookup" [bindValue]="'Id'"
+                                    [(values)]="current.OrganizationIds" [bindLabel]="'OrganizationName'">
+                                </app-two-sides-select>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="mt-1 btn btn-primary">Submit</button>
+                    <button class="mt-1 ml-2 btn btn-light" [routerLink]="['/manage-layouts']">Back</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -9,11 +9,11 @@ using Sunday.Core;
 using Sunday.Core.Models.Base;
 using Sunday.DataAccess.SqlServer.Attributes;
 using Sunday.DataAccess.SqlServer.Database;
+using Sunday.DataAccess.SqlServer.Extensions;
 using Sunday.Foundation.Implementation;
 using Sunday.Foundation.Models;
 using Sunday.Foundation.Persistence.Application.Repositories;
 using Sunday.Foundation.Persistence.Entities;
-using Sunday.Foundation.Persistence.Extensions;
 
 namespace Sunday.Foundation.Persistence.Implementation.Repositories
 {

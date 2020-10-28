@@ -4,8 +4,8 @@ using System.Linq;
 using Dapper;
 using Sunday.Core;
 using Sunday.DataAccess.SqlServer.Attributes;
+using Sunday.DataAccess.SqlServer.Extensions;
 using Sunday.Foundation.Domain;
-using Sunday.Foundation.Persistence.Extensions;
 
 namespace Sunday.Foundation.Persistence.Entities
 {

@@ -10,7 +10,6 @@ using Sunday.Foundation.Implementation;
 using Sunday.Foundation.Models;
 using Sunday.Foundation.Persistence.Application.Repositories;
 using Sunday.Foundation.Persistence.Entities;
-using Sunday.Foundation.Persistence.Extensions;
 
 namespace Sunday.Foundation.Persistence.Implementation.Repositories
 {

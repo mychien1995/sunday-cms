@@ -26,6 +26,13 @@ namespace Sunday.CMS.Core.Pipelines.Layout.Navigation
                 Title = "Manage Organizations",
                 IconClass = "pe-7s-car"
             });
+            arg.NavigationItems.Add(new NavigationItem()
+            {
+                Link = "/manage-layouts",
+                Section = "Manage Contents",
+                Title = "Manage Layouts",
+                IconClass = "pe-7s-next-2"
+            });
             return Task.CompletedTask;
         }
     }

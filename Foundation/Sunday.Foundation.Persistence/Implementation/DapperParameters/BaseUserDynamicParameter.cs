@@ -3,8 +3,8 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using Microsoft.SqlServer.Server;
+using Sunday.DataAccess.SqlServer.Extensions;
 using Sunday.Foundation.Persistence.Entities;
-using Sunday.Foundation.Persistence.Extensions;
 
 namespace Sunday.Foundation.Persistence.Implementation.DapperParameters
 {

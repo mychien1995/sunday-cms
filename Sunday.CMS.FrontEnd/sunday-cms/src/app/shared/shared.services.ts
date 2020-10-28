@@ -12,7 +12,8 @@ import {
   ColorService,
   ModuleService,
   OrganizationRoleService,
-  FeatureService
+  FeatureService,
+  LayoutManagementService
 } from '@services/index';
 
 export const SharedServices = [
@@ -29,5 +30,6 @@ export const SharedServices = [
   ColorService,
   ModuleService,
   OrganizationRoleService,
-  FeatureService
+  FeatureService,
+  LayoutManagementService
 ];

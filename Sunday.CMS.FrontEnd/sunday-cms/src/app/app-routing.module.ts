@@ -14,12 +14,15 @@ import {
   ManagePermissionsComponent,
   ManageOrganizationUsersComponent,
   AddOrganizationUserComponent,
+  ManageLayoutComponent,
+  AddLayoutComponent
 } from 'app/components';
 import { AuthGuard } from 'app/core/services';
 import {
   UserResolver,
   OrganizationResolver,
   OrganizationRoleResolver,
+  AppLayoutResolver
 } from '@components/index';
 
 export const routes: Routes = [
@@ -75,6 +78,19 @@ export const routes: Routes = [
         component: AddOrganizationUserComponent,
         resolve: { user: UserResolver },
       },
+      {
+        path: 'manage-layouts',
+        component: ManageLayoutComponent,
+      },
+      {
+        path: 'manage-layouts/create',
+        component: AddLayoutComponent,
+      },
+      {
+        path: 'manage-layouts/edit/:layoutId',
+        component: AddLayoutComponent,
+        resolve: { layout: AppLayoutResolver }
+      }
     ],
     canActivate: [AuthGuard],
   },

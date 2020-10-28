@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Sunday.Core.Constants;
 using Sunday.Core.Domain.Interfaces;
 
 namespace Sunday.Foundation.Domain
@@ -34,5 +35,8 @@ namespace Sunday.Foundation.Domain
             if (Roles == null || !Roles.Any()) return false;
             return Roles.Any(c => c.Code == roleCode);
         }
+
+        public bool IsOrganizationMember()
+            => IsInRole(SystemRoleCodes.OrganizationAdmin) || IsInRole(SystemRoleCodes.OrganizationUser);
     }
 }

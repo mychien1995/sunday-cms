@@ -20,6 +20,8 @@ import {
   ManagePermissionsComponent,
   ManageOrganizationUsersComponent,
   AddOrganizationUserComponent,
+  AddLayoutComponent,
+  ManageLayoutComponent,
 } from 'app/components';
 import {
   ApplicationLayoutComponent,
@@ -59,14 +61,18 @@ export const SharedComponents = [
   ManagePermissionsComponent,
   ManageOrganizationUsersComponent,
   AddOrganizationUserComponent,
+  AddLayoutComponent,
+  ManageLayoutComponent
 ];
 import {
   UserResolver,
   OrganizationResolver,
   OrganizationRoleResolver,
+  AppLayoutResolver
 } from 'app/components';
 export const SharedResolvers = [
   UserResolver,
   OrganizationResolver,
   OrganizationRoleResolver,
+  AppLayoutResolver
 ];

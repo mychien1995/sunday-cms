@@ -52,7 +52,7 @@ export class OrganizationService {
       .pipe(map(ApiHelper.onSuccess), catchError(ApiHelper.onFail));
   }
 
-  deleteOrganization(orgId: number): Observable<ApiResponse> {
+  deleteOrganization(orgId: string): Observable<ApiResponse> {
     return this.apiService
       .delete(`${ApiUrl.Organizations.Delete}?id=${orgId}`)
       .pipe(map(ApiHelper.onSuccess), catchError(ApiHelper.onFail));

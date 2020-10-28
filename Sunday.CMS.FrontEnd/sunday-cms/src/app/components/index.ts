@@ -20,3 +20,6 @@ export * from './organization-roles/organization-role.resolver';
 export * from './organization-roles/manage-permissions.component';
 export * from './organization-users/manage-users.component';
 export * from './organization-users/add-user.component';
+export * from './layout-managements/manage-layouts.component';
+export * from './layout-managements/add-layout.component';
+export * from './layout-managements/layout-item.resolver';

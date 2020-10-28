@@ -28,11 +28,6 @@ namespace Sunday.Foundation.Implementation
             public const string ChangePassword = "sp_users_changePassword";
             public const string FindUserByUserName = "sp_users_findbyusername";
         }
-        public class System
-        {
-            public const string ModuleSeeding = "sp_modules_seeding";
-            public const string FeatureSeeding = "sp_features_seeding";
-        }
         public class Modules
         {
             public const string GetAll = "sp_modules_getAll";
@@ -55,6 +50,13 @@ namespace Sunday.Foundation.Implementation
             public const string Update = "sp_organizationRoles_update";
             public const string Create = "sp_organizationRoles_create";
             public const string BulkUpdate = "sp_organizationRoles_bulkUpdate";
+        }
+        public class Layout
+        {
+            public const string Search = "sp_modules_seeding";
+            public const string Create = "sp_features_seeding";
+            public const string Update = "sp_features_seeding";
+            public const string Delete = "sp_features_seeding";
         }
     }
 }

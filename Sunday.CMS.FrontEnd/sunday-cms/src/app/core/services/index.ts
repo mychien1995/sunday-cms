@@ -13,3 +13,4 @@ export * from 'app/core/services/layout/color.service';
 export * from 'app/core/services/feature-access/modules.service';
 export * from 'app/core/services/feature-access/features.service';
 export * from 'app/core/services/virtual-roles/organization-roles.service';
+export * from 'app/core/services/layout-management/layout-management.service';

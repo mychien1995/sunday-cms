@@ -167,6 +167,33 @@ BEGIN
 	);
 END
 
+IF (NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'dbo' AND  TABLE_NAME = 'Layouts'))
+BEGIN
+	CREATE TABLE Layouts
+	(
+		Id uniqueidentifier primary key default newid(),
+		LayoutName nvarchar(1000) not null,
+		LayoutPath nvarchar(2000) not null,
+		CreatedDate datetime not null,
+		CreatedBy varchar(500) not null,
+		UpdatedDate datetime not null,
+		UpdatedBy varchar(500) not null,
+		IsDeleted bit not null default(0)
+	)
+END
+
+IF (NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'dbo' AND  TABLE_NAME = 'OrganizationLayouts'))
+BEGIN
+	CREATE TABLE OrganizationLayouts
+	(
+		Id uniqueidentifier primary key default newid(),
+		OrganizationId uniqueidentifier not null,
+		LayoutId uniqueidentifier not null,
+		CONSTRAINT FK_OrganizationLayouts_Organization FOREIGN KEY (OrganizationId) REFERENCES Organizations(Id),
+		CONSTRAINT FK_OrganizationLayouts_Layout FOREIGN KEY (LayoutId) REFERENCES Layouts(Id),
+	)
+END
+
 
 IF TYPE_ID(N'ModuleType') IS NULL
 BEGIN

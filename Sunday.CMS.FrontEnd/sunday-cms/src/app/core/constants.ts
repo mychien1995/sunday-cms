@@ -49,6 +49,13 @@ export class ApiUrl {
     Deactivate: 'cms/api/organizations/deactivate',
     GetModules: 'cms/api/modules/getByOrganization'
   };
+  public static Layouts = {
+    Search: 'cms/api/appLayout/search',
+    Create: 'cms/api/appLayout/create',
+    Edit: 'cms/api/appLayout/update',
+    GetById: 'cms/api/appLayout/',
+    Delete: 'cms/api/appLayout/'
+  };
   public static FileUpload = 'cms/api/FileUpload';
 }
 

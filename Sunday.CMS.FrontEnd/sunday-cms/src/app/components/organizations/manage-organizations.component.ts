@@ -17,7 +17,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class ManageOrganizationComponent implements OnInit {
   organizationList: OrganizationList = new OrganizationList();
-  activeOrganizationId: number;
+  activeOrganizationId: string;
 
   constructor(
     private organizationService: OrganizationService,
@@ -64,7 +64,7 @@ export class ManageOrganizationComponent implements OnInit {
     });
   }
 
-  deleteOrganization(orgId: number, template: any): void {
+  deleteOrganization(orgId: string, template: any): void {
     this.activeOrganizationId = orgId;
     this.modalService.open(template);
   }
