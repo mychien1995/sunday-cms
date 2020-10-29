@@ -35,18 +35,18 @@ export class OrganizationService {
       .pipe(map(ApiHelper.onSuccess), catchError(ApiHelper.onFail));
   }
 
-  getOrganizationById(orgId: number): Observable<OrganizationDetailResponse> {
+  getOrganizationById(orgId: string): Observable<OrganizationDetailResponse> {
     return this.apiService
       .get(`${ApiUrl.Organizations.GetById}?id=${orgId}`)
       .pipe(map(ApiHelper.onSuccess), catchError(ApiHelper.onFail));
   }
-  activateOrganization(userId: number): Observable<ApiResponse> {
+  activateOrganization(userId: string): Observable<ApiResponse> {
     return this.apiService
       .put(`${ApiUrl.Organizations.Activate}?id=${userId}`)
       .pipe(map(ApiHelper.onSuccess), catchError(ApiHelper.onFail));
   }
 
-  deactivateOrganization(userId: number): Observable<ApiResponse> {
+  deactivateOrganization(userId: string): Observable<ApiResponse> {
     return this.apiService
       .put(`${ApiUrl.Organizations.Deactivate}?id=${userId}`)
       .pipe(map(ApiHelper.onSuccess), catchError(ApiHelper.onFail));

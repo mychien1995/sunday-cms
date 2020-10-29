@@ -15,16 +15,22 @@
   
   <ItemGroup>
     <None Remove="Scripts\01.Create_schema.sql" />
+    <None Remove="Scripts\01a.Create_types.sql" />
     <None Remove="Scripts\02.Create_procedure_user_roles.sql" />
     <None Remove="Scripts\03.Create_procedure_organizations.sql" />
     <None Remove="Scripts\04.Create_procedure_features_roles.sql" />
     <None Remove="Scripts\05.Create_common_functions.sql" />
     <None Remove="Scripts\06.Create_procedure_layouts.sql" />
     <None Remove="Scripts\07.Create_procedure_websites.sql" />
+    <None Remove="Scripts\08.Create_procedure_templates.sql" />
     <None Remove="Scripts\Clear_version.sql" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Scripts\01a.Create_types.sql">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Scripts\08.Create_procedure_templates.sql" />
     <EmbeddedResource Include="Scripts\07.Create_procedure_websites.sql" />
     <EmbeddedResource Include="Scripts\06.Create_procedure_layouts.sql" />
     <EmbeddedResource Include="Scripts\05.Create_common_functions.sql">

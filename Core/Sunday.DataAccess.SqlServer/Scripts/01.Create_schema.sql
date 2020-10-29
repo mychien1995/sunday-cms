@@ -214,38 +214,40 @@ BEGIN
 	);
 END
 
-IF TYPE_ID(N'ModuleType') IS NULL
+IF (NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'dbo' AND  TABLE_NAME = 'Templates'))
 BEGIN
-	CREATE TYPE ModuleType AS TABLE
+	CREATE TABLE Templates
 	(
-		Code nvarchar(MAX),
-		[Name] nvarchar(MAX)
-	);
+		Id uniqueidentifier primary key default newid(),
+		TemplateName nvarchar(500),
+		Icon varchar(100),
+		StandardValueId uniqueidentifier,
+		BaseTemplateIds nvarchar(MAX),
+		HasRestrictions bit default(0),
+		CreatedDate datetime NOT NULL,
+		CreatedBy nvarchar(500) NULL,
+		UpdatedDate datetime NOT NULL,
+		UpdatedBy nvarchar(500) NULL,
+		IsDeleted bit NOT NULL,
+	)
 END
 
-IF TYPE_ID(N'FeatureType') IS NULL
+IF (NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'dbo' AND  TABLE_NAME = 'TemplateFields'))
 BEGIN
-	CREATE TYPE FeatureType AS TABLE
+	CREATE TABLE TemplateFields
 	(
-		Code nvarchar(MAX),
-		[Name] nvarchar(MAX),
-		[ModuleCode] nvarchar(MAX)
-	);
+		Id uniqueidentifier primary key default newid(),
+		FieldName varchar(500),
+		DisplayName nvarchar(1000),
+		FieldType int,
+		Title varchar(1000),
+		IsUnversioned bit default(0),
+		Properties nvarchar(MAX),
+		Section varchar(500),
+		ValidationRules varchar(500),
+		TemplateId uniqueidentifier,
+		SortOrder int,
+		IsDeleted bit default(0),
+		CONSTRAINT FK_TemplateFields_Template FOREIGN KEY (TemplateId) REFERENCES Templates(Id)
+	)
 END
-
-IF TYPE_ID(N'OrganizationRoleType') IS NULL
-BEGIN
-	CREATE TYPE OrganizationRoleType AS TABLE
-	(
-		OrganizationRoleId uniqueidentifier,
-		Features nvarchar(MAX)
-	);
-END
-
-IF TYPE_ID(N'OrganizationUserRoleType') IS NULL
-CREATE TYPE [dbo].[OrganizationUserRoleType] AS TABLE(
-	[OrganizationId] [uniqueidentifier] NULL,
-	[OrganizationRolesId] [nvarchar](max) NULL,
-	[IsActive] [bit] NULL
-)
-GO

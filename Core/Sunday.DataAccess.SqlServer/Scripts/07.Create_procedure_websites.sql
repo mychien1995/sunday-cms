@@ -39,8 +39,7 @@ BEGIN
 			,0)
 END
 GO
-
-
+--------------------------------------------------------------------
 CREATE OR ALTER PROCEDURE sp_websites_update
 (
 	 @Id uniqueidentifier
@@ -58,7 +57,7 @@ BEGIN
 	WHERE Id = @Id
 END
 GO
-
+--------------------------------------------------------------------
 CREATE OR ALTER PROCEDURE sp_websites_delete
 (
 	 @Id uniqueidentifier
@@ -68,7 +67,7 @@ BEGIN
 	UPDATE [dbo].[Websites] SET IsDeleted = 1 WHERE Id = @Id
 END
 GO
-
+--------------------------------------------------------------------
 CREATE OR ALTER PROCEDURE sp_websites_search
 (
 	@OrganizationId uniqueidentifier,
@@ -83,7 +82,7 @@ BEGIN
 	SELECT * FROM dbo.Websites WHERE IsDeleted = 0 AND (@OrganizationId IS NULL OR OrganizationId = @OrganizationId)
 END
 GO
-
+--------------------------------------------------------------------
 CREATE OR ALTER PROCEDURE sp_websites_getById
 (
 	@Id uniqueidentifier

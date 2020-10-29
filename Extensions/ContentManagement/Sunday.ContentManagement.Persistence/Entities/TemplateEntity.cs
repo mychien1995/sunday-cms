@@ -1,0 +1,21 @@
+﻿using System;
+using Sunday.ContentManagement.Domain;
+using Sunday.Core;
+
+namespace Sunday.ContentManagement.Persistence.Entities
+{
+    [MappedTo(typeof(Template))]
+    public class TemplateEntity
+    {
+        public Guid Id { get; set; }
+        public string TemplateName { get; set; } = string.Empty;
+        public string Icon { get; set; } = string.Empty;
+        public string BaseTemplates { get; set; } = string.Empty;
+        public DateTime CreatedDate { get; set; }
+        public DateTime UpdatedDate { get; set; }
+        public string CreatedBy { get; set; } = string.Empty;
+        public string UpdatedBy { get; set; } = string.Empty;
+        public TemplateFieldEntity[] Fields { get; set; } = Array.Empty<TemplateFieldEntity>();
+        public bool IsUpdate { get; set; }
+    }
+}

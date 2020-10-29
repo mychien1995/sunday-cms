@@ -72,4 +72,17 @@ export class ManageWebsiteComponent implements OnInit {
       });
     }
   }
+
+  activate(websiteId: string, activated: boolean): void {
+    this.clientState.isBusy = true;
+    this.websiteService.activateWebsite(websiteId).subscribe((res) => {
+      if (res.Success) {
+        this.toastr.success(
+          activated ? 'Organization Deactivated' : 'Organization Activated'
+        );
+        this.getWebsites();
+      }
+      this.clientState.isBusy = false;
+    });
+  }
 }

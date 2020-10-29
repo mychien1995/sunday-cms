@@ -47,6 +47,14 @@
                                     class="fa fa-edit"></i></a>
                             <a title="Delete" class="ml-2" href="javascript:void(0)"
                                 (click)="deleteWebsite(item.Id, confirmDeleteDialog)"><i class="fa fa-times"></i></a>
+                            <a title="Activate" class="ml-2" href="javascript:void(0)" [hidden]="item.IsActive"
+                                (click)="activate(item.Id, item.IsActive)">
+                                <i class="fa fa-unlock"></i>
+                            </a>
+                            <a title="Dectivate" class="ml-2" href="javascript:void(0)" [hidden]="!item.IsActive"
+                                (click)="activate(item.Id, item.IsActive)">
+                                <i class="fa fa-lock"></i>
+                            </a>
                         </td>
                     </ng-container>
                     <tr mat-header-row

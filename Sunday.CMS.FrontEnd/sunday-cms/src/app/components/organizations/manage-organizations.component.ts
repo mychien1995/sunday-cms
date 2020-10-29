@@ -42,7 +42,7 @@ export class ManageOrganizationComponent implements OnInit {
     this.getOrganizations(ev);
   }
 
-  activateOrganization(orgId: number): void {
+  activateOrganization(orgId: string): void {
     this.clientState.isBusy = true;
     this.organizationService.activateOrganization(orgId).subscribe((res) => {
       if (res.Success) {
@@ -53,7 +53,7 @@ export class ManageOrganizationComponent implements OnInit {
     });
   }
 
-  deactivateOrganization(orgId: number): void {
+  deactivateOrganization(orgId: string): void {
     this.clientState.isBusy = true;
     this.organizationService.deactivateOrganization(orgId).subscribe((res) => {
       if (res.Success) {
