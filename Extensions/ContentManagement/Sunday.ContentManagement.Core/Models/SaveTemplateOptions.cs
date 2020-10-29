@@ -3,6 +3,6 @@
     public class SaveTemplateOptions
     {
         public bool SaveProperties { get; set; }
-        public static SaveTemplateOptions Default = new SaveTemplateOptions();;
+        public static SaveTemplateOptions Default = new SaveTemplateOptions();
     }
 }

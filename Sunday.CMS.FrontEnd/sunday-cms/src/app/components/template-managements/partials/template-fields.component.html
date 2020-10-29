@@ -1,0 +1,55 @@
+<table class="mb-0 table table-striped table-bordered">
+    <thead>
+        <th>Name</th>
+        <th>Display Name</th>
+        <th width="300">Type</th>
+        <th>Help Text</th>
+        <th width="50">Unversion</th>
+        <th>Parameters</th>
+        <th></th>
+    </thead>
+    <tbody>
+        <tr *ngFor="let item of template.Fields; let i = index;">
+            <td>
+                <input type="text" class="form-control" [(ngModel)]="item.FieldName" required
+                    placeholder="Field Name here" (blur)="addRow(item)" />
+                <span class="text-danger"
+                    [hidden]="item.IsPlaceholder || (item.FieldName && item.FieldName.trim().length > 0)">This
+                    field is required</span>
+            </td>
+            <td>
+                <input type="text" class="form-control" [(ngModel)]="item.DisplayName"
+                    placeholder="Display Name here" />
+            </td>
+            <td>
+                <ng-select [items]="fieldTypeLookup" bindLabel="Name" bindValue="Id" [(ngModel)]="item.FieldType"
+                    required [clearable]="false" [searchable]="false">
+                </ng-select>
+            </td>
+            <td>
+                <input type="text" class="form-control" [(ngModel)]="item.Title" placeholder="Help Text here" />
+            </td>
+            <td align="center">
+                <input type="checkbox" [checked]="item.IsUnversioned"
+                    (change)="item.IsUnversioned = !item.IsUnversioned">
+            </td>
+            <td>
+                <input type="text" class="form-control" [(ngModel)]="item.Properties" />
+            </td>
+            <td>
+                <a title="Remove" class="m-lg-2" (click)="removeField(i)" [hidden]="item.IsPlaceholder"
+                    href="javascript:void(0)"><i class="fa fa-times"></i></a>
+                <a title="Move up" class="m-lg-2" href="javascript:void(0)" [hidden]="i === 0 || item.IsPlaceholder"
+                    (click)="moveUp(i)">
+                    <i class="fa fa-arrow-up"></i>
+                </a>
+                <a title="Move down" class="m-lg-2" href="javascript:void(0)"
+                    [hidden]="i === template.Fields.length - 1 || template.Fields[i + 1].IsPlaceholder"
+                    (click)="moveDown(i)">
+                    <i class="fa fa-arrow-down"></i>
+                </a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<span class="text-danger" [hidden]="!(submitted && !isValid())">Template need at least 1 property</span>

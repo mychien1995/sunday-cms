@@ -54,13 +54,13 @@ BEGIN
 	SELECT COUNT(*) FROM dbo.Templates WHERE IsDeleted = 0
 	AND 
 	@Text IS NULL OR LEN(TRIM(@Text)) = 0
-	OR Id = @Text
+	OR CAST(Id as varchar) = @Text
 	OR TemplateName LIKE '%' + @Text + '%'
 
 	SELECT * FROM dbo.Templates WHERE IsDeleted = 0
 	AND 
 	@Text IS NULL OR LEN(TRIM(@Text)) = 0
-	OR Id = @Text
+	OR CAST(Id as varchar) = @Text
 	OR TemplateName LIKE '%' + @Text + '%'
 END
 GO

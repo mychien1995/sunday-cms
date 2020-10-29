@@ -1,0 +1,33 @@
+<form [formGroup]="dataForm" autocomplete="off" #ngForm="ngForm">
+    <div class="form-row">
+        <div class="col-md-6">
+            <div class="position-relative form-group">
+                <label>Template Name<span class="red">*</span></label>
+                <input name="TemplateName" placeholder="Template Name here..." type="text" class="form-control"
+                    formControlName="TemplateName" autocomplete="no" required [(ngModel)]="template.TemplateName">
+                <span class="text-danger"
+                    [hidden]="!(submitted && dataForm.controls['TemplateName'].hasError('required'))">This
+                    field is required</span>
+            </div>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="col-md-6">
+            <div class="position-relative form-group">
+                <label>Template Icon<span class="red">*</span></label>
+                <ng-select [items]="iconLookup" formControlName="Icon" required bindValue="code" bindLabel="code"
+                    [(ngModel)]="template.Icon">
+                    <ng-template ng-option-tmp let-item="item">
+                        <div style="display: flex;">
+                            <i class="{{item.icon}}" style="font-size: 30px;"></i>
+                            &nbsp;&nbsp;
+                            <label><b>{{item.code}}</b></label>
+                        </div>
+                    </ng-template>
+                </ng-select>
+                <span class="text-danger" [hidden]="!(submitted && dataForm.controls['Icon'].hasError('required'))">This
+                    field is required</span>
+            </div>
+        </div>
+    </div>
+</form>

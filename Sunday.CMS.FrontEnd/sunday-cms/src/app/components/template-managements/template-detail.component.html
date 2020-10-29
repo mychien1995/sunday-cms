@@ -1,0 +1,30 @@
+<app-page-heading [title]="template.TemplateName || 'New Template'" [icon]="templateIcon"></app-page-heading>
+<div class="row">
+    <div class="col-12">
+        <div class="mb-3 card">
+            <div class="card-header card-header-tab-animation">
+                <ul class="nav nav-justified">
+                    <li class="nav-item"><a data-toggle="tab" (click)="activeTab = 1;"
+                            class="nav-link {{activeTab === 1 ? 'active' : ''}}">Template
+                            Detail</a></li>
+                    <li class="nav-item"><a data-toggle="tab" (click)="activeTab = 2;" class="nav-link
+                            {{activeTab === 2 ? 'active' : ''}}">Template
+                            Fields</a></li>
+                </ul>
+            </div>
+            <div class="card-body">
+                <div class="tab-content">
+                    <div class="tab-pane {{activeTab === 1 ? 'active' : ''}}" id="templateDetail" role="tabpanel">
+                        <app-template-info #info [(template)]="template" [submitted]="submitted"></app-template-info>
+                    </div>
+                    <div class="tab-pane {{activeTab === 2 ? 'active' : ''}}" id="templateFields" role="tabpanel">
+                        <app-template-fields #fields [(template)]="template" [submitted]="submitted">
+                        </app-template-fields>
+                    </div>
+                </div>
+                <button class="btn btn-primary mt-3" (click)="onSubmit()">Save Template</button>
+                <button class="mt-3 ml-2 btn btn-light" [routerLink]="['/manage-templates']">Back</button>
+            </div>
+        </div>
+    </div>
+</div>

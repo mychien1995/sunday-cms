@@ -38,6 +38,11 @@ namespace Sunday.ContentManagement.Implementation.Services
         public async Task CreateAsync(Template template)
         {
             await ApplicationPipelines.RunAsync("cms.entity.beforeCreate", new BeforeCreateEntityArg(template));
+            template.Fields.Iter(f =>
+            {
+                f.TemplateId = template.Id;
+                f.Id = Guid.NewGuid();
+            });
             await _templateRepository.SaveAsync(ToEntity(template), new SaveTemplateOptions { SaveProperties = true });
         }
 

@@ -33,12 +33,12 @@ namespace Sunday.ContentManagement.Persistence.Implementation.Repositories
                     });
 
         public Task<Option<TemplateEntity>> GetByIdAsync(Guid templateId)
-            => _dbRunner.ExecuteMultipleAsync<TemplateEntity, TemplateFieldEntity>(ProcedureNames.Templates.GetById)
+            => _dbRunner.ExecuteMultipleAsync<TemplateEntity, TemplateFieldEntity>(ProcedureNames.Templates.GetById, new { Id = templateId})
                 .MapResultTo(
                     rs =>
                     {
                         var template = Optional(rs.Item1.FirstOrDefault());
-                        template.Bind(tmp => tmp.Fields = rs.Item2.ToArray());
+                        template.IfSome(tmp => tmp.Fields = rs.Item2.ToArray());
                         return template;
                     });
 
@@ -53,6 +53,6 @@ namespace Sunday.ContentManagement.Persistence.Implementation.Repositories
         }
 
         public Task DeleteAsync(Guid templateId)
-            => _dbRunner.ExecuteAsync(ProcedureNames.Templates.Delete, new {id = templateId});
+            => _dbRunner.ExecuteAsync(ProcedureNames.Templates.Delete, new {Id = templateId});
     }
 }

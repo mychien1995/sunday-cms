@@ -25,6 +25,10 @@ import {
   AddWebsiteComponent,
   ManageWebsiteComponent,
   StringListEditorComponent,
+  ManageTemplateComponent,
+  TemplateDetailComponent,
+  TemplateFieldComponent,
+  TemplateInfoComponent
 } from 'app/components';
 import {
   ApplicationLayoutComponent,
@@ -68,19 +72,25 @@ export const SharedComponents = [
   ManageLayoutComponent,
   AddWebsiteComponent,
   ManageWebsiteComponent,
-  StringListEditorComponent
+  StringListEditorComponent,
+  ManageTemplateComponent,
+  TemplateDetailComponent,
+  TemplateFieldComponent,
+  TemplateInfoComponent
 ];
 import {
   UserResolver,
   OrganizationResolver,
   OrganizationRoleResolver,
   AppLayoutResolver,
-  AppWebsiteResolver
+  AppWebsiteResolver,
+  TemplateResolver
 } from 'app/components';
 export const SharedResolvers = [
   UserResolver,
   OrganizationResolver,
   OrganizationRoleResolver,
   AppLayoutResolver,
-  AppWebsiteResolver
+  AppWebsiteResolver,
+  TemplateResolver
 ];

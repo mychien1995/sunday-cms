@@ -64,6 +64,14 @@ export class ApiUrl {
     Delete: 'cms/api/websites/',
     Activate: 'cms/api/websites/activate'
   };
+  public static Templates = {
+    Search: 'cms/api/templates/search',
+    Create: 'cms/api/templates/create',
+    Edit: 'cms/api/templates/update',
+    GetById: 'cms/api/templates/',
+    Delete: 'cms/api/templates/',
+    GetFieldTypes: 'cms/api/templates/getFieldTypes'
+  };
   public static FileUpload = 'cms/api/FileUpload';
 }
 

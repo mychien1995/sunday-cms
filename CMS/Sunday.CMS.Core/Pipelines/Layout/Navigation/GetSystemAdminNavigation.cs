@@ -33,6 +33,13 @@ namespace Sunday.CMS.Core.Pipelines.Layout.Navigation
                 Title = "Manage Layouts",
                 IconClass = "pe-7s-next-2"
             });
+            arg.NavigationItems.Add(new NavigationItem()
+            {
+                Link = "/manage-templates",
+                Section = "Manage Contents",
+                Title = "Manage Templates",
+                IconClass = "lnr-book"
+            });
             return Task.CompletedTask;
         }
     }

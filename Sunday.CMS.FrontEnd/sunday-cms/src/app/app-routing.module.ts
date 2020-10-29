@@ -18,6 +18,9 @@ import {
   AddLayoutComponent,
   AddWebsiteComponent,
   ManageWebsiteComponent,
+  ManageTemplateComponent,
+  TemplateDetailComponent,
+  TemplateResolver,
 } from 'app/components';
 import { AuthGuard } from 'app/core/services';
 import {
@@ -107,6 +110,19 @@ export const routes: Routes = [
         component: AddWebsiteComponent,
         resolve: { website: AppWebsiteResolver },
       },
+      {
+        path: 'manage-templates',
+        component: ManageTemplateComponent,
+      },
+      {
+        path: 'manage-templates/create',
+        component: TemplateDetailComponent,
+      },
+      {
+        path: 'manage-templates/edit/:templateId',
+        component: TemplateDetailComponent,
+        resolve: { template: TemplateResolver },
+      }
     ],
     canActivate: [AuthGuard],
   },

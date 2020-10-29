@@ -19,11 +19,11 @@
         }
         public class Templates
         {
-            public const string Search = "sp_websites_search";
-            public const string Save = "sp_websites_insert";
-            public const string SaveProperties = "sp_websites_update";
-            public const string Delete = "sp_websites_delete";
-            public const string GetById = "sp_websites_getById";
+            public const string Search = "sp_templates_search";
+            public const string Save = "sp_templates_save";
+            public const string SaveProperties = "sp_templates_saveProperties";
+            public const string Delete = "sp_templates_delete";
+            public const string GetById = "sp_templates_getById";
         }
     }
 }
