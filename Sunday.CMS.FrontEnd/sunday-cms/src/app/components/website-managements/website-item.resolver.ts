@@ -7,16 +7,16 @@ import {
 } from '@angular/router';
 import { Observable } from 'rxjs';
 
-import { LayoutManagementService } from '@services/index';
-import { LayoutItem } from '@models/index';
+import { WebsiteManagementService } from '@services/index';
+import { WebsiteItem } from '@models/index';
 import { catchError } from 'rxjs/operators';
 
 @Injectable()
-export class AppLayoutResolver
-  implements Resolve<LayoutItem> {
+export class AppWebsiteResolver
+  implements Resolve<WebsiteItem> {
   constructor(
     private router: Router,
-    private service: LayoutManagementService
+    private service: WebsiteManagementService
   ) {}
 
   resolve(
@@ -24,7 +24,7 @@ export class AppLayoutResolver
     state: RouterStateSnapshot
   ): Observable<any> {
     return this.service
-      .getLayoutById(route.params['layoutId'])
+      .getWebsiteById(route.params['websiteId'])
       .pipe(catchError((err) => this.router.navigateByUrl('/')));
   }
 }

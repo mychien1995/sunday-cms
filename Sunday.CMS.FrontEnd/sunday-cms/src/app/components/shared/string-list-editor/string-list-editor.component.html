@@ -1,0 +1,3 @@
+<input name="{{name}}" placeholder="{{placeholder}}" type="text" autocomplete="off" [(ngModel)]="values[i]"
+    *ngFor="let item of values; let i = index; trackBy:trackByFn" (blur)="addValue(i)"
+    [ngModelOptions]="{standalone: true}" [class]="'form-control ' + (i !== 0 ? 'mt-2' : '')" autocomplete="no">

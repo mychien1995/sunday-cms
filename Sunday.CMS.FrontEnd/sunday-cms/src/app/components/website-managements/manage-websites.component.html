@@ -1,18 +1,18 @@
-<app-page-heading [title]="'Manage Layouts'" [icon]="'bg-happy-itmeo'"></app-page-heading>
+<app-page-heading [title]="'Manage Websites'" [icon]="'bg-happy-itmeo'"></app-page-heading>
 <div class="row">
     <div class="col-12">
-        <button class="mb-3 btn btn-shadow btn-primary" [routerLink]="['/manage-layouts/create']">Create Layout
+        <button class="mb-3 btn btn-shadow btn-primary" [routerLink]="['/manage-websites/create']">Create Website
         </button>
         <div class="main-card mb-3 card">
             <div class="card-body">
-                <table mat-table [dataSource]="layoutList.Layouts" class="mb-0 table table-striped table-bordered">
+                <table mat-table [dataSource]="websiteList.Websites" class="mb-0 table table-striped table-bordered">
                     <ng-container matColumnDef="Name">
                         <th mat-header-cell *matHeaderCellDef>Name</th>
-                        <td mat-cell *matCellDef="let item">{{ item.LayoutName }}</td>
+                        <td mat-cell *matCellDef="let item">{{ item.WebsiteName }}</td>
                     </ng-container>
-                    <ng-container matColumnDef="Path">
-                        <th mat-header-cell *matHeaderCellDef>Path</th>
-                        <td mat-cell *matCellDef="let item">{{ item.LayoutPath }}</td>
+                    <ng-container matColumnDef="Layout">
+                        <th mat-header-cell *matHeaderCellDef>Layout</th>
+                        <td mat-cell *matCellDef="let item">{{ getLayout(item.LayoutId) }}</td>
                     </ng-container>
                     <ng-container matColumnDef="CreatedBy">
                         <th mat-header-cell *matHeaderCellDef>Created By</th>
@@ -30,24 +30,34 @@
                         <th mat-header-cell *matHeaderCellDef>Updated Date</th>
                         <td mat-cell *matCellDef="let item">{{ item.UpdatedDate | unixToDatetime }}</td>
                     </ng-container>
+                    <ng-container matColumnDef="IsActive">
+                        <th mat-header-cell *matHeaderCellDef>Active</th>
+                        <td mat-cell *matCellDef="let item">
+                            <div class="custom-checkbox custom-control">
+                                <input type="checkbox" id="exampleCustomCheckbox4" class="custom-control-input"
+                                    [checked]="item.IsActive" disabled>
+                                <label class="custom-control-label" for="exampleCustomCheckbox4">&nbsp;</label>
+                            </div>
+                        </td>
+                    </ng-container>
                     <ng-container matColumnDef="Action">
                         <th mat-header-cell *matHeaderCellDef>Action</th>
                         <td mat-cell *matCellDef="let item">
-                            <a title="Edit" [routerLink]="['/manage-layouts/edit/' + item.Id]"><i
+                            <a title="Edit" [routerLink]="['/manage-websites/edit/' + item.Id]"><i
                                     class="fa fa-edit"></i></a>
                             <a title="Delete" class="ml-2" href="javascript:void(0)"
-                                (click)="deleteLayout(item.Id, confirmDeleteDialog)"><i class="fa fa-times"></i></a>
+                                (click)="deleteWebsite(item.Id, confirmDeleteDialog)"><i class="fa fa-times"></i></a>
                         </td>
                     </ng-container>
                     <tr mat-header-row
-                        *matHeaderRowDef="['Name', 'Path', 'CreatedBy', 'CreateDate', 'UpdatedBy', 'UpdatedDate','Action']">
+                        *matHeaderRowDef="['Name', 'Layout', 'CreatedBy', 'CreateDate', 'UpdatedBy', 'UpdatedDate', 'IsActive', 'Action']">
                     </tr>
                     <tr mat-row
-                        *matRowDef="let myRowData; columns: ['Name', 'Path', 'CreatedBy', 'CreateDate', 'UpdatedBy', 'UpdatedDate','Action']">
+                        *matRowDef="let myRowData; columns: ['Name', 'Layout', 'CreatedBy', 'CreateDate', 'UpdatedBy', 'UpdatedDate','IsActive','Action']">
                     </tr>
                 </table>
-                <mat-paginator [length]="layoutList.Total" [pageSize]="10"
-                    (page)="getLayouts({PageIndex : $event.pageIndex})">
+                <mat-paginator [length]="websiteList.Total" [pageSize]="10"
+                    (page)="getWebsites({PageIndex : $event.pageIndex})">
                 </mat-paginator>
             </div>
         </div>
@@ -61,7 +71,7 @@
         </button>
     </div>
     <div class="modal-body">
-        <p>Are you sure you want to delete this layout</p>
+        <p>Are you sure you want to delete this website</p>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-primary" (click)="confirmDelete()">Confirm</button>

@@ -18,8 +18,8 @@
                         <div class="col-md-6">
                             <div class="position-relative form-group">
                                 <label for="LayoutId">Layout<span class="red">*</span></label>
-                                <ng-select [items]="layoutLookup" bindLabel="LayoutName" bindValue="Id" 
-                                    formControlName="LayoutId" [searchable]="false" required >
+                                <ng-select [items]="layoutLookup" bindLabel="LayoutName" bindValue="Id"
+                                    formControlName="LayoutId" [searchable]="false" required>
                                 </ng-select>
                                 <span class="text-danger"
                                     [hidden]="!(ngForm.submitted && dataForm.controls['LayoutId'].hasError('required'))">This
@@ -28,6 +28,16 @@
                         </div>
                     </div>
                     <div class="form-row">
+                        <div class="col-md-6">
+                            <div class="position-relative form-group">
+                                <label>Host Names</label>
+                                <app-string-list-editor [name]="'HostNames'" [placeholder]="'Host names here'"
+                                    [(values)]="current.HostNames"></app-string-list-editor>
+                                <span class="text-danger"
+                                    [hidden]="!(ngForm.submitted && current.HostNames.length === 0)">This
+                                    field is required</span>
+                            </div>
+                        </div>
                         <div class="col-md-6">
                             <div class="position-relative form-group">
                                 <label for="Active" class="">Active</label>

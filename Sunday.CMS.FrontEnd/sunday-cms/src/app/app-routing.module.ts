@@ -15,14 +15,17 @@ import {
   ManageOrganizationUsersComponent,
   AddOrganizationUserComponent,
   ManageLayoutComponent,
-  AddLayoutComponent
+  AddLayoutComponent,
+  AddWebsiteComponent,
+  ManageWebsiteComponent,
 } from 'app/components';
 import { AuthGuard } from 'app/core/services';
 import {
   UserResolver,
   OrganizationResolver,
   OrganizationRoleResolver,
-  AppLayoutResolver
+  AppLayoutResolver,
+  AppWebsiteResolver,
 } from '@components/index';
 
 export const routes: Routes = [
@@ -89,8 +92,21 @@ export const routes: Routes = [
       {
         path: 'manage-layouts/edit/:layoutId',
         component: AddLayoutComponent,
-        resolve: { layout: AppLayoutResolver }
-      }
+        resolve: { layout: AppLayoutResolver },
+      },
+      {
+        path: 'manage-websites',
+        component: ManageWebsiteComponent,
+      },
+      {
+        path: 'manage-websites/create',
+        component: AddWebsiteComponent,
+      },
+      {
+        path: 'manage-websites/edit/:websiteId',
+        component: AddWebsiteComponent,
+        resolve: { website: AppWebsiteResolver },
+      },
     ],
     canActivate: [AuthGuard],
   },

@@ -8,6 +8,7 @@ using Sunday.ContentManagement.Persistence.Entities;
 using Sunday.Core;
 using Sunday.Core.Extensions;
 using Sunday.Core.Models.Base;
+using Sunday.DataAccess.SqlServer.Attributes;
 using Sunday.DataAccess.SqlServer.Database;
 using static LanguageExt.Prelude;
 
@@ -38,7 +39,7 @@ namespace Sunday.ContentManagement.Persistence.Implementation.Repositories
             => _dbRunner.ExecuteAsync(ProcedureNames.Websites.Create, website.ToDapperParameters());
 
         public Task UpdateAsync(WebsiteEntity website)
-            => _dbRunner.ExecuteAsync(ProcedureNames.Websites.Update, website.ToDapperParameters());
+            => _dbRunner.ExecuteAsync(ProcedureNames.Websites.Update, website.ToDapperParameters(DbOperation.Update));
 
         public Task DeleteAsync(Guid websiteId)
             => _dbRunner.ExecuteAsync(ProcedureNames.Websites.Delete, new { Id = websiteId });

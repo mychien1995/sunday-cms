@@ -23,3 +23,6 @@ export * from './organization-users/add-user.component';
 export * from './layout-managements/manage-layouts.component';
 export * from './layout-managements/add-layout.component';
 export * from './layout-managements/layout-item.resolver';
+export * from './website-managements/manage-websites.component';
+export * from './website-managements/add-website.component';
+export * from './website-managements/website-item.resolver';

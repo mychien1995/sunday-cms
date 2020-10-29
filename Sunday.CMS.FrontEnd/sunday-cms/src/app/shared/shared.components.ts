@@ -22,6 +22,9 @@ import {
   AddOrganizationUserComponent,
   AddLayoutComponent,
   ManageLayoutComponent,
+  AddWebsiteComponent,
+  ManageWebsiteComponent,
+  StringListEditorComponent,
 } from 'app/components';
 import {
   ApplicationLayoutComponent,
@@ -62,17 +65,22 @@ export const SharedComponents = [
   ManageOrganizationUsersComponent,
   AddOrganizationUserComponent,
   AddLayoutComponent,
-  ManageLayoutComponent
+  ManageLayoutComponent,
+  AddWebsiteComponent,
+  ManageWebsiteComponent,
+  StringListEditorComponent
 ];
 import {
   UserResolver,
   OrganizationResolver,
   OrganizationRoleResolver,
-  AppLayoutResolver
+  AppLayoutResolver,
+  AppWebsiteResolver
 } from 'app/components';
 export const SharedResolvers = [
   UserResolver,
   OrganizationResolver,
   OrganizationRoleResolver,
-  AppLayoutResolver
+  AppLayoutResolver,
+  AppWebsiteResolver
 ];

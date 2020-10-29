@@ -30,18 +30,18 @@ export class AddWebsiteComponent implements OnInit {
     private WebsiteService: WebsiteManagementService,
     private toastr: ToastrService
   ) {
-    this.activatedRoute.data.subscribe((data: { Website: WebsiteItem }) => {
-      if (data.Website) {
+    this.activatedRoute.data.subscribe((data: { website: WebsiteItem }) => {
+      if (data.website) {
         this.isEdit = true;
-        this.current = data.Website;
+        this.current = data.website;
         this.formTitle = 'Edit Website';
       }
     });
   }
 
   ngOnInit(): void {
-    this.getLayouts();
     this.buildForm();
+    this.getLayouts();
   }
 
   buildForm(): void {

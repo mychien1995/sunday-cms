@@ -34,13 +34,13 @@ namespace Sunday.CMS.Core.Implementation
 
         public async Task<BaseApiResponse> Create(WebsiteMutationModel data)
         {
-            await _websiteService.CreateAsync(data.MapTo<ApplicationWebsite>());
+            await _websiteService.CreateAsync(ToDomainModel(data));
             return BaseApiResponse.SuccessResult;
         }
 
         public async Task<BaseApiResponse> Update(WebsiteMutationModel data)
         {
-            await _websiteService.UpdateAsync(data.MapTo<ApplicationWebsite>());
+            await _websiteService.UpdateAsync(ToDomainModel(data));
             return BaseApiResponse.SuccessResult;
         }
 
@@ -57,6 +57,7 @@ namespace Sunday.CMS.Core.Implementation
             await _websiteService.UpdateAsync(website);
             return BaseApiResponse.SuccessResult;
         }
+
         public async Task<BaseApiResponse> Delete(Guid websiteId)
         {
             await _websiteService.DeleteAsync(websiteId);
@@ -70,6 +71,18 @@ namespace Sunday.CMS.Core.Implementation
                 query.OrganizationId = _sundayContext.CurrentOrganization!.Id;
             }
             return query;
+        }
+
+        private ApplicationWebsite ToDomainModel(WebsiteMutationModel data)
+        {
+            var model = data.MapTo<ApplicationWebsite>();
+            model.HostNames = model.HostNames.Where(h => !string.IsNullOrWhiteSpace(h)).Distinct().ToArray();
+            var user = _sundayContext.CurrentUser;
+            if (user!.IsOrganizationMember())
+            {
+                model.OrganizationId = _sundayContext.CurrentOrganization!.Id;
+            }
+            return model;
         }
     }
 }

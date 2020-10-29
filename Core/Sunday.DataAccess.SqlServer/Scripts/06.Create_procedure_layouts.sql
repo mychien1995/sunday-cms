@@ -1,4 +1,4 @@
-﻿CREATE OR ALTER PROCEDURE sp_layouts_search
+﻿CREATE OR ALTER   PROCEDURE [dbo].[sp_layouts_search]
 (
 	@PageIndex int = 0,
 	@PageSize int = 10,
@@ -12,10 +12,18 @@ BEGIN
 	IF @LayoutId IS NULL
 	BEGIN
 		SELECT COUNT(*) FROM Layouts WHERE IsDeleted = 0 AND 
-		(@OrganizationId IS NULL OR Id IN (SELECT LayoutId FROM OrganizationLayouts WHERE OrganizationId = @OrganizationId))
+		(
+			@OrganizationId IS NULL 
+			OR Id IN (SELECT LayoutId FROM OrganizationLayouts WHERE OrganizationId = @OrganizationId)
+			OR Id NOT IN (SELECT LayoutId FROM OrganizationLayouts)
+		)
 
 		SELECT * FROM Layouts WHERE IsDeleted = 0 AND 
-			(@OrganizationId IS NULL OR Id IN (SELECT LayoutId FROM OrganizationLayouts WHERE OrganizationId = @OrganizationId))
+		(
+			@OrganizationId IS NULL 
+			OR Id IN (SELECT LayoutId FROM OrganizationLayouts WHERE OrganizationId = @OrganizationId)
+			OR Id NOT IN (SELECT LayoutId FROM OrganizationLayouts)
+		)
 		ORDER BY UpdatedDate DESC OFFSET @PageIndex ROWS FETCH NEXT @PageSize ROWS ONLY
 
 		SELECT TOP 0 * FROM OrganizationLayouts

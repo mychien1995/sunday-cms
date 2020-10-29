@@ -5,21 +5,26 @@ import {
   TemplateRef,
 } from '@angular/core';
 import { ClientState } from '@services/layout/clientstate.service';
-import { LayoutManagementService } from '@services/index';
-import { LayoutList } from '@models/index';
+import {
+  LayoutManagementService,
+  WebsiteManagementService,
+} from '@services/index';
+import { LayoutItem, LayoutList, WebsiteList } from '@models/index';
 import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
-  selector: 'app-manage-layouts',
-  templateUrl: './manage-layouts.component.html',
+  selector: 'app-manage-websites',
+  templateUrl: './manage-websites.component.html',
   providers: [NgbModalConfig, NgbModal],
 })
-export class ManageLayoutComponent implements OnInit {
-  layoutList: LayoutList = new LayoutList();
+export class ManageWebsiteComponent implements OnInit {
+  websiteList: WebsiteList = new WebsiteList();
+  layoutLookup: LayoutItem[] = [];
   activeId: string;
 
   constructor(
+    private websiteService: WebsiteManagementService,
     private layoutService: LayoutManagementService,
     private clientState: ClientState,
     private modalService: NgbModal,
@@ -27,30 +32,41 @@ export class ManageLayoutComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.getWebsites();
     this.getLayouts();
   }
 
-  getLayouts(query?: any): void {
+  getWebsites(query?: any): void {
     this.clientState.isBusy = true;
-    this.layoutService.getLayouts(query).subscribe((res) => {
-      this.layoutList = <LayoutList>res;
+    this.websiteService.getWebsites(query).subscribe((res) => {
+      this.websiteList = <WebsiteList>res;
       this.clientState.isBusy = false;
     });
   }
 
-  deleteLayout(layoutId: string, template: any): void {
-    this.activeId = layoutId;
+  getLayouts() {
+    this.layoutService.getLayouts({ PageSize: 1000 }).subscribe((res) => {
+      this.layoutLookup = res.Layouts;
+    });
+  }
+
+  deleteWebsite(websiteId: string, template: any): void {
+    this.activeId = websiteId;
     this.modalService.open(template);
+  }
+
+  getLayout(layoutId: string): string {
+    return this.layoutLookup.find((l) => l.Id === layoutId)?.LayoutName;
   }
 
   confirmDelete() {
     if (this.activeId) {
       this.clientState.isBusy = true;
-      this.layoutService.deleteLayout(this.activeId).subscribe((res) => {
+      this.websiteService.deleteWebsite(this.activeId).subscribe((res) => {
         if (res.Success) {
-          this.toastr.success('Layout Deleted');
+          this.toastr.success('Website Deleted');
           this.modalService.dismissAll();
-          this.getLayouts();
+          this.getWebsites();
         }
         this.clientState.isBusy = false;
       });
