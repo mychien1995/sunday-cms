@@ -194,6 +194,25 @@ BEGIN
 	)
 END
 
+IF (NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'dbo' AND  TABLE_NAME = 'Websites'))
+BEGIN
+	CREATE TABLE Websites
+	(
+		Id uniqueidentifier primary key default newid(),
+		WebsiteName nvarchar(1000),
+		HostNames nvarchar(MAX),
+		OrganizationId uniqueidentifier not null,
+		LayoutId uniqueidentifier not null,
+		CONSTRAINT FK_Websites_Organization FOREIGN KEY (OrganizationId) REFERENCES Organizations(Id),
+		CONSTRAINT FK_Websites_Layout FOREIGN KEY (LayoutId) REFERENCES Layouts(Id),
+		IsActive bit not null default (1),
+		CreatedDate datetime NOT NULL default(GETDATE()),
+		CreatedBy nvarchar(500),
+		UpdatedDate datetime NOT NULL default(GETDATE()),
+		UpdatedBy nvarchar(500),
+		IsDeleted bit NOT NULL default(0)
+	);
+END
 
 IF TYPE_ID(N'ModuleType') IS NULL
 BEGIN

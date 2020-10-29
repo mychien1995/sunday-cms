@@ -20,10 +20,12 @@
     <None Remove="Scripts\04.Create_procedure_features_roles.sql" />
     <None Remove="Scripts\05.Create_common_functions.sql" />
     <None Remove="Scripts\06.Create_procedure_layouts.sql" />
+    <None Remove="Scripts\07.Create_procedure_websites.sql" />
     <None Remove="Scripts\Clear_version.sql" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Scripts\07.Create_procedure_websites.sql" />
     <EmbeddedResource Include="Scripts\06.Create_procedure_layouts.sql" />
     <EmbeddedResource Include="Scripts\05.Create_common_functions.sql">
       <SubType>Designer</SubType>

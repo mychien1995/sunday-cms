@@ -1,0 +1,48 @@
+<app-page-heading [title]="formTitle" [icon]="'bg-happy-itmeo'"></app-page-heading>
+<div class="row">
+    <div class="col-12">
+        <div class="main-card mb-3 card">
+            <div class="card-body">
+                <form (ngSubmit)="onSubmit(dataForm.value)" [formGroup]="dataForm" autocomplete="off" #ngForm="ngForm">
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <div class="position-relative form-group">
+                                <label for="WebsiteName">Website Name<span class="red">*</span></label>
+                                <input name="WebsiteName" placeholder="Website Name here..." type="text"
+                                    class="form-control" formControlName="WebsiteName" autocomplete="off" required>
+                                <span class="text-danger"
+                                    [hidden]="!(ngForm.submitted && dataForm.controls['WebsiteName'].hasError('required'))">This
+                                    field is required</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="position-relative form-group">
+                                <label for="LayoutId">Layout<span class="red">*</span></label>
+                                <ng-select [items]="layoutLookup" bindLabel="LayoutName" bindValue="Id" 
+                                    formControlName="LayoutId" [searchable]="false" required >
+                                </ng-select>
+                                <span class="text-danger"
+                                    [hidden]="!(ngForm.submitted && dataForm.controls['LayoutId'].hasError('required'))">This
+                                    field is required</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <div class="position-relative form-group">
+                                <label for="Active" class="">Active</label>
+                                <div class="custom-checkbox custom-control">
+                                    <input type="checkbox" id="exampleCustomCheckbox4" class="custom-control-input"
+                                        formControlName="IsActive">
+                                    <label class="custom-control-label" for="exampleCustomCheckbox4">&nbsp;</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="mt-1 btn btn-primary">Submit</button>
+                    <button class="mt-1 ml-2 btn btn-light" [routerLink]="['/manage-websites']">Back</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

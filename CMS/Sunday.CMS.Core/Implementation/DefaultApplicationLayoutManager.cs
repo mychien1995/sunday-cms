@@ -61,7 +61,8 @@ namespace Sunday.CMS.Core.Implementation
             {
                 criteria.OrganizationId = _sundayContext.CurrentOrganization!.Id;
             }
-
+            criteria.PageSize ??= 10;
+            criteria.PageIndex ??= 0;
             return criteria;
         }
     }

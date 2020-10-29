@@ -56,6 +56,14 @@ export class ApiUrl {
     GetById: 'cms/api/appLayout/',
     Delete: 'cms/api/appLayout/'
   };
+  public static Websites = {
+    Search: 'cms/api/websites/search',
+    Create: 'cms/api/websites/create',
+    Edit: 'cms/api/websites/update',
+    GetById: 'cms/api/websites/',
+    Delete: 'cms/api/websites/',
+    Activate: 'cms/api/websites/activate'
+  };
   public static FileUpload = 'cms/api/FileUpload';
 }
 

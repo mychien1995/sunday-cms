@@ -33,21 +33,34 @@ namespace Sunday.CMS.Core.Pipelines.Layout.Navigation
                     IconClass = "pe-7s-diamond"
                 });
             }
-            if (modules.All(c => c != SystemModules.RolesManagement.Code)) return Task.CompletedTask;
-            arg.NavigationItems.Add(new NavigationItem()
+            if (modules.Any(c => c == SystemModules.RolesManagement.Code))
             {
-                Link = "/organization-roles",
-                Section = "Manage Roles",
-                Title = "Manage Roles",
-                IconClass = "pe-7s-browser"
-            });
-            arg.NavigationItems.Add(new NavigationItem()
+                arg.NavigationItems.Add(new NavigationItem()
+                {
+                    Link = "/organization-roles",
+                    Section = "Manage Roles",
+                    Title = "Manage Roles",
+                    IconClass = "pe-7s-browser"
+                });
+                arg.NavigationItems.Add(new NavigationItem()
+                {
+                    Link = "/permissions-manager",
+                    Section = "Manage Roles",
+                    Title = "Permissions Manager",
+                    IconClass = "pe-7s-display2"
+                });
+            }
+
+            if (modules.Any(c => c == SystemModules.ContentManagement.Code))
             {
-                Link = "/permissions-manager",
-                Section = "Manage Roles",
-                Title = "Permissions Manager",
-                IconClass = "pe-7s-display2"
-            });
+                arg.NavigationItems.Add(new NavigationItem()
+                {
+                    Link = "/manage-websites",
+                    Section = "Manage Contents",
+                    Title = "Manage Websites",
+                    IconClass = "pe-7s-ball"
+                });
+            }
             return Task.CompletedTask;
         }
     }

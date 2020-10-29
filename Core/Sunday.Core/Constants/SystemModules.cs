@@ -17,5 +17,11 @@
             public const string DisplayName = "Roles Management";
             public const string Code = "ORM";
         }
+
+        public static class ContentManagement
+        {
+            public const string DisplayName = "Content Management";
+            public const string Code = "CTM";
+        }
     }
 }

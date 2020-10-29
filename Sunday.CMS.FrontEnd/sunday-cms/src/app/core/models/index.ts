@@ -7,4 +7,5 @@ export * from './feature-access/feature-access.model';
 export * from './virtual-roles/virtual-roles.model';
 export * from './layout/layout.model';
 export * from './layout-management/layout.model';
+export * from './website-management/websites.model';
 
