@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { IconService } from '@services/index';
+import { IconService, TemplateManagementService } from '@services/index';
 import { TemplateItem } from '@models/index';
 import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -12,6 +12,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 export class TemplateInfoComponent implements OnInit {
   public dataForm: FormGroup = new FormGroup({});
   innerTemplate: TemplateItem = new TemplateItem();
+  templateLookup: TemplateItem[] = [];
   @Input() submitted: boolean;
   @Input()
   get template(): TemplateItem {
@@ -24,8 +25,25 @@ export class TemplateInfoComponent implements OnInit {
   @Output() templateChange: EventEmitter<TemplateItem> = new EventEmitter();
 
   iconLookup: any[] = [];
-  constructor(private iconService: IconService) {
+  constructor(
+    private iconService: IconService,
+    templateService: TemplateManagementService
+  ) {
     this.iconLookup = this.iconService.getIcons();
+    templateService.getTemplates({ PageSize: 10000 }).subscribe((res) => {
+      this.templateLookup = res.Templates.filter(f => f.Id !== this.innerTemplate.Id);
+    });
+  }
+
+  searchTemplate(templateList: any[], query: string): any[] {
+    if (query && query.trim().length !== 0) {
+      return templateList.filter(
+        (f) =>
+          f.Id === query.trim() ||
+          f.TemplateName.toLowerCase().indexOf(query.trim().toLowerCase()) > -1
+      );
+    }
+    return templateList;
   }
 
   buildForm(): void {
@@ -39,6 +57,10 @@ export class TemplateInfoComponent implements OnInit {
 
   ngOnInit(): void {
     this.buildForm();
+  }
+
+  getIcon(code: string): string {
+    return this.iconService.getIcon(code);
   }
 
   isValid(): boolean {

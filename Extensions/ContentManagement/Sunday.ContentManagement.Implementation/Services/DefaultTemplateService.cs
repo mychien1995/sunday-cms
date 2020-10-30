@@ -12,6 +12,7 @@ using Sunday.Core.Extensions;
 using Sunday.Core.Models.Base;
 using Sunday.Core.Pipelines;
 using Sunday.Core.Pipelines.Arguments;
+using Sunday.DataAccess.SqlServer.Extensions;
 
 namespace Sunday.ContentManagement.Implementation.Services
 {
@@ -59,6 +60,8 @@ namespace Sunday.ContentManagement.Implementation.Services
         {
             var template = entity.MapTo<Template>();
             template.Fields = entity.Fields.CastListTo<TemplateField>().ToArray();
+            template.BaseTemplateIds = entity.BaseTemplateIds != null ? entity.BaseTemplateIds.ToStringList()
+                .Where(s => Guid.TryParse(s, out var tmp)).Select(Guid.Parse).ToArray() : Array.Empty<Guid>();
             return template;
         }
         private TemplateEntity ToEntity(Template model, bool isUpdate = false)
@@ -66,6 +69,7 @@ namespace Sunday.ContentManagement.Implementation.Services
             var template = model.MapTo<TemplateEntity>();
             template.Fields = model.Fields.CastListTo<TemplateFieldEntity>().ToArray();
             template.IsUpdate = isUpdate;
+            template.BaseTemplateIds = model.BaseTemplateIds.ToDatabaseList();
             return template;
         }
     }

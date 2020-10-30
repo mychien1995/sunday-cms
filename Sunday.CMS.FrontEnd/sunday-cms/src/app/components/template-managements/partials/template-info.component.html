@@ -10,13 +10,11 @@
                     field is required</span>
             </div>
         </div>
-    </div>
-    <div class="form-row">
         <div class="col-md-6">
             <div class="position-relative form-group">
                 <label>Template Icon<span class="red">*</span></label>
                 <ng-select [items]="iconLookup" formControlName="Icon" required bindValue="code" bindLabel="code"
-                    [(ngModel)]="template.Icon">
+                    [(ngModel)]="template.Icon" [clearable]="false">
                     <ng-template ng-option-tmp let-item="item">
                         <div style="display: flex;">
                             <i class="{{item.icon}}" style="font-size: 30px;"></i>
@@ -27,6 +25,24 @@
                 </ng-select>
                 <span class="text-danger" [hidden]="!(submitted && dataForm.controls['Icon'].hasError('required'))">This
                     field is required</span>
+            </div>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="col-md-6">
+            <div class="position-relative form-group">
+                <label>Base Templates</label>
+                <app-two-sides-select-search bindValue="Id" placeholder="Template ID or name"
+                    [datasource]="templateLookup" [(values)]="template.BaseTemplateIds" [searchFn]="searchTemplate"
+                    [childTemplate]="templateSelect">
+                    <ng-template let-item="item" #templateSelect>
+                        <div style="display: flex;">
+                            <i class="{{getIcon(item.Icon)}}" style="font-size: 30px;"></i>
+                            &nbsp;&nbsp;
+                            <label><b>{{item.TemplateName}}</b></label>
+                        </div>
+                    </ng-template>
+                </app-two-sides-select-search>
             </div>
         </div>
     </div>

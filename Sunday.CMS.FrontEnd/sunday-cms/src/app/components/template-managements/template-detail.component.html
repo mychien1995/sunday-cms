@@ -1,4 +1,5 @@
-<app-page-heading [title]="template.TemplateName || 'New Template'" [icon]="templateIcon"></app-page-heading>
+<app-page-heading [title]="template.TemplateName || 'New Template'" [icon]="templateIcon"
+    [description]="template.Id ? 'ID: ' + template.Id : ''"></app-page-heading>
 <div class="row">
     <div class="col-12">
         <div class="mb-3 card">

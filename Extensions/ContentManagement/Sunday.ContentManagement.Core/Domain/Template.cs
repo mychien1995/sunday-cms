@@ -1,4 +1,5 @@
 ﻿using System;
+using AutoMapper;
 using Sunday.Core.Domain.Interfaces;
 
 namespace Sunday.ContentManagement.Domain
@@ -8,7 +9,8 @@ namespace Sunday.ContentManagement.Domain
         public Guid Id { get; set; }
         public string TemplateName { get; set; } = string.Empty;
         public string Icon { get; set; } = string.Empty;
-        public string[] BaseTemplateIds { get; set; } = Array.Empty<string>();
+        [IgnoreMap]
+        public Guid[] BaseTemplateIds { get; set; } = Array.Empty<Guid>();
         public DateTime CreatedDate { get; set; }
         public DateTime UpdatedDate { get; set; }
         public string CreatedBy { get; set; } = string.Empty;

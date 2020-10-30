@@ -1,0 +1,34 @@
+<input placeholder="{{placeholder}}" [(ngModel)]="query"
+    class="two-side-select-query form-control" />
+<div class="two-side-select">
+    <div class="select-group">
+        <ul>
+            <li *ngFor="let item of availableOptions" (click)="selectItem(item)"
+                class="{{item.Two_Side_Active ? 'active' : ''}}">
+                <ng-container [ngTemplateOutlet]="childTemplate" [ngTemplateOutletContext]="{item:item}"></ng-container>
+            </li>
+        </ul>
+    </div>
+    <div class="arrow-btn-group">
+        <button class="btn btn-primary" type="button" (click)="moveItem()" title="Select Item">
+            <i class="fa fa-arrow-right"></i>
+        </button>
+        <button class="mt-1 btn btn-primary" type="button" (click)="revertItem()"  title="Deselect Item">
+            <i class="fa fa-arrow-left"></i>
+        </button>
+        <button class="mt-1 btn btn-primary" type="button" (click)="moveUp()" title="Move Item Up">
+            <i class="fa fa-arrow-up"></i>
+        </button>
+        <button class="mt-1 btn btn-primary" type="button" (click)="moveDown()" title="Move Item Down">
+            <i class="fa fa-arrow-down"></i>
+        </button>
+    </div>
+    <div class="select-group">
+        <ul>
+            <li *ngFor="let item of displayValues" (click)="selectItem(item)"
+                class="{{item.Two_Side_Active ? 'active' : ''}}">
+                <ng-container [ngTemplateOutlet]="childTemplate" [ngTemplateOutletContext]="{item:item}"></ng-container>
+            </li>
+        </ul>
+    </div>
+</div>
