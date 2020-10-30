@@ -1,4 +1,4 @@
-<app-page-heading [title]="'Manage Templates'" [icon]="'bg-happy-itmeo'"></app-page-heading>
+<app-page-heading [title]="'Manage Templates'"></app-page-heading>
 <div class="row">
     <div class="col-12">
         <button class="mb-3 btn btn-shadow btn-primary" [routerLink]="['/manage-templates/create']">Create Template
@@ -23,7 +23,7 @@
                     <ng-container matColumnDef="Icon">
                         <th mat-header-cell *matHeaderCellDef>Icon</th>
                         <td mat-cell *matCellDef="let item">
-                            <i class="{{getIcon(item.Icon)}}"></i>
+                            <i class="icon-m {{getIcon(item.Icon)}}"></i>
                         </td>
                     </ng-container>
                     <ng-container matColumnDef="Name">

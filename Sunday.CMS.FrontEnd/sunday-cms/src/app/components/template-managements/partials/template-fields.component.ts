@@ -76,8 +76,8 @@ export class TemplateFieldComponent implements OnInit {
   isValid(): boolean {
     return (
       this.template.Fields.filter(
-        (f) => !f.IsPlaceholder && f.FieldName && f.FieldName.trim().length > 0
-      ).length > 0
+        (f) => !f.IsPlaceholder && (!f.FieldName || f.FieldName.trim().length === 0)
+      ).length === 0
     );
   }
 }

@@ -49,7 +49,7 @@ export class ManageTemplateComponent implements OnInit {
   }
 
   getIcon(code: string): string {
-    return this.iconService.getIcon(code).icon;
+    return this.iconService.getIcon(code);
   }
 
   confirmDelete() {
