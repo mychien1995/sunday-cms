@@ -1,7 +1,8 @@
 <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
   <app-header></app-header>
   <div class="app-main">
-    <app-sidebar></app-sidebar>
+    <app-sidebar  *ngIf="currentView === 'default'"></app-sidebar>
+    <app-content-sidebar  *ngIf="currentView === 'content'"></app-content-sidebar>
     <div class="app-main__outer">
       <div class="app-main__inner">
         <router-outlet></router-outlet>

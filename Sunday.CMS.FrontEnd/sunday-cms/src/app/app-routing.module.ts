@@ -21,6 +21,7 @@ import {
   ManageTemplateComponent,
   TemplateDetailComponent,
   TemplateResolver,
+  ContentDashboardComponent,
 } from 'app/components';
 import { AuthGuard } from 'app/core/services';
 import {
@@ -122,7 +123,12 @@ export const routes: Routes = [
         path: 'manage-templates/edit/:templateId',
         component: TemplateDetailComponent,
         resolve: { template: TemplateResolver },
-      }
+      },
+      {
+        path: 'manage-contents',
+        component: ContentDashboardComponent,
+        data: { view: 'content' },
+      },
     ],
     canActivate: [AuthGuard],
   },

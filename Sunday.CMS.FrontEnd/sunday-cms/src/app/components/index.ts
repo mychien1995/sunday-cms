@@ -27,3 +27,4 @@ export * from './website-managements/manage-websites.component';
 export * from './website-managements/add-website.component';
 export * from './website-managements/website-item.resolver';
 export * from './template-managements/index';
+export * from './contents/index';

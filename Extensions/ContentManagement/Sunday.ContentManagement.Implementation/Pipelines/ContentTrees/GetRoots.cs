@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Sunday.ContentManagement.Domain;
 using Sunday.ContentManagement.Implementation.Pipelines.Arguments;
 using Sunday.ContentManagement.Models;
 using Sunday.ContentManagement.Services;
@@ -9,12 +8,11 @@ using Sunday.Core.Extensions;
 using Sunday.Core.Pipelines;
 using Sunday.Foundation.Application.Services;
 using Sunday.Foundation.Context;
-using Sunday.Foundation.Domain;
 using Sunday.Foundation.Models;
 
 namespace Sunday.ContentManagement.Implementation.Pipelines.ContentTrees
 {
-    public class GetRoots : IAsyncPipelineProcessor
+    public class GetRoots : BaseGetContentTreePipelineProcessor
     {
         private readonly ISundayContext _sundayContext;
         private readonly IOrganizationService _organizationService;
@@ -27,7 +25,7 @@ namespace Sunday.ContentManagement.Implementation.Pipelines.ContentTrees
             _websiteService = websiteService;
         }
 
-        public async Task ProcessAsync(PipelineArg pipelineArg)
+        public override async Task ProcessAsync(PipelineArg pipelineArg)
         {
             var arg = (GetContentTreeRootArg)pipelineArg;
             var roots = arg.Roots;
@@ -55,23 +53,6 @@ namespace Sunday.ContentManagement.Implementation.Pipelines.ContentTrees
             }
         }
 
-        private ContentTreeNode FromOrganization(ApplicationOrganization organization)
-            => new ContentTreeNode
-            {
-                Name = organization!.OrganizationName,
-                Icon = Constants.NodeIcons.Organization,
-                Id = organization!.Id.ToString(),
-                Link = "#",
-                Type = Constants.NodeTypes.Organization
-            };
-        private ContentTreeNode FromWebsite(ApplicationWebsite website)
-            => new ContentTreeNode
-            {
-                Name = website.WebsiteName,
-                Icon = Constants.NodeIcons.Website,
-                Id = website.Id.ToString(),
-                Link = "#",
-                Type = Constants.NodeTypes.Website
-            };
+        
     }
 }

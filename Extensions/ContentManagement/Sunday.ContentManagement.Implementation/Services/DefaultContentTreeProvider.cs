@@ -3,10 +3,12 @@ using System.Threading.Tasks;
 using Sunday.ContentManagement.Implementation.Pipelines.Arguments;
 using Sunday.ContentManagement.Models;
 using Sunday.ContentManagement.Services;
+using Sunday.Core;
 using Sunday.Core.Pipelines;
 
 namespace Sunday.ContentManagement.Implementation.Services
 {
+    [ServiceTypeOf(typeof(IContentTreeProvider))]
     public class DefaultContentTreeProvider : IContentTreeProvider
     {
         public async Task<ContentTree> GetTreeRoot()
