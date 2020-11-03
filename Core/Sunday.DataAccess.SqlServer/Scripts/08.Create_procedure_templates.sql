@@ -54,13 +54,13 @@ BEGIN
 	SELECT COUNT(*) FROM dbo.Templates WHERE IsDeleted = 0
 	AND 
 	@Text IS NULL OR LEN(TRIM(@Text)) = 0
-	OR CAST(Id as varchar) = @Text
+	OR CAST(Id as varchar(100)) = @Text
 	OR TemplateName LIKE '%' + @Text + '%'
 
 	SELECT * FROM dbo.Templates WHERE IsDeleted = 0
 	AND 
 	@Text IS NULL OR LEN(TRIM(@Text)) = 0
-	OR CAST(Id as varchar) = @Text
+	OR CAST(Id as varchar(100)) = @Text
 	OR TemplateName LIKE '%' + @Text + '%'
 	ORDER BY UpdatedDate DESC
 	OFFSET @PageIndex ROWS FETCH NEXT @PageSize ROWS ONLY

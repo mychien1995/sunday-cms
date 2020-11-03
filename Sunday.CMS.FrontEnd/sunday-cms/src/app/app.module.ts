@@ -35,7 +35,7 @@ export class AppModule { }
 
 
 export function GetToken() {
-  var data = localStorage.getItem(StorageKey.UserData);
+  const data = localStorage.getItem(StorageKey.UserData);
   if (data) {
     return JSON.parse(data).Token;
   }

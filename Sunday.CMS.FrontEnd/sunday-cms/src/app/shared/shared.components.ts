@@ -29,7 +29,10 @@ import {
   TemplateDetailComponent,
   TemplateFieldComponent,
   TemplateInfoComponent,
-  TwoSideSelectWithSearchComponent
+  TwoSideSelectWithSearchComponent,
+  ContentDashboardComponent,
+  ContentTreeComponent,
+  AppContentSidebarComponent
 } from 'app/components';
 import {
   ApplicationLayoutComponent,
@@ -78,7 +81,10 @@ export const SharedComponents = [
   TemplateDetailComponent,
   TemplateFieldComponent,
   TemplateInfoComponent,
-  TwoSideSelectWithSearchComponent
+  TwoSideSelectWithSearchComponent,
+  ContentDashboardComponent,
+  ContentTreeComponent,
+  AppContentSidebarComponent
 ];
 import {
   UserResolver,

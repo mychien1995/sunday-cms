@@ -14,7 +14,7 @@ namespace Sunday.Core.Framework.Pipelines.ConfigureServices
     {
         public void Process(PipelineArg pipelineArg)
         {
-            var arg = (ConfigureServicesArg) pipelineArg;
+            var arg = (ConfigureServicesArg)pipelineArg;
             var services = arg.ServicesCollection;
             services.AddSingleton(_ =>
             {
@@ -28,11 +28,13 @@ namespace Sunday.Core.Framework.Pipelines.ConfigureServices
                     if (mappedTypeAttr?.MappedType == null || !mappedTypeAttr.MappedType.Any()) continue;
                     foreach (var mappedType in mappedTypeAttr.MappedType)
                     {
-                        mappingProfile.CreateMap(type, mappedType);
-                        if (mappedTypeAttr.TwoWay)
-                        {
-                            mappingProfile.CreateMap(mappedType, type);
-                        }
+                        var exp = mappingProfile.CreateMap(type, mappedType);
+                        mappedTypeAttr.Ignores.Where(prop => type.GetProperty(prop) != null).Aggregate(exp, (current, ignore) =>
+                            current.ForMember(ignore, m => m.Ignore()));
+                        if (!mappedTypeAttr.TwoWay) continue;
+                        var twoWayExp = mappingProfile.CreateMap(mappedType, type);
+                        mappedTypeAttr.Ignores.Where(prop => mappedType.GetProperty(prop) != null).Aggregate(twoWayExp, (current, ignore) =>
+                            current.ForMember(ignore, m => m.Ignore()));
                     }
                 }
                 mappingProfile.CreateMap<long, DateTime>().ConvertUsing<TicksToDateTimeConverter>();

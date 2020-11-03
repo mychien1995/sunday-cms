@@ -9,7 +9,6 @@ namespace Sunday.ContentManagement.Domain
         public Guid Id { get; set; }
         public string TemplateName { get; set; } = string.Empty;
         public string Icon { get; set; } = string.Empty;
-        [IgnoreMap]
         public Guid[] BaseTemplateIds { get; set; } = Array.Empty<Guid>();
         public DateTime CreatedDate { get; set; }
         public DateTime UpdatedDate { get; set; }

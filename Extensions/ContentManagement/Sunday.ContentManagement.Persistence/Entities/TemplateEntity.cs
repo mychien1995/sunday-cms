@@ -1,18 +1,16 @@
 ﻿using System;
-using AutoMapper;
 using Sunday.ContentManagement.Domain;
 using Sunday.Core;
 using Sunday.DataAccess.SqlServer.Attributes;
 
 namespace Sunday.ContentManagement.Persistence.Entities
 {
-    [MappedTo(typeof(Template))]
+    [MappedTo(typeof(Template), true, nameof(BaseTemplateIds))]
     public class TemplateEntity
     {
         public Guid Id { get; set; }
         public string TemplateName { get; set; } = string.Empty;
         public string Icon { get; set; } = string.Empty;
-        [IgnoreMap]
         public string BaseTemplateIds { get; set; } = string.Empty;
         public DateTime CreatedDate { get; set; }
         public DateTime UpdatedDate { get; set; }
