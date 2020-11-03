@@ -24,5 +24,10 @@ namespace Sunday.ContentManagement.Implementation.Services
             await ApplicationPipelines.RunAsync("cms.contentTree.getChilds", arg);
             return arg.ChildNodes.ToArray();
         }
+
+        public Task<ContextMenu> GetContextMenu(ContentTreeNode currentNode)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

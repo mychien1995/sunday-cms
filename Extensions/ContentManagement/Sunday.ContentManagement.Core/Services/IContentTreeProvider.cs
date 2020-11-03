@@ -8,5 +8,7 @@ namespace Sunday.ContentManagement.Services
         Task<ContentTree> GetTreeRoot();
 
         Task<ContentTreeNode[]> GetChildren(ContentTreeNode currentNode);
+
+        Task<ContextMenu> GetContextMenu(ContentTreeNode currentNode);
     }
 }
