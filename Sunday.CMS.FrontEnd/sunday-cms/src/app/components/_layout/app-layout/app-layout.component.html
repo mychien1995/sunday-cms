@@ -1,8 +1,9 @@
 <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
   <app-header></app-header>
   <div class="app-main">
-    <app-sidebar  *ngIf="currentView === 'default'"></app-sidebar>
-    <app-content-sidebar  *ngIf="currentView === 'content'"></app-content-sidebar>
+    <app-sidebar *ngIf="currentView === 'default'"></app-sidebar>
+    <app-content-sidebar *ngIf="currentView === 'content'" #sideBar></app-content-sidebar>
+    <div class="resize-handle" [hidden]="currentView !== 'content'" (mousedown)="startTracking($event)" #handleBar></div>
     <div class="app-main__outer">
       <div class="app-main__inner">
         <router-outlet></router-outlet>

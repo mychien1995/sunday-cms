@@ -1,0 +1,26 @@
+.resize-handle {
+    $handlebarColor: #cbccce;
+    -webkit-flex: 0 0 auto;
+    -ms-flex: 0 0 auto;
+    flex: 0 0 auto;
+  
+    position: relative;
+    box-sizing: border-box;
+    width: 4px;
+    border-left-width: 1px;
+    border-left-style: solid;
+    border-left-color: $handlebarColor;
+    border-right-width: 1px;
+    border-right-style: solid;
+    border-right-color: $handlebarColor;
+    background: $handlebarColor;
+    cursor: ew-resize;
+  
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  

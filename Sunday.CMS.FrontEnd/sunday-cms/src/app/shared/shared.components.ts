@@ -30,9 +30,6 @@ import {
   TemplateFieldComponent,
   TemplateInfoComponent,
   TwoSideSelectWithSearchComponent,
-  ContentDashboardComponent,
-  ContentTreeComponent,
-  AppContentSidebarComponent
 } from 'app/components';
 import {
   ApplicationLayoutComponent,
@@ -82,9 +79,6 @@ export const SharedComponents = [
   TemplateFieldComponent,
   TemplateInfoComponent,
   TwoSideSelectWithSearchComponent,
-  ContentDashboardComponent,
-  ContentTreeComponent,
-  AppContentSidebarComponent
 ];
 import {
   UserResolver,
@@ -92,7 +86,7 @@ import {
   OrganizationRoleResolver,
   AppLayoutResolver,
   AppWebsiteResolver,
-  TemplateResolver
+  TemplateResolver,
 } from 'app/components';
 export const SharedResolvers = [
   UserResolver,
@@ -100,5 +94,5 @@ export const SharedResolvers = [
   OrganizationRoleResolver,
   AppLayoutResolver,
   AppWebsiteResolver,
-  TemplateResolver
+  TemplateResolver,
 ];

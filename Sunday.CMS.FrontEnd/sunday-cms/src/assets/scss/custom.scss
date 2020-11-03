@@ -1,28 +1,3 @@
-table {
-  thead,
-  tbody {
-    th.mat-header-cell,
-    td.mat-cell,
-    td.mat-footer-cell {
-      padding: 0.55rem !important;
-    }
-  }
-}
-table {
-  thead {
-    th.mat-header-cell {
-      color: #000;
-      font-size: 0.88rem;
-      font-weight: bold;
-    }
-  }
-}
-.toast-top-right {
-  top: 70px !important;
-}
-.app-main__outer {
-  max-width: 100%;
-}
 .side-bar-loader {
   width: 100%;
   min-height: 100vh;

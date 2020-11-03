@@ -10,12 +10,13 @@ import { SharedPipes } from './shared.pipes';
 import {
   TokenInterceptor,
   AuthenticationInterceptor,
-  ErrorInterceptor
+  ErrorInterceptor,
 } from '@interceptors/index';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { ContentComponents } from './content.component';
 
 @NgModule({
   imports: [
@@ -27,12 +28,9 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
     NgSelectModule,
     ToastrModule.forRoot(),
     BrowserAnimationsModule,
-    NgMultiSelectDropDownModule.forRoot()
+    NgMultiSelectDropDownModule.forRoot(),
   ],
-  declarations: [
-    SharedComponents,
-    SharedPipes
-  ],
+  declarations: [SharedComponents, SharedPipes, ContentComponents],
   exports: [
     FormsModule,
     ReactiveFormsModule,
@@ -40,9 +38,10 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
     SharedBootstraps,
     NgSelectModule,
     SharedComponents,
+    ContentComponents,
     ToastrModule,
     SharedPipes,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
   ],
   providers: [
     SharedServices,
@@ -61,7 +60,7 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
       provide: HTTP_INTERCEPTORS,
       useClass: ErrorInterceptor,
       multi: true,
-    }
+    },
   ],
 })
 export class SharedModule {}

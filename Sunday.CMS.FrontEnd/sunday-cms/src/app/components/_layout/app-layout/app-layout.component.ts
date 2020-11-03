@@ -1,6 +1,15 @@
-import { OnInit, Component, ViewEncapsulation } from '@angular/core';
+import {
+  OnInit,
+  Component,
+  ViewEncapsulation,
+  ViewChild,
+  ElementRef,
+  HostListener,
+} from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { AppHeaderComponent } from '@components/_layout';
+import * as $ from 'jquery/dist/jquery.min.js';
+import { debounce } from '@core/index';
 
 @Component({
   selector: 'app-layout',
@@ -10,6 +19,9 @@ import { AppHeaderComponent } from '@components/_layout';
 })
 export class ApplicationLayoutComponent implements OnInit {
   currentView = 'default';
+  isTrackingSidebar = false;
+  @ViewChild('handleBar') handleBar: ElementRef;
+  @ViewChild('sideBar', { read: ElementRef }) sideBar: ElementRef;
   constructor(private router: Router, private activatedRoute: ActivatedRoute) {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
@@ -22,5 +34,26 @@ export class ApplicationLayoutComponent implements OnInit {
       }
     });
   }
+
   ngOnInit(): void {}
+
+  startTracking(ev: any): void {
+    this.isTrackingSidebar = true;
+  }
+
+  @HostListener('window:mouseup', ['$event'])
+  stopTracking(event: any): void {
+    this.isTrackingSidebar = false;
+  }
+
+  @HostListener('window:mousemove', ['$event'])
+  moveSidebar(event: any): void {
+    const $this = this;
+    if ($this.isTrackingSidebar) {
+      const width = event.screenX;
+      const sideElement = $this.sideBar.nativeElement;
+      const $sidebar = $(sideElement).find('.app-sidebar');
+      $sidebar[0].style.width = width + 'px';
+    }
+  }
 }

@@ -1,4 +1,4 @@
-import { OnInit, Component } from '@angular/core';
+import { OnInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { AppHeaderComponent } from '@components/_layout';
 import { LayoutModel } from '@core/models';
 import { ColorService } from '@core/services';
@@ -7,6 +7,7 @@ import { LayoutService } from '@core/services';
 @Component({
   selector: 'app-content-sidebar',
   templateUrl: './app-sidebar-content.component.html',
+  styleUrls: ['./app-sidebar-content.component.scss'],
 })
 export class AppContentSidebarComponent implements OnInit {
   layoutModel: LayoutModel;
