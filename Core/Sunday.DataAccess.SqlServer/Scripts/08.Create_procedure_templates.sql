@@ -62,6 +62,8 @@ BEGIN
 	@Text IS NULL OR LEN(TRIM(@Text)) = 0
 	OR CAST(Id as varchar) = @Text
 	OR TemplateName LIKE '%' + @Text + '%'
+	ORDER BY UpdatedDate DESC
+	OFFSET @PageIndex ROWS FETCH NEXT @PageSize ROWS ONLY
 END
 GO
 --------------------------------------------------------------------

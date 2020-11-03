@@ -80,6 +80,8 @@ BEGIN
 	IF(@PageIndex IS NULL) SET @PageIndex = 0
 	SELECT COUNT(*) FROM dbo.Websites WHERE IsDeleted = 0 AND (@OrganizationId IS NULL OR OrganizationId = @OrganizationId)
 	SELECT * FROM dbo.Websites WHERE IsDeleted = 0 AND (@OrganizationId IS NULL OR OrganizationId = @OrganizationId)
+	ORDER BY UpdatedDate DESC
+	OFFSET @PageIndex ROWS FETCH NEXT @PageSize ROWS ONLY
 END
 GO
 --------------------------------------------------------------------
