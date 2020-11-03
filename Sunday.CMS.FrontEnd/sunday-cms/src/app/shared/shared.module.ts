@@ -17,6 +17,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { ContentComponents } from './content.component';
+import { ContentServices } from './content.services';
 
 @NgModule({
   imports: [
@@ -45,6 +46,7 @@ import { ContentComponents } from './content.component';
   ],
   providers: [
     SharedServices,
+    ContentServices,
     SharedResolvers,
     {
       provide: HTTP_INTERCEPTORS,

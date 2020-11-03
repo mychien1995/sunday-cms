@@ -22,12 +22,17 @@ namespace Sunday.CMS.Core.Implementation
 
         public Task<ContentTreeJsonResult> GetRoots()
             => _contentTreeProvider.GetTreeRoot().MapResultTo(rs => new ContentTreeJsonResult
-                {Roots = rs.Roots.Select(ToItem).ToArray()});
+            { Roots = rs.Roots.Select(ToItem).ToArray() });
 
-        public Task<ContentTreeItem[]> GetChilds(ContentTreeItem current)
+        public Task<ContentTreeListJsonResult> GetChilds(ContentTreeItem current)
             => _contentTreeProvider.GetChildren(current.MapTo<ContentTreeNode>())
-                .MapResultTo(rs => rs.Select(ToItem).ToArray());
+                .MapResultTo(rs => new ContentTreeListJsonResult() { Nodes = rs.Select(ToItem).ToArray() });
+
         private ContentTreeItem ToItem(ContentTreeNode node)
-            => node.MapTo<ContentTreeItem>();
+        {
+            var item = node.MapTo<ContentTreeItem>();
+            item.ChildNodes = node.ChildNodes.CastListTo<ContentTreeItem>().ToArray();
+            return item;
+        }
     }
 }

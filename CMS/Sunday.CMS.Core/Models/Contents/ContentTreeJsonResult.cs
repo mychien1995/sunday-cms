@@ -9,6 +9,11 @@ namespace Sunday.CMS.Core.Models.Contents
     {
         public ContentTreeItem[] Roots { get; set; } = Array.Empty<ContentTreeItem>();
     }
+
+    public class ContentTreeListJsonResult : BaseApiResponse
+    {
+        public ContentTreeItem[] Nodes { get; set; } = Array.Empty<ContentTreeItem>();
+    }
     [MappedTo(typeof(ContentTreeNode))]
     public class ContentTreeItem
     {
@@ -18,5 +23,6 @@ namespace Sunday.CMS.Core.Models.Contents
         public string Name { get; set; } = string.Empty;
         public string Type { get; set; } = string.Empty;
         public string? ParentId { get; set; }
+        public ContentTreeItem[] ChildNodes { get; set; } = Array.Empty<ContentTreeItem>();
     }
 }

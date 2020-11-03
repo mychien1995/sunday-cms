@@ -9,4 +9,5 @@ export * from './layout/layout.model';
 export * from './layout-management/layout.model';
 export * from './website-management/websites.model';
 export * from './template-management/template.model';
+export * from './contents/content.tree.model';
 

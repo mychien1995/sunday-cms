@@ -17,10 +17,10 @@ export class ApiUrl {
     ChangeAvatar: 'cms/api/profile/changeAvatar/',
   };
   public static Modules = {
-    Get: 'cms/api/modules/'
+    Get: 'cms/api/modules/',
   };
   public static Features = {
-    GetByOrganization: 'cms/api/features/getByOrganization/'
+    GetByOrganization: 'cms/api/features/getByOrganization/',
   };
   public static Roles = {
     GetAll: 'cms/api/roles/',
@@ -28,7 +28,7 @@ export class ApiUrl {
   };
   public static Layout = {
     GetNavigation: 'cms/api/layout/getNavigation/',
-    GetLayout: 'cms/api/layout/getLayout/'
+    GetLayout: 'cms/api/layout/getLayout/',
   };
   public static OrganizationRoles = {
     Search: 'cms/api/organizationroles/search/',
@@ -36,7 +36,7 @@ export class ApiUrl {
     Update: 'cms/api/organizationroles/update/',
     GetById: 'cms/api/organizationroles/',
     Delete: 'cms/api/organizationroles/',
-    BulkUpdate: 'cms/api/organizationroles/bulkUpdate/'
+    BulkUpdate: 'cms/api/organizationroles/bulkUpdate/',
   };
   public static Organizations = {
     Search: 'cms/api/organizations/search',
@@ -47,14 +47,14 @@ export class ApiUrl {
     Lookup: 'cms/api/organizations/lookup',
     Activate: 'cms/api/organizations/activate',
     Deactivate: 'cms/api/organizations/deactivate',
-    GetModules: 'cms/api/modules/getByOrganization'
+    GetModules: 'cms/api/modules/getByOrganization',
   };
   public static Layouts = {
     Search: 'cms/api/appLayout/search',
     Create: 'cms/api/appLayout/create',
     Edit: 'cms/api/appLayout/update',
     GetById: 'cms/api/appLayout/',
-    Delete: 'cms/api/appLayout/'
+    Delete: 'cms/api/appLayout/',
   };
   public static Websites = {
     Search: 'cms/api/websites/search',
@@ -62,7 +62,7 @@ export class ApiUrl {
     Edit: 'cms/api/websites/update',
     GetById: 'cms/api/websites/',
     Delete: 'cms/api/websites/',
-    Activate: 'cms/api/websites/activate'
+    Activate: 'cms/api/websites/activate',
   };
   public static Templates = {
     Search: 'cms/api/templates/search',
@@ -70,7 +70,11 @@ export class ApiUrl {
     Edit: 'cms/api/templates/update',
     GetById: 'cms/api/templates/',
     Delete: 'cms/api/templates/',
-    GetFieldTypes: 'cms/api/templates/getFieldTypes'
+    GetFieldTypes: 'cms/api/templates/getFieldTypes',
+  };
+  public static ContentTree = {
+    GetRoots: 'cms/api/contenttree/getRoots/',
+    GetChilds: 'cms/api/contenttree/getChilds/'
   };
   public static FileUpload = 'cms/api/FileUpload';
 }

@@ -44,12 +44,13 @@ namespace Sunday.ContentManagement.Implementation.Pipelines.ContentTrees
                 var organizations = await _organizationService
                     .QueryAsync(new OrganizationQuery { IsActive = true, PageSize = 1000 }).MapResultTo(rs => rs.Result);
                 roots.AddRange(organizations.Select(FromOrganization));
-                roots.Iter(async node =>
+                foreach (var node in roots)
                 {
                     var websites = await _websiteService.QueryAsync(new WebsiteQuery
-                    { OrganizationId = Guid.Parse(node.Id), PageSize = 1000 }).MapResultTo(rs => rs.Result);
+                        { OrganizationId = Guid.Parse(node.Id), PageSize = 1000 }).MapResultTo(rs => rs.Result);
                     node.ChildNodes = websites.Select(FromWebsite).ToList();
-                });
+
+                }
             }
         }
 

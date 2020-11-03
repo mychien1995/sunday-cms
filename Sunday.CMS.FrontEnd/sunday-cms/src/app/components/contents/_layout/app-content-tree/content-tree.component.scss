@@ -1,0 +1,33 @@
+.content-tree {
+  margin-top: 10px;
+  ul.content-tree-main {
+    padding-left: 0px;
+    li {
+      padding: 5px;
+      list-style: none;
+      .tree-node {
+        padding: 5px;
+        > label {
+          cursor: pointer;
+          padding: 4px;
+          margin-bottom: 0px;
+          &:hover {
+            background-color: #f1f4f6;
+          }
+          > i {
+            color: #000;
+            font-weight: bold;
+            font-size: 18px;
+          }
+        }
+        > i {
+          cursor: pointer;
+          padding: 3px;
+        }
+      }
+    }
+    ul {
+      padding-left: 20px;
+    }
+  }
+}

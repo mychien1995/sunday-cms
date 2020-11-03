@@ -26,7 +26,7 @@ namespace Sunday.ContentManagement.Implementation.Pipelines.ContentTrees
             var organizationId = Guid.Parse(node.Id);
             var websites = await _websiteService.QueryAsync(new WebsiteQuery
             { OrganizationId = organizationId, PageSize = 1000 }).MapResultTo(rs => rs.Result);
-            node.ChildNodes.AddRange(websites.Select(FromWebsite).ToList());
+            arg.ChildNodes.AddRange(websites.Select(FromWebsite).ToList());
         }
     }
 }

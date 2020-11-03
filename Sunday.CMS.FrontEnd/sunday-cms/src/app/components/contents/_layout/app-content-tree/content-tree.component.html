@@ -1,0 +1,27 @@
+<div class="side-bar-loader" [hidden]="!isTreeLoading">
+    <img src="assets/images/spinner.gif" />
+</div>
+<div class="content-tree">
+    <ul class="content-tree-main">
+        <ng-container *ngFor="let root of tree.Roots" [ngTemplateOutlet]="childTemplate"
+            [ngTemplateOutletContext]="{item:root}">
+        </ng-container>
+    </ul>
+</div>
+<ng-template #childTemplate let-item="item">
+    <li>
+        <span class="tree-node">
+            <i class="fa fa-caret-right" [hidden]="item.Open" (click)="expandNode(item)"></i>
+            <i class="fa fa-caret-down" [hidden]="!item.Open" (click)="expandNode(item)"></i>
+            <label>
+                <i class="{{getIcon(item.Icon)}}"></i>
+                {{item.Name}}
+            </label>
+        </span>
+    </li>
+    <ul *ngIf="item.Open && item.ChildNodes.length > 0">
+        <ng-container *ngFor="let child of item.ChildNodes" [ngTemplateOutlet]="childTemplate"
+            [ngTemplateOutletContext]="{item:child}">
+        </ng-container>
+    </ul>
+</ng-template>
