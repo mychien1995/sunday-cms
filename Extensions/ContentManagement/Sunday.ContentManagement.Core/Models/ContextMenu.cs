@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Sunday.ContentManagement.Models
 {
     public class ContextMenu
     {
-        public ContextMenuItem[] Items { get; set; } = Array.Empty<ContextMenuItem>();
+        public List<ContextMenuItem> Items { get; set; } = new List<ContextMenuItem>();
     }
 
     public class ContextMenuItem

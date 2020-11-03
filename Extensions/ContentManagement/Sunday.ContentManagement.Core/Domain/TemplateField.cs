@@ -12,6 +12,7 @@ namespace Sunday.ContentManagement.Domain
         public bool IsUnversioned { get; set; }
         public string Properties { get; set; } = string.Empty;
         public int SortOrder { get; set; }
+        public bool IsRequired { get; set; }
         public Guid TemplateId { get; set; }
     }
 }

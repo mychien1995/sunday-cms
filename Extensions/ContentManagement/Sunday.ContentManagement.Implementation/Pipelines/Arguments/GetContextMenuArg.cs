@@ -11,5 +11,6 @@ namespace Sunday.ContentManagement.Implementation.Pipelines.Arguments
         }
 
         public ContentTreeNode CurrentNode { get; set; }
+        public ContextMenu Menu { get; set; } = new ContextMenu();
     }
 }

@@ -17,5 +17,6 @@ namespace Sunday.ContentManagement.Persistence.Entities
         public string Section { get; set; } = string.Empty;
         public int SortOrder { get; set; }
         public Guid TemplateId { get; set; }
+        public bool IsRequired { get; set; }
     }
 }

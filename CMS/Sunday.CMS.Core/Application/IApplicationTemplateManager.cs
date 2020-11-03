@@ -18,5 +18,7 @@ namespace Sunday.CMS.Core.Application
 
         Task<BaseApiResponse> Delete(Guid templateId);
         FieldTypeListJsonResult GetFieldTypes();
+
+        Task<BaseApiResponse<TemplateFieldItem[]>>  LoadTemplateFields(Guid templateId);
     }
 }

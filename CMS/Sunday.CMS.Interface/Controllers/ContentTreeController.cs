@@ -28,5 +28,12 @@ namespace Sunday.CMS.Interface.Controllers
             var result = await _contentTreeManager.GetChilds(current);
             return Ok(result);
         }
+
+        [HttpPost("getContextMenu")]
+        public async Task<IActionResult> GetContextMenu([FromBody] ContentTreeItem current)
+        {
+            var result = await _contentTreeManager.GetContextMenu(current);
+            return Ok(result);
+        }
     }
 }

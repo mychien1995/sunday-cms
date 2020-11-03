@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LanguageExt;
@@ -53,6 +54,27 @@ namespace Sunday.ContentManagement.Implementation.Services
             await _templateRepository.SaveAsync(ToEntity(template, true), new SaveTemplateOptions { SaveProperties = true });
         }
 
+        public async Task<TemplateField[]> LoadTemplateFields(Guid templateId)
+        {
+            var fields = new List<TemplateField>();
+            var visited = new Dictionary<Guid, byte>();
+            var stacks = new Stack<Guid>();
+            stacks.Push(templateId);
+            while (stacks.Count > 0)
+            {
+                var currentId = stacks.Pop();
+                visited[currentId] = byte.MinValue;
+                var templateOpt = await GetByIdAsync(currentId);
+                if (templateOpt.IsNone) continue;
+                var template = templateOpt.Get();
+                template.Fields.Iter(field => fields.Add(field));
+                template.BaseTemplateIds.Iter(id =>
+                {
+                    if (!visited.ContainsKey(id)) stacks.Push(id);
+                });
+            }
+            return fields.OrderBy(f => f.SortOrder).ToArray();
+        }
         public Task DeleteAsync(Guid templateId)
             => _templateRepository.DeleteAsync(templateId);
 

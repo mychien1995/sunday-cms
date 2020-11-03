@@ -36,6 +36,7 @@ namespace Sunday.ContentManagement.Persistence.Implementation.DapperParameters
                     new SqlMetaData("Properties", SqlDbType.NVarChar, 1000),
                     new SqlMetaData("Section", SqlDbType.VarChar, 500),
                     new SqlMetaData("SortOrder", SqlDbType.Int),
+                    new SqlMetaData("IsRequired", SqlDbType.Bit),
                     new SqlMetaData("ValidationRules", SqlDbType.VarChar, 500)
                 );
                 rec.SetValue(0, field.Id);
@@ -47,7 +48,8 @@ namespace Sunday.ContentManagement.Persistence.Implementation.DapperParameters
                 rec.SetValue(6, field.Properties);
                 rec.SetValue(7, "");
                 rec.SetValue(8, field.SortOrder);
-                rec.SetValue(9, "");
+                rec.SetValue(9, field.IsRequired);
+                rec.SetValue(10, "");
                 records.Add(rec);
             }
             var fieldsParam = sqlCommand.Parameters.Add("@Fields", SqlDbType.Structured);

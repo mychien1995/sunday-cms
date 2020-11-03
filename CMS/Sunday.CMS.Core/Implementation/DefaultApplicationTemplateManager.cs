@@ -61,6 +61,10 @@ namespace Sunday.CMS.Core.Implementation
                     .ToArray()
             };
 
+        public Task<BaseApiResponse<TemplateFieldItem[]>> LoadTemplateFields(Guid templateId)
+            => _templateService.LoadTemplateFields(templateId).MapResultTo(rs =>
+                new BaseApiResponse<TemplateFieldItem[]>(rs.Select(ToModel).ToArray()));
+
         private TemplateItem ToModel(Template template)
         {
             var item = template.MapTo<TemplateItem>();
@@ -72,5 +76,13 @@ namespace Sunday.CMS.Core.Implementation
             var model = template.MapTo<Template>();
             return model;
         }
+
+        private TemplateFieldItem ToModel(TemplateField template)
+        {
+            var item = template.MapTo<TemplateFieldItem>();
+            return item;
+        }
+
+
     }
 }

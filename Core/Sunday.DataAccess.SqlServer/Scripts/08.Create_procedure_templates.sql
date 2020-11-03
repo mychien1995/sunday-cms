@@ -97,11 +97,11 @@ BEGIN
 					   target.FieldType = source.FieldType, target.Title = source.Title,
 					   target.IsUnversioned = source.IsUnversioned, target.Properties = source.Properties,
 					   target.Section = source.Section, target.ValidationRules = source.ValidationRules,
-					   target.SortOrder = source.SortOrder
+					   target.SortOrder = source.SortOrder, target.IsRequired = source.IsRequired
 		WHEN NOT MATCHED THEN  
-			INSERT (Id, FieldName, DisplayName, FieldType, Title, IsUnversioned, Properties, Section, ValidationRules, TemplateId, IsDeleted, SortOrder)  
+			INSERT (Id, FieldName, DisplayName, FieldType, Title, IsUnversioned, Properties, Section, ValidationRules, TemplateId, IsDeleted, SortOrder, IsRequired)  
 			VALUES (Id, source.FieldName, source.DisplayName, source.FieldType, source.Title, source.IsUnversioned, source.Properties, 
-			source.Section, source.ValidationRules, @TemplateId, 0, source.SortOrder);  
+			source.Section, source.ValidationRules, @TemplateId, 0, source.SortOrder, source.IsRequired);  
 		
 		UPDATE TemplateFields SET IsDeleted = 1 WHERE TemplateId = @TemplateId AND Id NOT IN (SELECT Id FROM @Fields)
 	END

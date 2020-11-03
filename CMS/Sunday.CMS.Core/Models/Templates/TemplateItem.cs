@@ -30,5 +30,6 @@ namespace Sunday.CMS.Core.Models.Templates
         public bool IsUnversioned { get; set; }
         public string Properties { get; set; } = string.Empty;
         public int SortOrder { get; set; }
+        public bool IsRequired { get; set; }
     }
 }

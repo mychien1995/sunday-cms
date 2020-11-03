@@ -47,6 +47,7 @@ BEGIN
 		Properties nvarchar(MAX),
 		Section varchar(500),
 		SortOrder int,
+		IsRequired bit,
 		ValidationRules varchar(500)
 	);
 END

@@ -246,6 +246,7 @@ BEGIN
 		Section varchar(500),
 		ValidationRules varchar(500),
 		TemplateId uniqueidentifier,
+		IsRequired bit default(0),
 		SortOrder int,
 		IsDeleted bit default(0),
 		CONSTRAINT FK_TemplateFields_Template FOREIGN KEY (TemplateId) REFERENCES Templates(Id)

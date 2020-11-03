@@ -1,6 +1,6 @@
 ﻿namespace Sunday.ContentManagement.Implementation
 {
-    public class Constants
+    public static class Constants
     {
         public class NodeTypes
         {

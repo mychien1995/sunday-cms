@@ -28,6 +28,10 @@ namespace Sunday.CMS.Core.Implementation
             => _contentTreeProvider.GetChildren(current.MapTo<ContentTreeNode>())
                 .MapResultTo(rs => new ContentTreeListJsonResult() { Nodes = rs.Select(ToItem).ToArray() });
 
+        public Task<ContextMenuJsonResult> GetContextMenu(ContentTreeItem current)
+            => _contentTreeProvider.GetContextMenu(current.MapTo<ContentTreeNode>())
+                .MapResultTo(rs => new ContextMenuJsonResult {Items = rs.Items});
+
         private ContentTreeItem ToItem(ContentTreeNode node)
         {
             var item = node.MapTo<ContentTreeItem>();

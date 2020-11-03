@@ -44,6 +44,13 @@ namespace Sunday.CMS.Interface.Controllers
             return Ok(result);
         }
 
+        [HttpGet("getFields")]
+        public async Task<IActionResult> GetFields([FromQuery] Guid id)
+        {
+            var result = await _templateManager.LoadTemplateFields(id);
+            return Ok(result);
+        }
+
         [HttpGet("getFieldTypes")]
         public IActionResult GetFieldTypes()
         {

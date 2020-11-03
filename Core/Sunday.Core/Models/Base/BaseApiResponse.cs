@@ -42,4 +42,13 @@ namespace Sunday.Core.Models.Base
             return instance;
         }
     }
+
+    public class BaseApiResponse<T> : BaseApiResponse
+    {
+        public BaseApiResponse(T data)
+        {
+            Data = data;
+        }
+        public T Data { get; set; }
+    }
 }
