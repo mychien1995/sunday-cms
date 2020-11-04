@@ -1,0 +1,11 @@
+<div class="fields-group">
+    <app-spinner [hidden]="!isLoading"></app-spinner>
+    <div class="field-section" *ngFor="let field of innerFields; let i = index;"
+        [ngSwitch]="getTypeName(field.field?.FieldType)">
+        <app-single-line-text-renderer *ngSwitchCase="'singlelinetext'" [(field)]="innerFields[i]">
+        </app-single-line-text-renderer>
+        <div *ngSwitchDefault>
+            Unrecognized Field Type {{getTypeName(field.field?.FieldType)}}
+        </div>
+    </div>
+</div>

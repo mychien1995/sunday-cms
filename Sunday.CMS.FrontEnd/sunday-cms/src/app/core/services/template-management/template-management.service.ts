@@ -5,7 +5,9 @@ import {
   TemplateList,
   TemplateItem,
   ApiResponse,
+  GenericApiResponse,
   FieldTypeList,
+  TemplateField,
 } from '@models/index';
 import { ApiUrl } from '@core/constants';
 import { Observable } from 'rxjs';
@@ -48,6 +50,14 @@ export class TemplateManagementService {
   getFieldTypes(): Observable<FieldTypeList> {
     return this.apiService
       .get(ApiUrl.Templates.GetFieldTypes)
+      .pipe(map(ApiHelper.onSuccess), catchError(ApiHelper.onFail));
+  }
+
+  getFields(
+    templateId: string
+  ): Observable<GenericApiResponse<TemplateField[]>> {
+    return this.apiService
+      .get(`${ApiUrl.Templates.LoadFields}?id=${templateId}`)
       .pipe(map(ApiHelper.onSuccess), catchError(ApiHelper.onFail));
   }
 }

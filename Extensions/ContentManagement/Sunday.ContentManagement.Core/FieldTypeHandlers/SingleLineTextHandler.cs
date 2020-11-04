@@ -3,6 +3,6 @@
     public class SingleLineTextHandler : IFieldTypeHandler
     {
         public string Name => "Single-line text";
-        public string Layout => "single-line-text";
+        public string Layout => "singlelinetext";
     }
 }

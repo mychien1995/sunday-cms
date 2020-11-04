@@ -2,11 +2,13 @@
     <thead>
         <th>Name</th>
         <th>Display Name</th>
-        <th width="300">Type</th>
+        <th width="200">Type</th>
         <th>Help Text</th>
         <th width="50">Unversion</th>
+        <th width="50">Required</th>
         <th>Parameters</th>
-        <th></th>
+        <th width="50">Sort Order</th>
+        <th width="20"></th>
     </thead>
     <tbody>
         <tr *ngFor="let item of template.Fields; let i = index;">
@@ -33,13 +35,19 @@
                 <input type="checkbox" [checked]="item.IsUnversioned"
                     (change)="item.IsUnversioned = !item.IsUnversioned">
             </td>
+            <td align="center">
+                <input type="checkbox" [checked]="item.IsRequired" (change)="item.IsRequired = !item.IsRequired">
+            </td>
             <td>
                 <input type="text" class="form-control" [(ngModel)]="item.Properties" />
             </td>
             <td>
+                <input type="text" class="form-control" [(ngModel)]="item.SortOrder" />
+            </td>
+            <td>
                 <a title="Remove" class="m-lg-2" (click)="removeField(i)" [hidden]="item.IsPlaceholder"
                     href="javascript:void(0)"><i class="fa fa-times"></i></a>
-                <a title="Move up" class="m-lg-2" href="javascript:void(0)" [hidden]="i === 0 || item.IsPlaceholder"
+                <!-- <a title="Move up" class="m-lg-2" href="javascript:void(0)" [hidden]="i === 0 || item.IsPlaceholder"
                     (click)="moveUp(i)">
                     <i class="fa fa-arrow-up"></i>
                 </a>
@@ -47,7 +55,7 @@
                     [hidden]="i === template.Fields.length - 1 || template.Fields[i + 1].IsPlaceholder"
                     (click)="moveDown(i)">
                     <i class="fa fa-arrow-down"></i>
-                </a>
+                </a> -->
             </td>
         </tr>
     </tbody>

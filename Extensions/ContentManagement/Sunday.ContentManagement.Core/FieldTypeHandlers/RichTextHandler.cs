@@ -3,6 +3,6 @@
     public class RichTextHandler : IFieldTypeHandler
     {
         public string Name => "Rich Text";
-        public string Layout => "rich-text";
+        public string Layout => "richtext";
     }
 }

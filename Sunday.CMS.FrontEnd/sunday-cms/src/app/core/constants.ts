@@ -71,10 +71,12 @@ export class ApiUrl {
     GetById: 'cms/api/templates/',
     Delete: 'cms/api/templates/',
     GetFieldTypes: 'cms/api/templates/getFieldTypes',
+    LoadFields: 'cms/api/templates/getFields',
   };
   public static ContentTree = {
     GetRoots: 'cms/api/contenttree/getRoots/',
-    GetChilds: 'cms/api/contenttree/getChilds/'
+    GetChilds: 'cms/api/contenttree/getChilds/',
+    GetContextMenu: 'cms/api/contenttree/getContextMenu/'
   };
   public static FileUpload = 'cms/api/FileUpload';
 }

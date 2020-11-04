@@ -17,3 +17,13 @@ export class ContentTreeNode extends ApiResponse {
   Open = false;
   Active = false;
 }
+export class ContextMenu extends ApiResponse {
+  Items: ContextMenuItem[] = [];
+}
+
+export class ContextMenuItem {
+  Icon?: string;
+  Command?: string;
+  Title?: string;
+  Hint?: string;
+}

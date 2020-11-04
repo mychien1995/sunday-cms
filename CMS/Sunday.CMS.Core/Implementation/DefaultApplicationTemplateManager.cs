@@ -57,7 +57,7 @@ namespace Sunday.CMS.Core.Implementation
         public FieldTypeListJsonResult GetFieldTypes()
             => new FieldTypeListJsonResult()
             {
-                FieldTypes = _fieldTypesLoader.List().Select(f => new FieldTypeItem { Id = f.Id, Name = f.Name })
+                FieldTypes = _fieldTypesLoader.List().Select(f => new FieldTypeItem { Id = f.Id, Name = f.Name, Layout = f.Layout})
                     .ToArray()
             };
 

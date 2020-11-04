@@ -50,7 +50,9 @@ export class TemplateDetailComponent implements OnInit {
     } else {
       const fields = this.template.Fields.filter((f) => !f.IsPlaceholder);
       fields.forEach(function (item, index) {
-        item.SortOrder = index + 1;
+        if (!item.SortOrder) {
+          item.SortOrder = index + 1;
+        }
       });
       const data = <TemplateItem>this.template;
       data.Fields = fields;

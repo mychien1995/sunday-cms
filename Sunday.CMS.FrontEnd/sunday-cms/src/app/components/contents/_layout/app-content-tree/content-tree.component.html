@@ -7,10 +7,18 @@
             [ngTemplateOutletContext]="{item:root}">
         </ng-container>
     </ul>
+    <div class="context-menu" [hidden]="contextMenu.hidden" [style.top]="contextMenu.y" [style.left]="contextMenu.x">
+        <ul>
+            <li *ngFor="let item of contextMenu.items" (click)="processCommand(item)">
+                <i class="{{getIcon(item.Icon)}}"></i>
+                <label title="{{item.Hint}}">{{item.Title}}</label>
+            </li>
+        </ul>
+    </div>
 </div>
 <ng-template #childTemplate let-item="item">
     <li>
-        <span class="tree-node">
+        <span class="tree-node" (contextmenu)="openContextMenu($event, item)">
             <i class="fa fa-caret-right" [hidden]="item.Open" (click)="expandNode(item)"></i>
             <i class="fa fa-caret-down" [hidden]="!item.Open" (click)="expandNode(item)"></i>
             <label>

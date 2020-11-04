@@ -1,0 +1,32 @@
+.template-selector {
+  ul {
+    padding-left: 0px;
+    border: 0.5px solid #f1f4f6;
+    border-bottom: none;
+    margin-top: 20px;
+    min-height: 300px;
+    li {
+      list-style: none;
+      border-bottom: 0.5px solid #f1f4f6;
+      padding: 5px 10px;
+      cursor: pointer;
+      * {
+        cursor: pointer;
+      }
+      &:hover, &.active {
+        color: #fff;
+        background: #6c757d;
+      }
+      div {
+        display: flex;
+        i {
+          width: 30px;
+          font-size: 30px;
+        }
+        label {
+          margin-left: 5px;
+        }
+      }
+    }
+  }
+}

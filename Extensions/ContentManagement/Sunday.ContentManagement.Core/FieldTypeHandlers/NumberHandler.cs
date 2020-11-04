@@ -3,6 +3,6 @@
     public class NumberHandler : IFieldTypeHandler
     {
         public string Name => "Number";
-        public string Layout => "number-type";
+        public string Layout => "number";
     }
 }

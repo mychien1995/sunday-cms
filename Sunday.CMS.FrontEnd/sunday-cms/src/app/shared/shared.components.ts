@@ -30,6 +30,7 @@ import {
   TemplateFieldComponent,
   TemplateInfoComponent,
   TwoSideSelectWithSearchComponent,
+  SpinnerComponent,
 } from 'app/components';
 import {
   ApplicationLayoutComponent,
@@ -79,6 +80,7 @@ export const SharedComponents = [
   TemplateFieldComponent,
   TemplateInfoComponent,
   TwoSideSelectWithSearchComponent,
+  SpinnerComponent
 ];
 import {
   UserResolver,

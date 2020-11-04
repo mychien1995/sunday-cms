@@ -1,0 +1,12 @@
+<div class="template-selector">
+    <app-spinner [hidden]="!isLoading"></app-spinner>
+    <input placeholder="Enter template name or id" [(ngModel)]="query.Text" class="form-control" [hidden]="isLoading" />
+    <ul [hidden]="isLoading">
+        <li *ngFor="let item of displayTemplates" (click)="select(item)" [class]="selected(item) ? 'active' : ''">
+            <div>
+                <i class="{{getIcon(item.Icon)}}"></i>
+                <label><b>{{item.TemplateName}}</b></label>
+            </div>
+        </li>
+    </ul>
+</div>

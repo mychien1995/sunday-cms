@@ -1,7 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { ContentTree, ContentTreeList, ContentTreeNode } from '@models/index';
+import {
+  ContentTree,
+  ContentTreeList,
+  ContentTreeNode,
+  ContextMenu,
+} from '@models/index';
 import { ApiUrl } from '@core/constants';
 import { ApiService } from '@services/api.service';
 import { ApiHelper } from '@services/api.helper';
@@ -20,6 +25,12 @@ export class ContentTreeService {
   getChilds(node: ContentTreeNode): Observable<ContentTreeList> {
     return this.apiService
       .post(ApiUrl.ContentTree.GetChilds, node)
+      .pipe(map(ApiHelper.onSuccess), catchError(ApiHelper.onFail));
+  }
+
+  getContextMenu(node: ContentTreeNode): Observable<ContextMenu> {
+    return this.apiService
+      .post(ApiUrl.ContentTree.GetContextMenu, node)
       .pipe(map(ApiHelper.onSuccess), catchError(ApiHelper.onFail));
   }
 }

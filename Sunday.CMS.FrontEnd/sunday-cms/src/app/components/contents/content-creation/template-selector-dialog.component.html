@@ -1,0 +1,13 @@
+<h4 class="modal-title" mat-dialog-title>Select template</h4>
+<div class="modal-body" mat-dialog-content>
+    <p>Select your content's template</p>
+    <div class="form-row">
+        <div class="col-md-12">
+            <app-template-selector [(selectedTemplates)]="selectedTemplates"></app-template-selector>
+            <div class="pull-right">
+                <button type="button" class="btn btn-primary" (click)="onSubmit()">Select template</button>
+                <button type="button" class="btn btn-secondary m-lg-2" mat-dialog-close>Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

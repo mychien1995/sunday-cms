@@ -20,7 +20,14 @@ export class TemplateField {
   IsUnversioned?: boolean;
   Properties?: string;
   SortOrder?: number;
+  IsRequired?: number;
   IsPlaceholder?: boolean;
+  TypeName?: string;
+  get DisplayText(): string {
+    return this.DisplayName && this.DisplayName.length > 0
+      ? this.DisplayName
+      : this.FieldName;
+  }
 }
 
 export class TemplateList extends ApiResponse {
@@ -35,4 +42,5 @@ export class FieldTypeList extends ApiResponse {
 export class FieldType {
   Id: number;
   Name: string;
+  Layout: string;
 }

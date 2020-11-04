@@ -1,0 +1,16 @@
+<h4 class="modal-title" mat-dialog-title>Create Content</h4>
+<div class="modal-body" mat-dialog-content>
+    <p>Please fill in required fields</p>
+    <div class="form-row">
+        <div class="col-sm-12">
+            <div class="content-creator">
+                <app-spinner [hidden]="!isLoading"></app-spinner>
+                <app-fields-renderer [(fields)]="fields"></app-fields-renderer>
+            </div>
+            <div class="pull-right mt-3">
+                <button type="button" class="btn btn-primary" (click)="onSubmit()">Create Content</button>
+                <button type="button" class="btn btn-secondary m-lg-2" mat-dialog-close>Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
