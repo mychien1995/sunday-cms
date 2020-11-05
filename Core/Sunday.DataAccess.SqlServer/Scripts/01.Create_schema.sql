@@ -252,3 +252,63 @@ BEGIN
 		CONSTRAINT FK_TemplateFields_Template FOREIGN KEY (TemplateId) REFERENCES Templates(Id)
 	)
 END
+
+IF (NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'dbo' AND  TABLE_NAME = 'WorkContents'))
+BEGIN
+	CREATE TABLE dbo.WorkContents
+	(
+		Id uniqueidentifier primary key default newid(),
+		ContentId uniqueidentifier,
+		CreatedDate datetime,
+		UpdatedDate datetime,
+		CreatedBy varchar(500),
+		UpdatedBy varchar(500),
+		Version int,
+		Status int,
+		IsActive bit,
+		IsDeleted bit
+	);
+END
+
+IF (NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'dbo' AND  TABLE_NAME = 'WorkContentFields'))
+BEGIN
+	CREATE TABLE dbo.WorkContentFields
+	(
+		Id uniqueidentifier primary key default newid(),
+		FieldValue nvarchar(MAX),
+		TemplateFieldId uniqueidentifier,
+		WorkContentId uniqueidentifier
+	);
+END
+
+IF (NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'dbo' AND  TABLE_NAME = 'Contents'))
+BEGIN
+	CREATE TABLE Contents
+	(
+		Id uniqueidentifier primary key default newid(),
+		Name nvarchar(1000),
+		DisplayName nvarchar(1000),
+		Path nvarchar(MAX),
+		ParentId uniqueidentifier,
+		ParentType int,
+		TemplateId uniqueidentifier,
+		CreatedDate datetime,
+		UpdatedDate datetime,
+		PublishedDate datetime,
+		CreatedBy varchar(500),
+		UpdatedBy varchar(500),
+		SortOrder int,
+		IsDeleted bit default(0)
+	);
+END
+
+IF (NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'dbo' AND  TABLE_NAME = 'ContentFields'))
+BEGIN
+	CREATE TABLE ContentFields
+	(
+		Id uniqueidentifier primary key default newid(),
+		FieldValue nvarchar(MAX),
+		TemplateFieldId uniqueidentifier,
+		ContentId uniqueidentifier
+	);
+END

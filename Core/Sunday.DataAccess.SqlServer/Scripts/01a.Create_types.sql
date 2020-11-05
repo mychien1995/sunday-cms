@@ -51,3 +51,13 @@ BEGIN
 		ValidationRules varchar(500)
 	);
 END
+
+IF TYPE_ID(N'ContentFieldType') IS NULL
+BEGIN
+	CREATE TYPE ContentFieldType AS TABLE
+	(
+		Id uniqueidentifier,
+		FieldValue nvarchar(MAX),
+		TemplateFieldId uniqueidentifier
+	);
+END
