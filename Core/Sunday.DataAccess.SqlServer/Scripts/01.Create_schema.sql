@@ -297,6 +297,7 @@ BEGIN
 		PublishedDate datetime,
 		CreatedBy varchar(500),
 		UpdatedBy varchar(500),
+		PublishedBy varchar(500),
 		SortOrder int,
 		IsDeleted bit default(0)
 	);

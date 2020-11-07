@@ -141,3 +141,39 @@ BEGIN
 	END
 END
 GO
+--------------------------------------------------------------------
+CREATE OR ALTER PROCEDURE [dbo].[sp_contents_getByParents]
+( 
+	@ParentId uniqueidentifier,
+	@ParentType int
+)
+AS
+BEGIN
+	SELECT * FROM Contents WHERE IsDeleted = 0 AND ParentId = @ParentId AND ParentType = @ParentType ORDER BY SortOrder DESC
+END
+GO
+--------------------------------------------------------------------
+CREATE OR ALTER PROCEDURE [dbo].[sp_contents_getById]
+(
+	@Id uniqueidentifier,
+	@IncludeVersions bit,
+	@IncludeFields bit
+)
+AS
+BEGIN
+	SELECT * FROM Contents WHERE Id = @Id AND IsDeleted = 0
+	IF @IncludeVersions = 1
+	BEGIN
+		SELECT * into #tmpWorkContents FROM WorkContents WHERE ContentId = @Id AND IsDeleted = 0 ORDER BY Version DESC
+		IF(@IncludeFields = 1)
+		BEGIN
+			SELECT * FROM WorkContentFields WHERE WorkContentId IN (SELECT Id FROM #tmpWorkContents)
+			SELECT * FROM ContentFields WHERE ContentId = @Id
+		END
+	END
+	ELSE IF @IncludeFields = 1
+	BEGIN
+		SELECT * FROM ContentFields WHERE ContentId = @Id
+	END
+END
+GO
