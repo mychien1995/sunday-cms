@@ -22,7 +22,7 @@ namespace Sunday.ContentManagement.Implementation.Pipelines.ContentTrees
         {
             var arg = (GetContentTreeChildrenArg)pipelineArg;
             var node = arg.CurrentNode;
-            if (node.Type != Constants.NodeTypes.Organization) return;
+            if (node.Type != (int)ContentType.Organization) return;
             var organizationId = Guid.Parse(node.Id);
             var websites = await _websiteService.QueryAsync(new WebsiteQuery
             { OrganizationId = organizationId, PageSize = 1000 }).MapResultTo(rs => rs.Result);

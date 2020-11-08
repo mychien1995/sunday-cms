@@ -14,7 +14,7 @@ namespace Sunday.ContentManagement.Models
         public string Link { get; set; } = string.Empty;
         public string Icon { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
-        public string Type { get; set; } = string.Empty;
+        public int Type { get; set; }
         public string? ParentId { get; set; }
         public List<ContentTreeNode> ChildNodes { get; set; } = new List<ContentTreeNode>();
     }

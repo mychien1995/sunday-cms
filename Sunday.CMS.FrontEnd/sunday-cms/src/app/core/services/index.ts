@@ -18,3 +18,4 @@ export * from 'app/core/services/layout-management/layout-management.service';
 export * from 'app/core/services/websites-management/website-management.service';
 export * from 'app/core/services/template-management/template-management.service';
 export * from 'app/core/services/contents/content-tree.service';
+export * from 'app/core/services/contents/contents.service';

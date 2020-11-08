@@ -1,11 +1,30 @@
 <h4 class="modal-title" mat-dialog-title>Create Content</h4>
 <div class="modal-body" mat-dialog-content>
-    <p>Please fill in required fields</p>
+    <p><b>Please fill in metadata</b></p>
+    <div class="form-row">
+        <div class="col-sm-6">
+            <div class="position-relative form-group">
+                <label>Name: <span class="red">*</span></label>
+                <input class="form-control" [(ngModel)]="name" required />
+                <span [hidden]="!(isSubmitted && (!name || name.trim().length === 0))" class="red">This field is
+                    required</span>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="position-relative form-group">
+                <label>Display Name: <span class="red">*</span></label>
+                <input class="form-control" [(ngModel)]="displayName" required />
+                <span [hidden]="!(isSubmitted && (!displayName || displayName.trim().length === 0))" class="red">This field
+                    is required</span>
+            </div>
+        </div>
+    </div>
     <div class="form-row">
         <div class="col-sm-12">
+            <p><b>Please fill in required fields</b></p>
             <div class="content-creator">
                 <app-spinner [hidden]="!isLoading"></app-spinner>
-                <app-fields-renderer [(fields)]="fields"></app-fields-renderer>
+                <app-fields-renderer [(fields)]="fields" [formSubmitted]="isSubmitted"></app-fields-renderer>
             </div>
             <div class="pull-right mt-3">
                 <button type="button" class="btn btn-primary" (click)="onSubmit()">Create Content</button>

@@ -1,3 +1,3 @@
-import { ContentTreeService } from '@services/index';
+import { ContentTreeService, ContentService } from '@services/index';
 
-export const ContentServices = [ContentTreeService];
+export const ContentServices = [ContentTreeService, ContentService];

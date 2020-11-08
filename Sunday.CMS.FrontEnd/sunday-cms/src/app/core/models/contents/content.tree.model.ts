@@ -11,7 +11,7 @@ export class ContentTreeNode extends ApiResponse {
   Link: string;
   Icon: string;
   Name: string;
-  Type: string;
+  Type: number;
   ParentId?: string;
   ChildNodes: ContentTreeNode[] = [];
   Open = false;

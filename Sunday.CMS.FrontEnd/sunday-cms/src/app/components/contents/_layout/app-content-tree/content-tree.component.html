@@ -22,7 +22,7 @@
             <i class="fa fa-caret-right" [hidden]="item.Open" (click)="expandNode(item)"></i>
             <i class="fa fa-caret-down" [hidden]="!item.Open" (click)="expandNode(item)"></i>
             <label>
-                <i class="{{getIcon(item.Icon)}}"></i>
+                <i class="{{getNodeIcon(item)}}"></i>
                 {{item.Name}}
             </label>
         </span>

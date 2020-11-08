@@ -78,6 +78,14 @@ export class ApiUrl {
     GetChilds: 'cms/api/contenttree/getChilds/',
     GetContextMenu: 'cms/api/contenttree/getContextMenu/'
   };
+  public static Contents = {
+    GetContent: 'cms/api/contents/',
+    Create: 'cms/api/contents/create/',
+    Update: 'cms/api/contents/update/',
+    NewVersion: 'cms/api/contents/',
+    Publish: 'cms/api/contents/',
+    Delete: 'cms/api/contents/'
+  };
   public static FileUpload = 'cms/api/FileUpload';
 }
 

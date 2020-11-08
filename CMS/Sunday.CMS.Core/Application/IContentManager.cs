@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Sunday.CMS.Core.Models.Contents;
+using Sunday.Core.Models.Base;
 
 namespace Sunday.CMS.Core.Application
 {
@@ -8,10 +9,10 @@ namespace Sunday.CMS.Core.Application
     {
         Task<ContentJsonResult> GetContentByIdAsync(Guid contentId, Guid? versionId = null);
 
-        Task CreateContentAsync(ContentJsonResult content);
-        Task UpdateContentAsync(ContentJsonResult content);
-        Task DeleteContentAsync(Guid contentId);
-        Task NewContentVersionAsync(Guid contentId, Guid fromVersion);
-        Task PublishContentAsync(Guid contentId);
+        Task<BaseApiResponse> CreateContentAsync(ContentJsonResult content);
+        Task<BaseApiResponse> UpdateContentAsync(ContentJsonResult content);
+        Task<BaseApiResponse> DeleteContentAsync(Guid contentId);
+        Task<BaseApiResponse> NewContentVersionAsync(Guid contentId, Guid fromVersion);
+        Task<BaseApiResponse> PublishContentAsync(Guid contentId);
     }
 }

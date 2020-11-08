@@ -21,6 +21,7 @@ export class FieldsRendererComponent implements OnInit {
   fieldsChange: EventEmitter<any> = new EventEmitter<any>();
   fieldTypes: FieldType[] = [];
   isLoading = false;
+  @Input() formSubmitted = false;
 
   constructor(private templateService: TemplateManagementService) {
     this.isLoading = true;

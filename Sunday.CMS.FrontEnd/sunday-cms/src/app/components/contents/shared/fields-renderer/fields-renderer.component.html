@@ -7,5 +7,6 @@
         <div *ngSwitchDefault>
             Unrecognized Field Type {{getTypeName(field.field?.FieldType)}}
         </div>
+        <span [hidden]="!(formSubmitted && !innerFields[i].value)" class="red">This field is required</span>
     </div>
 </div>

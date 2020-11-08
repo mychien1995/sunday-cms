@@ -17,7 +17,7 @@ namespace Sunday.ContentManagement.Implementation.Pipelines.ContentTrees
                 Icon = Constants.NodeIcons.Organization,
                 Id = organization!.Id.ToString(),
                 Link = "#",
-                Type = Constants.NodeTypes.Organization
+                Type = (int)ContentType.Organization
             };
         protected ContentTreeNode FromWebsite(ApplicationWebsite website)
             => new ContentTreeNode
@@ -26,7 +26,17 @@ namespace Sunday.ContentManagement.Implementation.Pipelines.ContentTrees
                 Icon = Constants.NodeIcons.Website,
                 Id = website.Id.ToString(),
                 Link = "#",
-                Type = Constants.NodeTypes.Website
+                Type = (int)ContentType.Website
+            };
+
+        protected ContentTreeNode FromContent(Content content)
+            => new ContentTreeNode
+            {
+                Name = content.DisplayName,
+                Icon = content.TemplateId.ToString(),
+                Id = content.Id.ToString(),
+                Link = "#",
+                Type = (int)ContentType.Content
             };
     }
 }

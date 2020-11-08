@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
 using LanguageExt;
+using Sunday.ContentManagement.Models;
 using Sunday.ContentManagement.Persistence.Entities;
-using Sunday.ContentManagement.Persistence.Models;
 
 namespace Sunday.ContentManagement.Persistence.Application
 {

@@ -37,5 +37,6 @@ namespace Sunday.CMS.Core.Models.Contents
     {
         public Guid VersionId { get; set; }
         public int Version { get; set; }
+        public bool IsActive { get; set; }
     }
 }

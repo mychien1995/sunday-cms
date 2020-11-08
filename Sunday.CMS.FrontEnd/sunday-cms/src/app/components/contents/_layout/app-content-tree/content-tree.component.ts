@@ -8,8 +8,13 @@ import {
   ContextMenuItem,
   LayoutModel,
 } from '@core/models';
-import { IconService, ContentTreeService } from '@core/services';
+import {
+  IconService,
+  ContentTreeService,
+  TemplateManagementService,
+} from '@core/services';
 import { LayoutService } from '@core/services';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-content-tree',
@@ -17,7 +22,13 @@ import { LayoutService } from '@core/services';
   styleUrls: ['./content-tree.component.scss'],
 })
 export class ContentTreeComponent implements OnInit {
+  parentTypeMappings = {
+    organization: 1,
+    website: 2,
+    content: 3,
+  };
   tree: ContentTree = new ContentTree();
+  templateIconLookup = {};
   isTreeLoading = false;
   contextMenu = {
     x: '0px',
@@ -29,7 +40,8 @@ export class ContentTreeComponent implements OnInit {
   constructor(
     private iconService: IconService,
     private contentTreeService: ContentTreeService,
-    private dialogService: MatDialog
+    private dialogService: MatDialog,
+    private templateService: TemplateManagementService
   ) {
     this.loadTree();
   }
@@ -37,35 +49,55 @@ export class ContentTreeComponent implements OnInit {
   loadTree(): void {
     console.log('load tree');
     this.isTreeLoading = true;
-    this.contentTreeService.getRoots().subscribe(
-      (res) => {
-        if (res.Success) {
-          this.tree = res;
-          this.tree.Roots.forEach((element) => {
-            element.Open = true;
-          });
-        }
-        this.isTreeLoading = false;
-      },
-      (ex) => (this.isTreeLoading = false)
-    );
+    this.templateService
+      .getTemplates({ PageSize: 1000 })
+      .pipe(
+        switchMap((res) => {
+          res.Templates.forEach(
+            (template) => (this.templateIconLookup[template.Id] = template.Icon)
+          );
+          return this.contentTreeService.getRoots();
+        })
+      )
+      .subscribe(
+        (res) => {
+          if (res.Success) {
+            this.tree = res;
+            this.tree.Roots.forEach((element) => {
+              element.Open = true;
+            });
+          }
+          this.isTreeLoading = false;
+        },
+        (ex) => (this.isTreeLoading = false)
+      );
   }
 
   getIcon(code: string): string {
     return this.iconService.getIcon(code);
   }
+  getNodeIcon(node: ContentTreeNode): string {
+    const code =
+      node.Type.toString() === this.parentTypeMappings.content.toString()
+        ? this.templateIconLookup[node.Icon]
+        : node.Icon;
+    return this.iconService.getIcon(code);
+  }
 
-  expandNode(node: ContentTreeNode): void {
-    if (node.Open) {
-      node.Open = false;
-      return;
-    }
+  reloadNode(node: ContentTreeNode): void {
     this.contentTreeService.getChilds(node).subscribe((res) => {
       if (res.Success) {
         node.ChildNodes = res.Nodes;
         node.Open = true;
       }
     });
+  }
+  expandNode(node: ContentTreeNode): void {
+    if (node.Open) {
+      node.Open = false;
+      return;
+    }
+    this.reloadNode(node);
   }
 
   openContextMenu(ev: any, node: ContentTreeNode): void {
@@ -85,10 +117,13 @@ export class ContentTreeComponent implements OnInit {
     const command = item.Command;
     switch (command) {
       case 'createcontent':
-        this.dialogService.open(TemplateSelectorDialogComponent, {
+        const currentNode = <ContentTreeNode>this.contextMenu.node;
+        const ref = this.dialogService.open(TemplateSelectorDialogComponent, {
           minWidth: 800,
           disableClose: true,
         });
+        ref.componentInstance.load(currentNode);
+        ref.afterClosed().subscribe((res) => this.reloadNode(currentNode));
         break;
       default:
         break;

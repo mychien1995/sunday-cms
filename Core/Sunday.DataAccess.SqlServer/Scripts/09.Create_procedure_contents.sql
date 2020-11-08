@@ -138,6 +138,8 @@ BEGIN
 		DELETE FROM ContentFields WHERE ContentId = @Id
 		INSERT INTO ContentFields (Id, ContentId, FieldValue, TemplateFieldId)
 		SELECT NEWID(), @Id, FieldValue, TemplateFieldId FROM WorkContentFields WHERE WorkContentId = @LatestVersionId
+
+		UPDATE WorkContents SET Status = 2 WHERE Id = @LatestVersionId
 	END
 END
 GO

@@ -17,5 +17,7 @@
   "earth": "lnr-earth",
   "website": "lnr-earth",
   "plus_circle": "fa fa-plus",
-  "eye": "fa fa-eye"
+  "eye": "fa fa-eye",
+  "delete_x" : "fa fa-times",
+  "eye_dropper" : "lnr-pencil"
 }
