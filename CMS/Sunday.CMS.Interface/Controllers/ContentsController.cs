@@ -15,10 +15,10 @@ namespace Sunday.CMS.Interface.Controllers
             _contentManager = contentManager;
         }
 
-        [HttpGet("{id}/{versionId}")]
-        public async Task<IActionResult> GetContent([FromRoute] Guid id, [FromRoute] Guid? versionId)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetContent([FromRoute] Guid id)
         {
-            return Ok(await _contentManager.GetContentByIdAsync(id, versionId));
+            return Ok(await _contentManager.GetContentByIdAsync(id, null));
         }
 
         [HttpPost("create")]

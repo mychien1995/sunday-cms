@@ -5,7 +5,7 @@ using Sunday.Core.Models.Base;
 
 namespace Sunday.CMS.Core.Models.Contents
 {
-    [MappedTo(typeof(Content), true, nameof(Versions), nameof(Fields))]
+    [MappedTo(typeof(Content), true, nameof(Versions), nameof(Fields), nameof(Template))]
     public class ContentJsonResult : BaseApiResponse
     {
         public Guid Id { get; set; }
@@ -25,6 +25,7 @@ namespace Sunday.CMS.Core.Models.Contents
         public Guid ActiveVersion { get; set; }
         public ContentVersion[] Versions { get; set; } = Array.Empty<ContentVersion>();
         public ContentFieldItem[] Fields { get; set; } = Array.Empty<ContentFieldItem>();
+        public ContentTemplate Template { get; set; } = new ContentTemplate();
     }
 
     public class ContentFieldItem
@@ -38,5 +39,11 @@ namespace Sunday.CMS.Core.Models.Contents
         public Guid VersionId { get; set; }
         public int Version { get; set; }
         public bool IsActive { get; set; }
+    }
+
+    public class ContentTemplate
+    {
+        public string TemplateName { get; set; } = string.Empty;
+        public string Icon { get; set; } = string.Empty;
     }
 }

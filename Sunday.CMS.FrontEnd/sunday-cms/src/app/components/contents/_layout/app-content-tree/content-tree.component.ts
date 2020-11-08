@@ -1,5 +1,6 @@
 import { OnInit, Component, HostListener } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { TemplateSelectorDialogComponent } from '@components/contents/content-creation/template-selector-dialog.component';
 import { AppHeaderComponent } from '@components/_layout';
 import {
@@ -41,7 +42,8 @@ export class ContentTreeComponent implements OnInit {
     private iconService: IconService,
     private contentTreeService: ContentTreeService,
     private dialogService: MatDialog,
-    private templateService: TemplateManagementService
+    private templateService: TemplateManagementService,
+    private router: Router
   ) {
     this.loadTree();
   }
@@ -92,12 +94,19 @@ export class ContentTreeComponent implements OnInit {
       }
     });
   }
+
   expandNode(node: ContentTreeNode): void {
     if (node.Open) {
       node.Open = false;
       return;
     }
     this.reloadNode(node);
+  }
+
+  onSelectNode(node: ContentTreeNode): void {
+    if (node.Type.toString() === this.parentTypeMappings.content.toString()) {
+      this.router.navigate([node.Link]);
+    }
   }
 
   openContextMenu(ev: any, node: ContentTreeNode): void {

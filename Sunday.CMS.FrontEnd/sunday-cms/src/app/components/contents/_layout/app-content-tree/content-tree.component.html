@@ -21,7 +21,7 @@
         <span class="tree-node" (contextmenu)="openContextMenu($event, item)">
             <i class="fa fa-caret-right" [hidden]="item.Open" (click)="expandNode(item)"></i>
             <i class="fa fa-caret-down" [hidden]="!item.Open" (click)="expandNode(item)"></i>
-            <label>
+            <label (click)="onSelectNode(item)">
                 <i class="{{getNodeIcon(item)}}"></i>
                 {{item.Name}}
             </label>

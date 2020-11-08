@@ -16,7 +16,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
-import { ContentComponents } from './content.component';
+import { ContentComponents, ContentResolvers } from './content.component';
 import { ContentServices } from './content.services';
 
 @NgModule({
@@ -48,6 +48,7 @@ import { ContentServices } from './content.services';
     SharedServices,
     ContentServices,
     SharedResolvers,
+    ContentResolvers,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,

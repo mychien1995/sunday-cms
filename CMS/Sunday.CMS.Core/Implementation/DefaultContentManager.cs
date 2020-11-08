@@ -27,13 +27,16 @@ namespace Sunday.CMS.Core.Implementation
                 new GetContentOptions { IncludeFields = true, IncludeVersions = true });
             if (contentOpt.IsNone) return BaseApiResponse.ErrorResult<ContentJsonResult>("Content not found");
             var content = contentOpt.Get();
-            var version = content.Versions.FirstOrDefault(v => v.Id == versionId);
-            if (version == null) return BaseApiResponse.ErrorResult<ContentJsonResult>("Content not found");
+            var version = content.Versions.FirstOrDefault(v => v.Id == versionId) ?? 
+                          content.Versions.FirstOrDefault(v => v.IsActive);
+            if (version == null)
+                return BaseApiResponse.ErrorResult<ContentJsonResult>("Content not found");
             var jsonResult = content.MapTo<ContentJsonResult>();
             jsonResult.Versions =
-                content.Versions.Select(v => new ContentVersion { Version = v.Version, VersionId = v.Id, IsActive = v.IsActive}).ToArray();
+                content.Versions.Select(v => new ContentVersion { Version = v.Version, VersionId = v.Id, IsActive = v.IsActive }).ToArray();
             jsonResult.Fields = version.Fields.Select(f => new ContentFieldItem
             { FieldValue = f.FieldValue, Id = f.Id, TemplateFieldId = f.TemplateFieldId }).ToArray();
+            jsonResult.Template = new ContentTemplate { Icon = content.Template.Icon, TemplateName = content.Template.TemplateName };
             return jsonResult;
         }
 
@@ -51,9 +54,9 @@ namespace Sunday.CMS.Core.Implementation
         {
             var model = content.MapTo<Content>();
             var activeVersion = content.Versions.FirstOrDefault(v => v.IsActive)!;
-            model.Versions = new[] {new WorkContent {IsActive = true, Id = activeVersion.VersionId}};
+            model.Versions = new[] { new WorkContent { IsActive = true, Id = activeVersion.VersionId } };
             model.Fields = content.Fields.Select(f => new ContentField
-                { Id = f.Id, FieldValue = f.FieldValue, TemplateFieldId = f.TemplateFieldId }).ToArray();
+            { Id = f.Id, FieldValue = f.FieldValue, TemplateFieldId = f.TemplateFieldId }).ToArray();
             await _contentService.UpdateAsync(model);
             return BaseApiResponse.SuccessResult;
         }

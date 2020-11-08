@@ -163,10 +163,13 @@ CREATE OR ALTER PROCEDURE [dbo].[sp_contents_getById]
 )
 AS
 BEGIN
-	SELECT * FROM Contents WHERE Id = @Id AND IsDeleted = 0
+	SELECT * INTO #tmpContent FROM Contents WHERE Id = @Id AND IsDeleted = 0
+	SELECT * FROM #tmpContent
+	SELECT * FROM Templates WHERE Id IN (SELECT TOP 1 TemplateId FROM #tmpContent) AND IsDeleted = 0
 	IF @IncludeVersions = 1
 	BEGIN
 		SELECT * into #tmpWorkContents FROM WorkContents WHERE ContentId = @Id AND IsDeleted = 0 ORDER BY Version DESC
+		SELECT * FROM #tmpWorkContents
 		IF(@IncludeFields = 1)
 		BEGIN
 			SELECT * FROM WorkContentFields WHERE WorkContentId IN (SELECT Id FROM #tmpWorkContents)

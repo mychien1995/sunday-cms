@@ -25,5 +25,7 @@ namespace Sunday.ContentManagement.Persistence.Entities
         public WorkContentEntity[] Versions { get; set; } = Array.Empty<WorkContentEntity>();
         public ContentFieldEntity[] Fields { get; set; } = Array.Empty<ContentFieldEntity>();
 
+        public TemplateEntity Template { get; set; } = new TemplateEntity();
+
     }
 }

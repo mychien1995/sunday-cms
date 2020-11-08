@@ -1,4 +1,7 @@
-import { TemplateField } from '@models/template-management/template.model';
+import {
+  TemplateField,
+  TemplateItem,
+} from '@models/template-management/template.model';
 
 export class ContentField {
   field: TemplateField = new TemplateField();
@@ -20,6 +23,7 @@ export class ContentModel {
   PublishedBy?: string;
   SortOrder: number;
   ActiveVersion: string;
+  Template: TemplateItem = new TemplateItem();
   Versions: ContentVersion[] = [];
   Fields: ContentFieldItem[] = [];
 }

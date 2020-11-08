@@ -1,4 +1,5 @@
 ﻿using System;
+using Sunday.ContentManagement.Domain;
 using Sunday.Core.Domain.Interfaces;
 
 namespace Sunday.ContentManagement.Models
@@ -22,5 +23,6 @@ namespace Sunday.ContentManagement.Models
 
         public WorkContent[] Versions { get; set; } = Array.Empty<WorkContent>();
         public ContentField[] Fields { get; set; } = Array.Empty<ContentField>();
+        public Template Template { get; set; } = new Template();
     }
 }

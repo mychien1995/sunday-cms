@@ -10,9 +10,9 @@ import { map, catchError } from 'rxjs/operators';
 export class ContentService {
   constructor(private apiService: ApiService) {}
 
-  get(contentId: string, versionId: string): Observable<ContentModel> {
+  get(contentId: string, versionId?: string): Observable<ContentModel> {
     return this.apiService
-      .get(`${ApiUrl.Contents.GetContent}${contentId}/${versionId}`)
+      .get(`${ApiUrl.Contents.GetContent}${contentId}/${versionId ?? ''}`)
       .pipe(map(ApiHelper.onSuccess), catchError(ApiHelper.onFail));
   }
 

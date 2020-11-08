@@ -35,7 +35,7 @@ namespace Sunday.ContentManagement.Implementation.Pipelines.ContentTrees
                 Name = content.DisplayName,
                 Icon = content.TemplateId.ToString(),
                 Id = content.Id.ToString(),
-                Link = "#",
+                Link = $"/manage-contents/{content.Id}",
                 Type = (int)ContentType.Content
             };
     }

@@ -6,7 +6,9 @@ import {
   TemplateSelectorDialogComponent,
   InitialContentCreatorComponent,
   FieldsRendererComponent,
-  SingleLineTextRendererComponent
+  SingleLineTextRendererComponent,
+  ContentDetailComponent,
+  ContentResolver,
 } from 'app/components';
 export const ContentComponents = [
   ContentDashboardComponent,
@@ -16,5 +18,8 @@ export const ContentComponents = [
   TemplateSelectorDialogComponent,
   InitialContentCreatorComponent,
   FieldsRendererComponent,
-  SingleLineTextRendererComponent
+  SingleLineTextRendererComponent,
+  ContentDetailComponent,
 ];
+
+export const ContentResolvers = [ContentResolver];

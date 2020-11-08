@@ -1,0 +1,81 @@
+<div class="app-page-title">
+    <div class="page-title-wrapper">
+        <div class="page-title-heading">
+            <div class="page-title-icon">
+                <i class="{{getIcon()}}"></i>
+            </div>
+            <div>{{content.Name}}
+                <div class="page-title-subheading">{{content.Id}}</div>
+            </div>
+        </div>
+        <div class="page-title-actions">
+            <button class="ladda-button btn btn-pill btn-wide btn-alternate" data-style="expand-right"><span
+                    class="ladda-label">Button</span><span class="ladda-spinner"></span></button>
+        </div>
+    </div>
+</div>
+<div class="tab-content">
+    <div class="tab-pane active show" id="tab-faq-1">
+        <div id="accordion" class="accordion-wrapper mb-3">
+            <div class="card">
+                <div class="card-header">
+                    <button type="button" class="text-left m-0 p-0 btn btn-link btn-block">
+                        <h5 class="m-0 p-0">Metadata</h5>
+                    </button>
+                </div>
+                <div class="collapse show">
+                    <div class="card-body">
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td>ID:</td>
+                                    <td>{{content.Id}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Name:</td>
+                                    <td>{{content.Name}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Display Name:</td>
+                                    <td>{{content.DisplayName}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Template</td>
+                                    <td>{{content.Template.TemplateName}} - {{content.TemplateId}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Created Date</td>
+                                    <td>{{content.CreatedDate | unixToDatetime}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Created By</td>
+                                    <td>{{content.CreatedBy}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Updated Date</td>
+                                    <td>{{content.UpdatedDate | unixToDatetime}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Updated By</td>
+                                    <td>{{content.UpdatedBy}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <button type="button" class="text-left m-0 p-0 btn btn-link btn-block">
+                        <h5 class="m-0 p-0">Properties</h5>
+                    </button>
+                </div>
+                <div class="collapse show">
+                    <div class="card-body">
+                        <app-fields-renderer [(fields)]="fields" [formSubmitted]="isSubmitted"></app-fields-renderer>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

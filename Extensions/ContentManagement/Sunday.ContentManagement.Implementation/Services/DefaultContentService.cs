@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using LanguageExt;
+using Sunday.ContentManagement.Domain;
 using Sunday.ContentManagement.Implementation.Pipelines.Arguments;
 using Sunday.ContentManagement.Models;
 using Sunday.ContentManagement.Persistence.Application;
@@ -63,6 +64,8 @@ namespace Sunday.ContentManagement.Implementation.Services
 
         private Content ToModel(ContentEntity entity)
         {
+            var model = entity.MapTo<Content>();
+            model.Template = entity.Template.MapTo<Template>();
             return entity.MapTo<Content>();
         }
 
