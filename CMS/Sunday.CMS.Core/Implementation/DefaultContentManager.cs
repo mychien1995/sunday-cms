@@ -27,7 +27,7 @@ namespace Sunday.CMS.Core.Implementation
                 new GetContentOptions { IncludeFields = true, IncludeVersions = true });
             if (contentOpt.IsNone) return BaseApiResponse.ErrorResult<ContentJsonResult>("Content not found");
             var content = contentOpt.Get();
-            var version = content.Versions.FirstOrDefault(v => v.Id == versionId) ?? 
+            var version = content.Versions.FirstOrDefault(v => v.Id == versionId) ??
                           content.Versions.FirstOrDefault(v => v.IsActive);
             if (version == null)
                 return BaseApiResponse.ErrorResult<ContentJsonResult>("Content not found");
@@ -43,9 +43,18 @@ namespace Sunday.CMS.Core.Implementation
         public async Task<BaseApiResponse> CreateContentAsync(ContentJsonResult content)
         {
             var model = content.MapTo<Content>();
-            model.Versions = new[] { new WorkContent { Id = Guid.NewGuid(), IsActive = true } };
-            model.Fields = content.Fields.Select(f => new ContentField
-            { Id = Guid.NewGuid(), FieldValue = f.FieldValue, TemplateFieldId = f.TemplateFieldId }).ToArray();
+            var version = new WorkContent
+            {
+                Id = Guid.NewGuid(),
+                IsActive = true,
+                Fields = content.Fields.Select(f => new WorkContentField
+                {
+                    Id = Guid.NewGuid(),
+                    FieldValue = f.FieldValue,
+                    TemplateFieldId = f.TemplateFieldId
+                }).ToArray()
+            };
+            model.Versions = new[] { version };
             await _contentService.CreateAsync(model);
             return BaseApiResponse.SuccessResult;
         }
@@ -54,9 +63,18 @@ namespace Sunday.CMS.Core.Implementation
         {
             var model = content.MapTo<Content>();
             var activeVersion = content.Versions.FirstOrDefault(v => v.IsActive)!;
-            model.Versions = new[] { new WorkContent { IsActive = true, Id = activeVersion.VersionId } };
-            model.Fields = content.Fields.Select(f => new ContentField
-            { Id = f.Id, FieldValue = f.FieldValue, TemplateFieldId = f.TemplateFieldId }).ToArray();
+            var version = new WorkContent
+            {
+                Id = activeVersion.VersionId,
+                IsActive = true,
+                Fields = content.Fields.Select(f => new WorkContentField
+                {
+                    Id = f.Id == Guid.Empty ? Guid.NewGuid() : f.Id,
+                    FieldValue = f.FieldValue,
+                    TemplateFieldId = f.TemplateFieldId
+                }).ToArray()
+            };
+            model.Versions = new[] { version };
             await _contentService.UpdateAsync(model);
             return BaseApiResponse.SuccessResult;
         }
