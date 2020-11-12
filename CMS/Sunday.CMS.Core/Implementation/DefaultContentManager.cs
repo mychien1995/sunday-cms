@@ -40,7 +40,7 @@ namespace Sunday.CMS.Core.Implementation
             return jsonResult;
         }
 
-        public async Task<BaseApiResponse> CreateContentAsync(ContentJsonResult content)
+        public async Task<CreateContentJsonResult> CreateContentAsync(ContentJsonResult content)
         {
             var model = content.MapTo<Content>();
             var version = new WorkContent
@@ -56,7 +56,7 @@ namespace Sunday.CMS.Core.Implementation
             };
             model.Versions = new[] { version };
             await _contentService.CreateAsync(model);
-            return BaseApiResponse.SuccessResult;
+            return new CreateContentJsonResult(model.Id);
         }
 
         public async Task<BaseApiResponse> UpdateContentAsync(ContentJsonResult content)

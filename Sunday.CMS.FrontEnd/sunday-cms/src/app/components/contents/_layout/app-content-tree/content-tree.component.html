@@ -21,7 +21,7 @@
         <span class="tree-node" (contextmenu)="openContextMenu($event, item)">
             <i class="fa fa-caret-right" [hidden]="item.Open" (click)="expandNode(item)"></i>
             <i class="fa fa-caret-down" [hidden]="!item.Open" (click)="expandNode(item)"></i>
-            <label (click)="onSelectNode(item)">
+            <label (click)="onSelectNode(item)" [class]="activeNode && item.Id === activeNode.Id ? 'active' : ''">
                 <i class="{{getNodeIcon(item)}}"></i>
                 {{item.Name}}
             </label>
@@ -32,4 +32,20 @@
             [ngTemplateOutletContext]="{item:child}">
         </ng-container>
     </ul>
+</ng-template>
+
+<ng-template #confirmDeleteDialog let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Confirm delete</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <p>Are you sure you want to delete: {{activeNode.Name}}</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="confirmDelete()">Confirm</button>
+        <button type="button" class="btn btn-secondary" (click)="c()">Cancel</button>
+    </div>
 </ng-template>

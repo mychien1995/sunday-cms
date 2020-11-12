@@ -1,5 +1,6 @@
 import { OnInit, Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import {
   ContentField,
   ContentFieldItem,
@@ -27,19 +28,26 @@ export class InitialContentCreatorComponent implements OnInit {
   displayName: string;
   isLoading = false;
   isSubmitted = false;
+  onCreated: (id: string) => any;
   constructor(
     private templateService: TemplateManagementService,
     private contentService: ContentService,
     private clienState: ClientState,
     private toastService: ToastrService,
-    private dialogService: MatDialog
+    private dialogService: MatDialog,
+    private router: Router
   ) {}
   ngOnInit(): void {}
 
-  load(templateId: string, parent: ContentTreeNode): void {
+  load(
+    templateId: string,
+    parent: ContentTreeNode,
+    onClose: (id: string) => any
+  ): void {
     this.parent = parent;
     this.templateId = templateId;
     this.isLoading = true;
+    this.onCreated = onClose;
     this.templateService.getFields(templateId).subscribe(
       (res) => {
         this.fields = res.Data.filter((c) => c.IsRequired).map(
@@ -80,6 +88,8 @@ export class InitialContentCreatorComponent implements OnInit {
           if (res.Success) {
             this.toastService.success(`${this.displayName} created`);
             this.dialogService.closeAll();
+            this.onCreated(res['Id'].toString());
+            this.router.navigate([`manage-contents/${res['Id']}`]);
           }
           this.clienState.isBusy = false;
         },

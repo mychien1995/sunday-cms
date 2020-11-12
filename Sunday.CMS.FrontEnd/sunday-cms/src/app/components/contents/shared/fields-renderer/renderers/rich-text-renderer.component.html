@@ -1,0 +1,3 @@
+<label>{{innerField.field | templateName}}: <span class="red" [hidden]="!field.field.IsRequired">*</span></label>
+<small>{{innerField.field.Title}}</small>
+<quill-editor [(ngModel)]="field.value" [styles]="{minHeight: '300px'}"></quill-editor>

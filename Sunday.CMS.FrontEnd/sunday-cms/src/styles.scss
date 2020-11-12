@@ -1,5 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 /* Importing Bootstrap SCSS file. */
+@import '~quill/dist/quill.core.css';
+@import '~quill/dist/quill.bubble.css';
+@import '~quill/dist/quill.snow.css';
 @import '~bootstrap/scss/bootstrap';
 @import '~ngx-toastr/toastr';
 @import "~@ng-select/ng-select/themes/default.theme.css";

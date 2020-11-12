@@ -11,14 +11,16 @@ import { InitialContentCreatorComponent } from './initial-content-creator.compon
 export class TemplateSelectorDialogComponent implements OnInit {
   selectedTemplates: string[] = [];
   parent: ContentTreeNode;
+  onClose: (id: string) => any;
   constructor(
     private dialogService: MatDialog,
     private dialogRef: MatDialogRef<TemplateSelectorDialogComponent>
   ) {}
   ngOnInit(): void {}
 
-  load(parent: ContentTreeNode) {
+  load(parent: ContentTreeNode, onClose: (id: string) => any) {
     this.parent = parent;
+    this.onClose = onClose;
   }
   onSubmit(): void {
     if (this.selectedTemplates.length > 0) {
@@ -26,7 +28,11 @@ export class TemplateSelectorDialogComponent implements OnInit {
         minWidth: 1200,
         disableClose: true,
       });
-      ref.componentInstance.load(this.selectedTemplates[0], this.parent);
+      ref.componentInstance.load(
+        this.selectedTemplates[0],
+        this.parent,
+        this.onClose
+      );
       this.dialogRef.close();
     }
   }

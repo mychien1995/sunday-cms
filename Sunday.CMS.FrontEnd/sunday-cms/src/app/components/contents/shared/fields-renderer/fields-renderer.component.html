@@ -4,9 +4,11 @@
         [ngSwitch]="getTypeName(field.field?.FieldType)">
         <app-single-line-text-renderer *ngSwitchCase="'singlelinetext'" [(field)]="innerFields[i]">
         </app-single-line-text-renderer>
+        <app-rich-text-renderer *ngSwitchCase="'richtext'" [(field)]="innerFields[i]">
+        </app-rich-text-renderer>
+        <app-multiline-text-renderer *ngSwitchCase="'multiline-text'" [(field)]="innerFields[i]"></app-multiline-text-renderer>
         <div *ngSwitchDefault>
-            Unrecognized Field Type {{getTypeName(field.field?.FieldType)}}
+            Unrecognized Field Type: {{getTypeName(field.field?.FieldType)}}
         </div>
-        <span [hidden]="!(formSubmitted && !innerFields[i].value)" class="red">This field is required</span>
     </div>
 </div>

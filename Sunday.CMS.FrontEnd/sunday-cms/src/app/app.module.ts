@@ -8,6 +8,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { JwtModule } from '@auth0/angular-jwt';
 import { StorageKey } from 'app/core/constants';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { QuillModule } from 'ngx-quill';
 
 
 @NgModule({
@@ -20,6 +21,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     FormsModule,
     HttpClientModule,
     SharedModule,
+    QuillModule.forRoot(),
     JwtModule.forRoot({
       config: {
         throwNoTokenError: false,

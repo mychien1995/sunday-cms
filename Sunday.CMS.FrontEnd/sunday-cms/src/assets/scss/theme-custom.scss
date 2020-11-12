@@ -29,8 +29,13 @@ table {
     position: static;
   }
   .app-main {
+    height: 100vh;
     .app-main__outer {
       padding: 0px;
+    }
+    .app-main__inner{
+      max-height: 100%;
+      overflow-y: scroll;
     }
   }
 }

@@ -24,13 +24,20 @@ export class ContentTreeService {
 
   getChilds(node: ContentTreeNode): Observable<ContentTreeList> {
     return this.apiService
-      .post(ApiUrl.ContentTree.GetChilds, node)
+      .post(ApiUrl.ContentTree.GetChilds, this.withoutReference(node))
       .pipe(map(ApiHelper.onSuccess), catchError(ApiHelper.onFail));
   }
 
   getContextMenu(node: ContentTreeNode): Observable<ContextMenu> {
     return this.apiService
-      .post(ApiUrl.ContentTree.GetContextMenu, node)
+      .post(ApiUrl.ContentTree.GetContextMenu, this.withoutReference(node))
       .pipe(map(ApiHelper.onSuccess), catchError(ApiHelper.onFail));
+  }
+
+  withoutReference(node: ContentTreeNode) {
+    const clone = { ...node };
+    clone.ParentNode = null;
+    clone.ChildNodes = [];
+    return clone;
   }
 }

@@ -18,6 +18,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { ContentComponents, ContentResolvers } from './content.component';
 import { ContentServices } from './content.services';
+import { QuillModule } from 'ngx-quill';
 
 @NgModule({
   imports: [
@@ -27,6 +28,7 @@ import { ContentServices } from './content.services';
     SharedAngularMaterial,
     SharedBootstraps,
     NgSelectModule,
+    QuillModule.forRoot(),
     ToastrModule.forRoot(),
     BrowserAnimationsModule,
     NgMultiSelectDropDownModule.forRoot(),

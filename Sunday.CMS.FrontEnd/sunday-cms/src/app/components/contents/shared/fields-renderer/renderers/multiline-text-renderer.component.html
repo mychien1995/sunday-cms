@@ -1,0 +1,3 @@
+<label>{{innerField.field | templateName}}: <span class="red" [hidden]="!field.field.IsRequired">*</span></label>
+<small>{{innerField.field.Title}}</small>
+<textarea class="form-control" [(ngModel)]="field.value" rows="4"></textarea>

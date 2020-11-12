@@ -25,38 +25,38 @@
                 </div>
                 <div class="collapse show">
                     <div class="card-body">
-                        <table>
+                        <table class="content-metadata">
                             <tbody>
                                 <tr>
-                                    <td>ID:</td>
+                                    <td>ID: </td>
                                     <td>{{content.Id}}</td>
                                 </tr>
                                 <tr>
-                                    <td>Name:</td>
+                                    <td>Name: </td>
                                     <td>{{content.Name}}</td>
                                 </tr>
                                 <tr>
-                                    <td>Display Name:</td>
+                                    <td>Display Name: </td>
                                     <td>{{content.DisplayName}}</td>
                                 </tr>
                                 <tr>
-                                    <td>Template</td>
+                                    <td>Template: </td>
                                     <td>{{content.Template.TemplateName}} - {{content.TemplateId}}</td>
                                 </tr>
                                 <tr>
-                                    <td>Created Date</td>
-                                    <td>{{content.CreatedDate | unixToDatetime}}</td>
+                                    <td>Created Date: </td>
+                                    <td>{{content.CreatedDate | unixToDatetime : 'DD/MM/YYYY HH:mm'}}</td>
                                 </tr>
                                 <tr>
-                                    <td>Created By</td>
+                                    <td>Created By: </td>
                                     <td>{{content.CreatedBy}}</td>
                                 </tr>
                                 <tr>
-                                    <td>Updated Date</td>
-                                    <td>{{content.UpdatedDate | unixToDatetime}}</td>
+                                    <td>Updated Date: </td>
+                                    <td>{{content.UpdatedDate | unixToDatetime : 'DD/MM/YYYY HH:mm'}}</td>
                                 </tr>
                                 <tr>
-                                    <td>Updated By</td>
+                                    <td>Updated By: </td>
                                     <td>{{content.UpdatedBy}}</td>
                                 </tr>
                             </tbody>

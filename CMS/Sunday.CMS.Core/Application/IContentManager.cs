@@ -9,7 +9,7 @@ namespace Sunday.CMS.Core.Application
     {
         Task<ContentJsonResult> GetContentByIdAsync(Guid contentId, Guid? versionId = null);
 
-        Task<BaseApiResponse> CreateContentAsync(ContentJsonResult content);
+        Task<CreateContentJsonResult> CreateContentAsync(ContentJsonResult content);
         Task<BaseApiResponse> UpdateContentAsync(ContentJsonResult content);
         Task<BaseApiResponse> DeleteContentAsync(Guid contentId);
         Task<BaseApiResponse> NewContentVersionAsync(Guid contentId, Guid fromVersion);

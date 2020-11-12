@@ -1,3 +1,4 @@
+import { ApiResponse } from '@models/common/response.model';
 import {
   TemplateField,
   TemplateItem,
@@ -8,7 +9,7 @@ export class ContentField {
   value?: any;
 }
 
-export class ContentModel {
+export class ContentModel extends ApiResponse {
   Id: string;
   Name: string;
   DisplayName: string;
