@@ -16,10 +16,12 @@ namespace Sunday.CMS.Core.Implementation
     public class DefaultContentManager : IContentManager
     {
         private readonly IContentService _contentService;
+        private readonly IContentPathResolver _contentPathResolver;
 
-        public DefaultContentManager(IContentService contentService)
+        public DefaultContentManager(IContentService contentService, IContentPathResolver contentPathResolver)
         {
             _contentService = contentService;
+            _contentPathResolver = contentPathResolver;
         }
 
         public async Task<ContentJsonResult> GetContentByIdAsync(Guid contentId, Guid? versionId = null)
@@ -28,16 +30,20 @@ namespace Sunday.CMS.Core.Implementation
                 new GetContentOptions { IncludeFields = true, IncludeVersions = true });
             if (contentOpt.IsNone) return BaseApiResponse.ErrorResult<ContentJsonResult>("Content not found");
             var content = contentOpt.Get();
-            var version = content.Versions.FirstOrDefault(v => v.Id == versionId) ??
+            var version = versionId.HasValue ? content.Versions.FirstOrDefault(v => v.Id == versionId) :
                           content.Versions.FirstOrDefault(v => v.IsActive);
             if (version == null)
                 return BaseApiResponse.ErrorResult<ContentJsonResult>("Content not found");
             var jsonResult = content.MapTo<ContentJsonResult>();
             jsonResult.Versions =
-                content.Versions.Select(v => new ContentVersion { Version = v.Version, VersionId = v.Id, IsActive = v.IsActive, Status = v.Status }).ToArray();
+                content.Versions.Select(v => new ContentVersion { Version = v.Version, VersionId = v.Id, IsActive = v.IsActive, Status = v.Status }).OrderBy(v => v.Version)
+                    .ToArray();
             jsonResult.Fields = version.Fields.Select(f => new ContentFieldItem
             { FieldValue = f.FieldValue, Id = f.Id, TemplateFieldId = f.TemplateFieldId }).ToArray();
             jsonResult.Template = new ContentTemplate { Icon = content.Template.Icon, TemplateName = content.Template.TemplateName };
+            if (versionId.HasValue) jsonResult.SelectedVersion = versionId.Value;
+            var address = await _contentPathResolver.GetAncestors(content);
+            jsonResult.NamePath = address.NamePaths;
             return jsonResult;
         }
 

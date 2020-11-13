@@ -10,22 +10,24 @@
         </div>
         <div class="page-title-actions">
             <div class="d-inline-block dropdown">
-                <button type="button" class="btn-shadow dropdown-toggle btn btn-primary" (click)="toggleMenu()">
+                <button type="button"
+                    class="btn-shadow dropdown-toggle btn {{activeVersion?.Status === contentStatuses.draft ? 'btn-primary' : 'btn-secondary'}}"
+                    (click)="toggleMenu()">
                     <span class="btn-icon-wrapper pr-2 opacity-7">
                         <i class="fa fa-business-time fa-w-20"></i>
                     </span>
-                    Version {{activeVersion?.Version}}
+                    Version {{activeVersion?.Version}} ({{versionStatus}})
                 </button>
                 <div class="dropdown-menu dropdown-menu-right {{showMenu ? 'show' : ''}}">
                     <ul class="nav flex-column">
-                        <li class="nav-item" [hidden]="activeVersion.Status != contentStatuses.draft"
+                        <li class="nav-item" [hidden]="activeVersion?.Status != contentStatuses.draft"
                             (click)="saveContent()">
                             <a class="nav-link">
                                 <i class="nav-link-icon lnr-inbox"></i>
                                 <span>Save</span>
                             </a>
                         </li>
-                        <li class="nav-item" [hidden]="activeVersion.Status != contentStatuses.draft"
+                        <li class="nav-item" [hidden]="activeVersion?.Status != contentStatuses.draft"
                             (click)="openDialog(confirmPublishDialog)">
                             <a class="nav-link">
                                 <i class="nav-link-icon lnr-rocket"></i>
@@ -49,7 +51,7 @@
                                     <li class="nav-item" *ngFor="let version of content.Versions"
                                         [hidden]="version.VersionId === activeVersion?.VersionId">
                                         <a class="nav-link" (click)="switchVersion(version.VersionId)">Version
-                                            {{version.Version}}</a>
+                                            {{version.Version}} ({{getVersionStatus(version.Status)}})</a>
                                     </li>
                                 </ul>
                             </div>
@@ -79,31 +81,25 @@
                                 </tr>
                                 <tr>
                                     <td>Name: </td>
-                                    <td>{{content.Name}}</td>
-                                </tr>
-                                <tr>
-                                    <td>Display Name: </td>
-                                    <td>{{content.DisplayName}}</td>
+                                    <td>{{content.Name}} - [{{content.DisplayName}}]</td>
                                 </tr>
                                 <tr>
                                     <td>Template: </td>
                                     <td>{{content.Template.TemplateName}} - {{content.TemplateId}}</td>
                                 </tr>
                                 <tr>
-                                    <td>Created Date: </td>
-                                    <td>{{content.CreatedDate | unixToDatetime : 'DD/MM/YYYY HH:mm'}}</td>
+                                    <td>Path: </td>
+                                    <td>{{content.NamePath | beautifyPath}}</td>
                                 </tr>
                                 <tr>
-                                    <td>Created By: </td>
-                                    <td>{{content.CreatedBy}}</td>
+                                    <td>Created: </td>
+                                    <td>{{content.CreatedDate | unixToDatetime : 'DD/MM/YYYY HH:mm'}} by
+                                        <b>[{{content.CreatedBy}}]</b></td>
                                 </tr>
                                 <tr>
-                                    <td>Updated Date: </td>
-                                    <td>{{content.UpdatedDate | unixToDatetime : 'DD/MM/YYYY HH:mm'}}</td>
-                                </tr>
-                                <tr>
-                                    <td>Updated By: </td>
-                                    <td>{{content.UpdatedBy}}</td>
+                                    <td>Updated: </td>
+                                    <td>{{content.UpdatedDate | unixToDatetime : 'DD/MM/YYYY HH:mm'}} by
+                                        <b>[{{content.UpdatedBy}}]</b></td>
                                 </tr>
                             </tbody>
                         </table>

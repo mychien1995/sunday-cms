@@ -10,5 +10,7 @@ namespace Sunday.ContentManagement.Services
         Task<ContentTreeNode[]> GetChildren(ContentTreeNode currentNode);
 
         Task<ContextMenu> GetContextMenu(ContentTreeNode currentNode);
+
+        Task<ContentTree> GetTreeSnapshotByPath(string path);
     }
 }

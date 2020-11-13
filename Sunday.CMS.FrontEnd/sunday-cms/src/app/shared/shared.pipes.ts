@@ -1,9 +1,17 @@
-import { MapArrayPipe, JoinStringPipe, FilterEmptyStringPipe, EpochToDatetimePipe, TemplateFieldName } from '@core/pipes/index';
+import {
+  MapArrayPipe,
+  JoinStringPipe,
+  FilterEmptyStringPipe,
+  EpochToDatetimePipe,
+  TemplateFieldName,
+  BeautifyPathPipe,
+} from '@core/pipes/index';
 
 export const SharedPipes = [
-    MapArrayPipe,
-    JoinStringPipe,
-    FilterEmptyStringPipe,
-    EpochToDatetimePipe,
-    TemplateFieldName
+  MapArrayPipe,
+  JoinStringPipe,
+  FilterEmptyStringPipe,
+  EpochToDatetimePipe,
+  TemplateFieldName,
+  BeautifyPathPipe,
 ];

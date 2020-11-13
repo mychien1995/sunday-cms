@@ -12,6 +12,7 @@ namespace Sunday.CMS.Core.Models.Contents
         public string Name { get; set; } = string.Empty;
         public string DisplayName { get; set; } = string.Empty;
         public string Path { get; set; } = string.Empty;
+        public string NamePath { get; set; } = string.Empty;
         public Guid ParentId { get; set; }
         public int ParentType { get; set; }
         public Guid TemplateId { get; set; }
@@ -22,7 +23,7 @@ namespace Sunday.CMS.Core.Models.Contents
         public string UpdatedBy { get; set; } = string.Empty;
         public string PublishedBy { get; set; } = string.Empty;
         public int SortOrder { get; set; }
-        public Guid ActiveVersion { get; set; }
+        public Guid? SelectedVersion { get; set; }
         public ContentVersion[] Versions { get; set; } = Array.Empty<ContentVersion>();
         public ContentFieldItem[] Fields { get; set; } = Array.Empty<ContentFieldItem>();
         public ContentTemplate Template { get; set; } = new ContentTemplate();

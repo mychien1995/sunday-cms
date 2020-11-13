@@ -57,7 +57,7 @@ export class ContentDetailComponent implements OnInit {
   ngOnInit(): void {}
 
   reload(): void {
-    this.contentService.get(this.content.Id).subscribe((res) => {
+    this.contentService.get(this.content.Id, this.activeVersion.VersionId).subscribe((res) => {
       if (res.Success) {
         this.content = res;
         this.bindContentData();
@@ -72,8 +72,30 @@ export class ContentDetailComponent implements OnInit {
     );
   }
 
+  get versionStatus(): string {
+    if (!this.activeVersion) {
+      return '';
+    }
+    return this.getVersionStatus(this.activeVersion.Status);
+  }
+
+  getVersionStatus(code: number): string {
+    for (const prop in this.contentStatuses) {
+      if (this.contentStatuses[prop] === code) {
+        return prop;
+      }
+    }
+    return '';
+  }
+
   bindContentData() {
-    this.activeVersion = this.content.Versions.find((v) => v.IsActive);
+    if (this.content.SelectedVersion) {
+      this.activeVersion = this.content.Versions.find(
+        (v) => v.VersionId === this.content.SelectedVersion
+      );
+    } else {
+      this.activeVersion = this.content.Versions.find((v) => v.IsActive);
+    }
     this.templateService.getFields(this.content.TemplateId).subscribe((res) => {
       this.fields = res.Data.map(
         (f) =>
@@ -103,7 +125,7 @@ export class ContentDetailComponent implements OnInit {
           if (res.Success) {
             this.toastService.success('New Version Created');
             this.showMenu = false;
-            this.reload();
+            this.router.navigate([`manage-contents/${this.content.Id}`]);
           }
           this.clientState.isBusy = false;
           this.modalService.dismissAll();
@@ -141,6 +163,7 @@ export class ContentDetailComponent implements OnInit {
 
   switchVersion(versionId: string) {
     this.router.navigate([`manage-contents/${this.content.Id}/${versionId}`]);
+    this.showMenu = false;
   }
 
   saveContent(): void {

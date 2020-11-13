@@ -67,7 +67,6 @@ export class ContentTreeComponent implements OnInit {
       if (event instanceof NavigationEnd) {
         const data = this.activatedRoute.snapshot.firstChild.data;
         if (data?.view === 'content' && data?.content) {
-          console.log('has content');
         }
       }
     });

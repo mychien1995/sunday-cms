@@ -23,7 +23,8 @@ export class ContentModel extends ApiResponse {
   UpdatedBy: string;
   PublishedBy?: string;
   SortOrder: number;
-  ActiveVersion: string;
+  SelectedVersion?: string;
+  NamePath?: string;
   Template: TemplateItem = new TemplateItem();
   Versions: ContentVersion[] = [];
   Fields: ContentFieldItem[] = [];

@@ -24,5 +24,7 @@ namespace Sunday.ContentManagement.Models
         public WorkContent[] Versions { get; set; } = Array.Empty<WorkContent>();
         public ContentField[] Fields { get; set; } = Array.Empty<ContentField>();
         public Template Template { get; set; } = new Template();
+
+        public ContentAddress? ContentAddress { get; set; }
     }
 }
