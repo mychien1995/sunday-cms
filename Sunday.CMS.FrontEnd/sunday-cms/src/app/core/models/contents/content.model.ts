@@ -30,9 +30,10 @@ export class ContentModel extends ApiResponse {
 }
 
 export class ContentVersion {
-  VersionId: string;
-  Version: number;
-  IsActive: boolean;
+  VersionId?: string;
+  Version?: number;
+  IsActive?: boolean;
+  Status?: number;
 }
 
 export class ContentFieldItem {

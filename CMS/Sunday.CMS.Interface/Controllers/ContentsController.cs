@@ -16,9 +16,9 @@ namespace Sunday.CMS.Interface.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetContent([FromRoute] Guid id)
+        public async Task<IActionResult> GetContent([FromRoute]Guid id, [FromQuery]Guid? version)
         {
-            return Ok(await _contentManager.GetContentByIdAsync(id, null));
+            return Ok(await _contentManager.GetContentByIdAsync(id, version));
         }
 
         [HttpPost("create")]

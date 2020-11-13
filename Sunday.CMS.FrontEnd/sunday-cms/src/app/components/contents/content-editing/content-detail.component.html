@@ -9,8 +9,54 @@
             </div>
         </div>
         <div class="page-title-actions">
-            <button class="ladda-button btn btn-pill btn-wide btn-alternate" data-style="expand-right"><span
-                    class="ladda-label">Button</span><span class="ladda-spinner"></span></button>
+            <div class="d-inline-block dropdown">
+                <button type="button" class="btn-shadow dropdown-toggle btn btn-primary" (click)="toggleMenu()">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                        <i class="fa fa-business-time fa-w-20"></i>
+                    </span>
+                    Version {{activeVersion?.Version}}
+                </button>
+                <div class="dropdown-menu dropdown-menu-right {{showMenu ? 'show' : ''}}">
+                    <ul class="nav flex-column">
+                        <li class="nav-item" [hidden]="activeVersion.Status != contentStatuses.draft"
+                            (click)="saveContent()">
+                            <a class="nav-link">
+                                <i class="nav-link-icon lnr-inbox"></i>
+                                <span>Save</span>
+                            </a>
+                        </li>
+                        <li class="nav-item" [hidden]="activeVersion.Status != contentStatuses.draft"
+                            (click)="openDialog(confirmPublishDialog)">
+                            <a class="nav-link">
+                                <i class="nav-link-icon lnr-rocket"></i>
+                                <span>Publish</span>
+                            </a>
+                        </li>
+                        <li class="nav-item" (click)="openDialog(confirmCreateVersionDialog)">
+                            <a class="nav-link">
+                                <i class="nav-link-icon lnr-upload"></i>
+                                <span>New Version From [{{activeVersion?.Version}}]</span>
+                            </a>
+                        </li>
+                        <li class="nav-item" [hidden]="content.Versions.length === 1">
+                            <a class="nav-link">
+                                <i class="nav-link-icon lnr-book"></i>
+                                <span>Other Versions </span>
+                                <span class="badge badge-pill badge-primary">{{content.Versions.length - 1}}</span>
+                            </a>
+                            <div class="dropdown-menu version-menu">
+                                <ul class="nav flex-column">
+                                    <li class="nav-item" *ngFor="let version of content.Versions"
+                                        [hidden]="version.VersionId === activeVersion?.VersionId">
+                                        <a class="nav-link" (click)="switchVersion(version.VersionId)">Version
+                                            {{version.Version}}</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -72,10 +118,42 @@
                 </div>
                 <div class="collapse show">
                     <div class="card-body">
-                        <app-fields-renderer [(fields)]="fields" [formSubmitted]="isSubmitted"></app-fields-renderer>
+                        <app-fields-renderer [(fields)]="fields" [formSubmitted]="isSubmitted"
+                            [isEditable]="isEditable"></app-fields-renderer>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<ng-template #confirmPublishDialog let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Confirm Publish</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <p>Are you sure you want to publish this content</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="publishContent()">Confirm</button>
+        <button type="button" class="btn btn-secondary" (click)="c()">Cancel</button>
+    </div>
+</ng-template>
+
+<ng-template #confirmCreateVersionDialog let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Confirm Create Version</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <p>Are you sure you want to create a new version</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="createNewVersion()">Confirm</button>
+        <button type="button" class="btn btn-secondary" (click)="c()">Cancel</button>
+    </div>
+</ng-template>

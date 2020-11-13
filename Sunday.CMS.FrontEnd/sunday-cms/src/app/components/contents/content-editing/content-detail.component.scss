@@ -1,8 +1,31 @@
-table.content-metadata{
-    tr  > td{
-        &:first-child{
-            font-weight: bold;
-        }
-        padding: 4px;
+table.content-metadata {
+  tr > td {
+    &:first-child {
+      font-weight: bold;
     }
+    padding: 4px;
+  }
+}
+.nav-item {
+  .version-menu {
+    position: absolute;
+    top: 0.5rem;
+    right: 100%;
+    min-width: 150px;
+    left: auto;
+    ul {
+      width: 100%;
+    }
+    .nav-item {
+      &:hover {
+        background: #f1f4f6;
+      }
+    }
+  }
+  &:hover {
+    .version-menu {
+      display: flex;
+    }
+  }
+  position: relative;
 }

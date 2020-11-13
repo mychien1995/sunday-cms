@@ -17,6 +17,7 @@ export class RichTextRendererComponent implements OnInit {
   }
   @Output()
   fieldsChange: EventEmitter<any> = new EventEmitter<any>();
+  @Input() isEditable = true;
 
   ngOnInit(): void {}
 }

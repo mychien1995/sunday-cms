@@ -24,6 +24,7 @@ import {
   ContentDashboardComponent,
   ContentDetailComponent,
   ContentResolver,
+  ContentVersionResolver,
 } from 'app/components';
 import { AuthGuard } from 'app/core/services';
 import {
@@ -135,6 +136,12 @@ export const routes: Routes = [
         path: 'manage-contents/:contentId',
         component: ContentDetailComponent,
         resolve: { content: ContentResolver },
+        data: { view: 'content' },
+      },
+      {
+        path: 'manage-contents/:contentId/:workId',
+        component: ContentDetailComponent,
+        resolve: { content: ContentVersionResolver },
         data: { view: 'content' },
       },
     ],

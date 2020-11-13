@@ -2,13 +2,17 @@
     <app-spinner [hidden]="!isLoading"></app-spinner>
     <div class="field-section" *ngFor="let field of innerFields; let i = index;"
         [ngSwitch]="getTypeName(field.field?.FieldType)">
-        <app-single-line-text-renderer *ngSwitchCase="'singlelinetext'" [(field)]="innerFields[i]">
+        <app-single-line-text-renderer *ngSwitchCase="'singlelinetext'" [(field)]="innerFields[i]"
+            [isEditable]="isEditable">
         </app-single-line-text-renderer>
-        <app-rich-text-renderer *ngSwitchCase="'richtext'" [(field)]="innerFields[i]">
+        <app-rich-text-renderer *ngSwitchCase="'richtext'" [(field)]="innerFields[i]" [isEditable]="isEditable">
         </app-rich-text-renderer>
-        <app-multiline-text-renderer *ngSwitchCase="'multiline-text'" [(field)]="innerFields[i]"></app-multiline-text-renderer>
+        <app-multiline-text-renderer *ngSwitchCase="'multiline-text'" [(field)]="innerFields[i]"
+            [isEditable]="isEditable"></app-multiline-text-renderer>
         <div *ngSwitchDefault>
             Unrecognized Field Type: {{getTypeName(field.field?.FieldType)}}
         </div>
+        <span [hidden]="!(formSubmitted && (!innerFields[i].value || innerFields[i].value.trim().length === 0) && 
+        innerFields[i].field.IsRequired)" class="red">This field is required</span>
     </div>
 </div>

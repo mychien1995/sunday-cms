@@ -109,8 +109,8 @@ BEGIN
 	SET @WorkId = NEWID()
 
 	INSERT INTO WorkContents
-	(Id, ContentId, CreatedDate, CreatedBy, UpdatedDate, UpdatedBy, Version, Status, IsActive)
-	VALUES (@WorkId, @Id, @UpdatedDate, @UpdatedBy, @UpdatedDate, @Updatedby, @LastVersion + 1, 1, 1)
+	(Id, ContentId, CreatedDate, CreatedBy, UpdatedDate, UpdatedBy, Version, Status, IsActive, IsDeleted)
+	VALUES (@WorkId, @Id, @UpdatedDate, @UpdatedBy, @UpdatedDate, @Updatedby, @LastVersion + 1, 1, 1, 0)
 
 	UPDATE WorkContents SET IsActive = 0 WHERE ContentId = @Id AND Id <> @WorkId
 

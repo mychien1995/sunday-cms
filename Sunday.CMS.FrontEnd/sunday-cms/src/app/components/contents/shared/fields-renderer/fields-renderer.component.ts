@@ -22,6 +22,7 @@ export class FieldsRendererComponent implements OnInit {
   fieldTypes: FieldType[] = [];
   isLoading = false;
   @Input() formSubmitted = false;
+  @Input() isEditable = true;
 
   constructor(private templateService: TemplateManagementService) {
     this.isLoading = true;

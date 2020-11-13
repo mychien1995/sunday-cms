@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Sunday.CMS.Core.Application;
 using Sunday.CMS.Core.Models.Contents;
+using Sunday.ContentManagement;
 using Sunday.ContentManagement.Models;
 using Sunday.ContentManagement.Services;
 using Sunday.Core;
@@ -33,7 +34,7 @@ namespace Sunday.CMS.Core.Implementation
                 return BaseApiResponse.ErrorResult<ContentJsonResult>("Content not found");
             var jsonResult = content.MapTo<ContentJsonResult>();
             jsonResult.Versions =
-                content.Versions.Select(v => new ContentVersion { Version = v.Version, VersionId = v.Id, IsActive = v.IsActive }).ToArray();
+                content.Versions.Select(v => new ContentVersion { Version = v.Version, VersionId = v.Id, IsActive = v.IsActive, Status = v.Status }).ToArray();
             jsonResult.Fields = version.Fields.Select(f => new ContentFieldItem
             { FieldValue = f.FieldValue, Id = f.Id, TemplateFieldId = f.TemplateFieldId }).ToArray();
             jsonResult.Template = new ContentTemplate { Icon = content.Template.Icon, TemplateName = content.Template.TemplateName };
@@ -52,7 +53,8 @@ namespace Sunday.CMS.Core.Implementation
                     Id = Guid.NewGuid(),
                     FieldValue = f.FieldValue,
                     TemplateFieldId = f.TemplateFieldId
-                }).ToArray()
+                }).ToArray(),
+                Status = (int)ContentStatuses.Draft
             };
             model.Versions = new[] { version };
             await _contentService.CreateAsync(model);

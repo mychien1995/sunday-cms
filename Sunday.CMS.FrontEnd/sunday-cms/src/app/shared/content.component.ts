@@ -11,6 +11,7 @@ import {
   ContentResolver,
   RichTextRendererComponent,
   MultilineTextRendererComponent,
+  ContentVersionResolver,
 } from 'app/components';
 export const ContentComponents = [
   ContentDashboardComponent,
@@ -23,7 +24,7 @@ export const ContentComponents = [
   SingleLineTextRendererComponent,
   ContentDetailComponent,
   RichTextRendererComponent,
-  MultilineTextRendererComponent
+  MultilineTextRendererComponent,
 ];
 
-export const ContentResolvers = [ContentResolver];
+export const ContentResolvers = [ContentResolver, ContentVersionResolver];

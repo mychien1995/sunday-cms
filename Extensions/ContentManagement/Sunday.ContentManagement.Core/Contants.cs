@@ -6,4 +6,10 @@
         Website = 2,
         Content = 3
     }
+
+    public enum ContentStatuses
+    {
+        Draft = 1,
+        Published = 2
+    }
 }

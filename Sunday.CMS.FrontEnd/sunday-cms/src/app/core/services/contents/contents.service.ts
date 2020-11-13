@@ -12,7 +12,7 @@ export class ContentService {
 
   get(contentId: string, versionId?: string): Observable<ContentModel> {
     return this.apiService
-      .get(`${ApiUrl.Contents.GetContent}${contentId}/${versionId ?? ''}`)
+      .get(`${ApiUrl.Contents.GetContent}${contentId}?version=${versionId ?? ''}`)
       .pipe(map(ApiHelper.onSuccess), catchError(ApiHelper.onFail));
   }
 

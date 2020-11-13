@@ -44,7 +44,7 @@ namespace Sunday.ContentManagement.Implementation.Services
 
         public async Task UpdateAsync(Content content)
         {
-            await ApplicationPipelines.RunAsync("cms.entity.beforeUpdate", new BeforeCreateEntityArg(content));
+            await ApplicationPipelines.RunAsync("cms.entity.beforeUpdate", new BeforeUpdateEntityArg(content));
             await ApplicationPipelines.RunAsync("cms.content.beforeUpdate", new BeforeUpdateContentArg(content));
             await _contentRepository.UpdateAsync(ToEntity(content));
         }
