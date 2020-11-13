@@ -76,7 +76,8 @@ export class ApiUrl {
   public static ContentTree = {
     GetRoots: 'cms/api/contenttree/getRoots/',
     GetChilds: 'cms/api/contenttree/getChilds/',
-    GetContextMenu: 'cms/api/contenttree/getContextMenu/'
+    GetContextMenu: 'cms/api/contenttree/getContextMenu/',
+    GetByPath: 'cms/api/contenttree/getTreeByPath/'
   };
   public static Contents = {
     GetContent: 'cms/api/contents/',

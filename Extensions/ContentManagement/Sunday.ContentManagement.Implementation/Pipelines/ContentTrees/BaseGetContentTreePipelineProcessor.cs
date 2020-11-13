@@ -29,14 +29,15 @@ namespace Sunday.ContentManagement.Implementation.Pipelines.ContentTrees
                 Type = (int)ContentType.Website
             };
 
-        protected ContentTreeNode FromContent(Content content)
+        protected ContentTreeNode FromContent(Content content, string? parentId = null)
             => new ContentTreeNode
             {
                 Name = content.DisplayName,
                 Icon = content.TemplateId.ToString(),
                 Id = content.Id.ToString(),
                 Link = $"/manage-contents/{content.Id}",
-                Type = (int)ContentType.Content
+                Type = (int)ContentType.Content,
+                ParentId = parentId
             };
     }
 }

@@ -22,6 +22,13 @@ namespace Sunday.CMS.Interface.Controllers
             return Ok(result);
         }
 
+        [HttpGet("getTreeByPath")]
+        public async Task<IActionResult> GetRoots([FromQuery] string path)
+        {
+            var result = await _contentTreeManager.GetTreeByPath(path);
+            return Ok(result);
+        }
+
         [HttpPost("getChilds")]
         public async Task<IActionResult> GetLayout([FromBody] ContentTreeItem current)
         {

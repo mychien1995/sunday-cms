@@ -22,6 +22,7 @@ namespace Sunday.CMS.Core.Models.Contents
         public string Icon { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
         public string Type { get; set; } = string.Empty;
+        public bool Open { get; set; }
         public string? ParentId { get; set; }
         public ContentTreeItem[] ChildNodes { get; set; } = Array.Empty<ContentTreeItem>();
     }

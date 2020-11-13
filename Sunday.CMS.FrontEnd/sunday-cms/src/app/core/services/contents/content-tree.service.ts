@@ -34,6 +34,12 @@ export class ContentTreeService {
       .pipe(map(ApiHelper.onSuccess), catchError(ApiHelper.onFail));
   }
 
+  getTreeByPath(path: string): Observable<ContentTree> {
+    return this.apiService
+      .get(`${ApiUrl.ContentTree.GetByPath}?path=${path}`)
+      .pipe(map(ApiHelper.onSuccess), catchError(ApiHelper.onFail));
+  }
+
   withoutReference(node: ContentTreeNode) {
     const clone = { ...node };
     clone.ParentNode = null;

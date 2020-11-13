@@ -31,7 +31,6 @@ namespace Sunday.ContentManagement.Implementation.Services
             await TraverseAddress(content, emptyAddress);
             if (emptyAddress.Website == null || emptyAddress.Organization == null)
                 throw new ArgumentException("Website and Organization not found");
-            emptyAddress.Ancestors.Add(content);
             return emptyAddress;
             async Task TraverseAddress(Content currentContent, ContentAddress address)
             {
@@ -40,24 +39,45 @@ namespace Sunday.ContentManagement.Implementation.Services
                 while (stack.Count > 0)
                 {
                     var current = stack.Pop();
+                    address.Ancestors.Insert(0, current);
                     if (current.ParentType == (int)ContentType.Website)
                     {
-                        var website = await _websiteService.GetByIdAsync(currentContent.ParentId).MapResultTo(rs => rs.Get());
+                        var website = await _websiteService.GetByIdAsync(current.ParentId).MapResultTo(rs => rs.Get());
                         var organization = await _organizationService.GetOrganizationByIdAsync(website.OrganizationId)
                             .MapResultTo(rs => rs.Get());
                         address.Website = website;
                         address.Organization = organization;
                         break;
                     }
-                    _ = address.Ancestors.Prepend(current);
                     stack.Push(await _contentService.GetByIdAsync(current.ParentId).MapResultTo(rs => rs.Get()));
                 }
             }
         }
 
-        public Task<Option<ContentAddress>> GetAddressByPath(string path)
+        public async Task<Option<ContentAddress>> GetAddressByPath(string path)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrWhiteSpace(path)) return Option<ContentAddress>.None;
+            var clonedPath = path.Trim('/');
+            var parts = clonedPath.Split('/').Select(p => p.Trim()).ToList();
+            if (parts.Count < 3 || parts.Any(p => !Guid.TryParse(p, out _))) return Option<ContentAddress>.None;
+            var organizationOpt = await _organizationService.GetOrganizationByIdAsync(Guid.Parse(parts[0]));
+            if (organizationOpt.IsNone) return Option<ContentAddress>.None;
+            var websiteOpt = await _websiteService.GetByIdAsync(Guid.Parse(parts[1]));
+            if (websiteOpt.IsNone || websiteOpt.Get().OrganizationId != organizationOpt.Get().Id) return Option<ContentAddress>.None;
+            parts.RemoveAt(0);
+            parts.RemoveAt(0);
+            var address = new ContentAddress { Organization = organizationOpt.Get(), Website = websiteOpt.Get() };
+            var parentId = websiteOpt.Get().Id;
+            while (parts.Count > 0)
+            {
+                var currentId = Guid.Parse(parts[0]);
+                var content = await _contentService.GetByIdAsync(currentId);
+                if (content.IsNone || content.Get().ParentId != parentId) return Option<ContentAddress>.None;
+                address.Ancestors.Add(content.Get());
+                parentId = content.Get().Id;
+                parts.RemoveAt(0);
+            }
+            return address;
         }
     }
 }

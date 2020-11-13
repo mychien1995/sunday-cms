@@ -27,7 +27,7 @@
                                 <span>Save</span>
                             </a>
                         </li>
-                        <li class="nav-item" [hidden]="activeVersion?.Status != contentStatuses.draft"
+                        <li class="nav-item" [hidden]="activeVersion?.Status != contentStatuses.draft || !activeVersion.IsActive"
                             (click)="openDialog(confirmPublishDialog)">
                             <a class="nav-link">
                                 <i class="nav-link-icon lnr-rocket"></i>

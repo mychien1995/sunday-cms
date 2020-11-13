@@ -57,7 +57,7 @@ export class ContentDetailComponent implements OnInit {
   ngOnInit(): void {}
 
   reload(): void {
-    this.contentService.get(this.content.Id, this.activeVersion.VersionId).subscribe((res) => {
+    this.contentService.get(this.content.Id, this.activeVersion?.VersionId).subscribe((res) => {
       if (res.Success) {
         this.content = res;
         this.bindContentData();
@@ -125,7 +125,8 @@ export class ContentDetailComponent implements OnInit {
           if (res.Success) {
             this.toastService.success('New Version Created');
             this.showMenu = false;
-            this.router.navigate([`manage-contents/${this.content.Id}`]);
+            this.activeVersion = null;
+            this.reload();
           }
           this.clientState.isBusy = false;
           this.modalService.dismissAll();

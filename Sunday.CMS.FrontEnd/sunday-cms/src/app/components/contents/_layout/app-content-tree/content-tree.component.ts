@@ -11,6 +11,7 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { TemplateSelectorDialogComponent } from '@components/contents/content-creation/template-selector-dialog.component';
 import { AppHeaderComponent } from '@components/_layout';
 import {
+  ContentModel,
   ContentTree,
   ContentTreeNode,
   ContextMenuItem,
@@ -26,6 +27,7 @@ import {
 import { LayoutService } from '@core/services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
+import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 @Component({
@@ -62,29 +64,60 @@ export class ContentTreeComponent implements OnInit {
     private modalService: NgbModal,
     private activatedRoute: ActivatedRoute
   ) {
-    this.loadTree();
-    this.router.events.subscribe((event) => {
-      if (event instanceof NavigationEnd) {
-        const data = this.activatedRoute.snapshot.firstChild.data;
-        if (data?.view === 'content' && data?.content) {
-        }
+    this.activatedRoute.firstChild.data.subscribe((res) => {
+      if (res.content) {
+        const contentModel = <ContentModel>res.content;
+        this.loadTreeByPath((<ContentModel>res.content).Path, contentModel.Id);
+      } else {
+        this.loadTree();
       }
     });
   }
 
+  getTemplateIcons(): Promise<any> {
+    return this.templateService
+      .getTemplates({ PageSize: 1000 })
+      .toPromise()
+      .then((res) => {
+        res.Templates.forEach(
+          (template) => (this.templateIconLookup[template.Id] = template.Icon)
+        );
+      });
+  }
+
+  loadTreeByPath(path: string, activeId: string): void {
+    this.isTreeLoading = true;
+    this.getTemplateIcons().then(() => {
+      this.contentTreeService.getTreeByPath(path).subscribe(
+        (res) => {
+          if (res.Success) {
+            this.tree = res;
+            this.activeNode = this.searchInTree(activeId);
+          }
+          this.isTreeLoading = false;
+        },
+        (ex) => (this.isTreeLoading = false)
+      );
+    });
+  }
+
+  searchInTree(activeId: string): ContentTreeNode {
+    const nodes = this.tree.Roots;
+    const queue = [...nodes];
+    while (queue.length > 0) {
+      const current = queue.pop();
+      if (current.Id === activeId) {
+        return current;
+      }
+      queue.push(...current.ChildNodes);
+    }
+    return undefined;
+  }
+
   loadTree(): void {
     this.isTreeLoading = true;
-    this.templateService
-      .getTemplates({ PageSize: 1000 })
-      .pipe(
-        switchMap((res) => {
-          res.Templates.forEach(
-            (template) => (this.templateIconLookup[template.Id] = template.Icon)
-          );
-          return this.contentTreeService.getRoots();
-        })
-      )
-      .subscribe(
+    this.getTemplateIcons().then(() =>
+      this.contentTreeService.getRoots().subscribe(
         (res) => {
           if (res.Success) {
             this.tree = res;
@@ -95,7 +128,8 @@ export class ContentTreeComponent implements OnInit {
           this.isTreeLoading = false;
         },
         (ex) => (this.isTreeLoading = false)
-      );
+      )
+    );
   }
 
   getIcon(code: string): string {

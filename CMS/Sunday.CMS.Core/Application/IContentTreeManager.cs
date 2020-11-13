@@ -10,5 +10,7 @@ namespace Sunday.CMS.Core.Application
         Task<ContentTreeListJsonResult> GetChilds(ContentTreeItem current);
 
         Task<ContextMenuJsonResult> GetContextMenu(ContentTreeItem current);
+
+        Task<ContentTreeJsonResult> GetTreeByPath(string path);
     }
 }

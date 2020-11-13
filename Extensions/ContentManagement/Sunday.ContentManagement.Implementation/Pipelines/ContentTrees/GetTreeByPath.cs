@@ -30,19 +30,22 @@ namespace Sunday.ContentManagement.Implementation.Pipelines.ContentTrees
             var arg = (GetContentTreeSnapshotArg)pipelineArg;
             var path = arg.Path;
             var tree = await GetTreeRoot();
+            arg.ContentTree = tree;
             var addressOpt = await _contentPathResolver.GetAddressByPath(path);
             if (addressOpt.IsNone) return;
             var address = addressOpt.Get();
             var orgNode = tree.Roots.FirstOrDefault(n => n.Id == address.Organization!.Id.ToString())!;
+            orgNode.Open = true;
             var websiteNode = orgNode.ChildNodes.FirstOrDefault(n => n.Id == address.Website!.Id.ToString())!;
             websiteNode.Open = true;
+            websiteNode.ParentId = orgNode.Id;
             var contents = await _contentService.GetChildsAsync(address.Website!.Id, ContentType.Website);
             contents.Iter(content =>
             {
-                websiteNode.ChildNodes.Add(FromContent(content));
+                websiteNode.ChildNodes.Add(FromContent(content, websiteNode.Id));
             });
             var currentNode = websiteNode;
-            var ancestors = new Queue<Content>(address.Ancestors.Rev());
+            var ancestors = new Queue<Content>(address.Ancestors);
             while (ancestors.Count > 0)
             {
                 var content = ancestors.Dequeue();
@@ -51,7 +54,7 @@ namespace Sunday.ContentManagement.Implementation.Pipelines.ContentTrees
                 var childContents = await _contentService.GetChildsAsync(Guid.Parse(node.Id), ContentType.Content);
                 childContents.Iter(childContent =>
                 {
-                    node.ChildNodes.Add(FromContent(childContent));
+                    node.ChildNodes.Add(FromContent(childContent, node.Id));
                 });
                 currentNode = node;
                 currentNode.Open = true;
