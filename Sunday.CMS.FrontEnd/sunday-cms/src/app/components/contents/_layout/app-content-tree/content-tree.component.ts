@@ -150,7 +150,6 @@ export class ContentTreeComponent implements OnInit {
     this.contentTreeService.getChilds(node).subscribe((res) => {
       if (res.Success) {
         node.ChildNodes = res.Nodes;
-        node.Name = res.Current.Name;
         node.ChildNodes.forEach((child) => (child.ParentNode = node));
         node.Open = true;
         callback();
