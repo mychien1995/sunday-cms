@@ -1,6 +1,7 @@
 import { OnInit, Component } from '@angular/core';
 import {
   ClientState,
+  ContentBus,
   ContentService,
   IconService,
   TemplateManagementService,
@@ -41,7 +42,8 @@ export class ContentDetailComponent implements OnInit {
     private contentService: ContentService,
     private toastService: ToastrService,
     private templateService: TemplateManagementService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private contentBus: ContentBus
   ) {
     this.activatedRoute.data.subscribe((data: { content: ContentModel }) => {
       if (!data.content || !data.content.Success) {
@@ -53,16 +55,22 @@ export class ContentDetailComponent implements OnInit {
         this.bindContentData();
       }
     });
+    this.contentBus.contentBus.subscribe((res) => {
+      this.content = <ContentModel>res;
+      this.reload();
+    });
   }
   ngOnInit(): void {}
 
   reload(): void {
-    this.contentService.get(this.content.Id, this.activeVersion?.VersionId).subscribe((res) => {
-      if (res.Success) {
-        this.content = res;
-        this.bindContentData();
-      }
-    });
+    this.contentService
+      .get(this.content.Id, this.activeVersion?.VersionId)
+      .subscribe((res) => {
+        if (res.Success) {
+          this.content = res;
+          this.bindContentData();
+        }
+      });
   }
 
   get isEditable(): boolean {

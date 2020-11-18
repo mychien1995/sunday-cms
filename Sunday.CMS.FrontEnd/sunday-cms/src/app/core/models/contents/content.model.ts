@@ -14,6 +14,7 @@ export class ContentModel extends ApiResponse {
   Name: string;
   DisplayName: string;
   ParentId: string;
+  Path: string;
   ParentType: number;
   TemplateId: string;
   CreatedDate: Date;

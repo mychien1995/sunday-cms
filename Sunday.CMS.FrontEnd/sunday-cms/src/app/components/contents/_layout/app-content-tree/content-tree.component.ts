@@ -3,19 +3,17 @@ import {
   Component,
   HostListener,
   ViewChild,
-  TemplateRef,
   ElementRef,
 } from '@angular/core';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TemplateSelectorDialogComponent } from '@components/contents/content-creation/template-selector-dialog.component';
-import { AppHeaderComponent } from '@components/_layout';
+import { ContentRenameDialogComponent } from '@components/contents/content-editing/content-rename.component';
 import {
   ContentModel,
   ContentTree,
   ContentTreeNode,
   ContextMenuItem,
-  LayoutModel,
 } from '@core/models';
 import {
   IconService,
@@ -23,12 +21,10 @@ import {
   TemplateManagementService,
   ClientState,
   ContentService,
+  ContentBus,
 } from '@core/services';
-import { LayoutService } from '@core/services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
-import { Observable } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-content-tree',
@@ -62,7 +58,8 @@ export class ContentTreeComponent implements OnInit {
     private contentService: ContentService,
     private toastr: ToastrService,
     private modalService: NgbModal,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private contentBus: ContentBus
   ) {
     this.activatedRoute.firstChild.data.subscribe((res) => {
       if (res.content) {
@@ -70,6 +67,12 @@ export class ContentTreeComponent implements OnInit {
         this.loadTreeByPath((<ContentModel>res.content).Path, contentModel.Id);
       } else {
         this.loadTree();
+      }
+    });
+    this.contentBus.contentBus.subscribe((content) => {
+      if ((<ContentModel>content).Id === this.activeNode?.Id) {
+        this.reloadNode(this.activeNode, () => {});
+        this.activeNode.Name = (<ContentModel>content).DisplayName;
       }
     });
   }
@@ -96,7 +99,7 @@ export class ContentTreeComponent implements OnInit {
           }
           this.isTreeLoading = false;
         },
-        (ex) => (this.isTreeLoading = false)
+        () => (this.isTreeLoading = false)
       );
     });
   }
@@ -127,7 +130,7 @@ export class ContentTreeComponent implements OnInit {
           }
           this.isTreeLoading = false;
         },
-        (ex) => (this.isTreeLoading = false)
+        () => (this.isTreeLoading = false)
       )
     );
   }
@@ -147,6 +150,7 @@ export class ContentTreeComponent implements OnInit {
     this.contentTreeService.getChilds(node).subscribe((res) => {
       if (res.Success) {
         node.ChildNodes = res.Nodes;
+        node.Name = res.Current.Name;
         node.ChildNodes.forEach((child) => (child.ParentNode = node));
         node.Open = true;
         callback();
@@ -204,6 +208,16 @@ export class ContentTreeComponent implements OnInit {
       case 'deletecontent':
         this.modalService.open(this.deleteDialog);
         break;
+      case 'renamecontent':
+        const renameDialogRef = this.dialogService.open(
+          ContentRenameDialogComponent,
+          {
+            minWidth: 300,
+            disableClose: true,
+          }
+        );
+        renameDialogRef.componentInstance.load(this.activeNode.Id);
+        break;
       default:
         break;
     }
@@ -238,7 +252,7 @@ export class ContentTreeComponent implements OnInit {
   }
 
   @HostListener('document:click', ['$event'])
-  closeContextMenu(ev: any): void {
+  closeContextMenu(): void {
     this.contextMenu.hidden = true;
   }
 

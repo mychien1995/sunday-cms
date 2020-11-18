@@ -30,7 +30,7 @@ namespace Sunday.CMS.Interface.Controllers
         }
 
         [HttpPost("getChilds")]
-        public async Task<IActionResult> GetLayout([FromBody] ContentTreeItem current)
+        public async Task<IActionResult> GetChilds([FromBody] ContentTreeItem current)
         {
             var result = await _contentTreeManager.GetChilds(current);
             return Ok(result);

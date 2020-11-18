@@ -1,0 +1,30 @@
+<h4 class="modal-title" mat-dialog-title>Rename Content</h4>
+<div class="modal-body" mat-dialog-content>
+    <form (ngSubmit)="onSubmit()" [formGroup]="contentForm" autocomplete="off" #ngForm="ngForm">
+        <div class="form-row">
+            <div class="col-sm-12">
+                <div class="position-relative form-group">
+                    <label>Name: <span class="red">*</span></label>
+                    <input class="form-control" required value="{{content?.Name}}" formControlName="Name" />
+                    <span [hidden]="!(ngForm.submitted && contentForm.controls['Name'].hasError('required'))"
+                        class="red">This field is
+                        required</span>
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-sm-12">
+                <div class="position-relative form-group">
+                    <label>Display Name: <span class="red">*</span></label>
+                    <input class="form-control" required value="{{content?.DisplayName}}"
+                        formControlName="DisplayName" />
+                    <span [hidden]="!(ngForm.submitted && contentForm.controls['DisplayName'].hasError('required'))"
+                        class="red">This field is
+                        required</span>
+                </div>
+            </div>
+        </div>
+        <button class="mt-1 btn btn-primary">Submit</button>
+        <button class="mt-1 ml-2 btn btn-light" mat-dialog-close>Cancel</button>
+    </form>
+</div>

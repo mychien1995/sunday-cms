@@ -4,6 +4,7 @@ export class ContentTree extends ApiResponse {
 }
 
 export class ContentTreeList extends ApiResponse {
+  Current: ContentTreeNode;
   Nodes: ContentTreeNode[] = [];
 }
 export class ContentTreeNode extends ApiResponse {
