@@ -61,3 +61,13 @@ BEGIN
 		TemplateFieldId uniqueidentifier
 	);
 END
+
+IF TYPE_ID(N'EntityAccessOrganizationType') IS NULL
+BEGIN
+	CREATE TYPE EntityAccessOrganizationType AS TABLE
+	(
+		OrganizationId uniqueidentifier,
+		WebsiteIds nvarchar(MAX),
+		OrganizationRoleIds nvarchar(MAX)
+	);
+END

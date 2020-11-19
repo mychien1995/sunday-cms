@@ -313,3 +313,16 @@ BEGIN
 		ContentId uniqueidentifier
 	);
 END
+
+IF (NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'dbo' AND  TABLE_NAME = 'EntityAccesses'))
+BEGIN
+    CREATE TABLE EntityAccesses
+	(
+		Id uniqueidentifier primary key default(NEWID()),
+		EntityId uniqueidentifier,
+		EntityType varchar(50),
+		OrganizationId uniqueidentifier,
+		WebsiteIds varchar(MAX),
+		OrganizationRoleIds varchar(MAX)
+	);
+END

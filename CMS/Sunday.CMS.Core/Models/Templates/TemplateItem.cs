@@ -2,6 +2,7 @@
 using Sunday.ContentManagement.Domain;
 using Sunday.Core;
 using Sunday.Core.Models.Base;
+using Sunday.Foundation.Domain;
 
 namespace Sunday.CMS.Core.Models.Templates
 {
@@ -17,8 +18,10 @@ namespace Sunday.CMS.Core.Models.Templates
         public string CreatedBy { get; set; } = string.Empty;
         public string UpdatedBy { get; set; } = string.Empty;
         public TemplateFieldItem[] Fields { get; set; } = Array.Empty<TemplateFieldItem>();
+
+        public EntityAccess? Access { get; set; }
     }
-    
+
     [MappedTo(typeof(TemplateField))]
     public class TemplateFieldItem
     {

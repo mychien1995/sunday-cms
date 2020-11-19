@@ -9,6 +9,8 @@ using Sunday.ContentManagement.Services;
 using Sunday.Core;
 using Sunday.Core.Extensions;
 using Sunday.Core.Models.Base;
+using Sunday.Foundation.Application.Services;
+using Sunday.Foundation.Domain;
 
 namespace Sunday.CMS.Core.Implementation
 {
@@ -17,11 +19,13 @@ namespace Sunday.CMS.Core.Implementation
     {
         private readonly ITemplateService _templateService;
         private readonly IFieldTypesLoader _fieldTypesLoader;
+        private readonly IEntityAccessService _entityAccessService;
 
-        public DefaultApplicationTemplateManager(ITemplateService templateService, IFieldTypesLoader fieldTypesLoader)
+        public DefaultApplicationTemplateManager(ITemplateService templateService, IFieldTypesLoader fieldTypesLoader, IEntityAccessService entityAccessService)
         {
             _templateService = templateService;
             _fieldTypesLoader = fieldTypesLoader;
+            _entityAccessService = entityAccessService;
         }
 
         public Task<TemplateListJsonResult> Search(TemplateQuery criteria)
@@ -33,19 +37,28 @@ namespace Sunday.CMS.Core.Implementation
 
         public async Task<BaseApiResponse> Create(TemplateItem data)
         {
-            await _templateService.CreateAsync(ToDomainModel(data));
+            var template = await _templateService.CreateAsync(ToDomainModel(data));
+            data.Id = template.Id;
+            await _entityAccessService.Save(GetEntityAccess(data));
             return BaseApiResponse.SuccessResult;
         }
 
         public async Task<BaseApiResponse> Update(TemplateItem data)
         {
             await _templateService.UpdateAsync(ToDomainModel(data));
+            await _entityAccessService.Save(GetEntityAccess(data));
             return BaseApiResponse.SuccessResult;
         }
 
-        public Task<TemplateItem> GetById(Guid templateId)
-        => _templateService.GetByIdAsync(templateId).MapResultTo(rs => rs.Map(ToModel).IfNone(BaseApiResponse
-            .ErrorResult<TemplateItem>("Template not found")));
+        public async Task<TemplateItem> GetById(Guid templateId)
+        {
+            var templateOpt = await _templateService.GetByIdAsync(templateId).MapResultTo(rs => rs.Map(ToModel));
+            if (templateOpt.IsNone) return BaseApiResponse.ErrorResult<TemplateItem>("Template not found");
+            var template = templateOpt.Get();
+            var access = await _entityAccessService.GetByEntity(templateId, nameof(Template));
+            access.IfSome(acc => template.Access = acc);
+            return template;
+        }
 
 
         public async Task<BaseApiResponse> Delete(Guid templateId)
@@ -57,7 +70,7 @@ namespace Sunday.CMS.Core.Implementation
         public FieldTypeListJsonResult GetFieldTypes()
             => new FieldTypeListJsonResult()
             {
-                FieldTypes = _fieldTypesLoader.List().Select(f => new FieldTypeItem { Id = f.Id, Name = f.Name, Layout = f.Layout})
+                FieldTypes = _fieldTypesLoader.List().Select(f => new FieldTypeItem { Id = f.Id, Name = f.Name, Layout = f.Layout })
                     .ToArray()
             };
 
@@ -81,6 +94,14 @@ namespace Sunday.CMS.Core.Implementation
         {
             var item = template.MapTo<TemplateFieldItem>();
             return item;
+        }
+
+        private EntityAccess GetEntityAccess(TemplateItem template)
+        {
+            var access = template.Access!;
+            access.EntityType = nameof(Template);
+            access.EntityId = template.Id;
+            return access;
         }
 
 

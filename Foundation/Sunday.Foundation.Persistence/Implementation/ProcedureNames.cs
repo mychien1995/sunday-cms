@@ -44,19 +44,18 @@ namespace Sunday.Foundation.Implementation
         }
         public class OrganizationRoles
         {
-            public const string GetByOrganization = "sp_organizationRoles_getByOrganization";
+            public const string Search = "sp_organizationRoles_search";
             public const string GetById = "sp_organizationRoles_getById";
             public const string Delete = "sp_organizationRoles_delete";
             public const string Update = "sp_organizationRoles_update";
             public const string Create = "sp_organizationRoles_create";
             public const string BulkUpdate = "sp_organizationRoles_bulkUpdate";
         }
-        public class Layout
+        public class EntityAccess
         {
-            public const string Search = "sp_modules_seeding";
-            public const string Create = "sp_features_seeding";
-            public const string Update = "sp_features_seeding";
-            public const string Delete = "sp_features_seeding";
+            public const string Save = "sp_entityAccess_save";
+            public const string GetByEntity = "sp_entityAccess_getByEntity";
+            public const string GetByOrganization = "sp_entityAccess_getByOrganization";
         }
     }
 }

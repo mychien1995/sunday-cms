@@ -12,7 +12,7 @@ namespace Sunday.ContentManagement.Services
         Task<SearchResult<Template>> QueryAsync(TemplateQuery query);
         Task<Option<Template>> GetByIdAsync(Guid templateId);
 
-        Task CreateAsync(Template template);
+        Task<Template> CreateAsync(Template template);
 
         Task UpdateAsync(Template template);
 

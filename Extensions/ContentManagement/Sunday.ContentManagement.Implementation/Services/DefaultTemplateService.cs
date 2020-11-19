@@ -37,7 +37,7 @@ namespace Sunday.ContentManagement.Implementation.Services
         public Task<Option<Template>> GetByIdAsync(Guid templateId)
         => _templateRepository.GetByIdAsync(templateId).MapResultTo(rs => rs.Map(ToDomainModel));
 
-        public async Task CreateAsync(Template template)
+        public async Task<Template> CreateAsync(Template template)
         {
             await ApplicationPipelines.RunAsync("cms.entity.beforeCreate", new BeforeCreateEntityArg(template));
             template.Fields.Iter(f =>
@@ -46,6 +46,7 @@ namespace Sunday.ContentManagement.Implementation.Services
                 f.Id = Guid.NewGuid();
             });
             await _templateRepository.SaveAsync(ToEntity(template), new SaveTemplateOptions { SaveProperties = true });
+            return template;
         }
 
         public async Task UpdateAsync(Template template)

@@ -25,7 +25,7 @@ BEGIN
 END
 GO
 --------------------------------------------------------------------
-CREATE OR ALTER PROCEDURE [dbo].sp_organizationRoles_getByOrganization
+CREATE OR ALTER PROCEDURE [dbo].sp_organizationRoles_search
 (
 	@OrganizationId uniqueidentifier,
 	@PageIndex int = 0,
@@ -38,16 +38,17 @@ BEGIN
 	If @PageSize IS NULL
 		SET @PageSize = 10
 
-	SELECT COUNT(*) FROM OrganizationRoles  WHERE OrganizationId = @OrganizationId AND IsDeleted = 0
+	SELECT COUNT(*) FROM OrganizationRoles  WHERE (@OrganizationId IS NULL OR OrganizationId = @OrganizationId) AND IsDeleted = 0
 
-	SELECT * FROM OrganizationRoles WHERE OrganizationId = @OrganizationId AND IsDeleted = 0
+	SELECT * FROM OrganizationRoles WHERE (@OrganizationId IS NULL OR OrganizationId = @OrganizationId) AND IsDeleted = 0
 	ORDER BY UpdatedDate DESC
 	OFFSET @PageIndex ROWS
 	FETCH NEXT @PageSize ROWS ONLY;
 
 	SELECT OrganizationRolesMapping.FeatureId, OrganizationRolesMapping.OrganizationRoleId FROM OrganizationRolesMapping, Features 
 		WHERE OrganizationRolesMapping.FeatureId = Features.Id
-		AND OrganizationRolesMapping.OrganizationRoleId IN (SELECT Id FROM OrganizationRoles WHERE OrganizationId = @OrganizationId AND IsDeleted = 0
+		AND OrganizationRolesMapping.OrganizationRoleId IN (SELECT Id FROM OrganizationRoles WHERE 
+		(@OrganizationId IS NULL OR OrganizationId = @OrganizationId) AND IsDeleted = 0
 			ORDER BY UpdatedDate DESC
 			OFFSET @PageIndex ROWS
 			FETCH NEXT @PageSize ROWS ONLY)
