@@ -4,6 +4,7 @@ export class OrganizationRoleItem {
   Id?: string;
   RoleName?: string;
   CreatedBy?: string;
+  OrganizationId: string;
   UpdatedBy?: string;
   CreatedDate?: number;
   UpdatedDate?: number;

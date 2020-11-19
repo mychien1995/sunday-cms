@@ -24,5 +24,6 @@ namespace Sunday.CMS.Core.Models.ApplicationWebsites
         public DateTime UpdatedDate { get; set; }
         public string CreatedBy { get; set; } = string.Empty;
         public string UpdatedBy { get; set; } = string.Empty;
+        public Guid OrganizationId { get; set; }
     }
 }

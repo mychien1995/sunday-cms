@@ -32,5 +32,6 @@ namespace Sunday.CMS.Core.Models.VirtualRoles
         public long CreatedDate { get; set; }
         public long UpdatedDate { get; set; }
         public List<Guid> FeatureIds { get; set; } = new List<Guid>();
+        public Guid OrganizationId { get; set; }
     }
 }
