@@ -5,3 +5,5 @@ export * from './two-sides-select/two-sides-select.component';
 export * from './string-list-editor/string-list-editor.component';
 export * from './two-side-select-with-search/two-sides-select-search.component';
 export * from './spinner/spinner-component';
+export * from './entity-access-editor/entity-access-dialog.component';
+export * from './entity-access-editor/entity-access-editor.component';

@@ -11,8 +11,10 @@ import {
   WebsiteItem,
 } from '@models/index';
 import { forkJoin } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
+import { EntityAccessDialogComponent } from './entity-access-dialog.component';
 @Component({
-  selector: 'app-entity-access-editor.component',
+  selector: 'app-entity-access-editor',
   styleUrls: ['./entity-access-editor.component.scss'],
   templateUrl: './entity-access-editor.component.html',
 })
@@ -35,7 +37,8 @@ export class EntityAccessEditorComponent implements OnInit {
   constructor(
     private organizationService: OrganizationService,
     private websiteService: WebsiteManagementService,
-    private roleService: OrganizationRoleService
+    private roleService: OrganizationRoleService,
+    private dialogService: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -48,6 +51,38 @@ export class EntityAccessEditorComponent implements OnInit {
       this.organizationLookup = res[0].Organizations;
       this.websiteLookup = res[1].Websites;
       this.organizationRoleLookup = res[2].Roles;
+    });
+  }
+
+  displayOrg(orgId: string): string {
+    return this.organizationLookup.find((o) => o.Id === orgId)
+      ?.OrganizationName;
+  }
+
+  displayWebsite(websiteId: string): string {
+    return this.websiteLookup.find((o) => o.Id === websiteId)?.WebsiteName;
+  }
+
+  displayRole(roleId: string): string {
+    return this.organizationRoleLookup.find((o) => o.Id === roleId)?.RoleName;
+  }
+
+  openDialog(): void {
+    const ref = this.dialogService.open(EntityAccessDialogComponent, {
+      minWidth: 600,
+      disableClose: true,
+    });
+    if (!this.innerEntityAccess) {
+      this.innerEntityAccess = new EntityAccess();
+    }
+    ref.componentInstance.load(
+      this.organizationLookup,
+      this.websiteLookup,
+      this.organizationRoleLookup,
+      this.innerEntityAccess
+    );
+    ref.afterClosed().subscribe(res =>{
+      this.entityAccess = this.innerEntityAccess;
     });
   }
 }

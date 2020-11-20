@@ -5,6 +5,6 @@ namespace Sunday.Foundation.Models
 {
     public class OrganizationRoleQuery : PagingCriteria
     {
-        public Guid OrganizationId { get; set; }
+        public Guid? OrganizationId { get; set; }
     }
 }

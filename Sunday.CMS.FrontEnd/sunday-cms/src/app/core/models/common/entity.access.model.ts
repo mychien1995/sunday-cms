@@ -5,5 +5,5 @@ export class EntityAccess {
 export class EntityOrganizationAccess {
   OrganizationId: string;
   WebsiteIds: string[] = [];
-  OrganizationRolesId: string[] = [];
+  OrganizationRoleIds: string[] = [];
 }

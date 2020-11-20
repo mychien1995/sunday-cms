@@ -1,34 +1,36 @@
-<button class="btn btn-primary">Edit Access</button>
-<table>
-    <thead>
-        <tr>
-            <th>Organizations</th>
-            <th>Websites</th>
-            <th>Roles</th>
-        </tr>
-    </thead>
-    <tbody [hidden]="entityAccess.OrganizationAccess.length !== 0">
-        <tr>
-            <td colspan="3">
-                No specific access assigned
-            </td>
-        </tr>
-    </tbody>
-    <tbody [hidden]="entityAccess.OrganizationAccess.length === 0">
-        <tr *ngFor="let org of entityAccess.OrganizationAccess">
-            <td>
-                {{displayOrg(org.OrganizationId)}}
-            </td>
-            <td>
-                <div *ngFor="let website of org.WebsiteIds">
-                    {{displayWebsite(website)}}
-                </div>
-            </td>
-            <td>
-                <div *ngFor="let role of org.OrganizationRolesId">
-                    {{displayRole(role)}}
-                </div>
-            </td>
-        </tr>
-    </tbody>
-</table>
+<div class="entity-access-editor">
+    <button class="btn btn-primary" (click)="openDialog()">Edit Access</button>
+    <table class=" table table-striped table-bordered" style="margin-top:10px">
+        <thead>
+            <tr>
+                <th>Organizations</th>
+                <th>Websites</th>
+                <th>Roles</th>
+            </tr>
+        </thead>
+        <tbody [hidden]="entityAccess && entityAccess.OrganizationAccess.length !== 0">
+            <tr>
+                <td colspan="3">
+                    No specific access assigned
+                </td>
+            </tr>
+        </tbody>
+        <tbody [hidden]="!entityAccess || entityAccess.OrganizationAccess.length === 0">
+            <tr *ngFor="let org of entityAccess?.OrganizationAccess">
+                <td>
+                    {{displayOrg(org.OrganizationId)}}
+                </td>
+                <td>
+                    <div *ngFor="let website of org.WebsiteIds">
+                        {{displayWebsite(website)}}
+                    </div>
+                </td>
+                <td>
+                    <div *ngFor="let role of org.OrganizationRoleIds">
+                        {{displayRole(role)}}
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

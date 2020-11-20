@@ -9,6 +9,7 @@ using Sunday.Core.Models.Base;
 using Sunday.Core.Pipelines;
 using Sunday.Core.Pipelines.Arguments;
 using Sunday.Foundation.Application.Services;
+using Sunday.Foundation.Context;
 using Sunday.Foundation.Domain;
 using Sunday.Foundation.Models;
 using Sunday.Foundation.Persistence.Application.Repositories;
@@ -20,14 +21,16 @@ namespace Sunday.Foundation.Implementation.Services
     public class DefaultOrganizationRoleService : IOrganizationRoleService
     {
         private readonly IOrganizationRoleRepository _organizationRoleRepository;
+        private readonly ISundayContext _sundayContext;
 
-        public DefaultOrganizationRoleService(IOrganizationRoleRepository organizationRoleRepository)
+        public DefaultOrganizationRoleService(IOrganizationRoleRepository organizationRoleRepository, ISundayContext sundayContext)
         {
             _organizationRoleRepository = organizationRoleRepository;
+            _sundayContext = sundayContext;
         }
 
         public Task<SearchResult<ApplicationOrganizationRole>> QueryAsync(OrganizationRoleQuery query)
-          => _organizationRoleRepository.QueryAsync(query).MapResultTo(rs => new SearchResult<ApplicationOrganizationRole>
+          => _organizationRoleRepository.QueryAsync(EnsureQuery(query)).MapResultTo(rs => new SearchResult<ApplicationOrganizationRole>
           {
               Result = rs.Result.Select(ToDomainModel).ToList(),
               Total = rs.Total
@@ -40,12 +43,14 @@ namespace Sunday.Foundation.Implementation.Services
         public async Task<Guid> CreateAsync(ApplicationOrganizationRole role)
         {
             role.Id = Guid.NewGuid();
+            EnsureData(role);
             await ApplicationPipelines.RunAsync("cms.entity.beforeCreate", new BeforeCreateEntityArg(role));
             return await _organizationRoleRepository.CreateAsync(ToEntity(role));
         }
 
         public async Task UpdateAsync(ApplicationOrganizationRole role)
         {
+            EnsureData(role);
             await ApplicationPipelines.RunAsync("cms.entity.beforeUpdate", new BeforeUpdateEntityArg(role));
             await _organizationRoleRepository.UpdateAsync(ToEntity(role));
         }
@@ -68,6 +73,19 @@ namespace Sunday.Foundation.Implementation.Services
             var model = roleEntity.MapTo<ApplicationOrganizationRole>();
             model.Features = roleEntity.Features.CastListTo<ApplicationFeature>().ToList();
             return model;
+        }
+
+        private OrganizationRoleQuery EnsureQuery(OrganizationRoleQuery query)
+        {
+            if ((_sundayContext.CurrentUser!.IsOrganizationMember()))
+                query.OrganizationId = _sundayContext.CurrentOrganization!.Id;
+            return query;
+        }
+
+        private void EnsureData(ApplicationOrganizationRole role)
+        {
+            if ((_sundayContext.CurrentUser!.IsOrganizationMember()))
+                role.OrganizationId = _sundayContext.CurrentOrganization!.Id;
         }
     }
 }

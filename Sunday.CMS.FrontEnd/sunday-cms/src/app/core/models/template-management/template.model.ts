@@ -1,3 +1,4 @@
+import { EntityAccess } from '@models/common/entity.access.model';
 import { ApiResponse } from '@models/common/response.model';
 
 export class TemplateItem extends ApiResponse {
@@ -10,6 +11,7 @@ export class TemplateItem extends ApiResponse {
   CreatedBy: string;
   UpdatedBy: string;
   Fields: TemplateField[] = [];
+  Access: EntityAccess;
 }
 export class TemplateField {
   Id?: string;

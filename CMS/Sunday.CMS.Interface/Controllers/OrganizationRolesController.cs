@@ -20,7 +20,6 @@ namespace Sunday.CMS.Interface.Controllers
         [HttpPost("search")]
         public async Task<IActionResult> Search([FromBody] OrganizationRoleQuery query)
         {
-            query.OrganizationId = CurrentOrganizationId;
             var result = await _organizationRoleManager.GetRolesList(query);
             return Ok(result);
         }
@@ -28,7 +27,6 @@ namespace Sunday.CMS.Interface.Controllers
         [HttpPost("create")]
         public async Task<IActionResult> Create([FromBody] OrganizationRoleMutationModel data)
         {
-            data.OrganizationId = CurrentOrganizationId;
             var result = await _organizationRoleManager.CreateRole(data);
             return Ok(result);
         }
@@ -36,7 +34,6 @@ namespace Sunday.CMS.Interface.Controllers
         [HttpPut("update")]
         public async Task<IActionResult> Update([FromBody] OrganizationRoleMutationModel data)
         {
-            data.OrganizationId = CurrentOrganizationId;
             var result = await _organizationRoleManager.UpdateRole(data);
             return Ok(result);
         }

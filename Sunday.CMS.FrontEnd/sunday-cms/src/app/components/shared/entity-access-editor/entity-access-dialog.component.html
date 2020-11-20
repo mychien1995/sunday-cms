@@ -5,17 +5,25 @@
             <div class="org-tree">
                 <ul>
                     <li *ngFor="let org of organizationLookup">
-                        <div>
-                            <ul *ngFor="let website of org.Website">
-                                <li>
-                                    {{website.WebsiteName}}
+                        <input type="checkbox" [checked]="org.Open" (change)="selectOrganization(org)" />
+                        <i class="pe-7s-server"></i>
+                        <label>{{org.OrganizationName}}</label>
+                        <div [hidden]="!org.Open">
+                            <ul>
+                                <li *ngFor="let website of org.Websites">
+                                    <input type="checkbox" [checked]="websiteSelected(org, website)"
+                                        (change)="selectWebsite(org,website)" />
+                                    <i class="fa lnr-earth"></i>
+                                    <label>{{website.WebsiteName}}</label>
                                 </li>
                             </ul>
-                        </div>
-                        <div>
-                            <ul *ngFor="let role of org.Roles">
-                                <li>
-                                    {{role.RoleName}}
+                            <div class="divider" [hidden]="org.Websites.length === 0 && org.Roles.length === 0"></div>
+                            <ul>
+                                <li *ngFor="let role of org.Roles">
+                                    <input type="checkbox" [checked]="roleSelected(org, role)"
+                                        (change)="selectRole(org, role)" />
+                                    <i class="fa lnr-users"></i>
+                                    <label>{{role.RoleName}}</label>
                                 </li>
                             </ul>
                         </div>
@@ -27,7 +35,7 @@
     <div class="form-row">
         <div class="col-sm-12">
             <div class="pull-right mt-3">
-                <button type="button" class="btn btn-primary" (click)="onSubmit()">Create Content</button>
+                <button type="button" class="btn btn-primary" (click)="onSubmit()">Update Access</button>
                 <button type="button" class="btn btn-secondary m-lg-2" mat-dialog-close>Cancel</button>
             </div>
         </div>
