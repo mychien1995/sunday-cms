@@ -36,5 +36,12 @@
             public const string NewVersion = "sp_content_newVersion";
             public const string Publish = "sp_content_publish";
         }
+        public class Renderings
+        {
+            public const string Search = "sp_renderings_search";
+            public const string CreateOrUpdate = "sp_renderings_createOrUpdate";
+            public const string Delete = "sp_renderings_delete";
+            public const string GetById = "sp_renderings_getById";
+        }
     }
 }

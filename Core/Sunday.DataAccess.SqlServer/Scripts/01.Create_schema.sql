@@ -326,3 +326,22 @@ BEGIN
 		OrganizationRoleIds varchar(MAX)
 	);
 END
+
+IF (NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'dbo' AND  TABLE_NAME = 'Renderings'))
+BEGIN
+	CREATE TABLE Renderings
+	(
+		[Id] [uniqueidentifier] NOT NULL,
+		[RenderingName] [nvarchar](1000) NULL,
+		[Properties] [nvarchar](max) NULL,
+		[IsPageRendering] [bit] NULL,
+		[IsRequireDatasource] [bit] NULL,
+		[DatasourceLocation] [varchar](max) NULL,
+		[DatasourceTemplate] [uniqueidentifier] NULL,
+		[CreatedDate] [datetime] NOT NULL,
+		[CreatedBy] [nvarchar](500) NULL,
+		[UpdatedDate] [datetime] NOT NULL,
+		[UpdatedBy] [nvarchar](500) NULL,
+		[IsDeleted] [bit] NOT NULL
+	);
+END
