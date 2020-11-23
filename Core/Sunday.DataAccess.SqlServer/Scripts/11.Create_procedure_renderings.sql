@@ -32,6 +32,7 @@ GO
 CREATE OR ALTER PROCEDURE dbo.sp_renderings_createOrUpdate
 	@Id uniqueidentifier,
 	@RenderingName nvarchar(1000),
+	@RenderingType nvarchar(1000),
 	@Properties nvarchar(max),
 	@IsPageRendering bit,
 	@IsRequireDatasource bit,
@@ -51,6 +52,7 @@ BEGIN
 		INSERT INTO [dbo].[Renderings]
            ([Id]
            ,[RenderingName]
+           ,[RenderingType]
            ,[Properties]
            ,[IsPageRendering]
            ,[IsRequireDatasource]
@@ -64,6 +66,7 @@ BEGIN
      VALUES
            (@Id,
 			@RenderingName,
+			@RenderingType,
 			@Properties,
 			@IsPageRendering,
 			@IsRequireDatasource,

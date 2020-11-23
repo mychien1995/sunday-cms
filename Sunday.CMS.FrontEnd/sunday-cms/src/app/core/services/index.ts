@@ -20,3 +20,4 @@ export * from 'app/core/services/template-management/template-management.service
 export * from 'app/core/services/contents/content-tree.service';
 export * from 'app/core/services/contents/contents.service';
 export * from 'app/core/services/contents/content.bus';
+export * from 'app/core/services/contents/renderings.service';

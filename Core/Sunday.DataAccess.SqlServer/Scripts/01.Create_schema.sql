@@ -333,6 +333,7 @@ BEGIN
 	(
 		[Id] [uniqueidentifier] NOT NULL,
 		[RenderingName] [nvarchar](1000) NULL,
+		[RenderingType] [varchar] (500) NULL,
 		[Properties] [nvarchar](max) NULL,
 		[IsPageRendering] [bit] NULL,
 		[IsRequireDatasource] [bit] NULL,

@@ -11,5 +11,6 @@ export * from './website-management/websites.model';
 export * from './template-management/template.model';
 export * from './contents/content.tree.model';
 export * from './contents/content.model';
+export * from './contents/rendering.model';
 export * from './common/entity.access.model';
 

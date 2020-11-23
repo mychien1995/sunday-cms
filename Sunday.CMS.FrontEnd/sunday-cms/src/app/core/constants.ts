@@ -77,7 +77,7 @@ export class ApiUrl {
     GetRoots: 'cms/api/contenttree/getRoots/',
     GetChilds: 'cms/api/contenttree/getChilds/',
     GetContextMenu: 'cms/api/contenttree/getContextMenu/',
-    GetByPath: 'cms/api/contenttree/getTreeByPath/'
+    GetByPath: 'cms/api/contenttree/getTreeByPath/',
   };
   public static Contents = {
     GetContent: 'cms/api/contents/',
@@ -85,7 +85,14 @@ export class ApiUrl {
     Update: 'cms/api/contents/update/',
     NewVersion: 'cms/api/contents/',
     Publish: 'cms/api/contents/',
-    Delete: 'cms/api/contents/'
+    Delete: 'cms/api/contents/',
+  };
+  public static Renderings = {
+    Search: 'cms/api/renderings/search',
+    Create: 'cms/api/renderings/create/',
+    Update: 'cms/api/renderings/update/',
+    Delete: 'cms/api/renderings/',
+    GetById: 'cms/api/renderings/',
   };
   public static FileUpload = 'cms/api/FileUpload';
 }

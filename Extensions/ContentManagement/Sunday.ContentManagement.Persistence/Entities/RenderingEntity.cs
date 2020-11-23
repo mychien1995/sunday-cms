@@ -1,11 +1,15 @@
 ﻿using System;
+using Sunday.ContentManagement.Models;
+using Sunday.Core;
 
 namespace Sunday.ContentManagement.Persistence.Entities
 {
+    [MappedTo(typeof(Rendering), true, nameof(Properties))]
     public class RenderingEntity
     {
         public Guid Id { get; set; }
         public string RenderingName { get; set; } = string.Empty;
+        public string RenderingType { get; set; } = string.Empty;
         public string Properties { get; set; } = string.Empty;
         public bool IsPageRendering { get; set; }
         public bool IsRequireDatasource { get; set; }
