@@ -34,7 +34,7 @@ namespace Sunday.Foundation.Persistence.Implementation.Repositories
             if (query.IncludeVirtualRoles) returnTypes.Add(typeof(OrganizationUserRoleEntity));
             var searchResult = await _dbRunner.ExecuteMultipleAsync(ProcedureNames.Users.Search, returnTypes, DbQuery(query));
             result.Total = (int)searchResult[0].Single();
-            var users = searchResult[1].Select(u => (UserEntity)u).ToList();
+            var users = searchResult[1].Select(u => (UserEntity)u).ToArray();
             var roles = new List<UserRoleEntity>();
             var organizationUsers = new List<OrganizationUserEntity>();
             var virtualRoles = new List<OrganizationUserRoleEntity>();

@@ -36,45 +36,36 @@ export class AddRenderingComponent implements OnInit {
         this.isEdit = true;
         this.current = data.rendering;
         this.formTitle = 'Edit Rendering';
+        this.dataForm.controls['IsPageRendering'].setValue(
+          this.current.IsPageRendering
+        );
+        this.dataForm.controls['IsRequireDatasource'].setValue(
+          this.current.IsRequireDatasource
+        );
       }
     });
   }
 
-  ngOnInit(): void {
-    this.buildForm();
-  }
-
-  buildForm(): void {
-    if (this.isEdit) {
-      this.dataForm = new FormGroup({
-        LayoutName: new FormControl(this.current.LayoutName, [
-          Validators.required,
-        ]),
-        LayoutPath: new FormControl(this.current.LayoutPath, [
-          Validators.required,
-        ]),
-      });
-    }
-  }
+  ngOnInit(): void {}
 
   onSubmit(formValue: any): void {
     if (!this.dataForm.valid) {
       return;
     }
-    const data = <LayoutItem>formValue;
-    data.OrganizationIds = this.current.OrganizationIds;
+    const data = { ...this.current, ...(<Rendering>formValue) };
     data.Id = this.isEdit ? this.current.Id : '';
+    data.Access = this.current.Access;
     this.clientState.isBusy = true;
     const observ = this.isEdit
-      ? this.layoutService.updateLayout(data)
-      : this.layoutService.createLayouts(data);
+      ? this.renderingService.update(data)
+      : this.renderingService.create(data);
     observ.subscribe(
       (res) => {
         if (res.Success) {
           this.toastr.success(
-            this.isEdit ? 'Layout updated' : 'Layout created'
+            this.isEdit ? 'Rendering updated' : 'Rendering created'
           );
-          this.router.navigate(['/manage-layouts']);
+          this.router.navigate(['/manage-renderings']);
         }
         this.clientState.isBusy = false;
       },

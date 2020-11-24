@@ -28,7 +28,7 @@ namespace Sunday.ContentManagement.Persistence.Implementation.Repositories
                 rs =>
                     new SearchResult<TemplateEntity>
                     {
-                        Result = rs.Item2.ToList(),
+                        Result = rs.Item2.ToArray(),
                         Total = rs.Item1.Single()
                     });
 

@@ -42,6 +42,13 @@ namespace Sunday.CMS.Core.Pipelines.Layout.Navigation
             });
             arg.NavigationItems.Add(new NavigationItem()
             {
+                Link = "/manage-renderings",
+                Section = "Manage Contents",
+                Title = "Manage Renderings",
+                IconClass = "pe-7s-news-paper"
+            });
+            arg.NavigationItems.Add(new NavigationItem()
+            {
                 Link = "/manage-contents",
                 Section = "Manage Contents",
                 Title = "Manage Contents",

@@ -26,7 +26,7 @@ namespace Sunday.ContentManagement.Persistence.Implementation.Repositories
             {
                 var result = new SearchResult<LayoutEntity>()
                 {
-                    Result = rs.Item2.ToList(),
+                    Result = rs.Item2.ToArray(),
                     Total = rs.Item1.Single()
                 };
                 result.Result.Iter(layout =>

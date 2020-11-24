@@ -30,7 +30,7 @@ namespace Sunday.Foundation.Persistence.Implementation.Repositories
             var result = new SearchResult<OrganizationRoleEntity>();
             var queryResult = await _dbRunner.ExecuteMultipleAsync<int, OrganizationRoleEntity, OrganizationRoleMappingEntity>(ProcedureNames.OrganizationRoles.Search, query);
             result.Total = queryResult.Item1.Single();
-            var roles = queryResult.Item2.ToList();
+            var roles = queryResult.Item2.ToArray();
             var features = queryResult.Item3.ToList();
             roles.Iter(role =>
             {

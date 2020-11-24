@@ -47,7 +47,7 @@ AS
 BEGIN
 	DECLARE @Exist int
 	SET @Exist = (SELECT COUNT(1) FROM Renderings WHERE Id = @Id)
-	IF @Exist = 1
+	IF @Exist = 0
 	BEGIN
 		INSERT INTO [dbo].[Renderings]
            ([Id]

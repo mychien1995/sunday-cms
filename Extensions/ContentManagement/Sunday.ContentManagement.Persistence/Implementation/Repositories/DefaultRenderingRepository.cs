@@ -28,7 +28,7 @@ namespace Sunday.ContentManagement.Persistence.Implementation.Repositories
                 .MapResultTo(rs => new SearchResult<RenderingEntity>
                 {
                     Total = rs.Item1.First(),
-                    Result = rs.Item2
+                    Result = rs.Item2.ToArray()
                 });
 
         public Task<Option<RenderingEntity>> GetRenderingById(Guid id)

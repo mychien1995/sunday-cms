@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ClientState, RenderingService } from '@services/index';
 import { ListApiResponse, Rendering } from '@models/index';
@@ -44,6 +44,14 @@ export class ManageRenderingComponent implements OnInit {
   deleteRendering(id: string, template: any): void {
     this.activeId = id;
     this.modalService.open(template);
+  }
+
+  isRowExpanded(index: number, row: any) {
+    return row.Expanded;
+  }
+
+  expand(row: any): void {
+    row.Expanded = !row.Expanded;
   }
 
   confirmDelete() {

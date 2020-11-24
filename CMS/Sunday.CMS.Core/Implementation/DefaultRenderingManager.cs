@@ -41,15 +41,19 @@ namespace Sunday.CMS.Core.Implementation
         public async Task<BaseApiResponse> Create(RenderingJsonResult rendering)
         {
             rendering.Id = Guid.Empty;
-            await _renderingService.Save(ToModel(rendering));
-            await _entityAccessService.Save(GetEntityAccess(rendering));
+            //TODO: select template
+            rendering.DatasourceTemplate = Guid.Empty.ToString();
+            var model = ToModel(rendering);
+            await _renderingService.Save(model);
+            await _entityAccessService.Save(GetEntityAccess(rendering.Access!, model.Id));
             return BaseApiResponse.SuccessResult;
         }
 
         public async Task<BaseApiResponse> Update(RenderingJsonResult rendering)
         {
+            rendering.DatasourceTemplate = Guid.Empty.ToString();
             await _renderingService.Save(ToModel(rendering));
-            await _entityAccessService.Save(GetEntityAccess(rendering));
+            await _entityAccessService.Save(GetEntityAccess(rendering.Access!, rendering.Id!.Value));
             return BaseApiResponse.SuccessResult;
         }
 
@@ -59,11 +63,11 @@ namespace Sunday.CMS.Core.Implementation
             return BaseApiResponse.SuccessResult;
         }
 
-        EntityAccess GetEntityAccess(RenderingJsonResult template)
+        EntityAccess GetEntityAccess(EntityAccess entityAccess, Guid renderingId)
         {
-            var access = template.Access!;
+            var access = entityAccess;
             access.EntityType = nameof(Rendering);
-            access.EntityId = template.Id;
+            access.EntityId = renderingId;
             return access;
         }
 

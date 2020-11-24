@@ -28,7 +28,7 @@ namespace Sunday.ContentManagement.Persistence.Implementation.Repositories
                 rs => new SearchResult<WebsiteEntity>
                 {
                     Total = rs.Item1.Single(),
-                    Result = rs.Item2.ToList()
+                    Result = rs.Item2.ToArray()
                 });
 
         public Task<Option<WebsiteEntity>> GetByIdAsync(Guid layoutId)

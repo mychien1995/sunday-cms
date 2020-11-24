@@ -1,3 +1,6 @@
+import { AddRenderingComponent } from '@components/contents/renderings/add-rendering.component';
+import { ManageRenderingComponent } from '@components/contents/renderings/manage-rendering.component';
+import { RenderingResolver } from '@components/contents/renderings/rendering.resolver';
 import {
   ContentDashboardComponent,
   ContentTreeComponent,
@@ -31,6 +34,12 @@ export const ContentComponents = [
   ContentRenameDialogComponent,
   EntityAccessDialogComponent,
   EntityAccessEditorComponent,
+  ManageRenderingComponent,
+  AddRenderingComponent,
 ];
 
-export const ContentResolvers = [ContentResolver, ContentVersionResolver];
+export const ContentResolvers = [
+  ContentResolver,
+  ContentVersionResolver,
+  RenderingResolver,
+];

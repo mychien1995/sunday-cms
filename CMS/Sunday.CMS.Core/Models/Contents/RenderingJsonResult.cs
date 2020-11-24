@@ -9,7 +9,7 @@ namespace Sunday.CMS.Core.Models.Contents
     [MappedTo(typeof(Rendering))]
     public class RenderingJsonResult : BaseApiResponse
     {
-        public Guid Id { get; set; }
+        public Guid? Id { get; set; }
         public string RenderingName { get; set; } = string.Empty;
         public string Controller { get; set; } = string.Empty;
         public string Action { get; set; } = string.Empty;

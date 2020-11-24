@@ -32,7 +32,7 @@ namespace Sunday.Foundation.Implementation.Services
         public Task<SearchResult<ApplicationOrganizationRole>> QueryAsync(OrganizationRoleQuery query)
           => _organizationRoleRepository.QueryAsync(EnsureQuery(query)).MapResultTo(rs => new SearchResult<ApplicationOrganizationRole>
           {
-              Result = rs.Result.Select(ToDomainModel).ToList(),
+              Result = rs.Result.Select(ToDomainModel).ToArray(),
               Total = rs.Total
           });
 

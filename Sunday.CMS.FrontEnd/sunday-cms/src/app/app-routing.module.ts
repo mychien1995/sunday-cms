@@ -34,6 +34,9 @@ import {
   AppLayoutResolver,
   AppWebsiteResolver,
 } from '@components/index';
+import { ManageRenderingComponent } from '@components/contents/renderings/manage-rendering.component';
+import { AddRenderingComponent } from '@components/contents/renderings/add-rendering.component';
+import { RenderingResolver } from '@components/contents/renderings/rendering.resolver';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -143,6 +146,19 @@ export const routes: Routes = [
         component: ContentDetailComponent,
         resolve: { content: ContentVersionResolver },
         data: { view: 'content' },
+      },
+      {
+        path: 'manage-renderings',
+        component: ManageRenderingComponent,
+      },
+      {
+        path: 'manage-renderings/create',
+        component: AddRenderingComponent,
+      },
+      {
+        path: 'manage-renderings/edit/:renderingId',
+        component: AddRenderingComponent,
+        resolve: { rendering: RenderingResolver },
       },
     ],
     canActivate: [AuthGuard],

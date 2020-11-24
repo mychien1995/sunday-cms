@@ -29,7 +29,7 @@ namespace Sunday.ContentManagement.Implementation.Services
         public Task<SearchResult<ApplicationLayout>> QueryAsync(LayoutQuery query)
             => _layoutRepository.QueryAsync(query).MapResultTo(rs => new SearchResult<ApplicationLayout>
             {
-                Result = rs.Result.CastListTo<ApplicationLayout>(),
+                Result = rs.Result.CastListTo<ApplicationLayout>().ToArray(),
                 Total = rs.Total
             });
 

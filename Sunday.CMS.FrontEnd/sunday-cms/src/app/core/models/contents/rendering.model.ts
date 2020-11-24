@@ -14,4 +14,5 @@ export class Rendering extends ApiResponse {
   CreatedBy: string;
   UpdatedBy: string;
   Access: EntityAccess;
+  Expand: boolean;
 }

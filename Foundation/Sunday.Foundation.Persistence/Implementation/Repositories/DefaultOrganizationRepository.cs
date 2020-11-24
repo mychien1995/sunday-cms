@@ -28,7 +28,7 @@ namespace Sunday.Foundation.Persistence.Implementation.Repositories
             var searchResult = await _dbRunner.ExecuteMultipleAsync<int, OrganizationEntity>(ProcedureNames.Organizations.Search,
                 DbQuery(query));
             result.Total = searchResult.Item1.Single();
-            result.Result = searchResult.Item2.ToList();
+            result.Result = searchResult.Item2.ToArray();
             return result;
         }
 
