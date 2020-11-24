@@ -115,8 +115,15 @@ namespace Sunday.CMS.Core.Implementation
             var actualUser = _userService.GetUserByIdAsync(data.Id!.Value).Result;
             actualUser.IfSome(u =>
             {
-                if (u.VirtualRoles.Any())
+                var currentUser = _sundayContext.CurrentUser!;
+                if (currentUser.IsOrganizationMember())
+                {
                     user.VirtualRoles.AddRange(u.VirtualRoles.Where(r => r.OrganizationId != _sundayContext.CurrentOrganization!.Id));
+                }
+                else
+                {
+                    user.VirtualRoles = u.VirtualRoles;
+                }
             });
             return user;
         }
@@ -138,13 +145,16 @@ namespace Sunday.CMS.Core.Implementation
             var currentUser = _sundayContext.CurrentUser!;
             query.ExcludeIdList.Add(currentUser.Id);
             query.PageSize = 10;
-            if (currentUser.IsInRole(SystemRoleCodes.Developer) || currentUser.IsInRole(SystemRoleCodes.SystemAdmin))
+            query.IncludeOrganizations = false;
+            query.IncludeVirtualRoles = true;
+            query.IncludeRoles = false;
+            if (!currentUser.IsOrganizationMember())
             {
-                query.IncludeOrganizations = false;
+                query.IncludeOrganizations = true;
                 query.IncludeVirtualRoles = false;
+                query.IncludeRoles = true;
                 return query;
             }
-            query.IncludeRoles = false;
             query.OrganizationIds.Add(_sundayContext.CurrentOrganization!.Id);
             return query;
         }

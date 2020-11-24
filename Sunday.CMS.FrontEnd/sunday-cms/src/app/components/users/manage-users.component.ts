@@ -39,10 +39,13 @@ export class ManageUsersComponent implements OnInit {
 
   getUsers(userQuery?: any): void {
     this.clientState.isBusy = true;
-    this.userService.getUsers(userQuery).subscribe((res) => {
-      this.userList = <UserList>res;
-      this.clientState.isBusy = false;
-    });
+    this.userService.getUsers(userQuery).subscribe(
+      (res) => {
+        this.userList = <UserList>res;
+        this.clientState.isBusy = false;
+      },
+      (ex) => (this.clientState.isBusy = false)
+    );
     this.organizationService.getOrganizations().subscribe((res) => {
       this.organizationList = (<OrganizationList>res).Organizations;
     });
@@ -114,6 +117,8 @@ export class ManageUsersComponent implements OnInit {
   }
 
   displayOrganizations(user: UserItem): string {
-    return user.OrganizationIds.map(id => this.organizationList.find(o => o.Id === id)?.OrganizationName).join(', ');
+    return user.OrganizationIds.map(
+      (id) => this.organizationList.find((o) => o.Id === id)?.OrganizationName
+    ).join(', ');
   }
 }

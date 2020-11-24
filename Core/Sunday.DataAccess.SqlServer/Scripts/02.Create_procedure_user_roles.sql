@@ -214,7 +214,7 @@ BEGIN
 END
 GO
 --------------------------------------------------------------------
-CREATE OR ALTER   PROCEDURE [dbo].[sp_users_update]
+CREATE OR ALTER PROCEDURE [dbo].[sp_users_update]
 (
 	@Id uniqueidentifier,
 	@Fullname nvarchar(500),
@@ -245,8 +245,11 @@ BEGIN
 	END
 
 	BEGIN
-		DELETE FROM OrganizationUserRoles WHERE OrganizationUserId NOT IN (SELECT OrganizationUserId FROM OrganizationUsers WHERE UserId = @Id AND 
-			OrganizationId IN (SELECT OrganizationId FROM @Organizations))
+		--- Clear role from old organization ---
+		DELETE FROM OrganizationUserRoles WHERE OrganizationUserId IN 
+		(SELECT Id FROM OrganizationUsers WHERE UserId = @Id AND OrganizationId NOT IN (SELECT OrganizationId FROM @Organizations))
+
+		--- Clear old organization ---
 		DELETE FROM OrganizationUsers WHERE UserId = @Id AND OrganizationId NOT IN (SELECT OrganizationId FROM @Organizations)
 
 		DECLARE @OrganizationId uniqueidentifier
@@ -257,29 +260,33 @@ BEGIN
 		FETCH NEXT FROM OrganizationCursor INTO @OrganizationId, @OrganizationRolesId, @UserActive
 		WHILE @@FETCH_STATUS = 0  
 		BEGIN
+			DECLARE @tblOrgRole TABLE (OrgRoleId varchar(100))
 			DECLARE @OrganizationUserId uniqueidentifier;
 			SELECT @OrganizationUserId = Id FROM OrganizationUsers WHERE OrganizationId = @OrganizationId AND UserId = @Id
+			-- If user not in organization --
 			IF @OrganizationUserId IS NULL
 			BEGIN
 				SET @OrganizationUserId = NEWID()
 				INSERT INTO OrganizationUsers (Id, UserId, OrganizationId, IsActive) VALUES (@OrganizationUserId, @Id, @OrganizationId, @UserActive)
 				IF @OrganizationRolesId IS NOT NULL AND LEN(TRIM(@OrganizationRolesId)) > 0
 				BEGIN
-					DECLARE @tblOrgRole TABLE (OrgRoleId varchar(100))
 					INSERT INTO @tblOrgRole SELECT value  FROM STRING_SPLIT(@OrganizationRolesId, '|')
 					INSERT INTO OrganizationUserRoles (OrganizationUserId, OrganizationRoleId) SELECT @OrganizationUserId, OrgRoleId FROM @tblOrgRole
 				END
 			END
 			ELSE
+			-- If user already in organization --
 			BEGIN
 				UPDATE OrganizationUsers SET IsActive = @UserActive WHERE Id = @OrganizationUserId;
-				IF @OrganizationRolesId <> NULL AND LEN(TRIM(@OrganizationRolesId)) > 0
+				IF @OrganizationRolesId IS NOT NULL AND LEN(TRIM(@OrganizationRolesId)) > 0
 				BEGIN
+					INSERT INTO @tblOrgRole SELECT value  FROM STRING_SPLIT(@OrganizationRolesId, '|')
 					DELETE FROM OrganizationUserRoles WHERE OrganizationUserId = @OrganizationUserId AND OrganizationRoleId NOT IN (SELECT OrgRoleId FROM @tblOrgRole)
 					INSERT INTO OrganizationUserRoles (OrganizationUserId, OrganizationRoleId) SELECT @OrganizationUserId, OrgRoleId FROM @tblOrgRole
 					WHERE OrgRoleId NOT IN (SELECT OrganizationRoleId FROM OrganizationUserRoles WHERE OrganizationUserId = @OrganizationUserId)
 				END
 			END
+			DELETE FROM @tblOrgRole
 			FETCH NEXT FROM OrganizationCursor INTO @OrganizationUserId, @OrganizationId, @UserActive
 		END
 

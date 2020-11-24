@@ -25,7 +25,8 @@ namespace Sunday.Foundation.Implementation.Pipelines.Users
                     {
                         throw new ArgumentException($"Username {arg.User.UserName} already in used");
                     }
-                    else if (await _userRepository.QueryAsync(new UserQuery { Email = arg.User.Email }).MapResultTo(rs => rs.Result.Any()))
+                    else if (!string.IsNullOrEmpty(arg.User.Email) &&
+                             await _userRepository.QueryAsync(new UserQuery { Email = arg.User.Email }).MapResultTo(rs => rs.Result.Any()))
                     {
                         throw new ArgumentException($"Email {arg.User.Email} already in used");
                     }
@@ -35,7 +36,8 @@ namespace Sunday.Foundation.Implementation.Pipelines.Users
                     {
                         throw new ArgumentException($"Username {arg.User.UserName} already in used");
                     }
-                    else if (!string.IsNullOrWhiteSpace(arg.User.Email) && await _userRepository.QueryAsync(new UserQuery { Email = arg.User.Email }).MapResultTo(rs => rs.Result.Any(u => u.Id != arg.User.Id)))
+                    else if (!string.IsNullOrEmpty(arg.User.Email) &&
+                             !string.IsNullOrWhiteSpace(arg.User.Email) && await _userRepository.QueryAsync(new UserQuery { Email = arg.User.Email }).MapResultTo(rs => rs.Result.Any(u => u.Id != arg.User.Id)))
                     {
                         throw new ArgumentException($"Email {arg.User.Email} already in used");
                     }
