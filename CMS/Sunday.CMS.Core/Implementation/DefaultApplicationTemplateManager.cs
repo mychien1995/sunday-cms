@@ -39,14 +39,16 @@ namespace Sunday.CMS.Core.Implementation
         {
             var template = await _templateService.CreateAsync(ToDomainModel(data));
             data.Id = template.Id;
-            await _entityAccessService.Save(GetEntityAccess(data));
+            if (data.Access != null)
+                await _entityAccessService.Save(GetEntityAccess(data));
             return BaseApiResponse.SuccessResult;
         }
 
         public async Task<BaseApiResponse> Update(TemplateItem data)
         {
             await _templateService.UpdateAsync(ToDomainModel(data));
-            await _entityAccessService.Save(GetEntityAccess(data));
+            if (data.Access != null)
+                await _entityAccessService.Save(GetEntityAccess(data));
             return BaseApiResponse.SuccessResult;
         }
 

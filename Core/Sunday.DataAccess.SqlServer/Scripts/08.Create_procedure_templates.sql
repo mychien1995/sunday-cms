@@ -9,6 +9,7 @@
 	,@CreatedDate datetime
 	,@CreatedBy nvarchar(500)
 	,@UpdatedDate datetime
+	,@IsAbstract bit
 	,@UpdatedBy nvarchar(500)
 	,@IsUpdate bit
 )
@@ -18,16 +19,16 @@ BEGIN
 	BEGIN
 	INSERT INTO [dbo].[Templates]
            ([Id] ,[TemplateName] ,[Icon] ,[StandardValueId] ,[BaseTemplateIds]
-           ,[HasRestrictions] ,[CreatedDate] ,[CreatedBy],[UpdatedDate] ,[UpdatedBy] ,[IsDeleted])
+           ,[HasRestrictions] ,[CreatedDate] ,[CreatedBy],[UpdatedDate] ,[UpdatedBy] ,[IsDeleted], [IsAbstract])
      VALUES
            (@Id ,@TemplateName ,@Icon ,@StandardValueId ,@BaseTemplateIds
-			,@HasRestrictions ,@CreatedDate ,@CreatedBy ,@UpdatedDate ,@UpdatedBy ,0)
+			,@HasRestrictions ,@CreatedDate ,@CreatedBy ,@UpdatedDate ,@UpdatedBy ,0, @IsAbstract)
 	END
 	ELSE
 	BEGIN
 		UPDATE dbo.Templates SET TemplateName = @TemplateName, Icon = @Icon, StandardValueId = @StandardValueId,
 		BaseTemplateIds = @BaseTemplateIds, HasRestrictions = @HasRestrictions, UpdatedDate = @UpdatedDate,
-		UpdatedBy = @UpdatedBy
+		UpdatedBy = @UpdatedBy, IsAbstract = @IsAbstract
 		WHERE Id = @Id
 	END
 END
@@ -47,6 +48,7 @@ CREATE OR ALTER PROCEDURE sp_templates_search
 (
 	@PageIndex int = 0,
 	@PageSize int = 10,
+	@IsAbstract bit,
 	@Text nvarchar(1000)
 )
 AS
@@ -56,12 +58,14 @@ BEGIN
 	@Text IS NULL OR LEN(TRIM(@Text)) = 0
 	OR CAST(Id as varchar(100)) = @Text
 	OR TemplateName LIKE '%' + @Text + '%'
+	OR (@IsAbstract IS NULL OR IsAbstract = @IsAbstract)
 
 	SELECT * FROM dbo.Templates WHERE IsDeleted = 0
 	AND 
 	@Text IS NULL OR LEN(TRIM(@Text)) = 0
 	OR CAST(Id as varchar(100)) = @Text
 	OR TemplateName LIKE '%' + @Text + '%'
+	OR (@IsAbstract IS NULL OR IsAbstract = @IsAbstract)
 	ORDER BY UpdatedDate DESC
 	OFFSET @PageIndex ROWS FETCH NEXT @PageSize ROWS ONLY
 END

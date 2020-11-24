@@ -43,14 +43,16 @@ namespace Sunday.CMS.Core.Implementation
             rendering.Id = Guid.Empty;
             var model = ToModel(rendering);
             await _renderingService.Save(model);
-            await _entityAccessService.Save(GetEntityAccess(rendering.Access!, model.Id));
+            if (rendering.Access != null)
+                await _entityAccessService.Save(GetEntityAccess(rendering.Access!, model.Id));
             return BaseApiResponse.SuccessResult;
         }
 
         public async Task<BaseApiResponse> Update(RenderingJsonResult rendering)
         {
             await _renderingService.Save(ToModel(rendering));
-            await _entityAccessService.Save(GetEntityAccess(rendering.Access!, rendering.Id!.Value));
+            if (rendering.Access != null)
+                await _entityAccessService.Save(GetEntityAccess(rendering.Access!, rendering.Id!.Value));
             return BaseApiResponse.SuccessResult;
         }
 

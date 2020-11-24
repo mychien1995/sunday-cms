@@ -50,6 +50,14 @@
                 <label>Template Access:</label>
                 <app-entity-access-editor [(entityAccess)]="template.Access"></app-entity-access-editor>
             </div>
+            <div class="position-relative form-group">
+                <label for="IsAbstract" class="">Is Abstract Template:</label>
+                <div class="custom-checkbox custom-control">
+                    <input type="checkbox" id="IsAbstract" class="custom-control-input" formControlName="IsAbstract"
+                        [checked]="template.IsAbstract" (change)="template.IsAbstract = !template.IsAbstract" />
+                    <label class="custom-control-label" for="IsAbstract">&nbsp;</label>
+                </div>
+            </div>
         </div>
     </div>
 </form>

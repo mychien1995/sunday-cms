@@ -14,6 +14,7 @@ namespace Sunday.ContentManagement.Domain
         public DateTime UpdatedDate { get; set; }
         public string CreatedBy { get; set; } = string.Empty;
         public string UpdatedBy { get; set; } = string.Empty;
+        public bool IsAbstract { get; set; }
 
         public TemplateField[] Fields { get; set; } = Array.Empty<TemplateField>();
     }

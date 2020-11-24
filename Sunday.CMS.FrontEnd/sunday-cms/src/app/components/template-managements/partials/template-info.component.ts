@@ -31,7 +31,9 @@ export class TemplateInfoComponent implements OnInit {
   ) {
     this.iconLookup = this.iconService.getIcons();
     templateService.getTemplates({ PageSize: 10000 }).subscribe((res) => {
-      this.templateLookup = res.Templates.filter(f => f.Id !== this.innerTemplate.Id);
+      this.templateLookup = res.Templates.filter(
+        (f) => f.Id !== this.innerTemplate.Id
+      );
     });
   }
 
@@ -52,6 +54,7 @@ export class TemplateInfoComponent implements OnInit {
         Validators.required,
       ]),
       Icon: new FormControl(this.innerTemplate.Icon, [Validators.required]),
+      IsAbstract: new FormControl(this.innerTemplate.IsAbstract),
     });
   }
 
