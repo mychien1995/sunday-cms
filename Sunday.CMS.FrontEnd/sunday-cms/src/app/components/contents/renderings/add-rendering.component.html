@@ -7,7 +7,7 @@
                     <div class="form-row">
                         <div class="col-md-6">
                             <div class="position-relative form-group">
-                                <label for="RenderingName">Rendering Name<span class="red">*</span></label>
+                                <label for="RenderingName">Rendering Name: <span class="red">*</span></label>
                                 <input name="RenderingName" placeholder="Rendering Name here..." type="text"
                                     class="form-control" formControlName="RenderingName" autocomplete="off" required
                                     [(ngModel)]="current.RenderingName">
@@ -16,7 +16,7 @@
                                     field is required</span>
                             </div>
                             <div class="position-relative form-group">
-                                <label for="Controller">Controller<span class="red">*</span></label>
+                                <label for="Controller">Controller: <span class="red">*</span></label>
                                 <input name="Controller" placeholder="Controller here..." type="text"
                                     class="form-control" formControlName="Controller" autocomplete="off" required
                                     [(ngModel)]="current.Controller">
@@ -25,7 +25,7 @@
                                     field is required</span>
                             </div>
                             <div class="position-relative form-group">
-                                <label for="Action">Action<span class="red">*</span></label>
+                                <label for="Action">Action: <span class="red">*</span></label>
                                 <input name="Action" placeholder="Action here..." type="text" class="form-control"
                                     formControlName="Action" autocomplete="off" required [(ngModel)]="current.Action">
                                 <span class="text-danger"
@@ -33,44 +33,44 @@
                                     field is required</span>
                             </div>
                             <div class="position-relative form-group">
-                                <label for="IsPageRendering" class="">Page Rendering</label>
+                                <label for="IsPageRendering" class="">Page Rendering: </label>
                                 <div class="custom-checkbox custom-control">
                                     <input type="checkbox" id="exampleCustomCheckbox4" class="custom-control-input"
-                                        formControlName="IsPageRendering"
-                                        (change)="current.IsPageRendering = !current.IsPageRendering"
+                                        formControlName="IsPageRendering" (change)="onPageRenderingChanged()"
                                         [checked]="current.IsPageRendering">
                                     <label class="custom-control-label" for="exampleCustomCheckbox4">&nbsp;</label>
                                 </div>
                             </div>
                             <div class="position-relative form-group">
-                                <label for="IsRequireDatasource" class="">Require Datasource</label>
+                                <label for="IsRequireDatasource" class="">Require Datasource:</label>
                                 <div class="custom-checkbox custom-control">
                                     <input type="checkbox" id="exampleCustomCheckbox5" class="custom-control-input"
                                         formControlName="IsRequireDatasource"
-                                        (change)="current.IsRequireDatasource = !current.IsRequireDatasource"
-                                        [checked]="current.IsRequireDatasource">
+                                        (change)="current.IsRequireDatasource = !current.IsRequireDatasource;"
+                                        [checked]="current.IsRequireDatasource"
+                                        [attr.disabled]="current.IsPageRendering ? true : null">
                                     <label class="custom-control-label" for="exampleCustomCheckbox5">&nbsp;</label>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="position-relative form-group">
-                                <label for="DatasourceTemplate">Datasource Template <span class="red"
+                                <label for="DatasourceTemplate">Datasource Template: <span class="red"
                                         [hidden]="!current.IsRequireDatasource">*</span></label>
-                                <input name="DatasourceTemplate" placeholder="Datasource Template here..." type="text"
-                                    class="form-control" formControlName="DatasourceTemplate" autocomplete="off"
-                                    [(ngModel)]="current.DatasourceTemplate" [readonly]="!current.IsRequireDatasource"
-                                    [required]="current.IsRequireDatasource">
+                                <app-template-selector-button [(selectedTemplates)]="selectedTemplates"
+                                    [readonly]="!current.IsRequireDatasource || current.IsPageRendering">
+                                </app-template-selector-button>
                                 <span class="text-danger"
                                     [hidden]="!(ngForm.submitted && current.IsRequireDatasource && !current.DatasourceTemplate)">This
                                     field is required</span>
                             </div>
                             <div class="position-relative form-group">
-                                <label for="DatasourceLocation">Datasource Location<span class="red"
+                                <label for="DatasourceLocation">Datasource Location: <span class="red"
                                         [hidden]="!current.IsRequireDatasource">*</span></label>
                                 <input name="DatasourceLocation" placeholder="Datasource Location here..." type="text"
                                     class="form-control" formControlName="DatasourceLocation" autocomplete="off"
-                                    [(ngModel)]="current.DatasourceLocation" [readonly]="!current.IsRequireDatasource"
+                                    [(ngModel)]="current.DatasourceLocation"
+                                    [readonly]="!current.IsRequireDatasource || current.IsPageRendering"
                                     [required]="current.IsRequireDatasource">
                                 <span class="text-danger"
                                     [hidden]="!(ngForm.submitted && current.IsRequireDatasource && !current.DatasourceLocation)">This

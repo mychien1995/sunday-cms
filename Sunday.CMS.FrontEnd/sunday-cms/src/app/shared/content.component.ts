@@ -18,6 +18,8 @@ import {
   ContentRenameDialogComponent,
   EntityAccessDialogComponent,
   EntityAccessEditorComponent,
+  InlineTemplateSelectorDialogComponent,
+  TemplateSelectorButtonComponent,
 } from 'app/components';
 export const ContentComponents = [
   ContentDashboardComponent,
@@ -36,6 +38,8 @@ export const ContentComponents = [
   EntityAccessEditorComponent,
   ManageRenderingComponent,
   AddRenderingComponent,
+  InlineTemplateSelectorDialogComponent,
+  TemplateSelectorButtonComponent
 ];
 
 export const ContentResolvers = [

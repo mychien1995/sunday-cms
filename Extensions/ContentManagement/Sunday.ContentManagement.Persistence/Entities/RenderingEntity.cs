@@ -4,7 +4,7 @@ using Sunday.Core;
 
 namespace Sunday.ContentManagement.Persistence.Entities
 {
-    [MappedTo(typeof(Rendering), true, nameof(Properties), nameof(DatasourceTemplate))]
+    [MappedTo(typeof(Rendering), true, nameof(Properties))]
     public class RenderingEntity
     {
         public Guid Id { get; set; }
@@ -13,7 +13,7 @@ namespace Sunday.ContentManagement.Persistence.Entities
         public string Properties { get; set; } = string.Empty;
         public bool IsPageRendering { get; set; }
         public bool IsRequireDatasource { get; set; }
-        public Guid DatasourceTemplate { get; set; }
+        public Guid? DatasourceTemplate { get; set; }
         public string DatasourceLocation { get; set; } = string.Empty;
         public DateTime CreatedDate { get; set; }
         public DateTime UpdatedDate { get; set; }

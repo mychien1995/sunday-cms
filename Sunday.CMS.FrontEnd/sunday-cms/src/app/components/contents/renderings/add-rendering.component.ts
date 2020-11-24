@@ -17,11 +17,11 @@ export class AddRenderingComponent implements OnInit {
     Action: new FormControl('', [Validators.required]),
     IsPageRendering: new FormControl(false),
     IsRequireDatasource: new FormControl(false),
-    DatasourceTemplate: new FormControl(''),
     DatasourceLocation: new FormControl(''),
   });
   public isEdit: boolean;
   public current: Rendering = new Rendering();
+  selectedTemplates: string[] = [];
 
   public formTitle = 'Create Rendering';
   constructor(
@@ -42,8 +42,24 @@ export class AddRenderingComponent implements OnInit {
         this.dataForm.controls['IsRequireDatasource'].setValue(
           this.current.IsRequireDatasource
         );
+        this.selectedTemplates =
+          this.current?.DatasourceTemplate &&
+          this.current.DatasourceTemplate.trim().length > 0
+            ? [this.current.DatasourceTemplate]
+            : [];
       }
     });
+  }
+
+  onPageRenderingChanged(): void {
+    this.current.IsPageRendering = !this.current.IsPageRendering;
+    if (this.current.IsPageRendering) {
+      this.dataForm.controls['IsRequireDatasource'].setValue(false);
+      this.current.IsRequireDatasource = false;
+      this.current.DatasourceLocation = '';
+      this.current.DatasourceTemplate = '';
+      this.selectedTemplates = [];
+    }
   }
 
   ngOnInit(): void {}
@@ -52,6 +68,8 @@ export class AddRenderingComponent implements OnInit {
     if (!this.dataForm.valid) {
       return;
     }
+    this.current.DatasourceTemplate =
+      this.selectedTemplates.find((t) => t && t.trim().length > 0) ?? null;
     const data = { ...this.current, ...(<Rendering>formValue) };
     data.Id = this.isEdit ? this.current.Id : '';
     data.Access = this.current.Access;

@@ -20,6 +20,7 @@ export class TemplateSelectorComponent implements OnInit {
   @Output()
   selectedTemplatesChange: EventEmitter<any> = new EventEmitter<any>();
 
+  @Input()
   templateLookup: TemplateItem[] = [];
   query: any = { PageSize: 1000 };
   @Input() multiple = false;
@@ -49,10 +50,15 @@ export class TemplateSelectorComponent implements OnInit {
   }
 
   loadTemplates() {
+    if (this.templateLookup.length !== 0) {
+      return;
+    }
     this.isLoading = true;
     this.templateService.getTemplates(this.query).subscribe(
       (res) => {
-        this.templateLookup = res.Templates;
+        if (this.templateLookup.length === 0) {
+          this.templateLookup = res.Templates;
+        }
         this.isLoading = false;
       },
       (ex) => (this.isLoading = false)

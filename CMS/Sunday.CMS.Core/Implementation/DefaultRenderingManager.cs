@@ -41,8 +41,6 @@ namespace Sunday.CMS.Core.Implementation
         public async Task<BaseApiResponse> Create(RenderingJsonResult rendering)
         {
             rendering.Id = Guid.Empty;
-            //TODO: select template
-            rendering.DatasourceTemplate = Guid.Empty.ToString();
             var model = ToModel(rendering);
             await _renderingService.Save(model);
             await _entityAccessService.Save(GetEntityAccess(rendering.Access!, model.Id));
@@ -51,7 +49,6 @@ namespace Sunday.CMS.Core.Implementation
 
         public async Task<BaseApiResponse> Update(RenderingJsonResult rendering)
         {
-            rendering.DatasourceTemplate = Guid.Empty.ToString();
             await _renderingService.Save(ToModel(rendering));
             await _entityAccessService.Save(GetEntityAccess(rendering.Access!, rendering.Id!.Value));
             return BaseApiResponse.SuccessResult;

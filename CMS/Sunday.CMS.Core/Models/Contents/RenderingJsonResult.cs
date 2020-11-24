@@ -15,7 +15,7 @@ namespace Sunday.CMS.Core.Models.Contents
         public string Action { get; set; } = string.Empty;
         public bool IsPageRendering { get; set; }
         public bool IsRequireDatasource { get; set; }
-        public string DatasourceTemplate { get; set; } = string.Empty;
+        public Guid? DatasourceTemplate { get; set; }
         public string DatasourceLocation { get; set; } = string.Empty;
         public DateTime CreatedDate { get; set; }
         public DateTime UpdatedDate { get; set; }

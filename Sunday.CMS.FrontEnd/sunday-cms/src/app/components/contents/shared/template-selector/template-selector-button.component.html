@@ -1,0 +1,10 @@
+<div class="d-flex">
+    <div>
+        <p *ngFor="let item of displayTemplates">
+            {{item.TemplateName}} - {{item.Id}}
+        </p>
+    </div>
+    
+    <button class="btn btn-primary {{displayTemplates.length > 0 ? 'ml-2' : ''}}" (click)="openDialog()" type="button"
+        [attr.disabled]="readonly ? true : null">Select Template</button>
+</div>

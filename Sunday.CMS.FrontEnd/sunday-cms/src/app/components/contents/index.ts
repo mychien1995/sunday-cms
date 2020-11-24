@@ -11,3 +11,5 @@ export * from './shared/fields-renderer/renderers/multiline-text-renderer.compon
 export * from './content-editing/content-detail.component';
 export * from './content-editing/content-resolver';
 export * from './content-editing/content-rename.component';
+export * from './shared/template-selector/template-selector-button.component';
+export * from './shared/template-selector/template-selector-dialog.component';

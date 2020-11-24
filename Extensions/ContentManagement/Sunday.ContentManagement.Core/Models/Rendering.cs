@@ -13,7 +13,7 @@ namespace Sunday.ContentManagement.Models
         public Dictionary<string, string> Properties { get; set; }= new Dictionary<string, string>();
         public bool IsPageRendering { get; set; }
         public bool IsRequireDatasource { get; set; }
-        public string DatasourceTemplate { get; set; } = string.Empty;
+        public Guid? DatasourceTemplate { get; set; }
         public string DatasourceLocation { get; set; } = string.Empty;
         public DateTime CreatedDate { get; set; }
         public DateTime UpdatedDate { get; set; }
