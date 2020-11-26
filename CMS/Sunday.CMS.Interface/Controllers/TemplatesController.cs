@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Sunday.CMS.Core.Application;
 using Sunday.CMS.Core.Models.Templates;
 using Sunday.ContentManagement.Models;
@@ -11,7 +12,7 @@ namespace Sunday.CMS.Interface.Controllers
     public class TemplatesController : BaseController
     {
         private readonly IApplicationTemplateManager _templateManager;
-        public TemplatesController(ISundayContext context, IApplicationTemplateManager templateManager) : base(context)
+        public TemplatesController(ISundayContext context, IApplicationTemplateManager templateManager, IOptions<MvcViewOptions> optionsAccessor) : base(context)
         {
             _templateManager = templateManager;
         }

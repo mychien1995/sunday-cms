@@ -26,14 +26,9 @@ namespace Sunday.Core.Framework
 
         public static ISundayServicesConfiguration LoadConfiguration(this ISundayServicesConfiguration services, IWebHostEnvironment hostingEnv, IConfiguration configuration)
         {
-            var environment = configuration.GetValue<string>("Environment");
-            var configurationPath = string.IsNullOrEmpty(environment) ? "\\config\\sunday.config" : $"\\config\\sunday.{environment.ToLower()}.config";
+            var configurationPath = "\\config\\sunday.config";
             var filePath = hostingEnv.WebRootPath + configurationPath;
-            if (!string.IsNullOrEmpty(environment) && !File.Exists(filePath))
-            {
-                configurationPath = $"\\config\\sunday.config";
-                filePath = hostingEnv.WebRootPath + configurationPath;
-            }
+            if (!File.Exists(filePath)) return services;
             var configFileContent = File.ReadAllText(filePath);
             var includeFolder = hostingEnv.WebRootPath + "\\config\\include";
             var includeFiles = Directory.GetFiles(includeFolder, "*.config");
