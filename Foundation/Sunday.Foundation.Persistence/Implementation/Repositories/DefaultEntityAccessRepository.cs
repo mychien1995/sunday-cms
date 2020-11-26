@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Sunday.Core;
 using Sunday.Core.Extensions;
 using Sunday.DataAccess.SqlServer.Database;
+using Sunday.DataAccess.SqlServer.Extensions;
 using Sunday.Foundation.Implementation;
 using Sunday.Foundation.Persistence.Application.Repositories;
 using Sunday.Foundation.Persistence.Entities;
@@ -32,5 +34,10 @@ namespace Sunday.Foundation.Persistence.Implementation.Repositories
         public Task<EntityAccessEntity[]> GetEntityAccessByOrganization(Guid organizationId, string entityType)
             => _dbRunner.ExecuteAsync<EntityAccessEntity>(ProcedureNames.EntityAccess.GetByOrganization,
                 new { organizationId, entityType }).MapResultTo(rs => rs.ToArray());
+
+        public Task<Dictionary<Guid, EntityAccessEntity[]>> GetEntitiesAccess(IEnumerable<Guid> entityId, string entityType)
+            => _dbRunner.ExecuteAsync<EntityAccessEntity>(ProcedureNames.EntityAccess.GetByEntities,
+                new { EntityIds = entityId.ToDatabaseList(), entityType }).MapResultTo(rs =>
+                rs.GroupBy(e => e.EntityId).ToDictionary(k => k.Key, v => v.ToArray()));
     }
 }

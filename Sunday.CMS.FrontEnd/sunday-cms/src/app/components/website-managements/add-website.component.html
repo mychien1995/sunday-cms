@@ -49,6 +49,16 @@
                             </div>
                         </div>
                     </div>
+                    <div class="form-row">
+                        <div class="col-md-12">
+                            <div class="position-relative form-group">
+                                <label>Page Designs</label>
+                                <app-page-design-mapping [templateLookup]="templateLookup"
+                                    [renderingLookup]="renderingLookup" [(mapping)]="current.PageDesignMappings">
+                                </app-page-design-mapping>
+                            </div>
+                        </div>
+                    </div>
                     <button class="mt-1 btn btn-primary">Submit</button>
                     <button class="mt-1 ml-2 btn btn-light" [routerLink]="['/manage-websites']">Back</button>
                 </form>

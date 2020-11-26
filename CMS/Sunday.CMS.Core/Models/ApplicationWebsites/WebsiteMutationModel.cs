@@ -13,5 +13,6 @@ namespace Sunday.CMS.Core.Models.ApplicationWebsites
         public string[] HostNames { get; set; } = Array.Empty<string>();
         public Guid LayoutId { get; set; }
         public bool IsActive { get; set; }
+        public Dictionary<string, string> PageDesignMappings { get; set; } = new Dictionary<string, string>();
     }
 }

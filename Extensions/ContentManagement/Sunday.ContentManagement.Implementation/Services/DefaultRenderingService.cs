@@ -4,9 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using LanguageExt;
 using Newtonsoft.Json;
+using Sunday.ContentManagement.Implementation.Pipelines.Arguments;
 using Sunday.ContentManagement.Models;
 using Sunday.ContentManagement.Persistence.Application;
 using Sunday.ContentManagement.Persistence.Entities;
+using Sunday.ContentManagement.Persistence.Models;
 using Sunday.ContentManagement.Services;
 using Sunday.Core;
 using Sunday.Core.Extensions;
@@ -26,12 +28,17 @@ namespace Sunday.ContentManagement.Implementation.Services
             _renderingRepository = renderingRepository;
         }
 
-        public Task<SearchResult<Rendering>> Search(RenderingQuery query)
-            => _renderingRepository.Search(query).MapResultTo(rs => new SearchResult<Rendering>
-            {
-                Result = rs.Result.Select(ToModel).ToArray(),
-                Total = rs.Total
-            });
+        public async Task<SearchResult<Rendering>> Search(RenderingQuery query)
+        {
+            var renderings = await _renderingRepository.Search(query.MapTo<RenderingQueryParameter>())
+                .MapResultTo(rs => new SearchResult<Rendering>
+                {
+                    Result = rs.Result.Select(ToModel).ToArray(),
+                    Total = rs.Total
+                });
+            await ApplicationPipelines.RunAsync("cms.renderings.filter", new FilterRenderingsArgs(query, renderings));
+            return renderings;
+        }
 
         public async Task<Option<Rendering>> GetRenderingById(Guid id)
         {

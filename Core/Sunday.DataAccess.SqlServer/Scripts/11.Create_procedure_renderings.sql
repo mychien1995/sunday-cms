@@ -1,6 +1,7 @@
 ﻿CREATE OR ALTER PROCEDURE dbo.sp_renderings_search
 (
 	@Text nvarchar(1000),
+	@IsPageRendering bit,
 	@PageSize int,
 	@PageIndex int
 )
@@ -11,11 +12,20 @@ BEGIN
 	IF @PageIndex IS NULL
 		SET @PageIndex = 0
 
-	SELECT COUNT(*) FROM Renderings WHERE IsDeleted = 0 AND
-	(@Text IS NULL OR LEN(TRIM(@Text)) = 0 OR RenderingName LIKE '%' + @Text +'%')
+	DECLARE @Query nvarchar(max)
+	SET @Query = 'IsDeleted = 0 '
+	IF @Text IS NOT NULL AND LEN(TRIM(@Text)) > 0
+		SET @Query = @Query + ' AND (RenderingName LIKE ''%' + @Text + '%'' OR cast(Id as varchar(100)) = '''+@Text+''')'
+	IF @IsPageRendering IS NOT NULL
+		SET @Query = @Query + ' AND IsPageRendering = @IsPageRendering '
 
-	SELECT * FROM Renderings WHERE IsDeleted = 0 AND
-	(@Text IS NULL OR LEN(TRIM(@Text)) = 0 OR RenderingName LIKE '%' + @Text +'%')
+	DECLARE @CountQuery nvarchar(max)
+	SET @CountQuery = 'SELECT COUNT(*) FROM dbo.Renderings WHERE ' + @Query
+	DECLARE @SearchQuery nvarchar(max)
+	SET @SearchQuery = 'SELECT * FROM dbo.Renderings  WHERE ' + @Query + 'ORDER BY UpdatedDate DESC
+	OFFSET @PageIndex ROWS FETCH NEXT @PageSize ROWS ONLY';
+	exec sp_executesql @CountQuery, N'@IsPageRendering bit', @IsPageRendering
+	exec sp_executesql @SearchQuery, N'@IsPageRendering bit, @PageIndex int, @PageSize int', @IsPageRendering, @PageIndex, @PageSize
 END
 GO
 

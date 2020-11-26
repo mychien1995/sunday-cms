@@ -59,13 +59,14 @@ namespace Sunday.ContentManagement.Implementation.Services
         {
             var entity = model.MapTo<WebsiteEntity>();
             entity.HostNames = model.HostNames.ToDatabaseList();
+            entity.PageDesignMappings = model.PageDesignMappings.ToDatabaseDictionary();
             return entity;
         }
         private ApplicationWebsite ToDomainModel(WebsiteEntity entity)
         {
             var model = entity.MapTo<ApplicationWebsite>();
-            model.HostNames = entity.HostNames != null ? entity.HostNames.ToStringList().ToArray() 
-                : Array.Empty<string>();
+            model.HostNames = entity.HostNames.ToStringList().ToArray();
+            model.PageDesignMappings = entity.PageDesignMappings.ToDictionary();
             return model;
         }
     }

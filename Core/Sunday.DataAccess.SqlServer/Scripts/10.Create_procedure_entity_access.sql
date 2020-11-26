@@ -16,6 +16,18 @@ BEGIN
 END
 GO
 --------------------------------------------------------------------
+CREATE OR ALTER PROCEDURE dbo.sp_entityAccess_getByEntities
+@EntityIds nvarchar(MAX),
+@EntityType varchar(50)
+AS
+BEGIN
+	DECLARE  @tblIds TABLE (EntityId uniqueidentifier)
+	IF @EntityIds IS NOT NULL AND LEN(TRIM(@EntityIds)) > 0
+	INSERT INTO @tblIds SELECT Cast(value as uniqueidentifier) FROM STRING_SPLIT(@EntityIds, '|')
+	SELECT * FROM EntityAccesses WHERE EntityId IN (SELECT EntityId FROM @tblIds) AND EntityType = @EntityType
+END
+GO
+--------------------------------------------------------------------
 CREATE OR ALTER PROCEDURE dbo.sp_entityAccess_save
 @EntityId uniqueidentifier,
 @EntityType varchar(50),

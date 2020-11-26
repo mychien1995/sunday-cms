@@ -7,6 +7,7 @@ export class WebsiteItem extends ApiResponse {
   HostNames: string[] = [];
   LayoutId: string;
   IsActive: boolean;
+  PageDesignMappings: any;
 }
 
 export class WebsiteList extends ApiResponse {

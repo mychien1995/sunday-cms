@@ -5,6 +5,7 @@ using LanguageExt;
 using Sunday.ContentManagement.Models;
 using Sunday.ContentManagement.Persistence.Application;
 using Sunday.ContentManagement.Persistence.Entities;
+using Sunday.ContentManagement.Persistence.Models;
 using Sunday.Core;
 using Sunday.Core.Extensions;
 using Sunday.Core.Models.Base;
@@ -23,7 +24,7 @@ namespace Sunday.ContentManagement.Persistence.Implementation.Repositories
             _dRunner = dRunner;
         }
 
-        public Task<SearchResult<RenderingEntity>> Search(RenderingQuery query)
+        public Task<SearchResult<RenderingEntity>> Search(RenderingQueryParameter query)
             => _dRunner.ExecuteMultipleAsync<int, RenderingEntity>(ProcedureNames.Renderings.Search, query)
                 .MapResultTo(rs => new SearchResult<RenderingEntity>
                 {

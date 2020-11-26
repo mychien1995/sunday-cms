@@ -4,9 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using LanguageExt;
 using Sunday.ContentManagement.Domain;
+using Sunday.ContentManagement.Implementation.Pipelines.Arguments;
 using Sunday.ContentManagement.Models;
 using Sunday.ContentManagement.Persistence.Application;
 using Sunday.ContentManagement.Persistence.Entities;
+using Sunday.ContentManagement.Persistence.Models;
 using Sunday.ContentManagement.Services;
 using Sunday.Core;
 using Sunday.Core.Extensions;
@@ -27,12 +29,17 @@ namespace Sunday.ContentManagement.Implementation.Services
             _templateRepository = templateRepository;
         }
 
-        public Task<SearchResult<Template>> QueryAsync(TemplateQuery query)
-            => _templateRepository.QueryAsync(query).MapResultTo(rs => new SearchResult<Template>
+        public async Task<SearchResult<Template>> QueryAsync(TemplateQuery query)
+        {
+            var templates = await _templateRepository.QueryAsync(query.MapTo<TemplateQueryParameter>())
+                .MapResultTo(rs => new SearchResult<Template>
             {
                 Total = rs.Total,
                 Result = rs.Result.Select(ToDomainModel).ToArray()
             });
+            await ApplicationPipelines.RunAsync("cms.templates.filter", new FilterTemplatesArg(query, templates));
+            return templates;
+        }
 
         public Task<Option<Template>> GetByIdAsync(Guid templateId)
         => _templateRepository.GetByIdAsync(templateId).MapResultTo(rs => rs.Map(ToDomainModel));

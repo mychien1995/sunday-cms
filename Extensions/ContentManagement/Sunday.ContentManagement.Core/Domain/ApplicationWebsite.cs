@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Sunday.Core.Domain.Interfaces;
 
 namespace Sunday.ContentManagement.Domain
@@ -16,5 +17,6 @@ namespace Sunday.ContentManagement.Domain
         public DateTime UpdatedDate { get; set; }
         public string UpdatedBy { get; set; } = string.Empty;
         public bool IsDeleted { get; set; }
+        public Dictionary<string, string> PageDesignMappings { get; set; } = new Dictionary<string, string>();
     }
 }

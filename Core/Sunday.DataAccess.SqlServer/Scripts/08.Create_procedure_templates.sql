@@ -40,7 +40,7 @@ CREATE OR ALTER PROCEDURE sp_templates_delete
 )
 AS
 BEGIN
-	UPDATE Templates SET IsDeleted = 0 WHERE Id = @Id
+	UPDATE Templates SET IsDeleted = 1 WHERE Id = @Id
 END
 GO
 --------------------------------------------------------------------
@@ -53,21 +53,22 @@ CREATE OR ALTER PROCEDURE sp_templates_search
 )
 AS
 BEGIN
-	SELECT COUNT(*) FROM dbo.Templates WHERE IsDeleted = 0
-	AND 
-	@Text IS NULL OR LEN(TRIM(@Text)) = 0
-	OR CAST(Id as varchar(100)) = @Text
-	OR TemplateName LIKE '%' + @Text + '%'
-	OR (@IsAbstract IS NULL OR IsAbstract = @IsAbstract)
+	DECLARE @Query nvarchar(max)
+	SET @Query = 'IsDeleted = 0 '
+	IF @Text IS NOT NULL AND LEN(TRIM(@Text)) > 0
+		SET @Query = @Query + ' AND (TemplateName LIKE ''%' + @Text + '%'' OR cast(Id as varchar(100)) = '''+@Text+''')'
+	IF @IsAbstract IS NOT NULL
+		SET @Query = @Query + ' AND IsAbstract = @IsAbstract '
 
-	SELECT * FROM dbo.Templates WHERE IsDeleted = 0
-	AND 
-	@Text IS NULL OR LEN(TRIM(@Text)) = 0
-	OR CAST(Id as varchar(100)) = @Text
-	OR TemplateName LIKE '%' + @Text + '%'
-	OR (@IsAbstract IS NULL OR IsAbstract = @IsAbstract)
-	ORDER BY UpdatedDate DESC
-	OFFSET @PageIndex ROWS FETCH NEXT @PageSize ROWS ONLY
+	DECLARE @CountQuery nvarchar(max)
+	SET @CountQuery = 'SELECT COUNT(*) FROM dbo.Templates WHERE ' + @Query
+	DECLARE @SearchQuery nvarchar(max)
+	SET @SearchQuery = 'SELECT * FROM dbo.Templates  WHERE ' + @Query + 'ORDER BY UpdatedDate DESC
+	OFFSET @PageIndex ROWS FETCH NEXT @PageSize ROWS ONLY';
+	PRINT @SearchQuery
+	exec sp_executesql @CountQuery, N'@IsAbstract bit', @IsAbstract
+	exec sp_executesql @SearchQuery, N'@IsAbstract bit, @PageIndex int, @PageSize int', @IsAbstract, @PageIndex, @PageSize
+
 END
 GO
 --------------------------------------------------------------------

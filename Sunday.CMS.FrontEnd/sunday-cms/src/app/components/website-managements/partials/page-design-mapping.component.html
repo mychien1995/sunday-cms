@@ -1,0 +1,8 @@
+<div *ngFor="let item of innerMapping" class="d-flex">
+    <ng-select [items]="templateLookup" bindValue="Id" bindLabel="TemplateName" [(ngModel)]="item.Key" style="flex: 1;"
+     [placeholder]="'Select Template'" (change)="updateMapping()">
+    </ng-select>
+    <ng-select [items]="renderingLookup" bindValue="Id" bindLabel="RenderingName" [(ngModel)]="item.Value"
+    style="flex: 1;" [placeholder]="'Select Rendering'" (change)="updateMapping()">
+    </ng-select>
+</div>

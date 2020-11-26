@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Dapper;
 using LanguageExt;
 using Sunday.ContentManagement.Models;
 using Sunday.ContentManagement.Persistence.Application;
 using Sunday.ContentManagement.Persistence.Entities;
 using Sunday.ContentManagement.Persistence.Implementation.DapperParameters;
+using Sunday.ContentManagement.Persistence.Models;
 using Sunday.Core;
 using Sunday.Core.Extensions;
 using Sunday.Core.Models.Base;
@@ -23,7 +25,7 @@ namespace Sunday.ContentManagement.Persistence.Implementation.Repositories
             _dbRunner = dbRunner;
         }
 
-        public Task<SearchResult<TemplateEntity>> QueryAsync(TemplateQuery query)
+        public Task<SearchResult<TemplateEntity>> QueryAsync(TemplateQueryParameter query)
             => _dbRunner.ExecuteMultipleAsync<int, TemplateEntity>(ProcedureNames.Templates.Search, query).MapResultTo(
                 rs =>
                     new SearchResult<TemplateEntity>

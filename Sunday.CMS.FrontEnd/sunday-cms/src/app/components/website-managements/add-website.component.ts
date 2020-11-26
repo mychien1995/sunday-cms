@@ -1,11 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { ClientState } from '@services/layout/clientstate.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { WebsiteItem, OrganizationItem, LayoutItem } from '@models/index';
-import { WebsiteManagementService, OrganizationService, LayoutService, LayoutManagementService } from '@services/index';
+import {
+  WebsiteItem,
+  LayoutItem,
+  TemplateItem,
+  Rendering,
+} from '@models/index';
+import {
+  WebsiteManagementService,
+  LayoutManagementService,
+  TemplateManagementService,
+  RenderingService,
+} from '@services/index';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
-import { Observable, Subscription, forkJoin } from 'rxjs';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-add-website',
@@ -15,11 +25,13 @@ export class AddWebsiteComponent implements OnInit {
   public dataForm: FormGroup = new FormGroup({
     WebsiteName: new FormControl('', [Validators.required]),
     IsActive: new FormControl(true),
-    LayoutId : new FormControl('', [Validators.required]),
+    LayoutId: new FormControl('', [Validators.required]),
   });
   public layoutLookup: LayoutItem[] = [];
   public isEdit: boolean;
   public current: WebsiteItem = new WebsiteItem();
+  public templateLookup: TemplateItem[] = [];
+  public renderingLookup: Rendering[] = [];
 
   public formTitle = 'Create Website';
   constructor(
@@ -28,6 +40,8 @@ export class AddWebsiteComponent implements OnInit {
     private clientState: ClientState,
     private layoutService: LayoutManagementService,
     private WebsiteService: WebsiteManagementService,
+    private templateService: TemplateManagementService,
+    private renderingService: RenderingService,
     private toastr: ToastrService
   ) {
     this.activatedRoute.data.subscribe((data: { website: WebsiteItem }) => {
@@ -36,6 +50,24 @@ export class AddWebsiteComponent implements OnInit {
         this.current = data.website;
         this.formTitle = 'Edit Website';
       }
+      const query = {
+        PageSize: 1000,
+        WebsiteId: this.current.Id,
+        IsAbstract: false,
+        IsPageRendering: true,
+      };
+      this.clientState.isBusy = true;
+      forkJoin([
+        this.templateService.getTemplates(query),
+        this.renderingService.getRenderings(query),
+      ]).subscribe(
+        (res) => {
+          this.templateLookup = res[0].Templates;
+          this.renderingLookup = res[1].List;
+          this.clientState.isBusy = false;
+        },
+        (ex) => (this.clientState.isBusy = false)
+      );
     });
   }
 
@@ -51,13 +83,13 @@ export class AddWebsiteComponent implements OnInit {
           Validators.required,
         ]),
         IsActive: new FormControl(true),
-        LayoutId : new FormControl(this.current.LayoutId, [Validators.required]),
+        LayoutId: new FormControl(this.current.LayoutId, [Validators.required]),
       });
     }
   }
 
   getLayouts(): void {
-    this.layoutService.getLayouts({PageSize : 1000}).subscribe((res) => {
+    this.layoutService.getLayouts({ PageSize: 1000 }).subscribe((res) => {
       if (res.Success) {
         this.layoutLookup = res.Layouts;
       }
@@ -71,6 +103,7 @@ export class AddWebsiteComponent implements OnInit {
     const data = <WebsiteItem>formValue;
     data.HostNames = this.current.HostNames;
     data.Id = this.isEdit ? this.current.Id : '';
+    data.PageDesignMappings = this.current.PageDesignMappings;
     this.clientState.isBusy = true;
     const observ = this.isEdit
       ? this.WebsiteService.updateWebsite(data)
@@ -85,7 +118,7 @@ export class AddWebsiteComponent implements OnInit {
         }
         this.clientState.isBusy = false;
       },
-      (ex) => (this.clientState.isBusy = false)
+      () => (this.clientState.isBusy = false)
     );
   }
 }

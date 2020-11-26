@@ -53,8 +53,9 @@ namespace Sunday.Foundation.Implementation
         }
         public class EntityAccess
         {
-            public const string Save = "sp_entityAccess_save";
+            public const string Save = "sp_entityAccess_save"; 
             public const string GetByEntity = "sp_entityAccess_getByEntity";
+            public const string GetByEntities = "sp_entityAccess_getByEntities";
             public const string GetByOrganization = "sp_entityAccess_getByOrganization";
         }
     }

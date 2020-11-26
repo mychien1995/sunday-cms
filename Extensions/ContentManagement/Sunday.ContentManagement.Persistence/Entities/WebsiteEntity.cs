@@ -5,12 +5,13 @@ using Sunday.DataAccess.SqlServer.Attributes;
 
 namespace Sunday.ContentManagement.Persistence.Entities
 {
-    [MappedTo(typeof(ApplicationWebsite))]
+    [MappedTo(typeof(ApplicationWebsite), true, nameof(PageDesignMappings))]
     public class WebsiteEntity
     {
         public Guid Id { get; set; }
         public string WebsiteName { get; set; } = string.Empty;
         public string HostNames { get; set; } = string.Empty;
+        public string PageDesignMappings { get; set; } = string.Empty;
         [DapperIgnoreParam(DbOperation.Update)]
         public Guid OrganizationId { get; set; }
         public Guid LayoutId { get; set; }

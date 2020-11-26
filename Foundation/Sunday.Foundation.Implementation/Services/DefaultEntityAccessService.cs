@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LanguageExt;
@@ -34,22 +35,24 @@ namespace Sunday.Foundation.Implementation.Services
         public Task<Option<EntityAccess>> GetByEntity(Guid entityId, string entityType)
             => _entityAccessRepository.GetEntityAccess(entityId, entityType).MapResultTo(ToModel);
 
-        public Task<EntityAccess[]> GetByOrganization(Guid organizationId, string entityType)
-        => _entityAccessRepository.GetEntityAccessByOrganization(organizationId, entityType).MapResultTo(entities => entities.Select(e => new EntityAccess
-        {
-            EntityId = e.EntityId,
-            EntityType = e.EntityType,
-            OrganizationAccess = new[]
-            {
-                new EntityOrganizationAccess
-                {
-                    OrganizationId = organizationId,
-                    OrganizationRoleIds = e.OrganizationRoleIds.ToStringList().Select(Guid.Parse).ToArray(),
-                    WebsiteIds = e.WebsiteIds.ToStringList().Select(Guid.Parse).ToArray()
-                }
-            }
-        }).ToArray());
+        public Task<EntityAccessFlat[]> GetByOrganization(Guid organizationId, string entityType)
+        => _entityAccessRepository.GetEntityAccessByOrganization(organizationId, entityType).MapResultTo(entities => entities.Select(ToEntityFlat).ToArray());
 
+        public Task<Dictionary<Guid, EntityAccessFlat[]>> GetEntitiesAccess(IEnumerable<Guid> entityId,
+            string entityType)
+            => _entityAccessRepository.GetEntitiesAccess(entityId, entityType).MapResultTo(rs =>
+                rs.Where(e => e.Value.Any()).ToDictionary(k => k.Key,
+                    v => v.Value.Select(ToEntityFlat).ToArray()));
+
+        private EntityAccessFlat ToEntityFlat(EntityAccessEntity e)
+            => new EntityAccessFlat
+            {
+                EntityId = e.EntityId,
+                EntityType = e.EntityType,
+                OrganizationId = e.OrganizationId,
+                WebsiteIds = e.WebsiteIds.ToStringList().ToArray(),
+                OrganizationRoleIds = e.OrganizationRoleIds.ToStringList().ToArray()
+            };
         private Option<EntityAccess> ToModel(EntityAccessEntity[] entities)
         {
             if (!entities.Any()) return Option<EntityAccess>.None;

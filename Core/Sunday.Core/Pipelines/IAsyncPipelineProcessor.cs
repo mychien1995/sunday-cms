@@ -4,6 +4,6 @@ namespace Sunday.Core.Pipelines
 {
     public interface IAsyncPipelineProcessor
     {
-        Task ProcessAsync(PipelineArg arg);
+        Task ProcessAsync(PipelineArg pipelineArg);
     }
 }

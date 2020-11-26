@@ -31,6 +31,7 @@ import {
   TemplateInfoComponent,
   TwoSideSelectWithSearchComponent,
   SpinnerComponent,
+  PageDesignMappingComponent,
 } from 'app/components';
 import {
   ApplicationLayoutComponent,
@@ -80,7 +81,8 @@ export const SharedComponents = [
   TemplateFieldComponent,
   TemplateInfoComponent,
   TwoSideSelectWithSearchComponent,
-  SpinnerComponent
+  SpinnerComponent,
+  PageDesignMappingComponent
 ];
 import {
   UserResolver,

@@ -9,6 +9,14 @@ namespace Sunday.Foundation.Domain
 
         public EntityOrganizationAccess[] OrganizationAccess { get; set; } = Array.Empty<EntityOrganizationAccess>();
     }
+    public class EntityAccessFlat
+    {
+        public Guid EntityId { get; set; }
+        public string EntityType { get; set; } = string.Empty;
+        public Guid OrganizationId { get; set; }
+        public string[] WebsiteIds { get; set; } = Array.Empty<string>();
+        public string[] OrganizationRoleIds { get; set; } = Array.Empty<string>();
+    }
 
     public class EntityOrganizationAccess
     {
