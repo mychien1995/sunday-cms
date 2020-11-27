@@ -52,6 +52,7 @@ namespace Sunday.Portfolio.Project
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
+                endpoints.MapDefaultControllerRoute();
             });
             app.InitializeSunday();
             app.UseMiddleware<ContentMiddleware>();
