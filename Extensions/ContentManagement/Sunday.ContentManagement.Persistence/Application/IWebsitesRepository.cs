@@ -15,5 +15,6 @@ namespace Sunday.ContentManagement.Persistence.Application
         Task CreateAsync(WebsiteEntity website);
         Task UpdateAsync(WebsiteEntity website);
         Task DeleteAsync(Guid websiteId);
+        Task<Option<WebsiteEntity>> GetByHostNameAsync(string hostName);
     }
 }

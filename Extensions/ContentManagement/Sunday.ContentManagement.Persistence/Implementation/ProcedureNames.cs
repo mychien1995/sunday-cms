@@ -16,6 +16,7 @@
             public const string Update = "sp_websites_update";
             public const string Delete = "sp_websites_delete";
             public const string GetById = "sp_websites_getById";
+            public const string GetByHostName = "sp_websites_getByHostName";
         }
         public class Templates
         {

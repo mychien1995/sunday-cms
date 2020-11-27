@@ -5,8 +5,9 @@ export class Rendering extends ApiResponse {
   RenderingName: string;
   Controller: string;
   Action: string;
-  IsPageRendering: boolean;
+  Component: string;
   IsRequireDatasource: boolean;
+  RenderingType: string;
   DatasourceTemplate: string;
   DatasourceLocation: string;
   CreatedDate: Date;

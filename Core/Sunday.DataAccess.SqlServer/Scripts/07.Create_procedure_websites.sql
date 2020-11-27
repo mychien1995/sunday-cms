@@ -99,3 +99,14 @@ BEGIN
 	SELECT * FROM dbo.Websites WHERE Id = @Id AND IsDeleted = 0
 END
 GO
+--------------------------------------------------------------------
+CREATE OR ALTER PROCEDURE sp_websites_getByHostName
+(
+	@HostName nvarchar(500)
+)
+AS
+BEGIN
+	SELECT * FROM Websites WHERE IsDeleted = 0 AND IsActive = 1 AND (HostNames =  @HostName OR HostNames LIKE '%|' + @HostName + '|%'
+	OR HostNames LIKE '%|' + @HostName)
+END
+GO

@@ -52,12 +52,6 @@ namespace Sunday.Portfolio.Project
             {
                 endpoints.MapRazorPages();
             });
-
-            app.Run(context =>
-            { 
-                var path = context.Request.Path;
-                context.get
-            });
             app.InitializeSunday();
         }
     }

@@ -73,6 +73,7 @@ namespace Sunday.CMS.Core.Implementation
         RenderingJsonResult ToJsonResult(Rendering model)
         {
             var jsonResult = model.MapTo<RenderingJsonResult>();
+            jsonResult.Component = model.Properties.Get("Component").IfNone(string.Empty);
             jsonResult.Action = model.Properties.Get("Action").IfNone(string.Empty);
             jsonResult.Controller = model.Properties.Get("Controller").IfNone(string.Empty);
             return jsonResult;
@@ -85,8 +86,8 @@ namespace Sunday.CMS.Core.Implementation
             {
                 {"Action", jsonResult.Action},
                 {"Controller", jsonResult.Controller},
+                {"Component", jsonResult.Component }
             };
-            model.RenderingType = "ControllerRendering";
             return model;
         }
     }

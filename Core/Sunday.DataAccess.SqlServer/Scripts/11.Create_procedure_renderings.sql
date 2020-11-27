@@ -91,7 +91,8 @@ BEGIN
 	ELSE
 	UPDATE [Renderings] SET RenderingName = @RenderingName, IsPageRendering = @IsPageRendering,
 	IsRequireDatasource = @IsRequireDatasource, DatasourceLocation = @DatasourceLocation,
-	DatasourceTemplate = @DatasourceTemplate, UpdatedDate = @UpdatedDate, UpdatedBy = @UpdatedBy
+	DatasourceTemplate = @DatasourceTemplate, UpdatedDate = @UpdatedDate, UpdatedBy = @UpdatedBy,
+	RenderingType = @RenderingType
 	WHERE Id = @Id
 END
 GO

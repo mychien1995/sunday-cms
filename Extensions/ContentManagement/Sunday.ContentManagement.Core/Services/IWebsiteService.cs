@@ -15,5 +15,6 @@ namespace Sunday.ContentManagement.Services
         Task CreateAsync(ApplicationWebsite website);
         Task UpdateAsync(ApplicationWebsite website);
         Task DeleteAsync(Guid websiteId);
+        Task<Option<ApplicationWebsite>> GetByHostNameAsync(string hostName);
     }
 }

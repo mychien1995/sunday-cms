@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Sunday.CMS.Core.Application;
 using Sunday.CMS.Core.Models.Contents;
+using Sunday.ContentManagement;
 using Sunday.ContentManagement.Models;
 using Sunday.Foundation.Context;
 
@@ -39,6 +40,15 @@ namespace Sunday.CMS.Interface.Controllers
         {
             var result = await _renderingManager.GetById(id);
             return Ok(result);
+        }
+
+        [HttpGet("getRenderingTypes")]
+        public IActionResult GetRenderingTypes()
+        {
+            return Ok(new
+            {
+                data = new[] { RenderingTypes.PageRendering, RenderingTypes.ViewComponent }
+            });
         }
         [HttpDelete]
         public async Task<IActionResult> Delete([FromQuery] Guid id)

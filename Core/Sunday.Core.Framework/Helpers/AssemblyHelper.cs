@@ -17,9 +17,15 @@ namespace Sunday.Core.Framework.Helpers
             var result = new List<Assembly>();
             foreach (var dll in Directory.GetFiles(directory, "*.dll", SearchOption.TopDirectoryOnly))
             {
-                if (!compiled.Invoke(dll)) continue;
-                var loadedAssembly = AssemblyLoadContext.Default.LoadFromAssemblyPath(dll);
-                result.Add(loadedAssembly);
+                try
+                {
+                    if (!compiled.Invoke(dll)) continue;
+                    var loadedAssembly = AssemblyLoadContext.Default.LoadFromAssemblyPath(dll);
+                    result.Add(loadedAssembly);
+                }
+                catch
+                {
+                }
             }
             return result;
         }

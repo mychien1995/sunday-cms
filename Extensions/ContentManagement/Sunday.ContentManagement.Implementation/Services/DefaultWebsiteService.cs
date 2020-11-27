@@ -14,7 +14,6 @@ using Sunday.Core.Models.Base;
 using Sunday.Core.Pipelines;
 using Sunday.Core.Pipelines.Arguments;
 using Sunday.DataAccess.SqlServer.Extensions;
-using Sunday.Foundation.Context;
 
 namespace Sunday.ContentManagement.Implementation.Services
 {
@@ -54,6 +53,9 @@ namespace Sunday.ContentManagement.Implementation.Services
 
         public Task DeleteAsync(Guid websiteId)
             => _websitesRepository.DeleteAsync(websiteId);
+
+        public Task<Option<ApplicationWebsite>> GetByHostNameAsync(string hostName)
+            => _websitesRepository.GetByHostNameAsync(hostName).MapResultTo(rs => rs.Map(ToDomainModel));
 
         private WebsiteEntity ToEntity(ApplicationWebsite model)
         {

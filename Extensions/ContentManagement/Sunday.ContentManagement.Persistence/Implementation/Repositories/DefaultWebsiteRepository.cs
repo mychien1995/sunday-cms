@@ -43,5 +43,9 @@ namespace Sunday.ContentManagement.Persistence.Implementation.Repositories
 
         public Task DeleteAsync(Guid websiteId)
             => _dbRunner.ExecuteAsync(ProcedureNames.Websites.Delete, new { Id = websiteId });
+
+        public Task<Option<WebsiteEntity>> GetByHostNameAsync(string hostName)
+            => _dbRunner.ExecuteAsync<WebsiteEntity>(ProcedureNames.Websites.GetByHostName, new { HostName = hostName })
+                .MapResultTo(rs => Optional(rs.FirstOrDefault()));
     }
 }

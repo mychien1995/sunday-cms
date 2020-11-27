@@ -93,6 +93,7 @@ export class ApiUrl {
     Update: 'cms/api/renderings/update/',
     Delete: 'cms/api/renderings/',
     GetById: 'cms/api/renderings/',
+    GetRenderingTypes: 'cms/api/renderings/getRenderingTypes',
   };
   public static FileUpload = 'cms/api/FileUpload';
 }

@@ -13,7 +13,7 @@ namespace Sunday.CMS.Core.Models.Contents
         public string RenderingName { get; set; } = string.Empty;
         public string Controller { get; set; } = string.Empty;
         public string Action { get; set; } = string.Empty;
-        public bool IsPageRendering { get; set; }
+        public string Component { get; set; } = string.Empty;
         public bool IsRequireDatasource { get; set; }
         public Guid? DatasourceTemplate { get; set; }
         public string DatasourceLocation { get; set; } = string.Empty;
@@ -21,6 +21,7 @@ namespace Sunday.CMS.Core.Models.Contents
         public DateTime UpdatedDate { get; set; }
         public string CreatedBy { get; set; } = string.Empty;
         public string UpdatedBy { get; set; } = string.Empty;
+        public string RenderingType { get; set; } = string.Empty;
 
         public EntityAccess? Access { get; set; }
     }

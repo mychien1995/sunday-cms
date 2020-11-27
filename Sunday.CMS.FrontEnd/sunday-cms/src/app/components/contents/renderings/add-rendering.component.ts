@@ -13,15 +13,17 @@ import { ToastrService } from 'ngx-toastr';
 export class AddRenderingComponent implements OnInit {
   public dataForm: FormGroup = new FormGroup({
     RenderingName: new FormControl('', [Validators.required]),
-    Controller: new FormControl('', [Validators.required]),
-    Action: new FormControl('', [Validators.required]),
-    IsPageRendering: new FormControl(false),
+    Controller: new FormControl(''),
+    Action: new FormControl(''),
+    Component: new FormControl(''),
     IsRequireDatasource: new FormControl(false),
     DatasourceLocation: new FormControl(''),
+    RenderingType: new FormControl('', [Validators.required])
   });
   public isEdit: boolean;
   public current: Rendering = new Rendering();
   selectedTemplates: string[] = [];
+  renderingTypes: any[] = [];
 
   public formTitle = 'Create Rendering';
   constructor(
@@ -36,11 +38,11 @@ export class AddRenderingComponent implements OnInit {
         this.isEdit = true;
         this.current = data.rendering;
         this.formTitle = 'Edit Rendering';
-        this.dataForm.controls['IsPageRendering'].setValue(
-          this.current.IsPageRendering
-        );
         this.dataForm.controls['IsRequireDatasource'].setValue(
           this.current.IsRequireDatasource
+        );
+        this.dataForm.controls['RenderingType'].setValue(
+          this.current.RenderingType
         );
         this.selectedTemplates =
           this.current?.DatasourceTemplate &&
@@ -52,8 +54,7 @@ export class AddRenderingComponent implements OnInit {
   }
 
   onPageRenderingChanged(): void {
-    this.current.IsPageRendering = !this.current.IsPageRendering;
-    if (this.current.IsPageRendering) {
+    if (this.IsPageRendering) {
       this.dataForm.controls['IsRequireDatasource'].setValue(false);
       this.current.IsRequireDatasource = false;
       this.current.DatasourceLocation = '';
@@ -62,7 +63,15 @@ export class AddRenderingComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {}
+  get IsPageRendering(): boolean {
+    return this.current?.RenderingType === 'PageRendering';
+  }
+
+  ngOnInit(): void {
+    this.renderingService.getRenderingTypes().subscribe((res) => {
+      this.renderingTypes = res.data;
+    });
+  }
 
   onSubmit(formValue: any): void {
     if (!this.dataForm.valid) {
@@ -70,7 +79,11 @@ export class AddRenderingComponent implements OnInit {
     }
     this.current.DatasourceTemplate =
       this.selectedTemplates.find((t) => t && t.trim().length > 0) ?? null;
-    const data = { ...this.current, ...(<Rendering>formValue) };
+    const data = {
+      ...this.current,
+      ...(<Rendering>formValue),
+      ...{ IsPageRendering: false },
+    };
     data.Id = this.isEdit ? this.current.Id : '';
     data.Access = this.current.Access;
     this.clientState.isBusy = true;

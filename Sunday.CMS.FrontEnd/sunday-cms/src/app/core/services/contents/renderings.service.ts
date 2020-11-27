@@ -39,4 +39,10 @@ export class RenderingService {
       .delete(`${ApiUrl.Renderings.Delete}?id=${id}`)
       .pipe(map(ApiHelper.onSuccess), catchError(ApiHelper.onFail));
   }
+
+  getRenderingTypes(): Observable<any> {
+    return this.apiService
+      .get(`${ApiUrl.Renderings.GetRenderingTypes}`)
+      .pipe(map(ApiHelper.onSuccess), catchError(ApiHelper.onFail));
+  }
 }

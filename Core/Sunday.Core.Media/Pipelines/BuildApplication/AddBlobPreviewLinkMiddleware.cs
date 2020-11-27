@@ -23,7 +23,8 @@ namespace Sunday.Core.Media.Pipelines.BuildApplication
         {
             app.Run(async context =>
             {
-                var identifier = context.Request.Path.Value.Replace(RoutePaths.BlobPreviewRoute, "");
+                var path = context.Request.Path.Value;
+                var identifier = path.Replace(RoutePaths.BlobPreviewRoute, "");
                 var blob = this._blobProvider.GetBlob(identifier);
                 if (blob != null)
                 {
