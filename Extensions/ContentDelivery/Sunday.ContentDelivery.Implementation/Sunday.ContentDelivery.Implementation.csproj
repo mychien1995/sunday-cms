@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Sunday.ContentDelivery.Core\Sunday.ContentDelivery.Core.csproj" />
+    <ProjectReference Include="..\Sunday.ContentDelivery.Framework\Sunday.ContentDelivery.Framework.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -29,6 +29,7 @@ namespace Sunday.ContentManagement.Implementation.Pipelines
             var currentUser = SundayContext.CurrentUser!;
             var filteredEntities = new List<T>();
             Dictionary<Guid, EntityAccessFlat[]> entityAccesses = await EntityAccessService.GetEntitiesAccess(entities.Select(t => t.Id), entityType);
+            if (!entityAccesses.Any()) return entities;
             filteredEntities.AddRange(entities.Where(t => entityAccesses.All(acc => acc.Key != t.Id)));
             if (websiteId.HasValue)
             {

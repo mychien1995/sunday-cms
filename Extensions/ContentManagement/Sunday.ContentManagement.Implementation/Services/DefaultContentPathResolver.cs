@@ -79,5 +79,26 @@ namespace Sunday.ContentManagement.Implementation.Services
             }
             return address;
         }
+
+        public async Task<Option<Content>> GetContentByNamePath(Guid websiteId, string path)
+        {
+            var formalizedPath = path.Trim().Trim('/').ToLower().Replace('\\', '/');
+            var roots = await _contentService.GetChildsAsync(websiteId, ContentType.Website);
+            if (!roots.Any()) return Option<Content>.None;
+            var home = roots.FirstOrDefault(IsPage);
+            if (home == null) return Option<Content>.None;
+            if (string.IsNullOrEmpty(formalizedPath)) return home;
+            var parts = formalizedPath.Split('/').Select(p => p.Trim()).ToList();
+            var currentContent = home;
+            while (parts.Count > 0)
+            {
+                var currentName = parts[0];
+                var childs = await _contentService.GetChildsAsync(currentContent.Id, ContentType.Content);
+                currentContent = childs.FirstOrDefault(c => c.Name.ToLower() == currentName);
+                if (currentContent == null) return Option<Content>.None;
+            }
+            return currentContent;
+        }
+        private bool IsPage(Content content) => true;
     }
 }

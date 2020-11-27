@@ -17,7 +17,7 @@ BEGIN
 	IF @Text IS NOT NULL AND LEN(TRIM(@Text)) > 0
 		SET @Query = @Query + ' AND (RenderingName LIKE ''%' + @Text + '%'' OR cast(Id as varchar(100)) = '''+@Text+''')'
 	IF @IsPageRendering IS NOT NULL
-		SET @Query = @Query + ' AND IsPageRendering = @IsPageRendering '
+		SET @Query = @Query + ' AND RenderingType = ''PageRendering'' '
 
 	DECLARE @CountQuery nvarchar(max)
 	SET @CountQuery = 'SELECT COUNT(*) FROM dbo.Renderings WHERE ' + @Query

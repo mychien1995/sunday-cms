@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using LanguageExt;
 using Microsoft.AspNetCore.Http;
@@ -40,8 +41,7 @@ namespace Sunday.ContentDelivery.Framework.Middlewares
         public async Task Invoke(HttpContext httpContext)
         {
             var requestPath = httpContext.Request.Path;
-            var port = httpContext.Connection.LocalPort;
-            var hostName = $"{httpContext.Request.Host}{(port != 80 && port != 443 ? port.ToString() : "")}";
+            var hostName = httpContext.Request.Host.Value;
             var websiteOpt = await _websiteService.GetByHostNameAsync(hostName);
             if (websiteOpt.IsNone) goto END;
             var website = websiteOpt.Get();
@@ -63,16 +63,18 @@ namespace Sunday.ContentDelivery.Framework.Middlewares
             var actionKey = FormalActionKey(rendering);
             var descriptorOption = _actionDescriptorCache.Get(actionKey);
             if (descriptorOption.IsNone) return;
-            var endpoint = httpContext.GetEndpoint();
-            var dataTokens = endpoint.Metadata.GetMetadata<IDataTokensMetadata>();
-            var routeData = new RouteData();
-            routeData.PushState(router: null, httpContext.Request.RouteValues, new RouteValueDictionary(dataTokens?.DataTokens));
+            var descriptor = descriptorOption.Get();
+            var routeData = new RouteData(new RouteValueDictionary(new Dictionary<string, object>
+            {
+                {"action", descriptor.ActionName},
+                {"controller", descriptor.ControllerName},
+            }));
             var actionContext = new ActionContext(httpContext, routeData, descriptorOption.Get());
             await _actionInvokerFactory.CreateInvoker(actionContext).InvokeAsync();
         }
 
         private string GetActionKey(ControllerActionDescriptor descriptor)
-        => $"{descriptor.ControllerTypeInfo.FullName},{descriptor.ControllerTypeInfo.Assembly.FullName!}|{descriptor.ActionName}".ToLower();
+        => $"{descriptor.ControllerTypeInfo.FullName},{descriptor.ControllerTypeInfo.Assembly.GetName().Name}|{descriptor.ActionName}".ToLower();
 
         private string FormalActionKey(Rendering rendering)
         {

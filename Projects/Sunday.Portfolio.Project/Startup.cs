@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Sunday.ContentDelivery.Framework.Middlewares;
 using Sunday.Core.Framework;
 
 namespace Sunday.Portfolio.Project
@@ -53,6 +54,7 @@ namespace Sunday.Portfolio.Project
                 endpoints.MapRazorPages();
             });
             app.InitializeSunday();
+            app.UseMiddleware<ContentMiddleware>();
         }
     }
-}  
+}
