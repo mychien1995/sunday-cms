@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'http://sunday-cms.local/'
+  apiUrl: 'https://localhost:3002/'
 };

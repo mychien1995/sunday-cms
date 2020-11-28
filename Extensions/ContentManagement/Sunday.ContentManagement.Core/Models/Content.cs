@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Sunday.ContentManagement.Domain;
 using Sunday.Core.Domain.Interfaces;
 
@@ -26,5 +27,17 @@ namespace Sunday.ContentManagement.Models
         public Template Template { get; set; } = new Template();
 
         public ContentAddress? ContentAddress { get; set; }
+
+        public ContentField? this[string fieldName]
+        {
+            get
+            {
+                var fieldTemplate = Template.Fields.FirstOrDefault(f => f.FieldName == fieldName);
+                if (fieldTemplate == null) return null;
+                var field = Fields.Single(f => f.TemplateFieldId == fieldTemplate.Id);
+                field.TemplateField = fieldTemplate;
+                return field;
+            }
+        }
     }
 }
