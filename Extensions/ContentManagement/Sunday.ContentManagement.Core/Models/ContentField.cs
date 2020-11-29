@@ -1,14 +1,25 @@
 ﻿using System;
-using Sunday.ContentManagement.Domain;
 
 namespace Sunday.ContentManagement.Models
 {
     public class ContentField
     {
         public Guid Id { get; set; }
-        public string? FieldValue { get; set; }
+        public object? FieldValue { get; set; }
         public Guid TemplateFieldId { get; set; }
-        public Guid ContentId { get; set; }
-        public TemplateField? TemplateField { get; set; }
+        public int TemplateFieldCode { get; set; }
+
+        public ContentField()
+        {
+            
+        }
+
+        public ContentField(Guid id, object? fieldValue, Guid templateFieldId, int templateFieldCode)
+        {
+            Id = id;
+            FieldValue = fieldValue;
+            TemplateFieldId = templateFieldId;
+            TemplateFieldCode = templateFieldCode;
+        }
     }
 }

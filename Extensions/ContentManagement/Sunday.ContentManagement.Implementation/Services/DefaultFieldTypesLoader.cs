@@ -9,7 +9,7 @@ using Sunday.Core.Configuration;
 
 namespace Sunday.ContentManagement.Implementation.Services
 {
-    public class DefaultFieldTypesLoader : IFieldTypesLoader
+    public class DefaultFieldTypesLoader : IFieldTypesProvider
     {
         private static readonly Dictionary<int, TemplateFieldType> Mappings = new Dictionary<int, TemplateFieldType>();
 

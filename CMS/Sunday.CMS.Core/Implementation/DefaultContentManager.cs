@@ -36,7 +36,7 @@ namespace Sunday.CMS.Core.Implementation
                 return BaseApiResponse.ErrorResult<ContentJsonResult>("Content not found");
             var jsonResult = content.MapTo<ContentJsonResult>();
             jsonResult.Versions =
-                content.Versions.Select(v => new ContentVersion { Version = v.Version, VersionId = v.Id, IsActive = v.IsActive, Status = v.Status }).OrderBy(v => v.Version)
+                content.Versions.Select(ContentVersion.New).OrderBy(v => v.Version)
                     .ToArray();
             jsonResult.Fields = version.Fields.Select(f => new ContentFieldItem
             { FieldValue = f.FieldValue, Id = f.Id, TemplateFieldId = f.TemplateFieldId }).ToArray();
@@ -54,12 +54,7 @@ namespace Sunday.CMS.Core.Implementation
             {
                 Id = Guid.NewGuid(),
                 IsActive = true,
-                Fields = content.Fields.Select(f => new WorkContentField
-                {
-                    Id = Guid.NewGuid(),
-                    FieldValue = f.FieldValue,
-                    TemplateFieldId = f.TemplateFieldId
-                }).ToArray(),
+                Fields = content.Fields.Select(f => new ContentField(f.Id, f.FieldValue, f.TemplateFieldId, f.TemplateFieldCode)).ToArray(),
                 Status = (int)ContentStatuses.Draft
             };
             model.Versions = new[] { version };
@@ -75,12 +70,7 @@ namespace Sunday.CMS.Core.Implementation
             {
                 Id = activeVersion.VersionId,
                 IsActive = true,
-                Fields = content.Fields.Select(f => new WorkContentField
-                {
-                    Id = f.Id == Guid.Empty ? Guid.NewGuid() : f.Id,
-                    FieldValue = f.FieldValue,
-                    TemplateFieldId = f.TemplateFieldId
-                }).ToArray()
+                Fields = content.Fields.Select(f => new ContentField(f.Id, f.FieldValue, f.TemplateFieldId, f.TemplateFieldCode)).ToArray()
             };
             model.Versions = new[] { version };
             await _contentService.UpdateAsync(model);

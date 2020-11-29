@@ -2,7 +2,7 @@
 
 namespace Sunday.ContentManagement.Services
 {
-    public interface IFieldTypesLoader
+    public interface IFieldTypesProvider
     {
         TemplateFieldType[] List();
 

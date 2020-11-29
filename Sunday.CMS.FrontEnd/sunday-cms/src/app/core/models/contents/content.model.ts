@@ -42,4 +42,5 @@ export class ContentFieldItem {
   Id: string;
   FieldValue?: string;
   TemplateFieldId: string;
+  TemplateFieldCode: number;
 }

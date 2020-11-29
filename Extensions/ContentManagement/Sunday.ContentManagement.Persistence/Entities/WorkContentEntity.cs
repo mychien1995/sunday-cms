@@ -17,7 +17,7 @@ namespace Sunday.ContentManagement.Persistence.Entities
         public int Status { get; set; }
         public bool IsActive { get; set; }
 
-        public WorkContentFieldEntity[] Fields { get; set; } = Array.Empty<WorkContentFieldEntity>();
+        public ContentFieldEntity[] Fields { get; set; } = Array.Empty<ContentFieldEntity>();
 
     }
 }

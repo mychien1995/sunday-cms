@@ -18,10 +18,10 @@ namespace Sunday.CMS.Core.Implementation
     public class DefaultApplicationTemplateManager : IApplicationTemplateManager
     {
         private readonly ITemplateService _templateService;
-        private readonly IFieldTypesLoader _fieldTypesLoader;
+        private readonly IFieldTypesProvider _fieldTypesLoader;
         private readonly IEntityAccessService _entityAccessService;
 
-        public DefaultApplicationTemplateManager(ITemplateService templateService, IFieldTypesLoader fieldTypesLoader, IEntityAccessService entityAccessService)
+        public DefaultApplicationTemplateManager(ITemplateService templateService, IFieldTypesProvider fieldTypesLoader, IEntityAccessService entityAccessService)
         {
             _templateService = templateService;
             _fieldTypesLoader = fieldTypesLoader;

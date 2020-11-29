@@ -165,7 +165,9 @@ AS
 BEGIN
 	SELECT * INTO #tmpContent FROM Contents WHERE Id = @Id AND IsDeleted = 0
 	SELECT * FROM #tmpContent
-	SELECT * FROM Templates WHERE Id IN (SELECT TOP 1 TemplateId FROM #tmpContent) AND IsDeleted = 0
+	SELECT * INTO #tmpTemplate FROM Templates WHERE Id IN (SELECT TOP 1 TemplateId FROM #tmpContent) AND IsDeleted = 0
+	SELECT * FROM #tmpTemplate
+	SELECT * FROM TemplateFields WHERE TemplateId IN (SELECT TOP 1 Id FROM #tmpTemplate)
 	IF @IncludeVersions = 1
 	BEGIN
 		SELECT * into #tmpWorkContents FROM WorkContents WHERE ContentId = @Id AND IsDeleted = 0 ORDER BY Version DESC

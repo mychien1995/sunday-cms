@@ -12,7 +12,7 @@ namespace Sunday.ContentManagement.Implementation.Pipelines.ConfigureServices
         public void Process(PipelineArg pipelineArg)
         {
             var arg = (ConfigureServicesArg) pipelineArg;
-            arg.ServicesCollection.AddSingleton<IFieldTypesLoader>(sp =>
+            arg.ServicesCollection.AddSingleton<IFieldTypesProvider>(sp =>
             {
                 var appConfig = sp.GetService<ApplicationConfiguration>();
                 var fieldTypeLoader = new DefaultFieldTypesLoader();

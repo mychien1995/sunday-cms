@@ -1,4 +1,5 @@
-﻿using Sunday.ContentManagement.FieldTypeHandlers;
+﻿using System;
+using Sunday.ContentManagement.FieldTypeHandlers;
 
 namespace Sunday.ContentManagement.Domain
 {

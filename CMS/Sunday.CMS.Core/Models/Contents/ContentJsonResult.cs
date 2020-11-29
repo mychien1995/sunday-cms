@@ -32,8 +32,9 @@ namespace Sunday.CMS.Core.Models.Contents
     public class ContentFieldItem
     {
         public Guid Id { get; set; }
-        public string? FieldValue { get; set; }
+        public object? FieldValue { get; set; }
         public Guid TemplateFieldId { get; set; }
+        public int TemplateFieldCode { get; set; }
     }
     public class ContentVersion
     {
@@ -41,6 +42,19 @@ namespace Sunday.CMS.Core.Models.Contents
         public int Version { get; set; }
         public bool IsActive { get; set; }
         public int Status { get; set; }
+        public static ContentVersion New(WorkContent workContent)
+        => new ContentVersion(workContent.Id, workContent.Version, workContent.IsActive, workContent.Status);
+        public ContentVersion()
+        {
+
+        }
+        public ContentVersion(Guid versionId, int version, bool isActive, int status)
+        {
+            VersionId = versionId;
+            Version = version;
+            IsActive = isActive;
+            Status = status;
+        }
     }
 
     public class ContentTemplate

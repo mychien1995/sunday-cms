@@ -30,10 +30,12 @@ namespace Sunday.ContentManagement.Persistence.Implementation.DapperParameters
             sqlCommand.Parameters.Add("@SortOrder", SqlDbType.Int).Value = Content.SortOrder;
             var activeVersion = Content.Versions.FirstOrDefault(v => v.IsActive);
             sqlCommand.Parameters.Add("@WorkId", SqlDbType.UniqueIdentifier).Value = activeVersion?.Id;
-            if (activeVersion != null && activeVersion.Fields.Any())
+            var fields = Content.Fields;
+            if (activeVersion != null && activeVersion.Fields.Any()) fields = activeVersion.Fields;
+            if (fields.Any())
             {
                 var fieldRecords = new List<SqlDataRecord>();
-                foreach (var param in activeVersion.Fields)
+                foreach (var param in fields)
                 {
                     var rec = new SqlDataRecord(
                         new SqlMetaData("Id", SqlDbType.UniqueIdentifier),

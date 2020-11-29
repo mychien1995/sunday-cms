@@ -34,7 +34,7 @@ namespace Sunday.ContentManagement.Persistence.Implementation.Repositories
         public async Task<Option<ContentEntity>> GetByIdAsync(Guid contentId, GetContentOptions? options = null)
         {
             options ??= new GetContentOptions();
-            var returnTypes = new List<Type> { typeof(ContentEntity), typeof(TemplateEntity) };
+            var returnTypes = new List<Type> { typeof(ContentEntity), typeof(TemplateEntity), typeof(TemplateFieldEntity) };
             if (options.IncludeVersions)
             {
                 returnTypes.Add(typeof(WorkContentEntity));
@@ -50,19 +50,29 @@ namespace Sunday.ContentManagement.Persistence.Implementation.Repositories
             var contentOpt = Optional(result[0].FirstOrDefault() as ContentEntity);
             if (contentOpt.IsNone) return Option<ContentEntity>.None;
             var content = contentOpt.Get()!;
-            content.Template = (TemplateEntity) result[1].FirstOrDefault()!; 
+            var templateOpt = Optional(result[1].FirstOrDefault() as TemplateEntity);
+            if (templateOpt.IsNone) return Option<ContentEntity>.None;
+            var template = templateOpt.Get()!;
+            content.Template = template;
+            template.Fields = result[2].CastListTo<TemplateFieldEntity>().ToArray();
             if (options.IncludeVersions)
             {
-                content.Versions = result[2].Select(c => c as WorkContentEntity).ToArray()!;
+                content.Versions = result[3].Select(c => c as WorkContentEntity).ToArray()!;
                 if (!options.IncludeFields) return content;
-                var workVersionFields = result[3].Select(f => (WorkContentFieldEntity)f).ToArray();
+                var workVersionFields = result[4].Select(f => (WorkContentFieldEntity)f).ToArray();
                 content.Versions.Iter(version =>
-                    version.Fields = workVersionFields.Where(f => f.WorkContentId == version.Id).ToArray());
-                content.Fields = result[4].Select(f => (ContentFieldEntity)f).ToArray();
+                    version.Fields = workVersionFields.Where(f => f.WorkContentId == version.Id).Select(f => new ContentFieldEntity
+                    {
+                        TemplateFieldId = f.TemplateFieldId,
+                        FieldValue = f.FieldValue,
+                        Id = f.Id,
+                        ContentId = content.Id
+                    }).ToArray());
+                content.Fields = result[5].Select(f => (ContentFieldEntity)f).ToArray();
             }
             else if (options.IncludeFields)
             {
-                content.Fields = result[2].Select(f => (ContentFieldEntity)f).ToArray();
+                content.Fields = result[3].Select(f => (ContentFieldEntity)f).ToArray();
             }
             return content;
         }
@@ -77,11 +87,16 @@ namespace Sunday.ContentManagement.Persistence.Implementation.Repositories
             => _dbRunner.ExecuteAsync(ProcedureNames.Contents.Delete, new { Id = contentId });
 
         public Task CreateNewVersionAsync(Guid contentId, Guid workVersionId, string? updatedBy = null, DateTime? updatedDate = null)
-            => _dbRunner.ExecuteAsync(ProcedureNames.Contents.NewVersion, new { Id = contentId, FromVersion = workVersionId, 
-                UpdatedBy = updatedBy, UpdatedDate = updatedDate ?? DateTime.Now });
+            => _dbRunner.ExecuteAsync(ProcedureNames.Contents.NewVersion, new
+            {
+                Id = contentId,
+                FromVersion = workVersionId,
+                UpdatedBy = updatedBy,
+                UpdatedDate = updatedDate ?? DateTime.Now
+            });
 
         public Task PublishAsync(Guid contentId, string publishBy, DateTime? publishDate = null)
             => _dbRunner.ExecuteAsync(ProcedureNames.Contents.Publish,
-                new {Id = contentId, PublishedBy = publishBy, PublishedDate = publishDate ?? DateTime.Now});
+                new { Id = contentId, PublishedBy = publishBy, PublishedDate = publishDate ?? DateTime.Now });
     }
 }

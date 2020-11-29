@@ -189,6 +189,7 @@ export class ContentDetailComponent implements OnInit {
         if (!contentField) {
           contentField = <ContentFieldItem>{
             TemplateFieldId: f.field.Id,
+            TemplateFieldCode: f.field.FieldType,
           };
         }
         contentField.FieldValue = f.value ? f.value : null;

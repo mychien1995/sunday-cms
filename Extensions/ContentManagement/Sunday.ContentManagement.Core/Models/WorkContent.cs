@@ -13,6 +13,6 @@ namespace Sunday.ContentManagement.Models
         public int Version { get; set; }
         public int Status { get; set; }
         public bool IsActive { get; set; }
-        public WorkContentField[] Fields { get; set; } = Array.Empty<WorkContentField>();
+        public ContentField[] Fields { get; set; } = Array.Empty<ContentField>();
     }
 }

@@ -4,7 +4,7 @@ using Sunday.Core;
 
 namespace Sunday.ContentManagement.Persistence.Entities
 {
-    [MappedTo(typeof(WorkContentField))]
+    [MappedTo(typeof(ContentField))]
     public class WorkContentFieldEntity
     {
         public Guid Id { get; set; }

@@ -34,9 +34,9 @@ namespace Sunday.ContentManagement.Models
             {
                 var fieldTemplate = Template.Fields.FirstOrDefault(f => f.FieldName == fieldName);
                 if (fieldTemplate == null) return null;
-                var field = Fields.Single(f => f.TemplateFieldId == fieldTemplate.Id);
-                field.TemplateField = fieldTemplate;
-                return field;
+                var activeVersion = Versions.FirstOrDefault(v => v.IsActive);
+                if (activeVersion != null) return activeVersion.Fields.Single(f => f.TemplateFieldId == fieldTemplate.Id);
+                return Fields.Single(f => f.TemplateFieldId == fieldTemplate.Id);
             }
         }
     }
