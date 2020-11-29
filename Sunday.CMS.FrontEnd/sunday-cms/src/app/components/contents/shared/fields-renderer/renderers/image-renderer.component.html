@@ -1,0 +1,6 @@
+<label>{{innerField.field | templateName}}: <span class="red" [hidden]="!field.field.IsRequired">*</span></label>
+<div class="logo-box" style="max-height: 200px;">
+    <img src="{{previewLink}}" class="img-fluid">
+</div>
+<input name="file" id="exampleFile" type="file" class="form-control-file" accept=".png, .jpg, .jpeg"
+    (change)="onSelectImage($event)" formControlName="Logo" value="Select new image">
