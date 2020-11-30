@@ -35,5 +35,16 @@ export class FieldsRendererComponent implements OnInit {
   getTypeName(id: number): string {
     return this.fieldTypes.find((f) => f.Id === id)?.Layout;
   }
+
+  isValid(field: ContentField): boolean {
+    if (field.field.IsRequired) {
+      if (field.field.FieldType !== 6) {
+        return field.value && field.value.trim().length > 0;
+      }
+      return field.value;
+    }
+    return true;
+  }
+
   ngOnInit(): void {}
 }

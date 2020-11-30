@@ -1,0 +1,45 @@
+<h4 class="modal-title" mat-dialog-title>Edit Link</h4>
+<div class="modal-body" mat-dialog-content>
+    <div class="form-row">
+        <div class="col-md-12">
+            <div class="form-row">
+                <div class="col-md-12">
+                    <div class="position-relative form-group">
+                        <label>Link Text: </label>
+                        <input [(ngModel)]="editLink.LinkText" placeholder="Link text here..." type="text"
+                            class="form-control" autocomplete="off" required>
+                        <span class="text-danger" [hidden]="!(submitted && !editLink?.LinkText)">This
+                            field is required</span>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="position-relative form-group">
+                        <label>Link URL: </label>
+                        <input [(ngModel)]="editLink.Url" placeholder="URL here..." type="text" class="form-control"
+                            autocomplete="off" required>
+                        <span class="text-danger" [hidden]="!(submitted && !editLink?.Url)">This
+                            field is required</span>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="position-relative form-group">
+                        <label>Target: </label>
+                        <input [(ngModel)]="editLink.Target" placeholder="Target here..." type="text"
+                            class="form-control" autocomplete="off">
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="position-relative form-group">
+                        <label>Hint: </label>
+                        <input [(ngModel)]="editLink.Hint" placeholder="Hint here..." type="text" class="form-control"
+                            autocomplete="off">
+                    </div>
+                </div>
+            </div>
+            <div class="pull-right">
+                <button type="button" class="btn btn-primary" (click)="onSubmit()">Submit</button>
+                <button type="button" class="btn btn-secondary m-lg-2" mat-dialog-close>Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

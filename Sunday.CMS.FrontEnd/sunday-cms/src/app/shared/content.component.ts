@@ -22,6 +22,7 @@ import {
   TemplateSelectorButtonComponent,
   ImageRendererComponent,
   LinkRendererComponent,
+  LinkEditorDialogComponent,
 } from 'app/components';
 export const ContentComponents = [
   ContentDashboardComponent,
@@ -43,7 +44,8 @@ export const ContentComponents = [
   InlineTemplateSelectorDialogComponent,
   TemplateSelectorButtonComponent,
   ImageRendererComponent,
-  LinkRendererComponent
+  LinkRendererComponent,
+  LinkEditorDialogComponent,
 ];
 
 export const ContentResolvers = [

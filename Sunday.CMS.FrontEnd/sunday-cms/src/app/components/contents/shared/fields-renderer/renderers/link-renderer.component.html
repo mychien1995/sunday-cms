@@ -1,0 +1,7 @@
+<label>{{innerField.field | templateName}}: <span class="red" [hidden]="!field.field.IsRequired">*</span></label>
+<div class="input-group">
+    <div class="input-group-append" [hidden]="!isEditable">
+        <button class="btn btn-primary" (click)="openDialog()" type="button">Edit</button>
+    </div>
+    <input readonly [value]="this.innerField.value?.Url" class="form-control" />
+</div>

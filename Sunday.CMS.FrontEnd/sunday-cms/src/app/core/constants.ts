@@ -96,6 +96,7 @@ export class ApiUrl {
     GetRenderingTypes: 'cms/api/renderings/getRenderingTypes',
   };
   public static FileUpload = 'cms/api/FileUpload';
+  public static FilePreview = 'cms/api/File/Preview';
 }
 
 export class StorageKey {

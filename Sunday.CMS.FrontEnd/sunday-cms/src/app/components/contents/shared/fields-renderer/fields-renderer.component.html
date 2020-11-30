@@ -9,10 +9,13 @@
         </app-rich-text-renderer>
         <app-multiline-text-renderer *ngSwitchCase="'multiline-text'" [(field)]="innerFields[i]"
             [isEditable]="isEditable"></app-multiline-text-renderer>
+        <app-link-renderer *ngSwitchCase="'link'" [(field)]="innerFields[i]" [isEditable]="isEditable">
+        </app-link-renderer>
+        <app-image-renderer *ngSwitchCase="'image'" [(field)]="innerFields[i]" [isEditable]="isEditable">
+        </app-image-renderer>
         <div *ngSwitchDefault>
             Unrecognized Field Type: {{getTypeName(field.field?.FieldType)}}
         </div>
-        <span [hidden]="!(formSubmitted && (!innerFields[i].value || innerFields[i].value.trim().length === 0) && 
-        innerFields[i].field.IsRequired)" class="red">This field is required</span>
+        <span [hidden]="!(formSubmitted && !isValid(innerFields[i]))" class="red">This field is required</span>
     </div>
 </div>

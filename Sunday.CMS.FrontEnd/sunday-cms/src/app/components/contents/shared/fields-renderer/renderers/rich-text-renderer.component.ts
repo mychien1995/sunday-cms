@@ -13,10 +13,10 @@ export class RichTextRendererComponent implements OnInit {
   }
   set field(val: ContentField) {
     this.innerField = val;
-    this.fieldsChange.emit(val);
+    this.fieldChange.emit(val);
   }
   @Output()
-  fieldsChange: EventEmitter<any> = new EventEmitter<any>();
+  fieldChange: EventEmitter<any> = new EventEmitter<any>();
   @Input() isEditable = true;
 
   ngOnInit(): void {}

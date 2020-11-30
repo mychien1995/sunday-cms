@@ -10,6 +10,7 @@ export * from './shared/fields-renderer/renderers/rich-text-renderer.component';
 export * from './shared/fields-renderer/renderers/multiline-text-renderer.component';
 export * from './shared/fields-renderer/renderers/image-renderer.component';
 export * from './shared/fields-renderer/renderers/link-renderer.component';
+export * from './shared/fields-renderer/renderers/partials/link-editor-dialog.component';
 export * from './content-editing/content-detail.component';
 export * from './content-editing/content-resolver';
 export * from './content-editing/content-rename.component';

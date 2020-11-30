@@ -12,5 +12,6 @@ export * from './template-management/template.model';
 export * from './contents/content.tree.model';
 export * from './contents/content.model';
 export * from './contents/rendering.model';
+export * from './contents/fields.model';
 export * from './common/entity.access.model';
 
