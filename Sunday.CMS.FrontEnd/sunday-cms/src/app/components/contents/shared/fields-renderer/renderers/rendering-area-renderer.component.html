@@ -1,3 +1,9 @@
-<div>Renderings</div>
-<label>{{innerField.field | templateName}}: <span class="red" [hidden]="!field.field.IsRequired">*</span></label>
-<button class="btn btn-primary" type="button" (click)="openDialog()">Edit</button>
+<div>
+    <label>{{innerField.field | templateName}}: <span class="red" [hidden]="!field.field.IsRequired">*</span></label>
+    <div cdkDropList class="rendering-list">
+        <div class="rendering-box" *ngFor="let rendering of renderings" cdkDrag>
+            {{getRenderingName(rendering.RenderingId)}}
+        </div>
+        <a href="javascript:void(0)" (click)="openDialog()">Add More</a>
+    </div>
+</div>

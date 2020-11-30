@@ -1,0 +1,20 @@
+.rendering-list {
+  width: 400px;
+  border: 1px solid #ced4da;
+  border-radius: 5px;
+  min-height: 300px;
+  position: relative;
+  padding-bottom: 30px;
+  .rendering-box {
+    padding: 15px;
+    border-bottom: 1px solid #ced4da;
+  }
+  a{
+      position: absolute;
+      bottom: 0px;
+      left: 50%;
+      left: calc(50% - 35px);
+      width: 70px;
+      height: 25px;
+  }
+}
