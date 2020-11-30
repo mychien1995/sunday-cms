@@ -38,5 +38,12 @@ namespace Sunday.ContentManagement.Implementation.Services
             await ApplicationPipelines.RunAsync("cms.contentTree.getByPath", arg);
             return arg.ContentTree;
         }
+
+        public async Task<ContentTree> GetTreeSnapshotByQuery(ContentTreeQuery contentTreeQuery)
+        {
+            var arg = new GetContentTreeByQueryArg(contentTreeQuery);
+            await ApplicationPipelines.RunAsync("cms.contentTree.getByQuery", arg);
+            return arg.ContentTree!;
+        }
     }
 }

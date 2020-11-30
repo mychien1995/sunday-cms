@@ -16,8 +16,10 @@ BEGIN
 	SET @Query = 'IsDeleted = 0 '
 	IF @Text IS NOT NULL AND LEN(TRIM(@Text)) > 0
 		SET @Query = @Query + ' AND (RenderingName LIKE ''%' + @Text + '%'' OR cast(Id as varchar(100)) = '''+@Text+''')'
-	IF @IsPageRendering IS NOT NULL
+	IF @IsPageRendering  = 1
 		SET @Query = @Query + ' AND RenderingType = ''PageRendering'' '
+	IF @IsPageRendering  = 0
+		SET @Query = @Query + ' AND RenderingType <> ''PageRendering'' '
 
 	DECLARE @CountQuery nvarchar(max)
 	SET @CountQuery = 'SELECT COUNT(*) FROM dbo.Renderings WHERE ' + @Query

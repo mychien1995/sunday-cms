@@ -78,6 +78,7 @@ export class ApiUrl {
     GetChilds: 'cms/api/contenttree/getChilds/',
     GetContextMenu: 'cms/api/contenttree/getContextMenu/',
     GetByPath: 'cms/api/contenttree/getTreeByPath/',
+    GetByQuery: 'cms/api/contenttree/getTreeByQuery/',
   };
   public static Contents = {
     GetContent: 'cms/api/contents/',
@@ -94,6 +95,7 @@ export class ApiUrl {
     Delete: 'cms/api/renderings/',
     GetById: 'cms/api/renderings/',
     GetRenderingTypes: 'cms/api/renderings/getRenderingTypes',
+    GetAvailableForContent: 'cms/api/renderings/getAvailableForContent',
   };
   public static FileUpload = 'cms/api/FileUpload';
   public static FilePreview = 'cms/api/File/Preview';

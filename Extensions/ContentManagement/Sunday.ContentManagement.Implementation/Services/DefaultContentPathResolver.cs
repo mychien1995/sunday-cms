@@ -80,7 +80,7 @@ namespace Sunday.ContentManagement.Implementation.Services
             return address;
         }
 
-        public async Task<Option<Content>> GetContentByNamePath(Guid websiteId, string path)
+        public async Task<Option<Content>> GetContentByNamePath(Guid websiteId, string path, bool includeHome = false)
         {
             var formalizedPath = path.Trim().Trim('/').ToLower().Replace('\\', '/');
             var roots = await _contentService.GetChildsAsync(websiteId, ContentType.Website);
@@ -89,6 +89,12 @@ namespace Sunday.ContentManagement.Implementation.Services
             if (home == null) return Option<Content>.None;
             if (string.IsNullOrEmpty(formalizedPath)) return home;
             var parts = formalizedPath.Split('/').Select(p => p.Trim()).ToList();
+            if (includeHome)
+            {
+                var homePart = parts[0];
+                if (home.Name.ToLower() == homePart) return home;
+                parts.RemoveAt(0);
+            }
             var currentContent = home;
             while (parts.Count > 0)
             {
@@ -96,6 +102,7 @@ namespace Sunday.ContentManagement.Implementation.Services
                 var childs = await _contentService.GetChildsAsync(currentContent.Id, ContentType.Content);
                 currentContent = childs.FirstOrDefault(c => c.Name.ToLower() == currentName);
                 if (currentContent == null) return Option<Content>.None;
+                parts.RemoveAt(0);
             }
             return currentContent;
         }

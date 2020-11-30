@@ -23,6 +23,8 @@ export class FieldsRendererComponent implements OnInit {
   isLoading = false;
   @Input() formSubmitted = false;
   @Input() isEditable = true;
+  @Input() websiteId: string;
+  @Input() contentId: string;
 
   constructor(private templateService: TemplateManagementService) {
     this.isLoading = true;

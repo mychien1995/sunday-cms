@@ -40,6 +40,12 @@ export class ContentTreeService {
       .pipe(map(ApiHelper.onSuccess), catchError(ApiHelper.onFail));
   }
 
+  getTreeByQuery(query: any): Observable<ContentTree> {
+    return this.apiService
+      .post(`${ApiUrl.ContentTree.GetByQuery}`, query)
+      .pipe(map(ApiHelper.onSuccess), catchError(ApiHelper.onFail));
+  }
+
   withoutReference(node: ContentTreeNode) {
     const clone = { ...node };
     clone.ParentNode = null;

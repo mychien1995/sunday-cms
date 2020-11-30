@@ -4,3 +4,9 @@ export class LinkValue {
   Target?: string;
   Hint?: string;
 }
+
+export class RenderingValue {
+  RenderingId: string;
+  Datasource?: string;
+  Parameters: any = {};
+}

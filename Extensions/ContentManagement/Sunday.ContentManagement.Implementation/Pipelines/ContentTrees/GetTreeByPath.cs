@@ -50,7 +50,12 @@ namespace Sunday.ContentManagement.Implementation.Pipelines.ContentTrees
             {
                 var content = ancestors.Dequeue();
                 var node = currentNode.ChildNodes.FirstOrDefault(n => n.Id == content.Id.ToString());
-                if (node == null || ancestors.Count == 0) break;
+                if (node == null) break;
+                if (ancestors.Count == 0)
+                {
+                    currentNode.Open = true;
+                    break;
+                }
                 var childContents = await _contentService.GetChildsAsync(Guid.Parse(node.Id), ContentType.Content);
                 childContents.Iter(childContent =>
                 {

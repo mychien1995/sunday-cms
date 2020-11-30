@@ -36,6 +36,10 @@ namespace Sunday.CMS.Core.Implementation
             => _contentTreeProvider.GetTreeSnapshotByPath(path).MapResultTo(rs => new ContentTreeJsonResult
                 { Roots = rs.Roots.Select(ToItem).ToArray() });
 
+        public Task<ContentTreeJsonResult> GetTreeByQuery(ContentTreeQuery query)
+            => _contentTreeProvider.GetTreeSnapshotByQuery(query).MapResultTo(rs => new ContentTreeJsonResult
+                { Roots = rs.Roots.Select(ToItem).ToArray() });
+
         private ContentTreeItem ToItem(ContentTreeNode node)
         {
             var item = node.MapTo<ContentTreeItem>();

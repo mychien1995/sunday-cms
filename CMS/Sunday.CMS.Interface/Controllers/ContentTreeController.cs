@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Sunday.CMS.Core.Application;
 using Sunday.CMS.Core.Models.Contents;
+using Sunday.ContentManagement.Models;
 using Sunday.Foundation.Context;
 
 namespace Sunday.CMS.Interface.Controllers
@@ -26,6 +27,13 @@ namespace Sunday.CMS.Interface.Controllers
         public async Task<IActionResult> GetRoots([FromQuery] string path)
         {
             var result = await _contentTreeManager.GetTreeByPath(path);
+            return Ok(result);
+        }
+
+        [HttpPost("getTreeByQuery")]
+        public async Task<IActionResult> GetTreeByQuery([FromBody] ContentTreeQuery query)
+        {
+            var result = await _contentTreeManager.GetTreeByQuery(query);
             return Ok(result);
         }
 

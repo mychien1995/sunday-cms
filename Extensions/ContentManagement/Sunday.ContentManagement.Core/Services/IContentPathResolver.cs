@@ -9,6 +9,6 @@ namespace Sunday.ContentManagement.Services
     {
         Task<ContentAddress> GetAncestors(Content content);
         Task<Option<ContentAddress>> GetAddressByPath(string idPath);
-        Task<Option<Content>> GetContentByNamePath(Guid websiteId, string path);
+        Task<Option<Content>> GetContentByNamePath(Guid websiteId, string path, bool includeHome = false);
     }
 }

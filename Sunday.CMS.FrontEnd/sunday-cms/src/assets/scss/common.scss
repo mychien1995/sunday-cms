@@ -26,3 +26,23 @@
   color: #000;
   font-weight: bold;
 }
+
+ul.common-list {
+  padding-left: 0px;
+  border: 1px solid #ced4da;
+  border-radius: 5px;
+  margin-top: 5px;
+  overflow: scroll;
+  height: 250px;
+  li {
+    list-style: none;
+    padding-left: 5px;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    cursor: pointer;
+    border-bottom: 1px solid #ced4da;
+    &.active{
+      background-color: lightgray;
+    }
+  }
+}

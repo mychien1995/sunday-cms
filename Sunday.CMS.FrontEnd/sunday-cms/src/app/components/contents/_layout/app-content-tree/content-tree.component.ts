@@ -4,9 +4,10 @@ import {
   HostListener,
   ViewChild,
   ElementRef,
+  Input,
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { TemplateSelectorDialogComponent } from '@components/contents/content-creation/template-selector-dialog.component';
 import { ContentRenameDialogComponent } from '@components/contents/content-editing/content-rename.component';
 import {
@@ -37,7 +38,9 @@ export class ContentTreeComponent implements OnInit {
     website: 2,
     content: 3,
   };
+  @Input()
   tree: ContentTree = new ContentTree();
+
   templateIconLookup = {};
   isTreeLoading = false;
   contextMenu = {
@@ -60,7 +63,9 @@ export class ContentTreeComponent implements OnInit {
     private modalService: NgbModal,
     private activatedRoute: ActivatedRoute,
     private contentBus: ContentBus
-  ) {
+  ) {}
+
+  loadInitialData(): void {
     this.activatedRoute.firstChild.data.subscribe((res) => {
       if (res.content) {
         const contentModel = <ContentModel>res.content;
@@ -75,6 +80,10 @@ export class ContentTreeComponent implements OnInit {
         this.activeNode.Name = (<ContentModel>content).DisplayName;
       }
     });
+  }
+
+  ngOnInit(): void {
+    this.loadInitialData();
   }
 
   getTemplateIcons(): Promise<any> {
@@ -96,6 +105,7 @@ export class ContentTreeComponent implements OnInit {
           if (res.Success) {
             this.tree = res;
             this.activeNode = this.searchInTree(activeId);
+            this.setParentNode();
           }
           this.isTreeLoading = false;
         },
@@ -127,12 +137,26 @@ export class ContentTreeComponent implements OnInit {
             this.tree.Roots.forEach((element) => {
               element.Open = true;
             });
+            this.setParentNode();
           }
           this.isTreeLoading = false;
         },
         () => (this.isTreeLoading = false)
       )
     );
+  }
+
+  setParentNode(): void {
+    this.tree.Roots.forEach((element) => {
+      this.setLeafParent(element);
+    });
+  }
+
+  setLeafParent(node: ContentTreeNode): void {
+    node.ChildNodes.forEach((child) => {
+      child.ParentNode = node;
+      this.setLeafParent(child);
+    });
   }
 
   getIcon(code: string): string {
@@ -258,6 +282,4 @@ export class ContentTreeComponent implements OnInit {
   isContent(node: ContentTreeNode): boolean {
     return node.Type.toString() === this.parentTypeMappings.content.toString();
   }
-
-  ngOnInit(): void {}
 }

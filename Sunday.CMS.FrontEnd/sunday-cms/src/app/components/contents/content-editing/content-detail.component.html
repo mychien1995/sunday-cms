@@ -27,7 +27,8 @@
                                 <span>Save</span>
                             </a>
                         </li>
-                        <li class="nav-item" [hidden]="activeVersion?.Status != contentStatuses.draft || !activeVersion.IsActive"
+                        <li class="nav-item"
+                            [hidden]="activeVersion?.Status != contentStatuses.draft || !activeVersion.IsActive"
                             (click)="openDialog(confirmPublishDialog)">
                             <a class="nav-link">
                                 <i class="nav-link-icon lnr-rocket"></i>
@@ -114,8 +115,8 @@
                 </div>
                 <div class="collapse show">
                     <div class="card-body">
-                        <app-fields-renderer [(fields)]="fields" [formSubmitted]="isSubmitted"
-                            [isEditable]="isEditable"></app-fields-renderer>
+                        <app-fields-renderer [(fields)]="fields" [formSubmitted]="isSubmitted" [isEditable]="isEditable"
+                            [websiteId]="websiteId" [contentId]="content.Id"></app-fields-renderer>
                     </div>
                 </div>
             </div>

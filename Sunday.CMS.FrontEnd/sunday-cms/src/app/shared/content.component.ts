@@ -23,6 +23,10 @@ import {
   ImageRendererComponent,
   LinkRendererComponent,
   LinkEditorDialogComponent,
+  RenderingAreaRenderComponent,
+  RenderingSelectorDialogComponent,
+  DatasourceSelectorDialogComponent,
+  ContentTreeSelectorComponent,
 } from 'app/components';
 export const ContentComponents = [
   ContentDashboardComponent,
@@ -46,6 +50,10 @@ export const ContentComponents = [
   ImageRendererComponent,
   LinkRendererComponent,
   LinkEditorDialogComponent,
+  RenderingAreaRenderComponent,
+  RenderingSelectorDialogComponent,
+  DatasourceSelectorDialogComponent,
+  ContentTreeSelectorComponent
 ];
 
 export const ContentResolvers = [

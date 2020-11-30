@@ -23,6 +23,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./content-detail.component.scss'],
 })
 export class ContentDetailComponent implements OnInit {
+  websiteId: string;
   content: ContentModel = new ContentModel();
   activeVersion: ContentVersion;
   template: TemplateItem = new TemplateItem();
@@ -52,6 +53,7 @@ export class ContentDetailComponent implements OnInit {
       }
       if (data.content) {
         this.content = data.content;
+        this.websiteId = this.content.Path.split('/')[1];
         this.bindContentData();
       }
     });
