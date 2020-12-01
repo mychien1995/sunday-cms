@@ -47,7 +47,7 @@ export class RenderingSelectorDialogComponent implements OnInit {
           minWidth: 600,
         });
         ref.componentInstance.load(
-          this.selectedRendering,
+          this.selectedRendering.DatasourceLocation,
           this.websiteId,
           (datasourceId) => {
             this.callback(<RenderingValue>{

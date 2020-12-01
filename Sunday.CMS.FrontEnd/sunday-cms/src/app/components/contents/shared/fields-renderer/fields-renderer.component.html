@@ -16,6 +16,9 @@
         <app-rendering-area-renderer *ngSwitchCase="'rendering-area'" [(field)]="innerFields[i]"
             [isEditable]="isEditable" [websiteId]="websiteId" [contentId]="contentId">
         </app-rendering-area-renderer>
+        <app-drop-tree-renderer *ngSwitchCase="'droptree'" [(field)]="innerFields[i]" [isEditable]="isEditable"
+            [websiteId]="websiteId">
+        </app-drop-tree-renderer>
         <div *ngSwitchDefault>
             Unrecognized Field Type: {{getTypeName(field.field?.FieldType)}}
         </div>

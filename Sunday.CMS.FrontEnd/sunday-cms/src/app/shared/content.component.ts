@@ -28,6 +28,7 @@ import {
   DatasourceSelectorDialogComponent,
   ContentTreeSelectorComponent,
   RenderingEditorDialogComponent,
+  DropTreeRendererComponent,
 } from 'app/components';
 export const ContentComponents = [
   ContentDashboardComponent,
@@ -56,6 +57,7 @@ export const ContentComponents = [
   DatasourceSelectorDialogComponent,
   ContentTreeSelectorComponent,
   RenderingEditorDialogComponent,
+  DropTreeRendererComponent
 ];
 
 export const ContentResolvers = [

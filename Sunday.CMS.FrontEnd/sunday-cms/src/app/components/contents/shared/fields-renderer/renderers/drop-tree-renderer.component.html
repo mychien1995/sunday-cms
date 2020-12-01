@@ -1,7 +1,7 @@
 <label>{{innerField.field | templateName}}: <span class="red" [hidden]="!field.field.IsRequired">*</span></label>
 <div class="input-group">
     <div class="input-group-append" [hidden]="!isEditable">
-        <button class="btn btn-primary" (click)="openDialog()" type="button">Edit Link</button>
+        <button class="btn btn-primary" (click)="openDialog()" type="button">Select Content</button>
     </div>
-    <input readonly [value]="this.innerField.value?.Url" class="form-control" />
+    <input readonly [value]="(this.content?.NamePath | beautifyPath)" class="form-control" />
 </div>

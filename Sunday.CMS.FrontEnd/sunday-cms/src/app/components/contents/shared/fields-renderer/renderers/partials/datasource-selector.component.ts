@@ -19,15 +19,14 @@ export class DatasourceSelectorDialogComponent implements OnInit {
   @ViewChild(ContentTreeSelectorComponent)
   contentTreeRef: ContentTreeSelectorComponent;
   load(
-    rendering: Rendering,
+    location: string,
     websiteId: string,
     callback: (datasourceId: string) => any
   ) {
     this.callback = callback;
     this.contentTreeService
       .getTreeByQuery({
-        TemplateId: rendering.DatasourceTemplate,
-        Location: rendering.DatasourceLocation,
+        Location: location,
         WebsiteId: websiteId,
       })
       .subscribe((res) => {
