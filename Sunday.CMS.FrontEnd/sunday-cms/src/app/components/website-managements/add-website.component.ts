@@ -51,7 +51,7 @@ export class AddWebsiteComponent implements OnInit {
         this.formTitle = 'Edit Website';
       }
       const query = {
-        PageSize: 1000,
+        PageSize: 100000,
         WebsiteId: this.current.Id,
         IsAbstract: false,
         IsPageRendering: true,
@@ -89,7 +89,7 @@ export class AddWebsiteComponent implements OnInit {
   }
 
   getLayouts(): void {
-    this.layoutService.getLayouts({ PageSize: 1000 }).subscribe((res) => {
+    this.layoutService.getLayouts({ PageSize: 100000 }).subscribe((res) => {
       if (res.Success) {
         this.layoutLookup = res.Layouts;
       }

@@ -45,7 +45,7 @@ export class ManageWebsiteComponent implements OnInit {
   }
 
   getLayouts() {
-    this.layoutService.getLayouts({ PageSize: 1000 }).subscribe((res) => {
+    this.layoutService.getLayouts({ PageSize: 100000 }).subscribe((res) => {
       this.layoutLookup = res.Layouts;
     });
   }

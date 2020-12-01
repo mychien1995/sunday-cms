@@ -47,7 +47,7 @@ GO
 CREATE OR ALTER PROCEDURE sp_templates_search
 (
 	@PageIndex int = 0,
-	@PageSize int = 10,
+	@PageSize int = 100000,
 	@IsAbstract bit,
 	@Text nvarchar(1000)
 )

@@ -22,7 +22,7 @@ export class TemplateSelectorComponent implements OnInit {
 
   @Input()
   templateLookup: TemplateItem[] = [];
-  query: any = { PageSize: 1000 };
+  query: any = { PageSize: 100000 };
   @Input() multiple = false;
   isLoading = false;
 

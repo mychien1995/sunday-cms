@@ -8,7 +8,7 @@
 AS
 BEGIN
 	IF @PageSize IS NULL
-		SET @PageSize = 10
+		SET @PageSize = 100000
 	IF @PageIndex IS NULL
 		SET @PageIndex = 0
 

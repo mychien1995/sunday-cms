@@ -96,7 +96,7 @@ export class RenderingAreaRenderComponent implements OnInit {
       .getRenderings({
         IsPageRendering: false,
         WebsiteId: this.websiteId,
-        PageSize: 1000,
+        PageSize: 100000,
       })
       .subscribe((res) => {
         this.renderingLookup = res.List;

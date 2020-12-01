@@ -42,7 +42,7 @@ export class EntityAccessEditorComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const options = { PageSize: 1000 };
+    const options = { PageSize: 100000 };
     forkJoin([
       this.organizationService.getOrganizations(options),
       this.websiteService.getWebsites(options),

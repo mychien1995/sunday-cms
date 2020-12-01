@@ -74,7 +74,7 @@ export class AddOrganizationUserComponent implements OnInit {
 
   getFormData(): void {
     this.clientState.isBusy = true;
-    this.roleService.getRoles({ PageSize: 1000 }).subscribe((res) => {
+    this.roleService.getRoles({ PageSize: 100000 }).subscribe((res) => {
       if (res.Success) {
         this.roleLookup = res.Roles;
       }

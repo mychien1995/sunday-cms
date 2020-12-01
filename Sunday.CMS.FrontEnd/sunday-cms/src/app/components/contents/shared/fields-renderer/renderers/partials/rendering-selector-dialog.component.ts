@@ -30,7 +30,7 @@ export class RenderingSelectorDialogComponent implements OnInit {
       .getRenderings({
         IsPageRendering: false,
         WebsiteId: websiteId,
-        PageSize: 1000,
+        PageSize: 100000,
       })
       .subscribe((res) => {
         this.renderingLookup = res.List;
