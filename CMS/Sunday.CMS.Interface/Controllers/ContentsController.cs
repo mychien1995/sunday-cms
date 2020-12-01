@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Sunday.CMS.Core.Application;
@@ -19,6 +20,12 @@ namespace Sunday.CMS.Interface.Controllers
         public async Task<IActionResult> GetContent([FromRoute]Guid id, [FromQuery]Guid? version)
         {
             return Ok(await _contentManager.GetContentByIdAsync(id, version));
+        }
+
+        [HttpPost("getMultiples")]
+        public async Task<IActionResult> GetMultiples(GetMultipleContentParameter param)
+        {
+            return Ok(await _contentManager.GetMultiples(param.Ids.Where(c => Guid.TryParse(c, out _)).Select(Guid.Parse).ToArray()));
         }
 
         [HttpPost("create")]
@@ -49,6 +56,10 @@ namespace Sunday.CMS.Interface.Controllers
         public async Task<IActionResult> Delete([FromRoute] Guid id)
         {
             return Ok(await _contentManager.DeleteContentAsync(id));
+        }
+        public class GetMultipleContentParameter
+        {
+            public string[] Ids { get; set; } = Array.Empty<string>();
         }
     }
 }

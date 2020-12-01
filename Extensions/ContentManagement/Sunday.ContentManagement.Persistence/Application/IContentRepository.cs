@@ -22,5 +22,6 @@ namespace Sunday.ContentManagement.Persistence.Application
             DateTime? updatedDate = null);
 
         Task PublishAsync(Guid contentId, string publishBy, DateTime? publishDate = null);
+        Task<ContentEntity[]> GetMultiples(Guid[] ids);
     }
 }

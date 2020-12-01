@@ -36,6 +36,7 @@
             public const string GetById = "sp_contents_getById";
             public const string NewVersion = "sp_content_newVersion";
             public const string Publish = "sp_content_publish";
+            public const string GetMultiples = "sp_contents_getMultiples";
         }
         public class Renderings
         {

@@ -10,6 +10,7 @@ using Sunday.ContentManagement.Persistence.Implementation.DapperParameters;
 using Sunday.Core;
 using Sunday.Core.Extensions;
 using Sunday.DataAccess.SqlServer.Database;
+using Sunday.DataAccess.SqlServer.Extensions;
 using static LanguageExt.Prelude;
 
 namespace Sunday.ContentManagement.Persistence.Implementation.Repositories
@@ -28,6 +29,13 @@ namespace Sunday.ContentManagement.Persistence.Implementation.Repositories
         {
             var result = await _dbRunner.ExecuteAsync<ContentEntity>
                 (ProcedureNames.Contents.GetByParents, new { ParentId = parentId, ParentType = parentType });
+            return result.ToArray();
+        }
+
+        public async Task<ContentEntity[]> GetMultiples(Guid[] ids)
+        {
+            var result = await _dbRunner.ExecuteAsync<ContentEntity>
+                (ProcedureNames.Contents.GetMultiples, new { ids = ids.ToDatabaseList() });
             return result.ToArray();
         }
 

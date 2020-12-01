@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ApiResponse, ContentModel } from '@models/index';
+import { ApiResponse, ContentModel, ListApiResponse } from '@models/index';
 import { ApiUrl } from '@core/constants';
 import { ApiService } from '@services/api.service';
 import { ApiHelper } from '@services/api.helper';
@@ -10,9 +10,19 @@ import { map, catchError } from 'rxjs/operators';
 export class ContentService {
   constructor(private apiService: ApiService) {}
 
+  getMultiples(
+    contentIds: string[]
+  ): Observable<ListApiResponse<ContentModel>> {
+    return this.apiService
+      .post(`${ApiUrl.Contents.GetMultiples}`, { ids: contentIds })
+      .pipe(map(ApiHelper.onSuccess), catchError(ApiHelper.onFail));
+  }
+
   get(contentId: string, versionId?: string): Observable<ContentModel> {
     return this.apiService
-      .get(`${ApiUrl.Contents.GetContent}${contentId}?version=${versionId ?? ''}`)
+      .get(
+        `${ApiUrl.Contents.GetContent}${contentId}?version=${versionId ?? ''}`
+      )
       .pipe(map(ApiHelper.onSuccess), catchError(ApiHelper.onFail));
   }
 

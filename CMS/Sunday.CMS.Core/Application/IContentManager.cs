@@ -14,5 +14,7 @@ namespace Sunday.CMS.Core.Application
         Task<BaseApiResponse> DeleteContentAsync(Guid contentId);
         Task<BaseApiResponse> NewContentVersionAsync(Guid contentId, Guid fromVersion);
         Task<BaseApiResponse> PublishContentAsync(Guid contentId);
+
+        Task<ListApiResponse<ContentJsonResult>> GetMultiples(Guid[] contentIds);
     }
 }

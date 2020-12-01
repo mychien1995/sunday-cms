@@ -82,6 +82,7 @@ export class ApiUrl {
   };
   public static Contents = {
     GetContent: 'cms/api/contents/',
+    GetMultiples: 'cms/api/contents/getMultiples',
     Create: 'cms/api/contents/create/',
     Update: 'cms/api/contents/update/',
     NewVersion: 'cms/api/contents/',

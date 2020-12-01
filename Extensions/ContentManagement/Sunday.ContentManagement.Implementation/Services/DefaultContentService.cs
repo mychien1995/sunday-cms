@@ -38,6 +38,10 @@ namespace Sunday.ContentManagement.Implementation.Services
            => _contentRepository.GetByParentAsync(contentId, (int)contentType)
                 .MapResultTo(rs => rs.Select(item => item.MapTo<Content>()).ToArray());
 
+        public Task<Content[]> GetMultiples(Guid[] contentIds)
+            => _contentRepository.GetMultiples(contentIds)
+                .MapResultTo(rs => rs.Select(item => item.MapTo<Content>()).ToArray());
+
         public async Task<Option<Content>> GetByIdAsync(Guid contentId, GetContentOptions? options = null)
         {
             var contentOpt = await _contentRepository.GetByIdAsync(contentId, options);

@@ -1,0 +1,29 @@
+<label>{{innerField.field | templateName}}: <span class="red" [hidden]="!field.field.IsRequired">*</span></label>
+<div class="multilist-renderer">
+    <div class="select-group">
+        <app-content-tree-selector [tree]="contentTree"></app-content-tree-selector>
+    </div>
+    <div class="arrow-btn-group">
+        <button class="btn btn-primary" type="button" (click)="moveItem()" title="Select Item">
+            <i class="fa fa-arrow-right"></i>
+        </button>
+        <button class="mt-1 btn btn-primary" type="button" (click)="revertItem()" title="Deselect Item">
+            <i class="fa fa-arrow-left"></i>
+        </button>
+        <button class="mt-1 btn btn-primary" type="button" (click)="moveUp()" title="Move Item Up">
+            <i class="fa fa-arrow-up"></i>
+        </button>
+        <button class="mt-1 btn btn-primary" type="button" (click)="moveDown()" title="Move Item Down">
+            <i class="fa fa-arrow-down"></i>
+        </button>
+    </div>
+    <div class="select-group">
+        <ul>
+            <li *ngFor="let item of contents" (click)="selectItem(item)"
+                class="{{item.Id === selectedId ? 'active' : ''}}" title="{{item.Id}}">
+                {{item.DisplayName}}
+                <input type="hidden" value="{{item.Id}}" />
+            </li>
+        </ul>
+    </div>
+</div>

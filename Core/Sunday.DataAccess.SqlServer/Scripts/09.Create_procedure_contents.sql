@@ -184,3 +184,17 @@ BEGIN
 	END
 END
 GO
+--------------------------------------------------------------------
+CREATE OR ALTER PROCEDURE [dbo].[sp_contents_getMultiples]
+( 
+	@Ids nvarchar(MAX)
+)
+AS
+BEGIN
+	DECLARE @tblIds TABLE (Id Uniqueidentifier)
+	IF @Ids is not null and LEN(TRIM(@Ids)) > 0
+	INSERT INTO @tblIds select value from string_split(@Ids, '|')
+
+	SELECT * FROM Contents WHERE IsDeleted = 0 AND Id IN (SELECT Id FROM @tblIds)
+END
+GO

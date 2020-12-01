@@ -19,6 +19,9 @@
         <app-drop-tree-renderer *ngSwitchCase="'droptree'" [(field)]="innerFields[i]" [isEditable]="isEditable"
             [websiteId]="websiteId">
         </app-drop-tree-renderer>
+        <app-multilist-renderer *ngSwitchCase="'multilist'" [(field)]="innerFields[i]" [isEditable]="isEditable"
+        [websiteId]="websiteId">
+        </app-multilist-renderer>
         <div *ngSwitchDefault>
             Unrecognized Field Type: {{getTypeName(field.field?.FieldType)}}
         </div>

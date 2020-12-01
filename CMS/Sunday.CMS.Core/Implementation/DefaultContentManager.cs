@@ -94,5 +94,12 @@ namespace Sunday.CMS.Core.Implementation
             await _contentService.PublishAsync(contentId);
             return BaseApiResponse.SuccessResult;
         }
+
+        public async Task<ListApiResponse<ContentJsonResult>> GetMultiples(Guid[] contentIds)
+        {
+            var result = await _contentService.GetMultiples(contentIds);
+            return new ListApiResponse<ContentJsonResult>(result.Length,
+                result.Select(content => content.MapTo<ContentJsonResult>()).ToArray());
+        }
     }
 }

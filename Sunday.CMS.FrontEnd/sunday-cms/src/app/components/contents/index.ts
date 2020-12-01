@@ -13,6 +13,7 @@ export * from './shared/fields-renderer/renderers/image-renderer.component';
 export * from './shared/fields-renderer/renderers/link-renderer.component';
 export * from './shared/fields-renderer/renderers/rendering-area-renderer.component';
 export * from './shared/fields-renderer/renderers/drop-tree-renderer.component';
+export * from './shared/fields-renderer/renderers/multilist-renderer.component';
 export * from './shared/fields-renderer/renderers/partials/link-editor-dialog.component';
 export * from './shared/fields-renderer/renderers/partials/rendering-selector-dialog.component';
 export * from './shared/fields-renderer/renderers/partials/datasource-selector.component';

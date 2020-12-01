@@ -20,5 +20,7 @@ namespace Sunday.ContentManagement.Services
         Task NewVersionAsync(Guid contentId, Guid fromVersionId);
 
         Task PublishAsync(Guid contentId);
+
+        Task<Content[]> GetMultiples(Guid[] contentIds);
     }
 }
