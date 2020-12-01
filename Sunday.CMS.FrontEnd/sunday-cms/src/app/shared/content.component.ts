@@ -27,6 +27,7 @@ import {
   RenderingSelectorDialogComponent,
   DatasourceSelectorDialogComponent,
   ContentTreeSelectorComponent,
+  RenderingEditorDialogComponent,
 } from 'app/components';
 export const ContentComponents = [
   ContentDashboardComponent,
@@ -53,7 +54,8 @@ export const ContentComponents = [
   RenderingAreaRenderComponent,
   RenderingSelectorDialogComponent,
   DatasourceSelectorDialogComponent,
-  ContentTreeSelectorComponent
+  ContentTreeSelectorComponent,
+  RenderingEditorDialogComponent,
 ];
 
 export const ContentResolvers = [

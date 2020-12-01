@@ -1,20 +1,95 @@
-.rendering-list {
-  width: 400px;
-  border: 1px solid #ced4da;
-  border-radius: 5px;
-  min-height: 300px;
+.rendering-list-wrapper {
   position: relative;
-  padding-bottom: 30px;
-  .rendering-box {
-    padding: 15px;
-    border-bottom: 1px solid #ced4da;
+  width: 350px;
+  .rendering-list {
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    height: 250px;
+    padding-bottom: 30px;
+    overflow-y: scroll;
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    .rendering-box {
+      cursor: move;
+      border-bottom: 1px solid #ced4da;
+      &:first-child {
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+      }
+    }
   }
-  a{
-      position: absolute;
-      bottom: 0px;
-      left: 50%;
-      left: calc(50% - 35px);
-      width: 70px;
-      height: 25px;
+  a {
+    width: calc(100% - 2px);
+    background: #fff;
+    position: absolute;
+    text-align: center;
+    bottom: 1px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    left: 1px;
+    height: 30px;
+    line-height: 30px;
   }
+  .context-menu {
+    position: fixed;
+    z-index: 1000;
+    ul {
+      padding-left: 0px;
+      border: 0.5px solid #cbccce;
+      border-bottom: none;
+      box-shadow: 1px 2px 5px 0px #6c757d;
+      li {
+        list-style-type: none;
+        padding: 5px 10px;
+        border-bottom: 0.5px solid #cbccce;
+        min-width: 150px;
+        background-color: #fff;
+        > * {
+          cursor: pointer;
+        }
+        > label {
+          margin-bottom: 0px;
+          padding-left: 10px;
+        }
+        > i {
+          width: 15px;
+        }
+        cursor: pointer;
+        &:hover {
+          color: #fff;
+          background: #6c757d;
+        }
+      }
+    }
+  }
+}
+.rendering-box {
+  padding: 10px;
+  background: #fff;
+  span {
+    vertical-align: middle;
+    float: right;
+    cursor: pointer;
+  }
+}
+.cdk-drag-preview {
+  box-sizing: border-box;
+  border-radius: 4px;
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+    0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
+}
+
+.cdk-drag-placeholder {
+  opacity: 0;
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+.rendering-list.cdk-drop-list-dragging
+  .rendering-box:not(.cdk-drag-placeholder) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }

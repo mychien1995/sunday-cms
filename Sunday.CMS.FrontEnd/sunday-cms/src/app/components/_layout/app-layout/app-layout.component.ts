@@ -9,7 +9,7 @@ import {
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { AppHeaderComponent } from '@components/_layout';
 import * as $ from 'jquery/dist/jquery.min.js';
-import { debounce } from '@core/index';
+import { debounce, LayoutService } from '@core/index';
 
 @Component({
   selector: 'app-layout',
@@ -22,7 +22,11 @@ export class ApplicationLayoutComponent implements OnInit {
   isTrackingSidebar = false;
   @ViewChild('handleBar') handleBar: ElementRef;
   @ViewChild('sideBar', { read: ElementRef }) sideBar: ElementRef;
-  constructor(private router: Router, private activatedRoute: ActivatedRoute) {
+  constructor(
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private layoutService: LayoutService
+  ) {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         const data = this.activatedRoute.snapshot.firstChild.data;
@@ -44,6 +48,14 @@ export class ApplicationLayoutComponent implements OnInit {
   @HostListener('window:mouseup', ['$event'])
   stopTracking(event: any): void {
     this.isTrackingSidebar = false;
+  }
+
+  @HostListener('document:click', ['$event'])
+  broadcastClick(event: any): void {
+    this.layoutService.layoutBus.emit({
+      event: 'document:click',
+      data: event,
+    });
   }
 
   @HostListener('window:mousemove', ['$event'])

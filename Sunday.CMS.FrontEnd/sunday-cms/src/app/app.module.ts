@@ -9,6 +9,7 @@ import { JwtModule } from '@auth0/angular-jwt';
 import { StorageKey } from 'app/core/constants';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { QuillModule } from 'ngx-quill';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 
 @NgModule({
@@ -20,6 +21,7 @@ import { QuillModule } from 'ngx-quill';
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
+    DragDropModule,
     SharedModule,
     QuillModule.forRoot(),
     JwtModule.forRoot({

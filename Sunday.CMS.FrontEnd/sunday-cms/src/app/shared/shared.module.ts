@@ -19,11 +19,13 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { ContentComponents, ContentResolvers } from './content.component';
 import { ContentServices } from './content.services';
 import { QuillModule } from 'ngx-quill';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @NgModule({
   imports: [
     FormsModule,
     ReactiveFormsModule,
+    DragDropModule,
     RouterModule,
     SharedAngularMaterial,
     SharedBootstraps,

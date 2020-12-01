@@ -15,6 +15,7 @@ export * from './shared/fields-renderer/renderers/rendering-area-renderer.compon
 export * from './shared/fields-renderer/renderers/partials/link-editor-dialog.component';
 export * from './shared/fields-renderer/renderers/partials/rendering-selector-dialog.component';
 export * from './shared/fields-renderer/renderers/partials/datasource-selector.component';
+export * from './shared/fields-renderer/renderers/partials/rendering-editor-dialog.component';
 export * from './content-editing/content-detail.component';
 export * from './content-editing/content-resolver';
 export * from './content-editing/content-rename.component';

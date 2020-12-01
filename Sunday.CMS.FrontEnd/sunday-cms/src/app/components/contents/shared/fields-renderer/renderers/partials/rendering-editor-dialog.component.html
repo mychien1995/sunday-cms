@@ -1,0 +1,20 @@
+<h4 class="modal-title" mat-dialog-title>Edit Rendering</h4>
+<div class="modal-body" mat-dialog-content>
+    <div class="form-row">
+        <div class="col-md-12">
+            <label [hidden]="!this.rendering?.IsRequireDatasource">Datasource: </label>
+            <div style="overflow-y: scroll; max-height: 600px;" [hidden]="!this.rendering?.IsRequireDatasource">
+                <app-content-tree-selector [tree]="contentTree"></app-content-tree-selector>
+            </div>
+            <label>Parameters: </label>
+            <div *ngFor="let kv of parameters; let i = index;" class="d-flex"> 
+                <input type="text" class="form-control col-6" [(ngModel)]="parameters[i].Key" (blur)="onBlur(parameters[i])" />
+                <input type="text" class="form-control col-6" [(ngModel)]="parameters[i].Value" (blur)="onBlur(parameters[i])" />
+            </div>
+            <div class="pull-right">
+                <button type="button" class="btn btn-primary" (click)="onSubmit()">Submit</button>
+                <button type="button" class="btn btn-secondary m-lg-2" mat-dialog-close>Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
