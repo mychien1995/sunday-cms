@@ -6,6 +6,7 @@ export class TemplateItem extends ApiResponse {
   TemplateName: string;
   Icon: string;
   BaseTemplateIds: string[] = [];
+  InsertOptions: string[] = [];
   CreatedDate: Date;
   UpdatedDate: Date;
   CreatedBy: string;

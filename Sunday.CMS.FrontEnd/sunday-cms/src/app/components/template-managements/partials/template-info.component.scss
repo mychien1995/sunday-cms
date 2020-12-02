@@ -1,0 +1,16 @@
+.two-side-select {
+  display: none;
+  .select-group {
+    li {
+      label {
+        margin-bottom: 0px;
+        color: #000;
+      }
+      i {
+        font-size: 20px;
+        color: #000;
+        font-weight: bold;
+      }
+    }
+  }
+}

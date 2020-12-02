@@ -18,6 +18,7 @@ namespace Sunday.CMS.Core.Models.Templates
         public string CreatedBy { get; set; } = string.Empty;
         public string UpdatedBy { get; set; } = string.Empty;
         public bool IsAbstract { get; set; }
+        public string[] InsertOptions { get; set; } = Array.Empty<string>();
         public TemplateFieldItem[] Fields { get; set; } = Array.Empty<TemplateFieldItem>();
 
         public EntityAccess? Access { get; set; }

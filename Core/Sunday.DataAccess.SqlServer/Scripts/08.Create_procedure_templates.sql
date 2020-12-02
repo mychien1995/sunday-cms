@@ -6,6 +6,7 @@
 	,@StandardValueId uniqueidentifier = NULL
 	,@BaseTemplateIds nvarchar(max) = ''
 	,@HasRestrictions bit = 0
+	,@InsertOptions nvarchar(MAX)
 	,@CreatedDate datetime
 	,@CreatedBy nvarchar(500)
 	,@UpdatedDate datetime
@@ -19,15 +20,15 @@ BEGIN
 	BEGIN
 	INSERT INTO [dbo].[Templates]
            ([Id] ,[TemplateName] ,[Icon] ,[StandardValueId] ,[BaseTemplateIds]
-           ,[HasRestrictions] ,[CreatedDate] ,[CreatedBy],[UpdatedDate] ,[UpdatedBy] ,[IsDeleted], [IsAbstract])
+           ,[HasRestrictions] ,[CreatedDate] ,[CreatedBy],[UpdatedDate] ,[UpdatedBy] ,[IsDeleted], [IsAbstract], [InsertOptions])
      VALUES
            (@Id ,@TemplateName ,@Icon ,@StandardValueId ,@BaseTemplateIds
-			,@HasRestrictions ,@CreatedDate ,@CreatedBy ,@UpdatedDate ,@UpdatedBy ,0, @IsAbstract)
+			,@HasRestrictions ,@CreatedDate ,@CreatedBy ,@UpdatedDate ,@UpdatedBy ,0, @IsAbstract, @InsertOptions)
 	END
 	ELSE
 	BEGIN
 		UPDATE dbo.Templates SET TemplateName = @TemplateName, Icon = @Icon, StandardValueId = @StandardValueId,
-		BaseTemplateIds = @BaseTemplateIds, HasRestrictions = @HasRestrictions, UpdatedDate = @UpdatedDate,
+		BaseTemplateIds = @BaseTemplateIds, HasRestrictions = @HasRestrictions, UpdatedDate = @UpdatedDate, InsertOptions = @InsertOptions,
 		UpdatedBy = @UpdatedBy, IsAbstract = @IsAbstract
 		WHERE Id = @Id
 	END
@@ -49,7 +50,8 @@ CREATE OR ALTER PROCEDURE sp_templates_search
 	@PageIndex int = 0,
 	@PageSize int = 100000,
 	@IsAbstract bit,
-	@Text nvarchar(1000)
+	@Text nvarchar(1000),
+	@IdList nvarchar(MAX)
 )
 AS
 BEGIN
@@ -59,6 +61,8 @@ BEGIN
 		SET @Query = @Query + ' AND (TemplateName LIKE ''%' + @Text + '%'' OR cast(Id as varchar(100)) = '''+@Text+''')'
 	IF @IsAbstract IS NOT NULL
 		SET @Query = @Query + ' AND IsAbstract = @IsAbstract '
+	IF @IdList IS NOT NULL AND LEN(TRIM(@IdList)) > 0
+		SET @Query = @Query + ' AND CHARINDEX(CAST(Id as varchar(MAX)) , @IdList) > 0  '
 
 	DECLARE @CountQuery nvarchar(max)
 	SET @CountQuery = 'SELECT COUNT(*) FROM dbo.Templates WHERE ' + @Query
@@ -66,8 +70,8 @@ BEGIN
 	SET @SearchQuery = 'SELECT * FROM dbo.Templates  WHERE ' + @Query + 'ORDER BY UpdatedDate DESC
 	OFFSET @PageIndex ROWS FETCH NEXT @PageSize ROWS ONLY';
 	PRINT @SearchQuery
-	exec sp_executesql @CountQuery, N'@IsAbstract bit', @IsAbstract
-	exec sp_executesql @SearchQuery, N'@IsAbstract bit, @PageIndex int, @PageSize int', @IsAbstract, @PageIndex, @PageSize
+	exec sp_executesql @CountQuery, N'@IsAbstract bit, @IdList nvarchar(MAX)', @IsAbstract, @IdList
+	exec sp_executesql @SearchQuery, N'@IsAbstract bit, @PageIndex int, @PageSize int, @IdList nvarchar(MAX)', @IsAbstract, @PageIndex, @PageSize, @IdList
 
 END
 GO
@@ -113,4 +117,17 @@ BEGIN
 
 END
 GO
+--------------------------------------------------------------------
+CREATE OR ALTER PROCEDURE [dbo].[sp_templates_getMultiples]
+( 
+	@Ids nvarchar(MAX)
+)
+AS
+BEGIN
+	DECLARE @tblIds TABLE (Id Uniqueidentifier)
+	IF @Ids is not null and LEN(TRIM(@Ids)) > 0
+	INSERT INTO @tblIds select value from string_split(@Ids, '|')
 
+	SELECT * FROM Templates WHERE IsDeleted = 0 AND Id IN (SELECT Id FROM @tblIds)
+END
+GO

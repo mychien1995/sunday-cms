@@ -23,3 +23,4 @@ export * from './content-editing/content-resolver';
 export * from './content-editing/content-rename.component';
 export * from './shared/template-selector/template-selector-button.component';
 export * from './shared/template-selector/template-selector-dialog.component';
+export * from './shared/template-selector/template-selector-widget.component';

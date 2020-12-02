@@ -226,6 +226,7 @@ BEGIN
 		BaseTemplateIds nvarchar(MAX),
 		HasRestrictions bit default(0),
 		IsAbstract bit default(0),
+		InsertOptions nvarchar(MAX),
 		CreatedDate datetime NOT NULL,
 		CreatedBy nvarchar(500) NULL,
 		UpdatedDate datetime NOT NULL,
