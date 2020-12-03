@@ -83,7 +83,7 @@ CREATE OR ALTER PROCEDURE sp_templates_getById
 AS
 BEGIN
 	SELECT * FROM dbo.Templates WHERE IsDeleted = 0 AND Id = @Id
-	SELECT * FROM dbo.TemplateFields WHERE TemplateId = @Id
+	SELECT * FROM dbo.TemplateFields WHERE TemplateId = @Id ORDER BY SortOrder
 END
 GO
 --------------------------------------------------------------------
