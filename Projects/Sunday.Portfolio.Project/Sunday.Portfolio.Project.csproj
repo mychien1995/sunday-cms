@@ -6,20 +6,16 @@
     <RootNamespace>Sunday.Portfolio.Project</RootNamespace>
     <Nullable>enable</Nullable>
   </PropertyGroup> 
-  <ItemGroup>
-    <Content Remove="appsettings.json" />
-  </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="Views\**\*.cshtml" />
+    <EmbeddedResource Include="wwwroot\**\*" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\CD\Sunday.ContentDelivery.Engine\Sunday.ContentDelivery.Engine.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\" />
+    <ProjectReference Include="..\..\Extensions\ContentDelivery\Sunday.ContentDelivery.Core\Sunday.ContentDelivery.Core.csproj" />
+    <ProjectReference Include="..\..\Extensions\ContentDelivery\Sunday.ContentDelivery.Framework\Sunday.ContentDelivery.Framework.csproj" />
+    <ProjectReference Include="..\..\Extensions\ContentDelivery\Sunday.ContentDelivery.Implementation\Sunday.ContentDelivery.Implementation.csproj" />
   </ItemGroup>
 
 </Project>

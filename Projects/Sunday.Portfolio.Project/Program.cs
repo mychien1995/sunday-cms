@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
-using Sunday.ContentDelivery.Engine;
 
 namespace Sunday.Portfolio.Project
 {

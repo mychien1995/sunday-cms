@@ -2,6 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>45C9914C-BA78-422A-910E-35EF935A8979</UserSecretsId>
+    <RootNamespace>Sunday.ContentDelivery.Engine</RootNamespace>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,5 +16,6 @@
     <ProjectReference Include="..\..\Extensions\ContentDelivery\Sunday.ContentDelivery.Core\Sunday.ContentDelivery.Core.csproj" />
     <ProjectReference Include="..\..\Extensions\ContentDelivery\Sunday.ContentDelivery.Framework\Sunday.ContentDelivery.Framework.csproj" />
     <ProjectReference Include="..\..\Extensions\ContentDelivery\Sunday.ContentDelivery.Implementation\Sunday.ContentDelivery.Implementation.csproj" />
+    <ProjectReference Include="..\..\Projects\Sunday.Portfolio.Project\Sunday.Portfolio.Project.csproj" />
   </ItemGroup>
 </Project>

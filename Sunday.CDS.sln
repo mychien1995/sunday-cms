@@ -39,7 +39,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sunday.ContentDelivery.Fram
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sunday.ContentDelivery.Implementation", "Extensions\ContentDelivery\Sunday.ContentDelivery.Implementation\Sunday.ContentDelivery.Implementation.csproj", "{3F833AF2-CB01-4DF0-9A0A-3B015E5C553A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sunday.ContentDelivery.Engine", "CD\Sunday.ContentDelivery.Engine\Sunday.ContentDelivery.Engine.csproj", "{B8F2FF68-45F3-40D0-8A17-4AED247EB75E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sunday.ContentDelivery.Engine", "CD\Sunday.ContentDelivery.Engine\Sunday.ContentDelivery.Engine.csproj", "{B8F2FF68-45F3-40D0-8A17-4AED247EB75E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
