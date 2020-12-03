@@ -9,6 +9,7 @@ import {
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { TemplateSelectorDialogComponent } from '@components/contents/content-creation/template-selector-dialog.component';
+import { ContentDetailComponent } from '@components/contents/content-editing/content-detail.component';
 import { ContentRenameDialogComponent } from '@components/contents/content-editing/content-rename.component';
 import {
   ContentModel,
@@ -191,7 +192,13 @@ export class ContentTreeComponent implements OnInit {
 
   onSelectNode(node: ContentTreeNode): void {
     if (this.isContent(node)) {
-      this.router.navigate([node.Link]);
+      const isContentDetail =
+        this.activatedRoute.snapshot.component === ContentDetailComponent;
+      if (!isContentDetail) {
+        this.router.navigate([node.Link]);
+      } else {
+        this.contentBus.contentLinkSelect(node.Id);
+      }
       this.activeNode = node;
     }
   }

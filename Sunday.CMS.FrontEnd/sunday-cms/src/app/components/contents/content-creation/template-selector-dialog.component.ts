@@ -27,6 +27,7 @@ export class TemplateSelectorDialogComponent implements OnInit {
 
   load(parent: ContentTreeNode, onClose: (id: string) => any) {
     this.parent = parent;
+    this.onClose = onClose;
     if (this.parent.Type != 3) {
       this.isLoading = false;
       return;
@@ -55,7 +56,6 @@ export class TemplateSelectorDialogComponent implements OnInit {
               });
           })
       );
-    this.onClose = onClose;
   }
   onSubmit(): void {
     if (this.selectedTemplates.length > 0) {

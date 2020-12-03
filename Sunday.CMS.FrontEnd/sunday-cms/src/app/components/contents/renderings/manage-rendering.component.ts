@@ -12,7 +12,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class ManageRenderingComponent implements OnInit {
   renderings: ListApiResponse<Rendering> = new ListApiResponse<Rendering>();
-  query?: any = {};
+  query?: any = { PageSize: 20 };
   activeId: string;
   searchForm: FormGroup = new FormGroup({
     Text: new FormControl(this.query?.Text || ''),

@@ -47,21 +47,33 @@ export class ContentDetailComponent implements OnInit {
     private contentBus: ContentBus
   ) {
     this.activatedRoute.data.subscribe((data: { content: ContentModel }) => {
-      if (!data.content || !data.content.Success) {
-        this.router.navigate(['/manage-contents']);
-        return;
-      }
-      if (data.content) {
-        this.content = data.content;
-        this.websiteId = this.content.Path.split('/')[1];
-        this.bindContentData();
-      }
+      this.initializeContent(data?.content);
     });
     this.contentBus.contentBus.subscribe((res) => {
-      this.content = <ContentModel>res;
-      this.reload();
+      if (res.ev === 'content-updated') {
+        this.content = <ContentModel>res.content;
+        this.reload();
+      } else if (res.ev === 'content-link') {
+        const id = res.id;
+        this.contentService.get(id).subscribe((contentRes) => {
+          this.initializeContent(contentRes);
+        });
+      }
     });
   }
+
+  initializeContent(content: ContentModel) {
+    if (!content || !content.Success) {
+      this.router.navigate(['/manage-contents']);
+      return;
+    }
+    if (content) {
+      this.content = content;
+      this.websiteId = this.content.Path.split('/')[1];
+      this.bindContentData();
+    }
+  }
+
   ngOnInit(): void {}
 
   reload(): void {
