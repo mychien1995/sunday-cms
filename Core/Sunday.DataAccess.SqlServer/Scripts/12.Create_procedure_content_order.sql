@@ -6,7 +6,7 @@ AS
 BEGIN
 	DECLARE @tblIds TABLE (id uniqueidentifier)
 	INSERT INTO @tblIds SELECT value FROM string_split(@ids, '|')
-	SELECT * FROM ContentOrders WHERE ContentId IN (SELECT id FROM @tblIds)
+	SELECT Id AS ContentId, SortOrder AS [Order] FROM Contents WHERE Id IN (SELECT id FROM @tblIds)
 END
 GO
 --------------------------------------------------------------------
@@ -16,13 +16,10 @@ CREATE OR ALTER PROCEDURE dbo.sp_contents_saveOrders
 )
 AS
 BEGIN
-	MERGE ContentOrders AS target  
+	MERGE Contents AS target  
 		USING (SELECT * FROM @Orders) AS source
-	ON (target.ContentId = source.ContentId)  
+	ON (target.Id = source.ContentId)  
 	WHEN MATCHED THEN
-		UPDATE SET target.[Order] = source.[Order]
-	WHEN NOT MATCHED THEN  
-		INSERT (ContentId, [Order])  
-		VALUES (source.ContentId, source.[Order]);  
+		UPDATE SET target.[SortOrder] = source.[Order];
 END
 GO
