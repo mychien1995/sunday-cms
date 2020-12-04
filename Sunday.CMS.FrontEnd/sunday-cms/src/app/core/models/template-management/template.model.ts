@@ -6,11 +6,13 @@ export class TemplateItem extends ApiResponse {
   TemplateName: string;
   Icon: string;
   BaseTemplateIds: string[] = [];
+  InsertOptions: string[] = [];
   CreatedDate: Date;
   UpdatedDate: Date;
   CreatedBy: string;
   UpdatedBy: string;
   IsAbstract: boolean;
+  IsPageTemplate: boolean;
   Fields: TemplateField[] = [];
   Access: EntityAccess;
 }

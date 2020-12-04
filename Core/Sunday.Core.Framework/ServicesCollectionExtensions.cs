@@ -26,11 +26,21 @@ namespace Sunday.Core.Framework
 
         public static ISundayServicesConfiguration LoadConfiguration(this ISundayServicesConfiguration services, IWebHostEnvironment hostingEnv, IConfiguration configuration)
         {
-            var configurationPath = "\\config\\sunday.config";
-            var filePath = hostingEnv.WebRootPath + configurationPath;
+            string configFolderPath;
+            var configPath = configuration.GetValue<string>("SundayConfigPath");
+            if (!string.IsNullOrEmpty(configPath))
+            {
+                configFolderPath = configPath;
+            }
+            else
+            {
+                var configurationPath = "\\config";
+                configFolderPath = hostingEnv.WebRootPath + configurationPath;
+            }
+            var filePath = configFolderPath + "\\sunday.config";
             if (!File.Exists(filePath)) return services;
             var configFileContent = File.ReadAllText(filePath);
-            var includeFolder = hostingEnv.WebRootPath + "\\config\\include";
+            var includeFolder = configFolderPath + "\\include";
             var includeFiles = Directory.GetFiles(includeFolder, "*.config");
             configFileContent = includeFiles.Select(File.ReadAllText)
                 .Aggregate(configFileContent, (current, xmlContent) => XmlMerger.MergeDocuments(xmlContent, current));

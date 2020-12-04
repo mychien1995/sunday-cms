@@ -35,21 +35,27 @@
                 <app-two-sides-select-search bindValue="Id" placeholder="Template ID or name"
                     [datasource]="templateLookup" [(values)]="template.BaseTemplateIds" [searchFn]="searchTemplate"
                     [childTemplate]="templateSelect">
-                    <ng-template let-item="item" #templateSelect>
-                        <div style="display: flex;">
-                            <i class="{{getIcon(item.Icon)}}" style="font-size: 30px;"></i>
-                            &nbsp;&nbsp;
-                            <label><b>{{item.TemplateName}}</b></label>
-                        </div>
-                    </ng-template>
                 </app-two-sides-select-search>
             </div>
         </div>
         <div class="col-md-6">
             <div class="position-relative form-group">
+                <label>Insert Options</label>
+                <app-two-sides-select-search bindValue="Id" placeholder="Template ID or name"
+                    [datasource]="templateLookupClone" [(values)]="template.InsertOptions" [searchFn]="searchTemplate"
+                    [childTemplate]="templateSelect">
+                </app-two-sides-select-search>
+            </div>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="col-md-6">
+            <div class="position-relative form-group">
                 <label>Template Access:</label>
                 <app-entity-access-editor [(entityAccess)]="template.Access"></app-entity-access-editor>
             </div>
+        </div>
+        <div class="col-md-6">
             <div class="position-relative form-group">
                 <label for="IsAbstract" class="">Is Abstract Template:</label>
                 <div class="custom-checkbox custom-control">
@@ -58,6 +64,21 @@
                     <label class="custom-control-label" for="IsAbstract">&nbsp;</label>
                 </div>
             </div>
+            <div class="position-relative form-group">
+                <label for="IsPageTemplate" class="">Is Page Template:</label>
+                <div class="custom-checkbox custom-control">
+                    <input type="checkbox" id="IsPageTemplate" class="custom-control-input" formControlName="IsPageTemplate"
+                        [checked]="template.IsPageTemplate" (change)="template.IsPageTemplate = !template.IsPageTemplate" />
+                    <label class="custom-control-label" for="IsPageTemplate">&nbsp;</label>
+                </div>
+            </div>
         </div>
     </div>
 </form>
+<ng-template let-item="item" #templateSelect>
+    <div style="display: flex;">
+        <i class="{{getIcon(item.Icon)}}"></i>
+        &nbsp;&nbsp;
+        <label>{{item.TemplateName}}</label>
+    </div>
+</ng-template>

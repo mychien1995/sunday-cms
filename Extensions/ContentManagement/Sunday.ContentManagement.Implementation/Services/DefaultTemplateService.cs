@@ -92,6 +92,7 @@ namespace Sunday.ContentManagement.Implementation.Services
             template.Fields = entity.Fields.CastListTo<TemplateField>().ToArray();
             template.BaseTemplateIds = entity.BaseTemplateIds != null ? entity.BaseTemplateIds.ToStringList()
                 .Where(s => Guid.TryParse(s, out var tmp)).Select(Guid.Parse).ToArray() : Array.Empty<Guid>();
+            template.InsertOptions = entity.InsertOptions.ToStringList().ToArray();
             return template;
         }
         private TemplateEntity ToEntity(Template model, bool isUpdate = false)
@@ -100,6 +101,7 @@ namespace Sunday.ContentManagement.Implementation.Services
             template.Fields = model.Fields.CastListTo<TemplateFieldEntity>().ToArray();
             template.IsUpdate = isUpdate;
             template.BaseTemplateIds = model.BaseTemplateIds.ToDatabaseList();
+            template.InsertOptions = model.InsertOptions.ToDatabaseList();
             return template;
         }
     }

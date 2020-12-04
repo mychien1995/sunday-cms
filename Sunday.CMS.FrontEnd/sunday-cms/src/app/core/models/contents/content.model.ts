@@ -23,7 +23,7 @@ export class ContentModel extends ApiResponse {
   CreatedBy: string;
   UpdatedBy: string;
   PublishedBy?: string;
-  SortOrder: number;
+  SortOrder?: number;
   SelectedVersion?: string;
   NamePath?: string;
   Template: TemplateItem = new TemplateItem();

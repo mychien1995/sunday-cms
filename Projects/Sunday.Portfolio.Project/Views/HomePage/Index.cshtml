@@ -1,5 +1,43 @@
-﻿@{
-    var content = Context.CurrentPage();
-    var pageTitle = content["PageTitle"].FieldValue;
-}
-<h1>@pageTitle</h1>
+﻿@using Sunday.ContentDelivery.Framework.Extensions
+@model Sunday.Portfolio.Project.Models.HomePageModel
+<div class="responsive-nav">
+    <i class="fa fa-bars" id="menu-toggle"></i>
+    <div id="menu" class="menu">
+        <i class="fa fa-times" id="menu-close"></i>
+        <div class="container">
+            <div class="image">
+                <a href="#">
+                    <img src="@Model.ImageUrl" alt="@Model.Heading" />
+                </a>
+            </div>
+            <div class="author-content">
+                <h4>@Model.Heading</h4>
+                <span>@Model.Subheading</span>
+            </div>
+            <nav class="main-nav" role="navigation">
+                <ul class="main-menu">
+                    @foreach (var link in Model.NavigationLinks)
+                    {
+                        <li><a href="@link.Url">@link.Text</a></li>
+                    }
+                </ul>
+            </nav>
+            <div class="social-network">
+                <ul class="soial-icons">
+
+                    @foreach (var link in Model.SocialLinks)
+                    {
+                        <li>
+                            <a href="@link.Url">
+                                <i class="@link.Icon"></i>
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<section class="section about-me" data-section="section1">
+    @{ Html.RenderingAreaFor(Model.CurrentPage, "AboutMeSection"); }
+</section>

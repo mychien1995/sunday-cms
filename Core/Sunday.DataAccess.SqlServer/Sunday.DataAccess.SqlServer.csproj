@@ -26,6 +26,7 @@
     <None Remove="Scripts\09.Create_procedure_contents.sql" />
     <None Remove="Scripts\10.Create_procedure_entity_access.sql" />
     <None Remove="Scripts\11.Create_procedure_renderings.sql" />
+    <None Remove="Scripts\12.Create_procedure_content_order.sql" />
     <None Remove="Scripts\Clear_version.sql" />
   </ItemGroup>
 
@@ -34,6 +35,7 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Scripts\08.Create_procedure_templates.sql" />
+    <EmbeddedResource Include="Scripts\12.Create_procedure_content_order.sql" />
     <EmbeddedResource Include="Scripts\11.Create_procedure_renderings.sql" />
     <EmbeddedResource Include="Scripts\10.Create_procedure_entity_access.sql" />
     <EmbeddedResource Include="Scripts\09.Create_procedure_contents.sql" />

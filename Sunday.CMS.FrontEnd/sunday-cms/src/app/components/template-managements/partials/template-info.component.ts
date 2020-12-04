@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewEncapsulation,
+} from '@angular/core';
 import { IconService, TemplateManagementService } from '@services/index';
 import { TemplateItem } from '@models/index';
 import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -7,12 +14,14 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 @Component({
   selector: 'app-template-info',
   templateUrl: './template-info.component.html',
-  providers: [NgbModalConfig, NgbModal],
+  styleUrls: ['./template-info.component.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class TemplateInfoComponent implements OnInit {
   public dataForm: FormGroup = new FormGroup({});
   innerTemplate: TemplateItem = new TemplateItem();
   templateLookup: TemplateItem[] = [];
+  templateLookupClone: TemplateItem[] = [];
   @Input() submitted: boolean;
   @Input()
   get template(): TemplateItem {
@@ -34,6 +43,7 @@ export class TemplateInfoComponent implements OnInit {
       this.templateLookup = res.Templates.filter(
         (f) => f.Id !== this.innerTemplate.Id
       );
+      this.templateLookupClone = this.templateLookup.map(x => Object.assign({}, x));
     });
   }
 
@@ -55,6 +65,7 @@ export class TemplateInfoComponent implements OnInit {
       ]),
       Icon: new FormControl(this.innerTemplate.Icon, [Validators.required]),
       IsAbstract: new FormControl(this.innerTemplate.IsAbstract),
+      IsPageTemplate : new FormControl(this.innerTemplate.IsPageTemplate)
     });
   }
 

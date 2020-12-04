@@ -13,6 +13,19 @@
         Published = 2
     }
 
+    public enum FieldTypes
+    {
+        SingleLineText = 1,
+        MultilineText = 2,
+        Number = 3,
+        RichText = 4,
+        Image = 5,
+        Link = 6,
+        RenderingArea = 7,
+        DropTree = 8,
+        Multilist = 9
+    }
+
     public static class RenderingTypes
     {
         public static KeyValue PageRendering = new KeyValue("PageRendering", "Page Rendering");

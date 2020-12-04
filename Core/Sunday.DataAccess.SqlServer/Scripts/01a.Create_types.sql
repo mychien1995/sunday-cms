@@ -71,3 +71,12 @@ BEGIN
 		OrganizationRoleIds nvarchar(MAX)
 	);
 END
+
+IF TYPE_ID(N'ContentOrderType') IS NULL
+BEGIN
+	CREATE TYPE ContentOrderType AS TABLE
+	(
+		ContentId uniqueidentifier,
+		[Order] int
+	);
+END

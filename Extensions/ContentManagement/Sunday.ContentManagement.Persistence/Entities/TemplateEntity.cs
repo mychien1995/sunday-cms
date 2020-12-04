@@ -5,7 +5,7 @@ using Sunday.DataAccess.SqlServer.Attributes;
 
 namespace Sunday.ContentManagement.Persistence.Entities
 {
-    [MappedTo(typeof(Template), true, nameof(BaseTemplateIds))]
+    [MappedTo(typeof(Template), true, nameof(BaseTemplateIds), nameof(InsertOptions))]
     public class TemplateEntity
     {
         public Guid Id { get; set; }
@@ -15,10 +15,12 @@ namespace Sunday.ContentManagement.Persistence.Entities
         public DateTime CreatedDate { get; set; }
         public DateTime UpdatedDate { get; set; }
         public bool IsAbstract { get; set; }
+        public bool IsPageTemplate { get; set; }
         public string CreatedBy { get; set; } = string.Empty;
         public string UpdatedBy { get; set; } = string.Empty;
         [DapperIgnoreParam]
         public TemplateFieldEntity[] Fields { get; set; } = Array.Empty<TemplateFieldEntity>();
         public bool IsUpdate { get; set; }
+        public string InsertOptions { get; set; } = string.Empty;
     }
 }

@@ -36,5 +36,8 @@ namespace Sunday.ContentDelivery.Implementation.Services
             content.Template.Fields = fields;
             return content;
         }
+
+        public Task<Option<Content>> GetContent(Guid contentId)
+            => _contentService.GetByIdAsync(contentId, new GetContentOptions { IncludeFields = true});
     }
 }

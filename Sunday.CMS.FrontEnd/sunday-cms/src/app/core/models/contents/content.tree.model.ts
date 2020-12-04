@@ -18,6 +18,8 @@ export class ContentTreeNode extends ApiResponse {
   ParentNode?: ContentTreeNode;
   Open = false;
   Active = false;
+  Hover = false;
+  SortOrder?: number;
 }
 export class ContextMenu extends ApiResponse {
   Items: ContextMenuItem[] = [];

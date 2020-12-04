@@ -26,7 +26,7 @@ namespace Sunday.ContentManagement.Persistence.Implementation.Repositories
         }
 
         public Task<SearchResult<TemplateEntity>> QueryAsync(TemplateQueryParameter query)
-            => _dbRunner.ExecuteMultipleAsync<int, TemplateEntity>(ProcedureNames.Templates.Search, query).MapResultTo(
+            => _dbRunner.ExecuteMultipleAsync<int, TemplateEntity>(ProcedureNames.Templates.Search, query.ToDapperParameters()).MapResultTo(
                 rs =>
                     new SearchResult<TemplateEntity>
                     {

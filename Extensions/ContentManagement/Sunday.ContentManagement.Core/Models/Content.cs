@@ -20,7 +20,7 @@ namespace Sunday.ContentManagement.Models
         public string CreatedBy { get; set; } = string.Empty;
         public string UpdatedBy { get; set; } = string.Empty;
         public string PublishedBy { get; set; } = string.Empty;
-        public int SortOrder { get; set; }
+        public int? SortOrder { get; set; }
 
         public WorkContent[] Versions { get; set; } = Array.Empty<WorkContent>();
         public ContentField[] Fields { get; set; } = Array.Empty<ContentField>();
@@ -35,8 +35,8 @@ namespace Sunday.ContentManagement.Models
                 var fieldTemplate = Template.Fields.FirstOrDefault(f => f.FieldName == fieldName);
                 if (fieldTemplate == null) return null;
                 var activeVersion = Versions.FirstOrDefault(v => v.IsActive);
-                if (activeVersion != null) return activeVersion.Fields.Single(f => f.TemplateFieldId == fieldTemplate.Id);
-                return Fields.Single(f => f.TemplateFieldId == fieldTemplate.Id);
+                return activeVersion != null ? activeVersion.Fields.Single(f => f.TemplateFieldId == fieldTemplate.Id) :
+                    Fields.FirstOrDefault(f => f.TemplateFieldId == fieldTemplate.Id);
             }
         }
     }

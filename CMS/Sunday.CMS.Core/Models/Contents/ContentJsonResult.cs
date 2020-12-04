@@ -22,7 +22,7 @@ namespace Sunday.CMS.Core.Models.Contents
         public string CreatedBy { get; set; } = string.Empty;
         public string UpdatedBy { get; set; } = string.Empty;
         public string PublishedBy { get; set; } = string.Empty;
-        public int SortOrder { get; set; }
+        public int? SortOrder { get; set; }
         public Guid? SelectedVersion { get; set; }
         public ContentVersion[] Versions { get; set; } = Array.Empty<ContentVersion>();
         public ContentFieldItem[] Fields { get; set; } = Array.Empty<ContentFieldItem>();

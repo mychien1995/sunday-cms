@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Sunday.ContentManagement.Implementation.Pipelines.Arguments;
+using Sunday.ContentManagement.Persistence.Application;
 using Sunday.ContentManagement.Services;
 using Sunday.Core.Extensions;
 using Sunday.Core.Pipelines;
@@ -12,8 +13,9 @@ namespace Sunday.ContentManagement.Implementation.Pipelines.ContentTrees
     {
         private readonly IContentPathResolver _contentPathResolver;
         private readonly IContentTreeProvider _contentTreeProvider;
-        public GetContentTreeByQuery(ISundayContext sundayContext, IOrganizationService organizationService, IWebsiteService websiteService, IContentPathResolver contentPathResolver, IContentTreeProvider contentTreeProvider)
-            : base(sundayContext, organizationService, websiteService)
+        public GetContentTreeByQuery(ISundayContext sundayContext, IOrganizationService organizationService, IWebsiteService websiteService,
+            IContentPathResolver contentPathResolver, IContentTreeProvider contentTreeProvider, IContentService contentService, IContentOrderRepository contentOrderRepository)
+            : base(sundayContext, organizationService, websiteService, contentOrderRepository, contentService)
         {
             _contentPathResolver = contentPathResolver;
             _contentTreeProvider = contentTreeProvider;

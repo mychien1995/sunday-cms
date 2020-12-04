@@ -1,9 +1,27 @@
 <h4 class="modal-title" mat-dialog-title>Select template</h4>
-<div class="modal-body" mat-dialog-content>
-    <p>Select your content's template</p>
+<div class="modal-body" mat-dialog-content [hidden]="isLoading || showInsertOptions">
+    <p>Select your content's template from template list <a href="javascript:void(0)" [hidden]="!hasInsertOptions"
+            (click)="showInsertOptions = true;">or
+            insert options</a></p>
     <div class="form-row">
         <div class="col-md-12">
-            <app-template-selector [(selectedTemplates)]="selectedTemplates"></app-template-selector>
+            <app-template-selector [(selectedTemplates)]="selectedTemplates" [hidden]="showInsertOptions">
+            </app-template-selector>
+            <div class="pull-right">
+                <button type="button" class="btn btn-primary" (click)="onSubmit()">Select template</button>
+                <button type="button" class="btn btn-secondary m-lg-2" mat-dialog-close>Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-body" mat-dialog-content [hidden]="isLoading || !showInsertOptions">
+    <p>Select your content's template from insert options or <a href="javascript:void(0)"
+            (click)="showInsertOptions = false;">templates list</a></p>
+    <div class="form-row">
+        <div class="col-md-12">
+            <app-template-selector-widget [(selectedTemplates)]="selectedTemplates" [hidden]="!showInsertOptions"
+                [templateLookup]="insertOptions">
+            </app-template-selector-widget>
             <div class="pull-right">
                 <button type="button" class="btn btn-primary" (click)="onSubmit()">Select template</button>
                 <button type="button" class="btn btn-secondary m-lg-2" mat-dialog-close>Cancel</button>

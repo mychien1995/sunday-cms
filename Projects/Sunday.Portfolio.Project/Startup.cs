@@ -3,8 +3,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Sunday.ContentDelivery.Framework.Middlewares;
-using Sunday.Core.Framework;
 
 namespace Sunday.Portfolio.Project
 {
@@ -23,9 +21,6 @@ namespace Sunday.Portfolio.Project
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
-            services.Sunday()
-                .LoadConfiguration(Environment, Configuration)
-                .LoadServices();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -54,8 +49,6 @@ namespace Sunday.Portfolio.Project
                 endpoints.MapRazorPages();
                 endpoints.MapDefaultControllerRoute();
             });
-            app.InitializeSunday();
-            app.UseMiddleware<ContentMiddleware>();
         }
     }
 }

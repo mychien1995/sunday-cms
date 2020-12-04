@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Sunday.ContentManagement.Implementation.Pipelines.Arguments;
 using Sunday.ContentManagement.Models;
+using Sunday.ContentManagement.Persistence.Application;
 using Sunday.ContentManagement.Services;
 using Sunday.Core.Extensions;
 using Sunday.Core.Pipelines;
@@ -11,11 +12,9 @@ namespace Sunday.ContentManagement.Implementation.Pipelines.ContentTrees
 {
     public class GetOrganizationsChilds : BaseGetContentTreePipelineProcessor
     {
-        private readonly IWebsiteService _websiteService;
-
-        public GetOrganizationsChilds(IWebsiteService websiteService)
+        public GetOrganizationsChilds(IContentService contentService, IWebsiteService websiteService, IContentOrderRepository contentOrderRepository)
+            : base(contentService, websiteService, contentOrderRepository)
         {
-            _websiteService = websiteService;
         }
 
         public override async Task ProcessAsync(PipelineArg pipelineArg)
@@ -24,7 +23,7 @@ namespace Sunday.ContentManagement.Implementation.Pipelines.ContentTrees
             var node = arg.CurrentNode;
             if (node.Type != (int)ContentType.Organization) return;
             var organizationId = Guid.Parse(node.Id);
-            var websites = await _websiteService.QueryAsync(new WebsiteQuery
+            var websites = await WebsiteService.QueryAsync(new WebsiteQuery
             { OrganizationId = organizationId, PageSize = 1000 }).MapResultTo(rs => rs.Result);
             arg.ChildNodes.AddRange(websites.Select(FromWebsite).ToList());
         }

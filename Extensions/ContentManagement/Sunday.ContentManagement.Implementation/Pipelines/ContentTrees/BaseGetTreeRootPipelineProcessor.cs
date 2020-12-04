@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Sunday.ContentManagement.Models;
+using Sunday.ContentManagement.Persistence.Application;
 using Sunday.ContentManagement.Services;
 using Sunday.Core.Extensions;
 using Sunday.Foundation.Application.Services;
@@ -16,13 +17,12 @@ namespace Sunday.ContentManagement.Implementation.Pipelines.ContentTrees
     {
         protected readonly ISundayContext SundayContext;
         protected readonly IOrganizationService OrganizationService;
-        protected readonly IWebsiteService WebsiteService;
 
-        protected BaseGetTreeRootPipelineProcessor(ISundayContext sundayContext, IOrganizationService organizationService, IWebsiteService websiteService)
+        protected BaseGetTreeRootPipelineProcessor(ISundayContext sundayContext, IOrganizationService organizationService, IWebsiteService websiteService
+        , IContentOrderRepository contentOrderRepository, IContentService contentService) : base(contentService, websiteService, contentOrderRepository)
         {
             SundayContext = sundayContext;
             OrganizationService = organizationService;
-            WebsiteService = websiteService;
         }
         protected async Task<ContentTree> GetTreeRoot()
         {

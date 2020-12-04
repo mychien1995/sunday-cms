@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Sunday.ContentManagement.Implementation.Pipelines.Arguments;
 using Sunday.ContentManagement.Models;
 using Sunday.ContentManagement.Services;
@@ -11,6 +10,7 @@ namespace Sunday.ContentManagement.Implementation.Services
     [ServiceTypeOf(typeof(IContentTreeProvider))]
     public class DefaultContentTreeProvider : IContentTreeProvider
     {
+
         public async Task<ContentTree> GetTreeRoot()
         {
             var arg = new GetContentTreeRootArg();

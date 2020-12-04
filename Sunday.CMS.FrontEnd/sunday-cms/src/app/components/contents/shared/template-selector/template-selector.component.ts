@@ -41,9 +41,7 @@ export class TemplateSelectorComponent implements OnInit {
   constructor(
     private iconService: IconService,
     private templateService: TemplateManagementService
-  ) {
-    this.loadTemplates();
-  }
+  ) {}
 
   getIcon(code: string): string {
     return this.iconService.getIcon(code);
@@ -84,5 +82,9 @@ export class TemplateSelectorComponent implements OnInit {
     return this.innerSelectedTemplates.find((c) => c === template.Id);
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    if (this.templateLookup.length === 0) {
+      this.loadTemplates();
+    }
+  }
 }

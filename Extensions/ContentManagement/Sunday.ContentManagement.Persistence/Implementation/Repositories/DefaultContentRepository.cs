@@ -9,6 +9,7 @@ using Sunday.ContentManagement.Persistence.Entities;
 using Sunday.ContentManagement.Persistence.Implementation.DapperParameters;
 using Sunday.Core;
 using Sunday.Core.Extensions;
+using Sunday.DataAccess.SqlServer.Attributes;
 using Sunday.DataAccess.SqlServer.Database;
 using Sunday.DataAccess.SqlServer.Extensions;
 using static LanguageExt.Prelude;
@@ -90,6 +91,9 @@ namespace Sunday.ContentManagement.Persistence.Implementation.Repositories
 
         public Task UpdateAsync(ContentEntity content)
             => _dbRunner.ExecuteAsync(ProcedureNames.Contents.Update, new UpdateContentParameter(content));
+
+        public Task UpdateContentExplicit(ContentEntity content)
+            => _dbRunner.ExecuteAsync(ProcedureNames.Contents.UpdateContentExplicit, content.ToDapperParameters(DbOperation.Update));
 
         public Task DeleteAsync(Guid contentId)
             => _dbRunner.ExecuteAsync(ProcedureNames.Contents.Delete, new { Id = contentId });

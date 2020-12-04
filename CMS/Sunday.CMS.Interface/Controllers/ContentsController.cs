@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Sunday.CMS.Core.Application;
 using Sunday.CMS.Core.Models.Contents;
+using Sunday.ContentManagement.Models;
 using Sunday.Foundation.Context;
 
 namespace Sunday.CMS.Interface.Controllers
@@ -17,7 +18,7 @@ namespace Sunday.CMS.Interface.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetContent([FromRoute]Guid id, [FromQuery]Guid? version)
+        public async Task<IActionResult> GetContent([FromRoute] Guid id, [FromQuery] Guid? version)
         {
             return Ok(await _contentManager.GetContentByIdAsync(id, version));
         }
@@ -40,6 +41,12 @@ namespace Sunday.CMS.Interface.Controllers
             return Ok(await _contentManager.UpdateContentAsync(content));
         }
 
+        [HttpPost("updateExplicit")]
+        public async Task<IActionResult> UpdateExplicit([FromBody] ContentJsonResult content)
+        {
+            return Ok(await _contentManager.UpdateExplicitAsync(content));
+        }
+
         [HttpPost("{id}/{versionId}")]
         public async Task<IActionResult> NewVersion([FromRoute] Guid id, [FromRoute] Guid versionId)
         {
@@ -56,6 +63,14 @@ namespace Sunday.CMS.Interface.Controllers
         public async Task<IActionResult> Delete([FromRoute] Guid id)
         {
             return Ok(await _contentManager.DeleteContentAsync(id));
+        }
+
+
+        [HttpPost("move")]
+        public async Task<IActionResult> MoveContent([FromBody] MoveContentParameter parameter)
+        {
+            var result = await _contentManager.MoveContent(parameter);
+            return Ok(result);
         }
         public class GetMultipleContentParameter
         {

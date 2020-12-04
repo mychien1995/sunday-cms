@@ -4,7 +4,7 @@ import { IconService, TemplateManagementService } from '@services/index';
 import { TemplateItem, TemplateList } from '@models/index';
 import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TemplateInfoComponent } from '../template-managements/partials/template-info.component';
 import { TemplateFieldComponent } from '../template-managements/partials/template-fields.component';
 
@@ -28,7 +28,8 @@ export class TemplateDetailComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private toastr: ToastrService,
     private iconService: IconService,
-    private clientstate: ClientState
+    private clientstate: ClientState,
+    private router: Router
   ) {
     this.activatedRoute.data.subscribe((data: { template: TemplateItem }) => {
       if (data.template) {
@@ -64,6 +65,7 @@ export class TemplateDetailComponent implements OnInit {
         (res) => {
           if (res.Success) {
             this.toastr.success('Template Saved');
+            this.router.navigate(['/manage-templates']);
           }
           this.clientstate.isBusy = false;
         },
