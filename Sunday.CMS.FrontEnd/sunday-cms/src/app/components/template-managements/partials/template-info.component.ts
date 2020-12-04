@@ -65,6 +65,7 @@ export class TemplateInfoComponent implements OnInit {
       ]),
       Icon: new FormControl(this.innerTemplate.Icon, [Validators.required]),
       IsAbstract: new FormControl(this.innerTemplate.IsAbstract),
+      IsPageTemplate : new FormControl(this.innerTemplate.IsPageTemplate)
     });
   }
 

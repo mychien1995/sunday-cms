@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using LanguageExt;
+using Sunday.ContentManagement.Domain;
 using Sunday.ContentManagement.Models;
 
 namespace Sunday.ContentManagement.Services
@@ -10,5 +11,6 @@ namespace Sunday.ContentManagement.Services
         Task<ContentAddress> GetAncestors(Content content);
         Task<Option<ContentAddress>> GetAddressByPath(string idPath);
         Task<Option<Content>> GetContentByNamePath(Guid websiteId, string path, bool includeHome = false);
+        string GetWebsitePath(ApplicationWebsite website);
     }
 }

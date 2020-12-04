@@ -15,6 +15,7 @@ namespace Sunday.ContentManagement.Domain
         public string CreatedBy { get; set; } = string.Empty;
         public string UpdatedBy { get; set; } = string.Empty;
         public bool IsAbstract { get; set; }
+        public bool IsPageTemplate { get; set; }
         public string[] InsertOptions { get; set; } = Array.Empty<string>();
 
         public TemplateField[] Fields { get; set; } = Array.Empty<TemplateField>();

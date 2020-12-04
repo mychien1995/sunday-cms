@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LanguageExt;
@@ -13,7 +14,6 @@ using Sunday.Core.Extensions;
 using Sunday.Core.Pipelines;
 using Sunday.Core.Pipelines.Arguments;
 using Sunday.Foundation.Context;
-using static LanguageExt.Prelude;
 
 namespace Sunday.ContentManagement.Implementation.Services
 {
@@ -21,17 +21,19 @@ namespace Sunday.ContentManagement.Implementation.Services
     public class DefaultContentService : IContentService
     {
         private readonly IContentRepository _contentRepository;
+        private readonly IContentOrderRepository _contentOrderRepository;
         private readonly ISundayContext _sundayContext;
         private readonly IFieldTypesProvider _fieldTypesProvider;
         private readonly ITemplateService _templateService;
 
         public DefaultContentService(ISundayContext sundayContext, IContentRepository contentRepository,
-            IFieldTypesProvider fieldTypesProvider, ITemplateService templateService)
+            IFieldTypesProvider fieldTypesProvider, ITemplateService templateService, IContentOrderRepository contentOrderRepository)
         {
             _sundayContext = sundayContext;
             _contentRepository = contentRepository;
             _fieldTypesProvider = fieldTypesProvider;
             _templateService = templateService;
+            _contentOrderRepository = contentOrderRepository;
         }
 
         public Task<Content[]> GetChildsAsync(Guid contentId, ContentType contentType)
@@ -45,7 +47,7 @@ namespace Sunday.ContentManagement.Implementation.Services
         public async Task<Option<Content>> GetByIdAsync(Guid contentId, GetContentOptions? options = null)
         {
             var contentOpt = await _contentRepository.GetByIdAsync(contentId, options);
-            if(contentOpt.IsNone) return Option<Content>.None;
+            if (contentOpt.IsNone) return Option<Content>.None;
             return await ToModel(contentOpt.Get());
         }
 
@@ -54,6 +56,8 @@ namespace Sunday.ContentManagement.Implementation.Services
             await ApplicationPipelines.RunAsync("cms.entity.beforeCreate", new BeforeCreateEntityArg(content));
             await ApplicationPipelines.RunAsync("cms.content.beforeCreate", new BeforeCreateContentArg(content));
             await _contentRepository.CreateAsync(await ToEntity(content));
+            if (content.SortOrder != null)
+                await _contentOrderRepository.SaveOrder(new[] { new ContentOrder(content.Id, content.SortOrder.Value) });
         }
 
         public async Task UpdateAsync(Content content)
@@ -61,6 +65,15 @@ namespace Sunday.ContentManagement.Implementation.Services
             await ApplicationPipelines.RunAsync("cms.entity.beforeUpdate", new BeforeUpdateEntityArg(content));
             await ApplicationPipelines.RunAsync("cms.content.beforeUpdate", new BeforeUpdateContentArg(content));
             await _contentRepository.UpdateAsync(await ToEntity(content));
+            if (content.SortOrder != null)
+                await _contentOrderRepository.SaveOrder(new[] { new ContentOrder(content.Id, content.SortOrder.Value) });
+        }
+
+        public async Task UpdateExplicitAsync(Content content)
+        {
+            await ApplicationPipelines.RunAsync("cms.entity.beforeUpdate", new BeforeUpdateEntityArg(content));
+            await ApplicationPipelines.RunAsync("cms.content.beforeUpdate", new BeforeUpdateContentArg(content));
+            await _contentRepository.UpdateContentExplicit(content.MapTo<ContentEntity>());
         }
 
         public async Task DeleteAsync(Guid contentId)
@@ -75,6 +88,26 @@ namespace Sunday.ContentManagement.Implementation.Services
 
         public Task PublishAsync(Guid contentId)
             => _contentRepository.PublishAsync(contentId, _sundayContext.CurrentUser!.UserName, DateTime.Now);
+
+
+
+        public async Task MoveContent(MoveContentParameter moveContentParameter)
+        {
+            var content = await GetByIdAsync(moveContentParameter.ContentId)
+                .MapResultTo(rs => rs.Get());
+            if (moveContentParameter.ParentId.HasValue && moveContentParameter.ParentType.HasValue)
+            {
+                content.ParentId = moveContentParameter.ParentId.Value;
+                content.ParentType = moveContentParameter.ParentType.Value;
+                await _contentRepository.UpdateContentExplicit(content.MapTo<ContentEntity>());
+            }
+            if (moveContentParameter.SortOrder.HasValue)
+            {
+                var moveArg = new GetContentSiblingsOrderArg(moveContentParameter);
+                await ApplicationPipelines.RunAsync("cms.content.getSiblingsOrder", moveArg);
+                await _contentOrderRepository.SaveOrder(moveArg.Orders);
+            }
+        }
 
         private async Task<Content> ToModel(ContentEntity entity)
         {

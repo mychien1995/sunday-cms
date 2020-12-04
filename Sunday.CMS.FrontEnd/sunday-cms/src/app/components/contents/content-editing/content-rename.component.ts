@@ -47,7 +47,7 @@ export class ContentRenameDialogComponent implements OnInit {
       this.clientState.isBusy = true;
       this.content.Name = this.contentForm.controls['Name'].value;
       this.content.DisplayName = this.contentForm.controls['DisplayName'].value;
-      this.contentService.update(this.content).subscribe(
+      this.contentService.updateExplicit(this.content).subscribe(
         (res) => {
           this.clientState.isBusy = false;
           if (res.Success) {

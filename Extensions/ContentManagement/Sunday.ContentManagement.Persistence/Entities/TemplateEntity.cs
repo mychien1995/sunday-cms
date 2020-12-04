@@ -15,6 +15,7 @@ namespace Sunday.ContentManagement.Persistence.Entities
         public DateTime CreatedDate { get; set; }
         public DateTime UpdatedDate { get; set; }
         public bool IsAbstract { get; set; }
+        public bool IsPageTemplate { get; set; }
         public string CreatedBy { get; set; } = string.Empty;
         public string UpdatedBy { get; set; } = string.Empty;
         [DapperIgnoreParam]

@@ -11,6 +11,7 @@
 	,@CreatedBy nvarchar(500)
 	,@UpdatedDate datetime
 	,@IsAbstract bit
+	,@IsPageTemplate bit
 	,@UpdatedBy nvarchar(500)
 	,@IsUpdate bit
 )
@@ -20,16 +21,16 @@ BEGIN
 	BEGIN
 	INSERT INTO [dbo].[Templates]
            ([Id] ,[TemplateName] ,[Icon] ,[StandardValueId] ,[BaseTemplateIds]
-           ,[HasRestrictions] ,[CreatedDate] ,[CreatedBy],[UpdatedDate] ,[UpdatedBy] ,[IsDeleted], [IsAbstract], [InsertOptions])
+           ,[HasRestrictions] ,[CreatedDate] ,[CreatedBy],[UpdatedDate] ,[UpdatedBy] ,[IsDeleted], [IsAbstract], [InsertOptions], [IsPageTemplate])
      VALUES
            (@Id ,@TemplateName ,@Icon ,@StandardValueId ,@BaseTemplateIds
-			,@HasRestrictions ,@CreatedDate ,@CreatedBy ,@UpdatedDate ,@UpdatedBy ,0, @IsAbstract, @InsertOptions)
+			,@HasRestrictions ,@CreatedDate ,@CreatedBy ,@UpdatedDate ,@UpdatedBy ,0, @IsAbstract, @InsertOptions, @IsPageTemplate)
 	END
 	ELSE
 	BEGIN
 		UPDATE dbo.Templates SET TemplateName = @TemplateName, Icon = @Icon, StandardValueId = @StandardValueId,
 		BaseTemplateIds = @BaseTemplateIds, HasRestrictions = @HasRestrictions, UpdatedDate = @UpdatedDate, InsertOptions = @InsertOptions,
-		UpdatedBy = @UpdatedBy, IsAbstract = @IsAbstract
+		UpdatedBy = @UpdatedBy, IsAbstract = @IsAbstract, IsPageTemplate = @IsPageTemplate
 		WHERE Id = @Id
 	END
 END
@@ -50,6 +51,7 @@ CREATE OR ALTER PROCEDURE sp_templates_search
 	@PageIndex int = 0,
 	@PageSize int = 100000,
 	@IsAbstract bit,
+	@IsPageTemplate bit,
 	@Text nvarchar(1000),
 	@IdList nvarchar(MAX)
 )
@@ -61,6 +63,8 @@ BEGIN
 		SET @Query = @Query + ' AND (TemplateName LIKE ''%' + @Text + '%'' OR cast(Id as varchar(100)) = '''+@Text+''')'
 	IF @IsAbstract IS NOT NULL
 		SET @Query = @Query + ' AND IsAbstract = @IsAbstract '
+	IF @IsPageTemplate IS NOT NULL
+		SET @Query = @Query + ' AND IsPageTemplate = @IsPageTemplate '
 	IF @IdList IS NOT NULL AND LEN(TRIM(@IdList)) > 0
 		SET @Query = @Query + ' AND CHARINDEX(CAST(Id as varchar(MAX)) , @IdList) > 0  '
 
@@ -70,8 +74,8 @@ BEGIN
 	SET @SearchQuery = 'SELECT * FROM dbo.Templates  WHERE ' + @Query + 'ORDER BY UpdatedDate DESC
 	OFFSET @PageIndex ROWS FETCH NEXT @PageSize ROWS ONLY';
 	PRINT @SearchQuery
-	exec sp_executesql @CountQuery, N'@IsAbstract bit, @IdList nvarchar(MAX)', @IsAbstract, @IdList
-	exec sp_executesql @SearchQuery, N'@IsAbstract bit, @PageIndex int, @PageSize int, @IdList nvarchar(MAX)', @IsAbstract, @PageIndex, @PageSize, @IdList
+	exec sp_executesql @CountQuery, N'@IsAbstract bit, @IsPageTemplate bit, @IdList nvarchar(MAX)', @IsAbstract, @IsPageTemplate, @IdList
+	exec sp_executesql @SearchQuery, N'@IsAbstract bit, @IsPageTemplate bit, @PageIndex int, @PageSize int, @IdList nvarchar(MAX)', @IsAbstract, @IsPageTemplate, @PageIndex, @PageSize, @IdList
 
 END
 GO

@@ -55,6 +55,7 @@ export class AddWebsiteComponent implements OnInit {
         WebsiteId: this.current.Id,
         IsAbstract: false,
         IsPageRendering: true,
+        IsPageTemplate: true,
       };
       this.clientState.isBusy = true;
       forkJoin([

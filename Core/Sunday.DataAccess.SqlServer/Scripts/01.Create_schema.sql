@@ -226,6 +226,7 @@ BEGIN
 		BaseTemplateIds nvarchar(MAX),
 		HasRestrictions bit default(0),
 		IsAbstract bit default(0),
+		IsPageTemplate bit default(0),
 		InsertOptions nvarchar(MAX),
 		CreatedDate datetime NOT NULL,
 		CreatedBy nvarchar(500) NULL,
@@ -348,4 +349,14 @@ BEGIN
 		[UpdatedBy] [nvarchar](500) NULL,
 		[IsDeleted] [bit] NOT NULL
 	);
+END
+
+IF (NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'dbo' AND  TABLE_NAME = 'ContentOrders'))
+BEGIN
+    CREATE TABLE ContentOrders
+	(
+		ContentId uniqueidentifier,
+		[Order] int,
+		PRIMARY KEY(ContentId, [Order])
+	)
 END

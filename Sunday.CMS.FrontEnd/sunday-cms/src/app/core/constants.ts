@@ -85,8 +85,10 @@ export class ApiUrl {
     GetMultiples: 'cms/api/contents/getMultiples',
     Create: 'cms/api/contents/create/',
     Update: 'cms/api/contents/update/',
+    UpdateExplicit: 'cms/api/contents/updateExplicit/',
     NewVersion: 'cms/api/contents/',
     Publish: 'cms/api/contents/',
+    Move: 'cms/api/contents/move',
     Delete: 'cms/api/contents/',
   };
   public static Renderings = {

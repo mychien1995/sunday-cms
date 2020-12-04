@@ -11,6 +11,7 @@ namespace Sunday.ContentManagement.Persistence.Models
     public class TemplateQueryParameter : PagingCriteria
     {
         public bool? IsAbstract { get; set; }
+        public bool? IsPageTemplate { get; set; }
         public string Text { get; set; } = string.Empty;
         [DapperIgnoreParam] 
         public string[] IncludeIds { get; set; } = Array.Empty<string>();

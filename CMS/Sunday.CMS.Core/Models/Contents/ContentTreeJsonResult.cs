@@ -24,6 +24,7 @@ namespace Sunday.CMS.Core.Models.Contents
         public string Type { get; set; } = string.Empty;
         public bool Open { get; set; }
         public string? ParentId { get; set; }
+        public int? SortOrder { get; set; }
         public ContentTreeItem[] ChildNodes { get; set; } = Array.Empty<ContentTreeItem>();
     }
 }

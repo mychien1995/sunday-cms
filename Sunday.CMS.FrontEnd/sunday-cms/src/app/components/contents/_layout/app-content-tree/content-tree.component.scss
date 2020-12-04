@@ -5,6 +5,12 @@
     li {
       padding: 3px;
       list-style: none;
+      &.hover-top {
+        border-top: 3px solid #b3b3b3;
+      }
+      &.hover-bottom {
+        border-bottom: 3px solid #b3b3b3;
+      }
       .tree-node {
         display: flex;
         align-items: center;
@@ -16,7 +22,7 @@
           &:hover {
             background-color: #f1f4f6;
           }
-          &.active{
+          &.active {
             background-color: #d9dbdc;
           }
           > i {

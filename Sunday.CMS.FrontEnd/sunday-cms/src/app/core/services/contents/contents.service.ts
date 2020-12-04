@@ -44,6 +44,12 @@ export class ContentService {
       .pipe(map(ApiHelper.onSuccess), catchError(ApiHelper.onFail));
   }
 
+  updateExplicit(node: ContentModel): Observable<ApiResponse> {
+    return this.apiService
+      .post(ApiUrl.Contents.UpdateExplicit, node)
+      .pipe(map(ApiHelper.onSuccess), catchError(ApiHelper.onFail));
+  }
+
   delete(contentId: string): Observable<ApiResponse> {
     return this.apiService
       .delete(`${ApiUrl.Contents.Delete}${contentId}`)
@@ -53,6 +59,22 @@ export class ContentService {
   publish(contentId: string): Observable<ApiResponse> {
     return this.apiService
       .put(`${ApiUrl.Contents.Publish}${contentId}`)
+      .pipe(map(ApiHelper.onSuccess), catchError(ApiHelper.onFail));
+  }
+
+  move(
+    contentId: string,
+    parentId?: string,
+    parentType?: number,
+    sortOrder?: number
+  ): Observable<ApiResponse> {
+    return this.apiService
+      .post(ApiUrl.Contents.Move, {
+        ParentId: parentId,
+        ParentType: parentType,
+        SortOrder: sortOrder,
+        ContentId: contentId,
+      })
       .pipe(map(ApiHelper.onSuccess), catchError(ApiHelper.onFail));
   }
 }

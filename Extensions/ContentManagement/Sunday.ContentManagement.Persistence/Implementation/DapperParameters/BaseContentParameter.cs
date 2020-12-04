@@ -27,7 +27,7 @@ namespace Sunday.ContentManagement.Persistence.Implementation.DapperParameters
             sqlCommand.Parameters.Add("@ParentType", SqlDbType.Int).Value = Content.ParentType;
             sqlCommand.Parameters.Add("@UpdatedDate", SqlDbType.DateTime).Value = Content.UpdatedDate;
             sqlCommand.Parameters.Add("@UpdatedBy", SqlDbType.VarChar, 500).Value = Content.UpdatedBy;
-            sqlCommand.Parameters.Add("@SortOrder", SqlDbType.Int).Value = Content.SortOrder;
+            sqlCommand.Parameters.Add("@SortOrder", SqlDbType.Int).Value = 0;
             var activeVersion = Content.Versions.FirstOrDefault(v => v.IsActive);
             sqlCommand.Parameters.Add("@WorkId", SqlDbType.UniqueIdentifier).Value = activeVersion?.Id;
             var fields = Content.Fields;

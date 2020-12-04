@@ -24,6 +24,7 @@ export class ManageTemplateComponent implements OnInit {
   query?: any = { PageSize: 20 };
   searchForm: FormGroup = new FormGroup({
     Text: new FormControl(this.query?.Text || ''),
+    IsPageTemplate: new FormControl(this.query?.IsPageTemplate),
   });
 
   ngOnInit(): void {

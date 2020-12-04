@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LanguageExt;
+using Sunday.ContentManagement.Domain;
 using Sunday.ContentManagement.Models;
 using Sunday.ContentManagement.Services;
 using Sunday.Core;
@@ -25,6 +26,9 @@ namespace Sunday.ContentManagement.Implementation.Services
             _organizationService = organizationService;
             _websiteService = websiteService;
         }
+
+        public string GetWebsitePath(ApplicationWebsite website)
+            => $"{website.OrganizationId}/{website.Id}";
         public async Task<ContentAddress> GetAncestors(Content content)
         {
             var emptyAddress = new ContentAddress();

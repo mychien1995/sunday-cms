@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Sunday.ContentManagement.Implementation.Pipelines.Arguments;
 using Sunday.ContentManagement.Models;
+using Sunday.ContentManagement.Persistence.Application;
 using Sunday.ContentManagement.Services;
 using Sunday.Core.Extensions;
 using Sunday.Core.Pipelines;
@@ -15,14 +16,12 @@ namespace Sunday.ContentManagement.Implementation.Pipelines.ContentTrees
     public class GetTreeByPath : BaseGetTreeRootPipelineProcessor
     {
         private readonly IContentPathResolver _contentPathResolver;
-        private readonly IContentService _contentService;
 
-        public GetTreeByPath(IContentPathResolver contentPathResolver, IWebsiteService websiteService, IOrganizationService organizationService,
-            IContentService contentService, ISundayContext sundayContext) :
-            base(sundayContext, organizationService, websiteService)
+        public GetTreeByPath(ISundayContext sundayContext, IOrganizationService organizationService, IWebsiteService websiteService,
+            IContentPathResolver contentPathResolver, IContentService contentService, IContentOrderRepository contentOrderRepository)
+            : base(sundayContext, organizationService, websiteService, contentOrderRepository, contentService)
         {
             _contentPathResolver = contentPathResolver;
-            _contentService = contentService;
         }
 
         public override async Task ProcessAsync(PipelineArg pipelineArg)
@@ -39,7 +38,7 @@ namespace Sunday.ContentManagement.Implementation.Pipelines.ContentTrees
             var websiteNode = orgNode.ChildNodes.FirstOrDefault(n => n.Id == address.Website!.Id.ToString())!;
             websiteNode.Open = true;
             websiteNode.ParentId = orgNode.Id;
-            var contents = await _contentService.GetChildsAsync(address.Website!.Id, ContentType.Website);
+            var contents = await GetContentChilds(address.Website!.Id, ContentType.Website);
             contents.Iter(content =>
             {
                 websiteNode.ChildNodes.Add(FromContent(content, websiteNode.Id));
@@ -56,7 +55,7 @@ namespace Sunday.ContentManagement.Implementation.Pipelines.ContentTrees
                     currentNode.Open = true;
                     break;
                 }
-                var childContents = await _contentService.GetChildsAsync(Guid.Parse(node.Id), ContentType.Content);
+                var childContents = await GetContentChilds(Guid.Parse(node.Id), ContentType.Content);
                 childContents.Iter(childContent =>
                 {
                     node.ChildNodes.Add(FromContent(childContent, node.Id));

@@ -64,6 +64,14 @@
                     <label class="custom-control-label" for="IsAbstract">&nbsp;</label>
                 </div>
             </div>
+            <div class="position-relative form-group">
+                <label for="IsPageTemplate" class="">Is Page Template:</label>
+                <div class="custom-checkbox custom-control">
+                    <input type="checkbox" id="IsPageTemplate" class="custom-control-input" formControlName="IsPageTemplate"
+                        [checked]="template.IsPageTemplate" (change)="template.IsPageTemplate = !template.IsPageTemplate" />
+                    <label class="custom-control-label" for="IsPageTemplate">&nbsp;</label>
+                </div>
+            </div>
         </div>
     </div>
 </form>

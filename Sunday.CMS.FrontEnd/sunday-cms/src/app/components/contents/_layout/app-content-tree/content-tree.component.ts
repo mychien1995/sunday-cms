@@ -51,7 +51,12 @@ export class ContentTreeComponent implements OnInit {
     items: [],
   };
   activeNode: ContentTreeNode;
+  dragNode: ContentTreeNode;
+  dragging = false;
+  hoverNode: ContentTreeNode;
+  hoverPosition = 0;
   @ViewChild('confirmDeleteDialog') deleteDialog: ElementRef;
+  @ViewChild('confirmDropDialog') moveDialog: ElementRef;
   constructor(
     private iconService: IconService,
     private contentTreeService: ContentTreeService,
@@ -135,8 +140,8 @@ export class ContentTreeComponent implements OnInit {
         (res) => {
           if (res.Success) {
             this.tree = res;
-            this.tree.Roots.forEach((element) => {
-              element.Open = true;
+            this.tree.Roots.forEach((el) => {
+              el.Open = true;
             });
             this.setParentNode();
           }
@@ -148,8 +153,8 @@ export class ContentTreeComponent implements OnInit {
   }
 
   setParentNode(): void {
-    this.tree.Roots.forEach((element) => {
-      this.setLeafParent(element);
+    this.tree.Roots.forEach((el) => {
+      this.setLeafParent(el);
     });
   }
 
@@ -193,7 +198,8 @@ export class ContentTreeComponent implements OnInit {
   onSelectNode(node: ContentTreeNode): void {
     if (this.isContent(node)) {
       const isContentDetail =
-        this.activatedRoute.snapshot.component === ContentDetailComponent;
+        this.activatedRoute.snapshot.firstChild.component ===
+        ContentDetailComponent;
       if (!isContentDetail) {
         this.router.navigate([node.Link]);
       } else {
@@ -286,7 +292,140 @@ export class ContentTreeComponent implements OnInit {
     this.contextMenu.hidden = true;
   }
 
+  @HostListener('document:mousemove', ['$event'])
+  onMouseMove(event): void {
+    if (this.dragNode && this.dragging) {
+      const dragNode = this.dragNode;
+      const elements = document.elementsFromPoint(event.clientX, event.clientY);
+      const currentElement = document.elementFromPoint(
+        event.clientX,
+        event.clientY
+      );
+      for (let i = 0; i < elements.length; i++) {
+        const el = elements[i];
+        const id = el.getAttribute('data-nodeid');
+        if (id && id !== dragNode.Id) {
+          const node = this.searchInTree(id);
+          if (node) {
+            this.hoverNode = node;
+            const listItem = el.tagName === 'li' ? el : el.closest('li');
+            const currentElementRect = currentElement.getBoundingClientRect();
+            const currentPoint =
+              currentElementRect.top + currentElementRect.height / 2;
+            const hoverRect = listItem.getBoundingClientRect();
+            const insideTop = hoverRect.top + hoverRect.height / 2 - 10;
+            const insideBottom = hoverRect.top + hoverRect.height / 2 + 10;
+            if (currentPoint < insideTop) {
+              this.hoverPosition = -1;
+            } else if (currentPoint > insideBottom) {
+              this.hoverPosition = 1;
+            } else {
+              this.hoverPosition = 0;
+            }
+          }
+        }
+      }
+    }
+  }
+
   isContent(node: ContentTreeNode): boolean {
     return node.Type.toString() === this.parentTypeMappings.content.toString();
+  }
+
+  startDrag(item: ContentTreeNode) {
+    if (item.Type.toString() === '3') {
+      this.dragNode = item;
+      this.dragging = true;
+    }
+  }
+
+  stopDrag(ev) {
+    const evt = ev;
+    if (this.dragNode && this.hoverNode) {
+      this.dragging = false;
+      const ref = this.modalService.open(this.moveDialog);
+      ref.result
+        .then((_) => {
+          evt.source._dragRef.reset();
+          this.dragNode = null;
+          this.hoverNode = null;
+        })
+        .catch((e) => {
+          evt.source._dragRef.reset();
+          this.dragNode = null;
+          this.hoverNode = null;
+        });
+    } else {
+      evt.source._dragRef.reset();
+      this.dragNode = null;
+      this.hoverNode = null;
+    }
+  }
+
+  confirmMove() {
+    if (this.hoverNode && this.dragNode) {
+      let parentId = this.dragNode.ParentId || this.dragNode.ParentNode.Id;
+      let parentType = this.dragNode.ParentNode.Type;
+      let sortOrder = null;
+      if (this.hoverPosition === 0) {
+        parentId = this.hoverNode.Id;
+        parentType = this.hoverNode.Type;
+        if (this.hoverNode.Id === this.dragNode.ParentId) {
+          this.modalService.dismissAll();
+          return;
+        } else {
+          sortOrder = this.getSortOrder(this.dragNode, this.hoverNode);
+        }
+      } else {
+        if (this.hoverNode.ParentId !== this.dragNode.ParentId) {
+          parentId = this.hoverNode.ParentId || this.hoverNode.ParentNode.Id;
+          parentType = this.hoverNode.ParentNode.Type;
+        }
+        if (this.hoverPosition === 1) {
+          sortOrder = this.hoverNode.SortOrder || 0 + 1;
+        }
+        if (this.hoverPosition === -1) {
+          sortOrder = this.hoverNode.SortOrder || 0 - 1;
+        }
+      }
+      this.isTreeLoading = true;
+      this.contentService
+        .move(this.dragNode.Id, parentId, parentType, sortOrder)
+        .subscribe(
+          (res) => {
+            this.isTreeLoading = false;
+            if (parentId !== this.dragNode.ParentNode.Id) {
+              this.reloadNode(this.dragNode.ParentNode, () => {});
+            }
+            const parentNode = this.searchInTree(parentId);
+            this.reloadNode(parentNode, () => {});
+            this.modalService.dismissAll();
+          },
+          (ex) => (this.isTreeLoading = false)
+        );
+    }
+  }
+
+  getSortOrder(
+    currentNode: ContentTreeNode,
+    parentNode: ContentTreeNode
+  ): number {
+    const siblings = [...parentNode.ChildNodes];
+    if (siblings.length === 0) {
+      return 0;
+    }
+    siblings.push(currentNode);
+    const sorted = siblings.sort(this.sortTreeNode);
+    return sorted.indexOf(currentNode);
+  }
+
+  sortTreeNode(nodeA: ContentTreeNode, nodeB: ContentTreeNode) {
+    if (nodeA.Name.toLowerCase() < nodeB.Name.toLowerCase()) {
+      return -1;
+    } else if (nodeA.Name.toLowerCase() > nodeB.Name.toLowerCase()) {
+      return 1;
+    } else {
+      return 0;
+    }
   }
 }

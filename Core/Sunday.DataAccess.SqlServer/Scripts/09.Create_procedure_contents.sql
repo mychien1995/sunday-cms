@@ -198,3 +198,28 @@ BEGIN
 	SELECT * FROM Contents WHERE IsDeleted = 0 AND Id IN (SELECT Id FROM @tblIds)
 END
 GO
+--------------------------------------------------------------------
+CREATE OR ALTER PROCEDURE [dbo].[sp_content_updateContentExplicit]
+(
+	@Id uniqueidentifier,
+	@Name nvarchar(1000),
+	@DisplayName nvarchar(1000),
+	@Path nvarchar(MAX),
+	@ParentId uniqueidentifier,
+	@ParentType int,
+	@UpdatedDate datetime,
+	@UpdatedBy varchar(500)
+)
+AS
+BEGIN
+  UPDATE [dbo].[Contents]
+  SET [Name] = @Name,
+      [DisplayName] = @DisplayName,
+      [Path] = @Path,
+      [ParentId] = @ParentId,
+      [ParentType] = @ParentType,
+      [UpdatedDate] = @UpdatedDate,
+      [UpdatedBy] = @UpdatedBy
+  WHERE Id = @Id
+END
+GO

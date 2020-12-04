@@ -59,6 +59,35 @@ export class InitialContentCreatorComponent implements OnInit {
     );
   }
 
+  getSortOrder(): number {
+    const siblings = [...this.parent.ChildNodes];
+    if (siblings.length === 0) {
+      return 0;
+    }
+    const dumpNode = <ContentTreeNode>{
+      Name: this.name,
+    };
+    siblings.push(dumpNode);
+    const sorted = siblings.sort(this.sortTreeNode);
+    return sorted.indexOf(dumpNode);
+  }
+
+  sortTreeNode(nodeA: ContentTreeNode, nodeB: ContentTreeNode) {
+    if (nodeA.SortOrder && nodeB.SortOrder) {
+      if (nodeA.SortOrder > nodeB.SortOrder) {
+        return 1;
+      } else if (nodeA.SortOrder < nodeB.SortOrder) {
+        return -1;
+      }
+    }
+    if (nodeA.Name.toLowerCase() < nodeB.Name.toLowerCase()) {
+      return -1;
+    } else if (nodeA.Name.toLowerCase() > nodeB.Name.toLowerCase()) {
+      return 1;
+    } else {
+      return 0;
+    }
+  }
   onSubmit(): void {
     this.isSubmitted = true;
     if (
@@ -81,6 +110,7 @@ export class InitialContentCreatorComponent implements OnInit {
               TemplateFieldId: f.field.Id,
             }
         ),
+        SortOrder: this.getSortOrder(),
       };
       this.clienState.isBusy = true;
       this.contentService.create(content).subscribe(

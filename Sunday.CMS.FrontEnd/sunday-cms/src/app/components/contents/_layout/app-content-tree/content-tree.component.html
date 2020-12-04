@@ -17,12 +17,15 @@
     </div>
 </div>
 <ng-template #childTemplate let-item="item">
-    <li>
-        <span class="tree-node" (contextmenu)="openContextMenu($event, item)">
-            <i class="fa fa-caret-right" [hidden]="item.Open" (click)="expandNode(item)"></i>
-            <i class="fa fa-caret-down" [hidden]="!item.Open" (click)="expandNode(item)"></i>
-            <label (click)="onSelectNode(item)" [class]="activeNode && item.Id === activeNode.Id ? 'active' : ''">
-                <i class="{{getNodeIcon(item)}}"></i>
+    <li cdkDrag cdkDragBoundary=".content-tree-main" (cdkDragStarted)="startDrag(item)" (cdkDragEnded)="stopDrag($event)"
+        [class]="(hoverNode && item.Id === hoverNode.Id && hoverPosition === -1) ? 'hover-top' : 
+        (hoverNode && item.Id === hoverNode.Id && hoverPosition === 1) ? 'hover-bottom' : ''" [attr.data-id]="item.Id">
+        <span class="tree-node" (contextmenu)="openContextMenu($event, item)" [attr.data-nodeid]="item.Id">
+            <i class="fa fa-caret-right" [hidden]="item.Open" (click)="expandNode(item)" [attr.data-id]="item.Id"></i>
+            <i class="fa fa-caret-down" [hidden]="!item.Open" (click)="expandNode(item)" [attr.data-id]="item.Id"></i>
+            <label (click)="onSelectNode(item)" [attr.data-id]="item.Id"
+                [class]="((activeNode && item.Id === activeNode.Id) || (hoverNode && item.Id === hoverNode.Id && hoverPosition === 0)) ? 'active' : ''">
+                <i class="{{getNodeIcon(item)}}" [attr.data-id]="item.Id"></i>
                 {{item.Name}}
             </label>
         </span>
@@ -46,6 +49,23 @@
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-primary" (click)="confirmDelete()">Confirm</button>
+        <button type="button" class="btn btn-secondary" (click)="c()">Cancel</button>
+    </div>
+</ng-template>
+
+<ng-template #confirmDropDialog let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Move Item</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <p>Are you sure you to move {{dragNode?.Name}} to
+            {{hoverPosition === 1 ? 'below' : hoverPosition === -1 ? 'above' : 'under'}} {{hoverNode?.Name}}</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="confirmMove()">Confirm</button>
         <button type="button" class="btn btn-secondary" (click)="c()">Cancel</button>
     </div>
 </ng-template>

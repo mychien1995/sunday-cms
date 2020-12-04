@@ -22,5 +22,8 @@ namespace Sunday.ContentManagement.Services
         Task PublishAsync(Guid contentId);
 
         Task<Content[]> GetMultiples(Guid[] contentIds);
+
+        Task MoveContent(MoveContentParameter moveContentParameter);
+        Task UpdateExplicitAsync(Content content);
     }
 }

@@ -32,11 +32,14 @@
             public const string GetByParents = "sp_contents_getByParents";
             public const string Create = "sp_content_create";
             public const string Update = "sp_content_update";
+            public const string UpdateContentExplicit = "sp_content_updateContentExplicit";
             public const string Delete = "sp_content_delete";
             public const string GetById = "sp_contents_getById";
             public const string NewVersion = "sp_content_newVersion";
             public const string Publish = "sp_content_publish";
             public const string GetMultiples = "sp_contents_getMultiples";
+            public const string SaveOrders = "sp_contents_saveOrders";
+            public const string GetOrders = "sp_contents_getOrders";
         }
         public class Renderings
         {

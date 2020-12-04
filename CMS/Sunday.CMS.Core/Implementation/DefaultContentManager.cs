@@ -77,6 +77,13 @@ namespace Sunday.CMS.Core.Implementation
             return BaseApiResponse.SuccessResult;
         }
 
+        public async Task<BaseApiResponse> UpdateExplicitAsync(ContentJsonResult content)
+        {
+            var model = content.MapTo<Content>();
+            await _contentService.UpdateExplicitAsync(model);
+            return BaseApiResponse.SuccessResult;
+        }
+
         public async Task<BaseApiResponse> DeleteContentAsync(Guid contentId)
         {
             await _contentService.DeleteAsync(contentId);
@@ -100,6 +107,12 @@ namespace Sunday.CMS.Core.Implementation
             var result = await _contentService.GetMultiples(contentIds);
             return new ListApiResponse<ContentJsonResult>(result.Length,
                 result.Select(content => content.MapTo<ContentJsonResult>()).ToArray());
+        }
+
+        public async Task<BaseApiResponse> MoveContent(MoveContentParameter parameter)
+        {
+            await _contentService.MoveContent(parameter);
+            return BaseApiResponse.SuccessResult;
         }
     }
 }

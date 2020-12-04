@@ -12,6 +12,7 @@ export class TemplateItem extends ApiResponse {
   CreatedBy: string;
   UpdatedBy: string;
   IsAbstract: boolean;
+  IsPageTemplate: boolean;
   Fields: TemplateField[] = [];
   Access: EntityAccess;
 }

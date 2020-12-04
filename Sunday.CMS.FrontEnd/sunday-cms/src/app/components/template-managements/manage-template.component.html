@@ -9,12 +9,19 @@
                     <div class="form-row">
                         <div class="col-md-6">
                             <div class="position-relative form-group form-row">
-                                <div class="col-8">
+                                <div class="col-7">
                                     <input name="text" placeholder="Enter template ID or template name" type="text"
                                         class="form-control" formControlName="Text" autocomplete="off"
                                         [(ngModel)]="query.Text">
                                 </div>
-                                <button class="btn btn-primary" type="submit">Search</button>
+                                <div class="col-4">
+                                    <ng-select [(ngModel)]="query.IsPageTemplate" formControlName="IsPageTemplate"
+                                        [placeholder]="'Template Types'" [searchable]="false">
+                                        <ng-option [value]="true">Page Templates</ng-option>
+                                        <ng-option [value]="false">Content Templates</ng-option>
+                                    </ng-select>
+                                </div>
+                                <button class="btn btn-primary col-1" type="submit">Search</button>
                             </div>
                         </div>
                     </div>

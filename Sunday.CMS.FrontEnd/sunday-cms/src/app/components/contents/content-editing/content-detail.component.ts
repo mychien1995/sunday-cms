@@ -223,6 +223,7 @@ export class ContentDetailComponent implements OnInit {
             IsActive: true,
           },
         ],
+        SortOrder: null,
       };
       this.clientState.isBusy = true;
       this.contentService.update(content).subscribe(
