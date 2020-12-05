@@ -36,8 +36,17 @@ namespace Sunday.ContentDelivery.Implementation.Services
                 PageSize = siteRoots.Length,
                 IncludeIds = siteRoots.Select(c => c.TemplateId.ToString()).ToArray()
             });
-            return Optional(siteRoots.FirstOrDefault(content => content.IsPublished &&
-                templates.Result.Any(t => t.Id == content.TemplateId && t.IsPageTemplate)));
+            return await Optional(siteRoots.FirstOrDefault(content => content.IsPublished &&
+                                                                      templates.Result.Any(t =>
+                                                                          t.Id == content.TemplateId &&
+                                                                          t.IsPageTemplate))).MatchAsync(async page =>
+            {
+                var fullPage =  await _contentService.GetByIdAsync(page!.Id,
+                    new GetContentOptions {IncludeFields = true}).MapResultTo(rs => rs.Get()); 
+                var fields = await _templateService.LoadTemplateFields(fullPage.TemplateId);
+                fullPage.Template.Fields = fields;
+                return Optional(fullPage);
+            }, () => Option<Content>.None);
         }
 
         public async Task<Option<Content>> GetPage(Guid websiteId, string path)

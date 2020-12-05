@@ -27,6 +27,7 @@ import {
 } from '@core/services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-content-tree',
@@ -68,7 +69,8 @@ export class ContentTreeComponent implements OnInit {
     private toastr: ToastrService,
     private modalService: NgbModal,
     private activatedRoute: ActivatedRoute,
-    private contentBus: ContentBus
+    private contentBus: ContentBus,
+    private location: Location
   ) {}
 
   loadInitialData(): void {
@@ -204,6 +206,7 @@ export class ContentTreeComponent implements OnInit {
         this.router.navigate([node.Link]);
       } else {
         this.contentBus.contentLinkSelect(node.Id);
+        this.location.go(`/manage-contents/${node.Id}`);
       }
       this.activeNode = node;
     }

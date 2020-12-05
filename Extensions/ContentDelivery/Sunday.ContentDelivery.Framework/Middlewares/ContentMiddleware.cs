@@ -47,19 +47,20 @@ namespace Sunday.ContentDelivery.Framework.Middlewares
             var requestPath = httpContext.Request.Path;
             var hostName = httpContext.Request.Host.Value;
             var websiteOpt = await _websiteService.GetByHostNameAsync(hostName);
-            if (websiteOpt.IsNone) goto END;
+            if (websiteOpt.IsNone) goto NEXT;
             var website = websiteOpt.Get();
             var contentOpt = await _contentReader.GetPage(website.Id, requestPath);
-            if (contentOpt.IsNone) goto END;
+            if (contentOpt.IsNone) goto NEXT;
             var content = contentOpt.Get();
             var renderingOpt = await website.PageDesignMappings.Get(content.TemplateId.ToString()).MatchAsync(
                 async renderingId => await _renderingService.GetRenderingById(Guid.Parse(renderingId)),
                 () => Option<Rendering>.None);
-            if (renderingOpt.IsNone) goto END;
+            if (renderingOpt.IsNone) goto NEXT;
             var rendering = renderingOpt.Get();
             await InvokeActionContext(content, website,
                 rendering, httpContext);
-            END:
+            return;
+            NEXT:
             await _next(httpContext);
         }
 

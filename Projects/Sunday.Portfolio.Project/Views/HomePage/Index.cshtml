@@ -28,7 +28,7 @@
                     @foreach (var link in Model.SocialLinks)
                     {
                         <li>
-                            <a href="@link.Url">
+                            <a href="@link.Url" target="_blank">
                                 <i class="@link.Icon"></i>
                             </a>
                         </li>
@@ -39,5 +39,5 @@
     </div>
 </div>
 <section class="section about-me" data-section="section1">
-    @{ Html.RenderingAreaFor(Model.CurrentPage, "AboutMeSection"); }
+    @{ await Html.RenderingAreaFor(Model.CurrentPage, "AboutMeSection"); }
 </section>

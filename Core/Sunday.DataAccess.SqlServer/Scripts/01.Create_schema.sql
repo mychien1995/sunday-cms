@@ -232,7 +232,6 @@ BEGIN
 		CreatedBy nvarchar(500) NULL,
 		UpdatedDate datetime NOT NULL,
 		UpdatedBy nvarchar(500) NULL,
-		IsPublished bit NOT NULL default(0),
 		IsDeleted bit NOT NULL,
 	)
 END
@@ -303,6 +302,7 @@ BEGIN
 		CreatedBy varchar(500),
 		UpdatedBy varchar(500),
 		PublishedBy varchar(500),
+		IsPublished bit default(0),
 		SortOrder int,
 		IsDeleted bit default(0)
 	);

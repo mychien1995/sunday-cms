@@ -2,15 +2,15 @@
     <label>{{innerField.field | templateName}}: <span class="red" [hidden]="!field.field.IsRequired">*</span></label>
     <div class="rendering-list-wrapper ">
         <div cdkDropList class="rendering-list" (cdkDropListDropped)="drop($event)">
-            <div class="rendering-box" *ngFor="let rendering of renderings" cdkDrag>
+            <div class="rendering-box" *ngFor="let rendering of renderings" cdkDrag [cdkDragDisabled]="!isEditable">
                 {{getRenderingName(rendering.RenderingId)}}
-                <span (click)="openContextMenu($event, rendering)">
+                <span (click)="openContextMenu($event, rendering)" [hidden]="!isEditable">
                     <i class="fa fa-bars"></i>
                 </span>
             </div>
-            <a href="javascript:void(0)" (click)="openDialog()">Add More</a>
+            <a href="javascript:void(0)" (click)="openDialog()" [hidden]="!isEditable">Add More</a>
         </div>
-        <div class="context-menu" [hidden]="contextMenu.hidden" [style.top]="contextMenu.y"
+        <div class="context-menu" [hidden]="contextMenu.hidden || !isEditable" [style.top]="contextMenu.y"
             [style.left]="contextMenu.x">
             <ul>
                 <li (click)="editRendering()">

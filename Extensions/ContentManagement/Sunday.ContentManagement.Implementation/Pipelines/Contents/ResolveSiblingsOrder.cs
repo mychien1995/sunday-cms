@@ -38,10 +38,15 @@ namespace Sunday.ContentManagement.Implementation.Pipelines.Contents
             if (contentOrders.Any(c => c.Order == moveContentParameter.SortOrder))
             {
                 var greater = contentOrders.Where(c => c.Order >= moveContentParameter.SortOrder).ToList();
-                var lower = contentOrders.Where(c => c.Order <= moveContentParameter.SortOrder).ToList();
+                var lower = contentOrders.Where(c => c.Order < moveContentParameter.SortOrder).ToList();
                 if (greater.Count > lower.Count)
                 {
-                    greater.Iter(c => c.Order++);
+                    var order = moveContentParameter.SortOrder.Value + 1;
+                    greater.Iter(c =>
+                    {
+                        c.Order = order;
+                        order++;
+                    });
                     toSave = greater;
                 }
                 else
