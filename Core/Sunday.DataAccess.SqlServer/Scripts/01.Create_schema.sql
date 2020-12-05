@@ -232,6 +232,7 @@ BEGIN
 		CreatedBy nvarchar(500) NULL,
 		UpdatedDate datetime NOT NULL,
 		UpdatedBy nvarchar(500) NULL,
+		IsPublished bit NOT NULL default(0),
 		IsDeleted bit NOT NULL,
 	)
 END

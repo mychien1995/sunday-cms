@@ -7,10 +7,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{E3DCEA1C-2
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CMS", "CMS", "{DFFD1965-3AB5-4017-8A47-A0693BE1A7BD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sunday.CMS.Interface", "CMS\Sunday.CMS.Interface\Sunday.CMS.Interface.csproj", "{F5D4641A-84A7-4795-ACC2-0B2E2DCACC1C}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sunday.CMS.Core", "CMS\Sunday.CMS.Core\Sunday.CMS.Core.csproj", "{923C113A-97CC-4501-B0F5-6A2D077A5AC6}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sunday.Core", "Core\Sunday.Core\Sunday.Core.csproj", "{A6415F71-F833-4107-83BC-6D2003664C38}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sunday.Core.Framework", "Core\Sunday.Core.Framework\Sunday.Core.Framework.csproj", "{D2F44927-7DA5-41B1-BF92-FCD5370A13FE}"
@@ -33,11 +29,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sunday.Foundation.Persisten
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ContentManagement", "ContentManagement", "{2DCBB071-7C06-480F-8709-BC56BB5512E9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sunday.ContentManagement", "Extensions\ContentManagement\Sunday.ContentManagement.Core\Sunday.ContentManagement.csproj", "{7D527DCB-BC0C-4E1D-8D13-3DEA0079962E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sunday.ContentManagement", "Extensions\ContentManagement\Sunday.ContentManagement.Core\Sunday.ContentManagement.csproj", "{7D527DCB-BC0C-4E1D-8D13-3DEA0079962E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sunday.ContentManagement.Persistence", "Extensions\ContentManagement\Sunday.ContentManagement.Persistence\Sunday.ContentManagement.Persistence.csproj", "{700D4230-6F91-47AB-AAC9-CB9F4BDAEABA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sunday.ContentManagement.Persistence", "Extensions\ContentManagement\Sunday.ContentManagement.Persistence\Sunday.ContentManagement.Persistence.csproj", "{700D4230-6F91-47AB-AAC9-CB9F4BDAEABA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sunday.ContentManagement.Implementation", "Extensions\ContentManagement\Sunday.ContentManagement.Implementation\Sunday.ContentManagement.Implementation.csproj", "{5D7AA814-D14C-4047-95CD-B541344CFFD6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sunday.ContentManagement.Implementation", "Extensions\ContentManagement\Sunday.ContentManagement.Implementation\Sunday.ContentManagement.Implementation.csproj", "{5D7AA814-D14C-4047-95CD-B541344CFFD6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sunday.CMS.Core", "Extensions\ContentManagement\Sunday.CMS.Core\Sunday.CMS.Core.csproj", "{D574C1BE-6CAF-4DE0-B70F-E642FD557400}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sunday.CMS.Interface", "Extensions\ContentManagement\Sunday.CMS.Interface\Sunday.CMS.Interface.csproj", "{AA795600-039A-4352-A5AD-0EEEC2A7D4F8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,14 +45,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{F5D4641A-84A7-4795-ACC2-0B2E2DCACC1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F5D4641A-84A7-4795-ACC2-0B2E2DCACC1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F5D4641A-84A7-4795-ACC2-0B2E2DCACC1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F5D4641A-84A7-4795-ACC2-0B2E2DCACC1C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{923C113A-97CC-4501-B0F5-6A2D077A5AC6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{923C113A-97CC-4501-B0F5-6A2D077A5AC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{923C113A-97CC-4501-B0F5-6A2D077A5AC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{923C113A-97CC-4501-B0F5-6A2D077A5AC6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A6415F71-F833-4107-83BC-6D2003664C38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A6415F71-F833-4107-83BC-6D2003664C38}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A6415F71-F833-4107-83BC-6D2003664C38}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -97,13 +89,19 @@ Global
 		{5D7AA814-D14C-4047-95CD-B541344CFFD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5D7AA814-D14C-4047-95CD-B541344CFFD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5D7AA814-D14C-4047-95CD-B541344CFFD6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D574C1BE-6CAF-4DE0-B70F-E642FD557400}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D574C1BE-6CAF-4DE0-B70F-E642FD557400}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D574C1BE-6CAF-4DE0-B70F-E642FD557400}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D574C1BE-6CAF-4DE0-B70F-E642FD557400}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA795600-039A-4352-A5AD-0EEEC2A7D4F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA795600-039A-4352-A5AD-0EEEC2A7D4F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA795600-039A-4352-A5AD-0EEEC2A7D4F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA795600-039A-4352-A5AD-0EEEC2A7D4F8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{F5D4641A-84A7-4795-ACC2-0B2E2DCACC1C} = {DFFD1965-3AB5-4017-8A47-A0693BE1A7BD}
-		{923C113A-97CC-4501-B0F5-6A2D077A5AC6} = {DFFD1965-3AB5-4017-8A47-A0693BE1A7BD}
 		{A6415F71-F833-4107-83BC-6D2003664C38} = {E3DCEA1C-29E4-4078-BBBA-246256C7395E}
 		{D2F44927-7DA5-41B1-BF92-FCD5370A13FE} = {E3DCEA1C-29E4-4078-BBBA-246256C7395E}
 		{CFA7FE3B-FDBF-4E88-993F-5D64D91DA7EB} = {E3DCEA1C-29E4-4078-BBBA-246256C7395E}
@@ -115,6 +113,7 @@ Global
 		{7D527DCB-BC0C-4E1D-8D13-3DEA0079962E} = {2DCBB071-7C06-480F-8709-BC56BB5512E9}
 		{700D4230-6F91-47AB-AAC9-CB9F4BDAEABA} = {2DCBB071-7C06-480F-8709-BC56BB5512E9}
 		{5D7AA814-D14C-4047-95CD-B541344CFFD6} = {2DCBB071-7C06-480F-8709-BC56BB5512E9}
+		{D574C1BE-6CAF-4DE0-B70F-E642FD557400} = {DFFD1965-3AB5-4017-8A47-A0693BE1A7BD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B00775C3-EEF6-4883-A795-0C11DB15EC6E}

@@ -7,8 +7,8 @@ namespace Sunday.ContentDelivery.Core.Services
 {
     public interface IContentReader
     {
-
-        public Task<Option<Content>> GetContentByNamePath(Guid websiteId, string path);
+        Task<Option<Content>> GetHomePage(Guid websiteId);
+        public Task<Option<Content>> GetPage(Guid websiteId, string path);
         public Task<Option<Content>> GetContent(Guid contentId);
     }
 }

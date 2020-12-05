@@ -5,7 +5,7 @@
     <UserSecretsId>6065bda2-2eec-464b-af61-3f1dcf80b55c</UserSecretsId>
     <RootNamespace>Sunday.Portfolio.Project</RootNamespace>
     <Nullable>enable</Nullable>
-  </PropertyGroup> 
+  </PropertyGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="Views\**\*.cshtml" />
@@ -17,5 +17,10 @@
     <ProjectReference Include="..\..\Extensions\ContentDelivery\Sunday.ContentDelivery.Framework\Sunday.ContentDelivery.Framework.csproj" />
     <ProjectReference Include="..\..\Extensions\ContentDelivery\Sunday.ContentDelivery.Implementation\Sunday.ContentDelivery.Implementation.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <AssemblyAttribute Include="Sunday.ContentDelivery.Framework.Attributes.SundayProjectAttribute">
+    </AssemblyAttribute>
+  </ItemGroup>
+
 
 </Project>

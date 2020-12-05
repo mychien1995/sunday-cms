@@ -49,7 +49,7 @@ namespace Sunday.ContentDelivery.Framework.Middlewares
             var websiteOpt = await _websiteService.GetByHostNameAsync(hostName);
             if (websiteOpt.IsNone) goto END;
             var website = websiteOpt.Get();
-            var contentOpt = await _contentReader.GetContentByNamePath(website.Id, requestPath);
+            var contentOpt = await _contentReader.GetPage(website.Id, requestPath);
             if (contentOpt.IsNone) goto END;
             var content = contentOpt.Get();
             var renderingOpt = await website.PageDesignMappings.Get(content.TemplateId.ToString()).MatchAsync(

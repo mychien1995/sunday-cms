@@ -12,6 +12,7 @@ namespace Sunday.ContentManagement.Persistence.Entities
         public string Name { get; set; } = string.Empty;
         public string DisplayName { get; set; } = string.Empty;
         public string Path { get; set; } = string.Empty;
+        public bool IsPublished { get; set; }
         public Guid ParentId { get; set; }
         public int ParentType { get; set; }
         [DapperIgnoreParam(DbOperation.Update)]

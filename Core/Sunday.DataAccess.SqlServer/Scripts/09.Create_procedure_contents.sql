@@ -132,7 +132,7 @@ BEGIN
 	SET @LatestVersionId = (SELECT TOP 1 Id FROM WorkContents WHERE ContentId = @Id AND Status <> 2 AND IsActive = 1)
 	IF @LatestVersionId IS NOT NULL
 	BEGIN
-		UPDATE Contents SET PublishedBy = @PublishedBy, PublishedDate  = @PublishedDate
+		UPDATE Contents SET PublishedBy = @PublishedBy, PublishedDate  = @PublishedDate, IsPublished = 1
 		WHERE Id = @Id
 
 		DELETE FROM ContentFields WHERE ContentId = @Id

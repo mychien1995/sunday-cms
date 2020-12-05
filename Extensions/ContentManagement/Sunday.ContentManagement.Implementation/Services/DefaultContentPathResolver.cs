@@ -4,11 +4,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using LanguageExt;
 using Sunday.ContentManagement.Domain;
+using Sunday.ContentManagement.Extensions;
 using Sunday.ContentManagement.Models;
 using Sunday.ContentManagement.Services;
 using Sunday.Core;
 using Sunday.Core.Extensions;
 using Sunday.Foundation.Application.Services;
+using static LanguageExt.Prelude;
 
 namespace Sunday.ContentManagement.Implementation.Services
 {
@@ -84,32 +86,26 @@ namespace Sunday.ContentManagement.Implementation.Services
             return address;
         }
 
-        public async Task<Option<Content>> GetContentByNamePath(Guid websiteId, string path, bool includeHome = false)
+        public async Task<Option<Content>> GetContentByNamePath(Guid websiteId, string path)
         {
-            var formalizedPath = path.Trim().Trim('/').ToLower().Replace('\\', '/');
-            var roots = await _contentService.GetChildsAsync(websiteId, ContentType.Website);
-            if (!roots.Any()) return Option<Content>.None;
-            var home = roots.FirstOrDefault(IsPage);
-            if (home == null) return Option<Content>.None;
-            if (string.IsNullOrEmpty(formalizedPath)) return home;
+            var formalizedPath = path.FormalizeAsContentPath();
+            if (string.IsNullOrEmpty(formalizedPath)) return Option<Content>.None;
             var parts = formalizedPath.Split('/').Select(p => p.Trim()).ToList();
-            if (includeHome)
-            {
-                var homePart = parts[0];
-                if (home.Name.ToLower() == homePart) return home;
-                parts.RemoveAt(0);
-            }
-            var currentContent = home;
+            var currentContent = Option<Content>.None;
+            var currentId = websiteId;
+            var contentType = ContentType.Website;
             while (parts.Count > 0)
             {
                 var currentName = parts[0];
-                var childs = await _contentService.GetChildsAsync(currentContent.Id, ContentType.Content);
-                currentContent = childs.FirstOrDefault(c => c.Name.ToLower() == currentName);
-                if (currentContent == null) return Option<Content>.None;
+                var childs = await _contentService.GetChildsAsync(currentId, contentType);
+                currentContent = Optional(childs.FirstOrDefault(c => c.Name.ToLower() == currentName));
+                if (currentContent.IsNone) return currentContent;
                 parts.RemoveAt(0);
+                contentType = ContentType.Content;
             }
             return currentContent;
         }
+
         private bool IsPage(Content content) => content.Name.Contains("page");
     }
 }

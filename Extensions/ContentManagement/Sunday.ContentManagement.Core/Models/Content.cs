@@ -20,6 +20,8 @@ namespace Sunday.ContentManagement.Models
         public string CreatedBy { get; set; } = string.Empty;
         public string UpdatedBy { get; set; } = string.Empty;
         public string PublishedBy { get; set; } = string.Empty;
+
+        public bool IsPublished { get; set; }
         public int? SortOrder { get; set; }
 
         public WorkContent[] Versions { get; set; } = Array.Empty<WorkContent>();

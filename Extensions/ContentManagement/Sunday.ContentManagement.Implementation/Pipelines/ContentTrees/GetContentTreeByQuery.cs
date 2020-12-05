@@ -34,7 +34,7 @@ namespace Sunday.ContentManagement.Implementation.Pipelines.ContentTrees
             {
                 location = location.Replace("$site", string.Empty);
             }
-            var contentOpt = await _contentPathResolver.GetContentByNamePath(website.Id, location, true);
+            var contentOpt = await _contentPathResolver.GetContentByNamePath(website.Id, location);
             if (contentOpt.IsNone) return;
             arg.ContentTree = await _contentTreeProvider.GetTreeSnapshotByPath(contentOpt.Get().Path);
         }

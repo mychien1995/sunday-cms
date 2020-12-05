@@ -3,6 +3,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
+using Sunday.ContentDelivery.Framework.Attributes;
 using Sunday.Core.Framework.Helpers;
 using Sunday.Core.Pipelines;
 using Sunday.Core.Pipelines.Arguments;
@@ -13,8 +14,7 @@ namespace Sunday.ContentDelivery.Framework.Pipelines
     {
         public void Process(PipelineArg arg)
         {
-            var test = AssemblyHelper.GetAllAssemblies(x => true).Select(x=>x.GetName().Name).ToArray();
-            var assemblies = AssemblyHelper.GetAllAssemblies(name => name.EndsWith(".Project.dll"));
+            var assemblies = AssemblyHelper.GetAssembliesWithAttribute(typeof(SundayProjectAttribute));
             var pipelineArg = (ConfigureServicesArg)arg;
             var services = pipelineArg.ServicesCollection;
             var mvcBuilder = services.AddControllersWithViews();
