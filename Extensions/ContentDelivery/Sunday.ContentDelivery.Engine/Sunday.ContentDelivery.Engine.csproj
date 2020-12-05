@@ -11,11 +11,10 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.10" />
   </ItemGroup>
 
-
   <ItemGroup>
-    <ProjectReference Include="..\..\Extensions\ContentDelivery\Sunday.ContentDelivery.Core\Sunday.ContentDelivery.Core.csproj" />
-    <ProjectReference Include="..\..\Extensions\ContentDelivery\Sunday.ContentDelivery.Framework\Sunday.ContentDelivery.Framework.csproj" />
-    <ProjectReference Include="..\..\Extensions\ContentDelivery\Sunday.ContentDelivery.Implementation\Sunday.ContentDelivery.Implementation.csproj" />
-    <ProjectReference Include="..\..\Projects\Sunday.Portfolio.Project\Sunday.Portfolio.Project.csproj" />
+    <ProjectReference Include="..\..\..\Projects\Sunday.Portfolio.Project\Sunday.Portfolio.Project.csproj" />
+    <ProjectReference Include="..\Sunday.ContentDelivery.Core\Sunday.ContentDelivery.Core.csproj" />
+    <ProjectReference Include="..\Sunday.ContentDelivery.Framework\Sunday.ContentDelivery.Framework.csproj" />
+    <ProjectReference Include="..\Sunday.ContentDelivery.Implementation\Sunday.ContentDelivery.Implementation.csproj" />
   </ItemGroup>
 </Project>

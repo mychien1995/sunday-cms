@@ -13,11 +13,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Sunday.Core.Framework\Sunday.Core.Framework.csproj" />
-    <ProjectReference Include="..\..\Core\Sunday.Core.Media\Sunday.Core.Media.csproj" />
-    <ProjectReference Include="..\..\Core\Sunday.Core\Sunday.Core.csproj" />
-    <ProjectReference Include="..\..\Extensions\ContentManagement\Sunday.ContentManagement.Core\Sunday.ContentManagement.csproj" />
-    <ProjectReference Include="..\..\Foundation\Sunday.Foundation\Sunday.Foundation.csproj" />
+    <ProjectReference Include="..\..\..\Core\Sunday.Core.Framework\Sunday.Core.Framework.csproj" />
+    <ProjectReference Include="..\..\..\Core\Sunday.Core.Media\Sunday.Core.Media.csproj" />
+    <ProjectReference Include="..\..\..\Core\Sunday.Core\Sunday.Core.csproj" />
+    <ProjectReference Include="..\..\..\Foundation\Sunday.Foundation\Sunday.Foundation.csproj" />
+    <ProjectReference Include="..\Sunday.ContentManagement.Core\Sunday.ContentManagement.csproj" />
   </ItemGroup>
 
 </Project>
