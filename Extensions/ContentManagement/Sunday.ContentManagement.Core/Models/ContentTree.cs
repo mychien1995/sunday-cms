@@ -16,7 +16,7 @@ namespace Sunday.ContentManagement.Models
         public string Name { get; set; } = string.Empty;
         public int Type { get; set; }
         public bool Open { get; set; }
-        public int? SortOrder { get; set; }
+        public int SortOrder { get; set; }
         public string? ParentId { get; set; }
         public List<ContentTreeNode> ChildNodes { get; set; } = new List<ContentTreeNode>();
     }

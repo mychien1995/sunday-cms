@@ -54,10 +54,13 @@ namespace Sunday.ContentManagement.Implementation.Services
         public async Task CreateAsync(Content content)
         {
             await ApplicationPipelines.RunAsync("cms.entity.beforeCreate", new BeforeCreateEntityArg(content));
-            await ApplicationPipelines.RunAsync("cms.content.beforeCreate", new BeforeCreateContentArg(content));
+            var createArg = new BeforeCreateContentArg(content);
+            await ApplicationPipelines.RunAsync("cms.content.beforeCreate", createArg);
             await _contentRepository.CreateAsync(await ToEntity(content));
-            if (content.SortOrder != null)
-                await _contentOrderRepository.SaveOrder(new[] { new ContentOrder(content.Id, content.SortOrder.Value) });
+            var moveArg = new GetContentSiblingsOrderArg(content, content.ParentId, MovePosition.Inside);
+            createArg.CopyPropertyTo(moveArg);
+            await ApplicationPipelines.RunAsync("cms.content.getSiblingsOrder", moveArg);
+            await _contentOrderRepository.SaveOrder(moveArg.Orders);
         }
 
         public async Task UpdateAsync(Content content)
@@ -65,8 +68,6 @@ namespace Sunday.ContentManagement.Implementation.Services
             await ApplicationPipelines.RunAsync("cms.entity.beforeUpdate", new BeforeUpdateEntityArg(content));
             await ApplicationPipelines.RunAsync("cms.content.beforeUpdate", new BeforeUpdateContentArg(content));
             await _contentRepository.UpdateAsync(await ToEntity(content));
-            if (content.SortOrder != null)
-                await _contentOrderRepository.SaveOrder(new[] { new ContentOrder(content.Id, content.SortOrder.Value) });
         }
 
         public async Task UpdateExplicitAsync(Content content)
@@ -95,18 +96,22 @@ namespace Sunday.ContentManagement.Implementation.Services
         {
             var content = await GetByIdAsync(moveContentParameter.ContentId)
                 .MapResultTo(rs => rs.Get());
-            if (moveContentParameter.ParentId.HasValue && moveContentParameter.ParentType.HasValue)
+            if (moveContentParameter.Position == MovePosition.Inside)
             {
-                content.ParentId = moveContentParameter.ParentId.Value;
-                content.ParentType = moveContentParameter.ParentType.Value;
-                await _contentRepository.UpdateContentExplicit(content.MapTo<ContentEntity>());
+                content.ParentId = moveContentParameter.TargetId;
+                content.ParentType = moveContentParameter.TargetType;
             }
-            if (moveContentParameter.SortOrder.HasValue)
+            else
             {
-                var moveArg = new GetContentSiblingsOrderArg(moveContentParameter);
-                await ApplicationPipelines.RunAsync("cms.content.getSiblingsOrder", moveArg);
-                await _contentOrderRepository.SaveOrder(moveArg.Orders);
+                var target = await GetByIdAsync(moveContentParameter.TargetId)
+                    .MapResultTo(rs => rs.Get());
+                content.ParentId = target.ParentId;
+                content.ParentType = target.ParentType;
             }
+            await UpdateExplicitAsync(content);
+            var moveArg = new GetContentSiblingsOrderArg(content, moveContentParameter.TargetId, moveContentParameter.Position);
+            await ApplicationPipelines.RunAsync("cms.content.getSiblingsOrder", moveArg);
+            await _contentOrderRepository.SaveOrder(moveArg.Orders);
         }
 
         private async Task<Content> ToModel(ContentEntity entity)

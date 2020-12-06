@@ -16,6 +16,8 @@ namespace Sunday.ContentManagement.Persistence.Entities
         public bool IsPublished { get; set; }
         public Guid ParentId { get; set; }
         public int ParentType { get; set; }
+        [DapperIgnoreParam]
+        public int SortOrder { get; set; }
         [DapperIgnoreParam(DbOperation.Update)]
         public Guid TemplateId { get; set; }
         [DapperIgnoreParam(DbOperation.Update)]

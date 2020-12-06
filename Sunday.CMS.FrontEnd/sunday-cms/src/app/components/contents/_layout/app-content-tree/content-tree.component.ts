@@ -309,7 +309,7 @@ export class ContentTreeComponent implements OnInit {
         const id = el.getAttribute('data-nodeid');
         if (id && id !== dragNode.Id) {
           const node = this.searchInTree(id);
-          if (node) {
+          if (node && node.Type.toString() === '3') {
             this.hoverNode = node;
             const listItem = el.tagName === 'li' ? el : el.closest('li');
             const currentElementRect = currentElement.getBoundingClientRect();
@@ -367,33 +367,21 @@ export class ContentTreeComponent implements OnInit {
 
   confirmMove() {
     if (this.hoverNode && this.dragNode) {
+      const targetId = this.hoverNode.Id;
+      const targetType = this.hoverNode.Type;
       let parentId = this.dragNode.ParentId || this.dragNode.ParentNode.Id;
       let parentType = this.dragNode.ParentNode.Type;
-      let sortOrder = null;
       if (this.hoverPosition === 0) {
         parentId = this.hoverNode.Id;
         parentType = this.hoverNode.Type;
         if (this.hoverNode.Id === this.dragNode.ParentId) {
           this.modalService.dismissAll();
           return;
-        } else {
-          sortOrder = this.getSortOrder(this.dragNode, this.hoverNode);
-        }
-      } else {
-        if (this.hoverNode.ParentId !== this.dragNode.ParentId) {
-          parentId = this.hoverNode.ParentId || this.hoverNode.ParentNode.Id;
-          parentType = this.hoverNode.ParentNode.Type;
-        }
-        if (this.hoverPosition === 1) {
-          sortOrder = this.hoverNode.SortOrder || 0 + 1;
-        }
-        if (this.hoverPosition === -1) {
-          sortOrder = this.hoverNode.SortOrder || 0 - 1;
         }
       }
       this.isTreeLoading = true;
       this.contentService
-        .move(this.dragNode.Id, parentId, parentType, sortOrder)
+        .move(this.dragNode.Id, targetId, targetType, this.hoverPosition)
         .subscribe(
           (res) => {
             this.isTreeLoading = false;
@@ -406,29 +394,6 @@ export class ContentTreeComponent implements OnInit {
           },
           (ex) => (this.isTreeLoading = false)
         );
-    }
-  }
-
-  getSortOrder(
-    currentNode: ContentTreeNode,
-    parentNode: ContentTreeNode
-  ): number {
-    const siblings = [...parentNode.ChildNodes];
-    if (siblings.length === 0) {
-      return 0;
-    }
-    siblings.push(currentNode);
-    const sorted = siblings.sort(this.sortTreeNode);
-    return sorted.indexOf(currentNode);
-  }
-
-  sortTreeNode(nodeA: ContentTreeNode, nodeB: ContentTreeNode) {
-    if (nodeA.Name.toLowerCase() < nodeB.Name.toLowerCase()) {
-      return -1;
-    } else if (nodeA.Name.toLowerCase() > nodeB.Name.toLowerCase()) {
-      return 1;
-    } else {
-      return 0;
     }
   }
 }

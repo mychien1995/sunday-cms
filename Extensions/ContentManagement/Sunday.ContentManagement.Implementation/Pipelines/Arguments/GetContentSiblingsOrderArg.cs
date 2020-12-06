@@ -6,12 +6,16 @@ namespace Sunday.ContentManagement.Implementation.Pipelines.Arguments
 {
     public class GetContentSiblingsOrderArg : PipelineArg
     {
-        public GetContentSiblingsOrderArg(MoveContentParameter moveContentParameter)
+        public GetContentSiblingsOrderArg(Content movedContent, Guid targetId, MovePosition position)
         {
-            MoveContentParameter = moveContentParameter;
+            MovedContent = movedContent;
+            TargetId = targetId;
+            Position = position;
         }
 
-        public MoveContentParameter MoveContentParameter { get; }
+        public Content MovedContent { get;  }
+        public Guid TargetId { get; }
+        public MovePosition Position { get; }
         public ContentOrder[] Orders { get; set; } = Array.Empty<ContentOrder>();
     }
 }

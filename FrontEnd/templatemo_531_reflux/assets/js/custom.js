@@ -24,26 +24,6 @@
     }
   });
 
-  $(".owl-carousel").owlCarousel({
-    items: 4,
-    lazyLoad: true,
-    loop: true,
-    dots: true,
-    margin: 30,
-    responsiveClass: true,
-    responsive: {
-      0: {
-        items: 1
-      },
-      600: {
-        items: 1
-      },
-      1000: {
-        items: 1
-      }
-    }
-  });
-
   $(".hover").mouseleave(function() {
     $(this).removeClass("hover");
   });

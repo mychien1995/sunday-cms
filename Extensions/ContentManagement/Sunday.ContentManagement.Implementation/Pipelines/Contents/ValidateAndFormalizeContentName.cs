@@ -27,6 +27,7 @@ namespace Sunday.ContentManagement.Implementation.Pipelines.Contents
             };
             var siblings = await _contentService.GetChildsAsync(content.ParentId, (ContentType) content.ParentType)
                 .MapResultTo(rs => rs.Where(c => c.Id != content.Id).ToArray());
+            pipelineArg.AddProperty("siblings", siblings);
             var formalizedName = ContentUtils.FormalizeName(content.Name);
             if (siblings.Any(c => c.Name == formalizedName))
                 throw new ArgumentException($"There is already a content named {formalizedName} under this path");

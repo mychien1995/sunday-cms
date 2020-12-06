@@ -64,15 +64,15 @@ export class ContentService {
 
   move(
     contentId: string,
-    parentId?: string,
-    parentType?: number,
-    sortOrder?: number
+    targetId?: string,
+    targetType?: number,
+    position?: number
   ): Observable<ApiResponse> {
     return this.apiService
       .post(ApiUrl.Contents.Move, {
-        ParentId: parentId,
-        ParentType: parentType,
-        SortOrder: sortOrder,
+        TargetId: targetId,
+        TargetType: targetType,
+        Position: position,
         ContentId: contentId,
       })
       .pipe(map(ApiHelper.onSuccess), catchError(ApiHelper.onFail));

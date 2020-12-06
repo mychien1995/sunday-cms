@@ -73,13 +73,6 @@ export class InitialContentCreatorComponent implements OnInit {
   }
 
   sortTreeNode(nodeA: ContentTreeNode, nodeB: ContentTreeNode) {
-    if (nodeA.SortOrder && nodeB.SortOrder) {
-      if (nodeA.SortOrder > nodeB.SortOrder) {
-        return 1;
-      } else if (nodeA.SortOrder < nodeB.SortOrder) {
-        return -1;
-      }
-    }
     if (nodeA.Name.toLowerCase() < nodeB.Name.toLowerCase()) {
       return -1;
     } else if (nodeA.Name.toLowerCase() > nodeB.Name.toLowerCase()) {

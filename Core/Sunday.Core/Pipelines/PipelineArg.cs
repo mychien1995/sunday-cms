@@ -27,6 +27,11 @@ namespace Sunday.Core.Pipelines
             Messages.Add(msg);
         }
 
+        public void CopyPropertyTo(PipelineArg arg)
+        {
+            arg.PropertyBag = PropertyBag;
+        }
+
         public object? this[string key]
         {
             get
