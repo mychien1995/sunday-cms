@@ -51,6 +51,7 @@ export class UserDetailResponse extends ApiResponse {
   IsActive: boolean;
   Domain: string;
   RoleIds: number[] = [];
+  Roles: string[] = [];
   OrganizationRoleIds?: string[] = [];
   Organizations: OrganizationUserItem[] = [];
   AvatarLink?: string;

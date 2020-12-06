@@ -49,6 +49,13 @@ namespace Sunday.CMS.Core.Pipelines.Layout.Navigation
             });
             arg.NavigationItems.Add(new NavigationItem()
             {
+                Link = "/manage-websites",
+                Section = "Manage Contents",
+                Title = "Manage Websites",
+                IconClass = "pe-7s-ball"
+            });
+            arg.NavigationItems.Add(new NavigationItem()
+            {
                 Link = "/manage-contents",
                 Section = "Manage Contents",
                 Title = "Manage Contents",

@@ -7,6 +7,7 @@ namespace Sunday.ContentManagement.Models
     {
         public string? Text { get; set; }
         public Guid? WebsiteId { get; set; }
+        public Guid? OrganizationId { get; set; }
         public bool? IsPageRendering { get; set; }
     }
 }

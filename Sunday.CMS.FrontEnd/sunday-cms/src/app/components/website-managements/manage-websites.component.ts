@@ -6,10 +6,17 @@ import {
 } from '@angular/core';
 import { ClientState } from '@services/layout/clientstate.service';
 import {
+  AuthenticationService,
   LayoutManagementService,
+  OrganizationService,
   WebsiteManagementService,
 } from '@services/index';
-import { LayoutItem, LayoutList, WebsiteList } from '@models/index';
+import {
+  LayoutItem,
+  LayoutList,
+  OrganizationItem,
+  WebsiteList,
+} from '@models/index';
 import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 
@@ -21,6 +28,7 @@ import { ToastrService } from 'ngx-toastr';
 export class ManageWebsiteComponent implements OnInit {
   websiteList: WebsiteList = new WebsiteList();
   layoutLookup: LayoutItem[] = [];
+  organizationLookup: OrganizationItem[] = [];
   activeId: string;
 
   constructor(
@@ -28,12 +36,15 @@ export class ManageWebsiteComponent implements OnInit {
     private layoutService: LayoutManagementService,
     private clientState: ClientState,
     private modalService: NgbModal,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private organizationSerivce: OrganizationService,
+    private authService: AuthenticationService
   ) {}
 
   ngOnInit(): void {
     this.getWebsites();
     this.getLayouts();
+    this.getOrganizations();
   }
 
   getWebsites(query?: any): void {
@@ -50,6 +61,16 @@ export class ManageWebsiteComponent implements OnInit {
     });
   }
 
+  getOrganizations() {
+    if (this.isSysAdmin()) {
+      this.organizationSerivce
+        .getOrganizations({ PageSize: 10000 })
+        .subscribe((res) => {
+          this.organizationLookup = res.Organizations;
+        });
+    }
+  }
+
   deleteWebsite(websiteId: string, template: any): void {
     this.activeId = websiteId;
     this.modalService.open(template);
@@ -57,6 +78,11 @@ export class ManageWebsiteComponent implements OnInit {
 
   getLayout(layoutId: string): string {
     return this.layoutLookup.find((l) => l.Id === layoutId)?.LayoutName;
+  }
+
+  getOrganization(organizationId: string): string {
+    return this.organizationLookup.find((l) => l.Id === organizationId)
+      ?.OrganizationName;
   }
 
   confirmDelete() {
@@ -85,4 +111,6 @@ export class ManageWebsiteComponent implements OnInit {
       this.clientState.isBusy = false;
     });
   }
+
+  isSysAdmin = () => this.authService.isSysAdmin();
 }

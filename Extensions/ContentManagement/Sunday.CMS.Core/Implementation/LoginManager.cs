@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Sunday.CMS.Core.Application;
 using Sunday.CMS.Core.Models;
 using Sunday.CMS.Core.Models.Login;
@@ -53,6 +54,7 @@ namespace Sunday.CMS.Core.Implementation
             result.Fullname = user.Fullname;
             result.Phone = user.Phone;
             result.Username = credential.Username;
+            result.Roles = user.Roles.Select(r => r.Code).ToArray();
             result.Token = authenticateResult.AccessToken;
             if (user.AvatarBlobUri != null)
                 result.AvatarLink = _blobLinkManager.GetPreviewLink(user.AvatarBlobUri);

@@ -4,7 +4,7 @@ import { _throw } from 'rxjs/observable/throw';
 import {
   LoginInputModel,
   LoginResponseModel,
-  UserDetailResponse
+  UserDetailResponse,
 } from '@models/index';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { StorageKey } from 'app/core/constants';
@@ -42,6 +42,14 @@ export class AuthenticationService {
     return JSON.parse(storageItem);
   }
 
+  public isSysAdmin(): boolean {
+    const user = this.getUser();
+    if (!user) {
+      return false;
+    }
+    return user.Roles.indexOf('SA') !== -1;
+  }
+
   public clearToken(): void {
     localStorage.removeItem(StorageKey.UserData);
   }
@@ -53,6 +61,7 @@ export class AuthenticationService {
     userData.Phone = user.Phone;
     userData.Email = user.Email;
     userData.AvatarLink = user.AvatarLink;
+    userData.Roles = user.Roles;
     localStorage.setItem(StorageKey.UserData, JSON.stringify(userData));
   }
 }

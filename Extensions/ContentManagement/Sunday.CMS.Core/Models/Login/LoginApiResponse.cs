@@ -1,4 +1,5 @@
-﻿using Sunday.Core;
+﻿using System;
+using Sunday.Core;
 using Sunday.Core.Models.Base;
 
 namespace Sunday.CMS.Core.Models.Login
@@ -12,6 +13,7 @@ namespace Sunday.CMS.Core.Models.Login
         public string Token { get; set; } = null!;
 
         public string? AvatarLink { get; set; }
+        public string[] Roles { get; set; } = Array.Empty<string>();
 
 
     }

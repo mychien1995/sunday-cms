@@ -6,12 +6,15 @@ import {
   LayoutItem,
   TemplateItem,
   Rendering,
+  OrganizationItem,
 } from '@models/index';
 import {
   WebsiteManagementService,
   LayoutManagementService,
   TemplateManagementService,
   RenderingService,
+  AuthenticationService,
+  OrganizationService,
 } from '@services/index';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
@@ -26,12 +29,14 @@ export class AddWebsiteComponent implements OnInit {
     WebsiteName: new FormControl('', [Validators.required]),
     IsActive: new FormControl(true),
     LayoutId: new FormControl('', [Validators.required]),
+    OrganizationId: new FormControl('', [Validators.required]),
   });
   public layoutLookup: LayoutItem[] = [];
   public isEdit: boolean;
   public current: WebsiteItem = new WebsiteItem();
   public templateLookup: TemplateItem[] = [];
   public renderingLookup: Rendering[] = [];
+  organizationLookup: OrganizationItem[] = [];
 
   public formTitle = 'Create Website';
   constructor(
@@ -41,7 +46,9 @@ export class AddWebsiteComponent implements OnInit {
     private layoutService: LayoutManagementService,
     private WebsiteService: WebsiteManagementService,
     private templateService: TemplateManagementService,
+    private organizationSerivce: OrganizationService,
     private renderingService: RenderingService,
+    private authService: AuthenticationService,
     private toastr: ToastrService
   ) {
     this.activatedRoute.data.subscribe((data: { website: WebsiteItem }) => {
@@ -50,31 +57,14 @@ export class AddWebsiteComponent implements OnInit {
         this.current = data.website;
         this.formTitle = 'Edit Website';
       }
-      const query = {
-        PageSize: 100000,
-        WebsiteId: this.current.Id,
-        IsAbstract: false,
-        IsPageRendering: true,
-        IsPageTemplate: true,
-      };
-      this.clientState.isBusy = true;
-      forkJoin([
-        this.templateService.getTemplates(query),
-        this.renderingService.getRenderings(query),
-      ]).subscribe(
-        (res) => {
-          this.templateLookup = res[0].Templates;
-          this.renderingLookup = res[1].List;
-          this.clientState.isBusy = false;
-        },
-        (ex) => (this.clientState.isBusy = false)
-      );
+      this.getTemplatesAndRenderings();
     });
   }
 
   ngOnInit(): void {
     this.buildForm();
     this.getLayouts();
+    this.getOrganizations();
   }
 
   buildForm(): void {
@@ -85,16 +75,60 @@ export class AddWebsiteComponent implements OnInit {
         ]),
         IsActive: new FormControl(true),
         LayoutId: new FormControl(this.current.LayoutId, [Validators.required]),
+        OrganizationId: new FormControl(
+          this.current.OrganizationId,
+          !this.isSysAdmin() ? [Validators.required] : []
+        ),
       });
     }
   }
 
-  getLayouts(): void {
-    this.layoutService.getLayouts({ PageSize: 100000 }).subscribe((res) => {
-      if (res.Success) {
-        this.layoutLookup = res.Layouts;
-      }
-    });
+  getTemplatesAndRenderings(orgId?: string): void {
+    const query = {
+      PageSize: 100000,
+      WebsiteId: this.current.Id,
+      IsAbstract: false,
+      IsPageRendering: true,
+      IsPageTemplate: true,
+      OrganizationId: orgId,
+    };
+    this.clientState.isBusy = true;
+    forkJoin([
+      this.templateService.getTemplates(query),
+      this.renderingService.getRenderings(query),
+    ]).subscribe(
+      (res) => {
+        this.templateLookup = res[0].Templates;
+        this.renderingLookup = res[1].List;
+        this.clientState.isBusy = false;
+      },
+      (ex) => (this.clientState.isBusy = false)
+    );
+  }
+  getLayouts(orgId?: string): void {
+    this.layoutService
+      .getLayouts({ PageSize: 100000, OrganizationId: orgId })
+      .subscribe((res) => {
+        if (res.Success) {
+          this.layoutLookup = res.Layouts;
+        }
+      });
+  }
+
+  getOrganizations() {
+    if (this.isSysAdmin()) {
+      this.organizationSerivce
+        .getOrganizations({ PageSize: 10000 })
+        .subscribe((res) => {
+          this.organizationLookup = res.Organizations;
+        });
+    }
+  }
+
+  organizationChanged(data): void {
+    const orgId = data.Id;
+    this.getLayouts(orgId);
+    this.getTemplatesAndRenderings(orgId);
   }
 
   onSubmit(formValue: any): void {
@@ -122,4 +156,6 @@ export class AddWebsiteComponent implements OnInit {
       () => (this.clientState.isBusy = false)
     );
   }
+
+  isSysAdmin = () => this.authService.isSysAdmin();
 }

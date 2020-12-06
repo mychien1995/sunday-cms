@@ -10,6 +10,10 @@
                         <th mat-header-cell *matHeaderCellDef>Name</th>
                         <td mat-cell *matCellDef="let item">{{ item.WebsiteName }}</td>
                     </ng-container>
+                    <ng-container matColumnDef="Organization">
+                        <th mat-header-cell *matHeaderCellDef>Organization</th>
+                        <td mat-cell *matCellDef="let item">{{ getOrganization(item.OrganizationId) }}</td>
+                    </ng-container>
                     <ng-container matColumnDef="Layout">
                         <th mat-header-cell *matHeaderCellDef>Layout</th>
                         <td mat-cell *matCellDef="let item">{{ getLayout(item.LayoutId) }}</td>
@@ -58,10 +62,14 @@
                         </td>
                     </ng-container>
                     <tr mat-header-row
-                        *matHeaderRowDef="['Name', 'Layout', 'CreatedBy', 'CreateDate', 'UpdatedBy', 'UpdatedDate', 'IsActive', 'Action']">
+                        *matHeaderRowDef="!isSysAdmin() ? 
+                        ['Name', 'Layout', 'CreatedBy', 'CreateDate', 'UpdatedBy', 'UpdatedDate', 'IsActive', 'Action'] :
+                        ['Name', 'Organization', 'Layout', 'CreatedBy', 'CreateDate', 'UpdatedBy', 'UpdatedDate', 'IsActive', 'Action']">
                     </tr>
                     <tr mat-row
-                        *matRowDef="let myRowData; columns: ['Name', 'Layout', 'CreatedBy', 'CreateDate', 'UpdatedBy', 'UpdatedDate','IsActive','Action']">
+                        *matRowDef="let myRowData; columns: !isSysAdmin() ?
+                        ['Name', 'Layout', 'CreatedBy', 'CreateDate', 'UpdatedBy', 'UpdatedDate','IsActive','Action'] :
+                        ['Name', 'Organization', 'Layout', 'CreatedBy', 'CreateDate', 'UpdatedBy', 'UpdatedDate', 'IsActive', 'Action']">
                     </tr>
                 </table>
                 <mat-paginator [length]="websiteList.Total" [pageSize]="10"

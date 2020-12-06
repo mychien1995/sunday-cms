@@ -18,7 +18,7 @@ namespace Sunday.ContentManagement.Implementation.Pipelines.Templates
         public override async Task ProcessAsync(PipelineArg pipelineArg)
         {
             var arg = (FilterTemplatesArg)pipelineArg;
-            var filteredTemplates = await FilterEntities(arg.Result.Result, arg.Query.WebsiteId, nameof(Template));
+            var filteredTemplates = await FilterEntities(arg.Result.Result, arg.Query.OrganizationId, arg.Query.WebsiteId, nameof(Template));
             arg.Result.Result = filteredTemplates;
             arg.Result.Total = filteredTemplates.Length;
         }

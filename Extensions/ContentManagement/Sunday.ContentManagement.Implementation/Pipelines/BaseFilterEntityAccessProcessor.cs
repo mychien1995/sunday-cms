@@ -24,9 +24,11 @@ namespace Sunday.ContentManagement.Implementation.Pipelines
             this.SundayContext = sundayContext;
             this.WebsiteService = websiteService;
         }
-        public async Task<T[]> FilterEntities(T[] entities, Guid? websiteId, string entityType)
+        public async Task<T[]> FilterEntities(T[] entities, Guid? orgId, Guid? websiteId, string entityType)
         {
             var currentUser = SundayContext.CurrentUser!;
+            var organizationId = currentUser.IsOrganizationMember() ? SundayContext.CurrentOrganization?.Id :
+                orgId;
             var filteredEntities = new List<T>();
             Dictionary<Guid, EntityAccessFlat[]> entityAccesses = await EntityAccessService.GetEntitiesAccess(entities.Select(t => t.Id), entityType);
             if (!entityAccesses.Any()) return entities;
@@ -36,21 +38,16 @@ namespace Sunday.ContentManagement.Implementation.Pipelines
                 var websiteOpt = await WebsiteService.GetByIdAsync(websiteId.Value);
                 if (websiteOpt.IsNone) throw new ArgumentException($"Website {websiteId} does not exist");
                 var website = websiteOpt.Get();
-                if (currentUser.IsOrganizationMember())
-                {
-                    var organizationId = SundayContext.CurrentOrganization!.Id;
-                    if (organizationId != website.OrganizationId)
-                        throw new UnauthorizedAccessException($"You don't have access to {website.WebsiteName}");
-                    filteredEntities.AddRange(entities.Where(t => entityAccesses.Any(e => e.Key == t.Id
-                        && e.Value.Any(acc => acc.OrganizationId == organizationId && !acc.WebsiteIds.Any() || acc.WebsiteIds.Contains(websiteId.Value.ToString())))));
-                }
+                if (currentUser.IsOrganizationMember() && organizationId != null && organizationId != website.OrganizationId)
+                    throw new UnauthorizedAccessException($"You don't have access to {website.WebsiteName}");
+                filteredEntities.AddRange(entities.Where(t => entityAccesses.Any(e => e.Key == t.Id
+                    && e.Value.Any(acc => (organizationId == null || acc.OrganizationId == organizationId) && !acc.WebsiteIds.Any() || acc.WebsiteIds.Contains(websiteId.Value.ToString())))));
             }
-            else if (currentUser.IsOrganizationMember())
+            else
             {
                 filteredEntities.AddRange(entities.Where(t => entityAccesses.Any(e => e.Key == t.Id
-                    && e.Value.Any(acc => acc.OrganizationId == SundayContext.CurrentOrganization!.Id))));
+                    && e.Value.Any(acc => acc.OrganizationId == organizationId))));
             }
-            else return entities;
             return filteredEntities.ToArray();
         }
 

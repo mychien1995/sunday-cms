@@ -17,7 +17,7 @@ namespace Sunday.ContentManagement.Implementation.Pipelines.Renderings
         public override async Task ProcessAsync(PipelineArg pipelineArg)
         {
             var arg = (FilterRenderingsArgs)pipelineArg;
-            var filteredRenderings =  await FilterEntities(arg.Result.Result, arg.Query.WebsiteId, nameof(Rendering));
+            var filteredRenderings =  await FilterEntities(arg.Result.Result, arg.Query.OrganizationId, arg.Query.WebsiteId, nameof(Rendering));
             arg.Result.Result = filteredRenderings;
             arg.Result.Total = filteredRenderings.Length;
         }
