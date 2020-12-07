@@ -4,14 +4,16 @@ namespace Sunday.ContentManagement.Models
 {
     public class ContentTreeQuery
     {
-        public ContentTreeQuery(string? location, Guid websiteId)
+        public ContentTreeQuery(string? location, Guid websiteId, bool expandLastNode = false)
         {
             Location = location;
             WebsiteId = websiteId;
+            ExpandLastNode = expandLastNode;
         }
 
-        public string? Location { get; set; }
-        public Guid WebsiteId { get; set; }
+        public string? Location { get;  }
+        public Guid WebsiteId { get;  }
+        public bool ExpandLastNode { get;  }
 
     }
 }

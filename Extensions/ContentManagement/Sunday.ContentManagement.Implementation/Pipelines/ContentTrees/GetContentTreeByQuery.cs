@@ -30,6 +30,7 @@ namespace Sunday.ContentManagement.Implementation.Pipelines.ContentTrees
             var websiteOpt = await WebsiteService.GetByIdAsync(arg.ContentTreeQuery.WebsiteId);
             if (websiteOpt.IsNone) return;
             var website = websiteOpt.Get();
+            location ??= string.Empty;
             if (location.StartsWith("$site"))
             {
                 location = location.Replace("$site", string.Empty);

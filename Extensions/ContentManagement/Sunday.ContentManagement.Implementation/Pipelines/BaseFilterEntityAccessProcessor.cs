@@ -29,10 +29,8 @@ namespace Sunday.ContentManagement.Implementation.Pipelines
             var currentUser = SundayContext.CurrentUser!;
             var organizationId = currentUser.IsOrganizationMember() ? SundayContext.CurrentOrganization?.Id :
                 orgId;
-            var filteredEntities = new List<T>();
             Dictionary<Guid, EntityAccessFlat[]> entityAccesses = await EntityAccessService.GetEntitiesAccess(entities.Select(t => t.Id), entityType);
             if (!entityAccesses.Any()) return entities;
-            filteredEntities.AddRange(entities.Where(t => entityAccesses.All(acc => acc.Key != t.Id)));
             if (websiteId.HasValue)
             {
                 var websiteOpt = await WebsiteService.GetByIdAsync(websiteId.Value);
@@ -40,14 +38,19 @@ namespace Sunday.ContentManagement.Implementation.Pipelines
                 var website = websiteOpt.Get();
                 if (currentUser.IsOrganizationMember() && organizationId != null && organizationId != website.OrganizationId)
                     throw new UnauthorizedAccessException($"You don't have access to {website.WebsiteName}");
-                filteredEntities.AddRange(entities.Where(t => entityAccesses.Any(e => e.Key == t.Id
-                    && e.Value.Any(acc => (organizationId == null || acc.OrganizationId == organizationId) && !acc.WebsiteIds.Any() || acc.WebsiteIds.Contains(websiteId.Value.ToString())))));
             }
-            else
+            var filteredEntities = new List<T>();
+            entities.Iter(entity =>
             {
-                filteredEntities.AddRange(entities.Where(t => entityAccesses.Any(e => e.Key == t.Id
-                    && e.Value.Any(acc => acc.OrganizationId == organizationId))));
-            }
+                if (entityAccesses.All(acc => acc.Key != entity.Id))
+                    filteredEntities.Add(entity);
+                else if (websiteId == null || entityAccesses.Any(acc =>
+                     acc.Key == entity.Id && acc.Value.Any(v => v.WebsiteIds.Contains(websiteId.ToString()))))
+                    filteredEntities.Add(entity);
+                else if (organizationId == null || entityAccesses.Any(acc =>
+                     acc.Key == entity.Id && acc.Value.Any(v => v.OrganizationId == organizationId)))
+                    filteredEntities.Add(entity);
+            });
             return filteredEntities.ToArray();
         }
 

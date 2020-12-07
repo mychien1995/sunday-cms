@@ -1,4 +1,5 @@
-﻿using Sunday.ContentManagement.Domain;
+﻿using Newtonsoft.Json;
+using Sunday.ContentManagement.Domain;
 using Sunday.ContentManagement.Models;
 using Sunday.Core.Models.Base;
 using Sunday.Core.Pipelines;

@@ -10,7 +10,8 @@ namespace Sunday.ContentManagement.Implementation.Pipelines.Arguments
             ContentTreeQuery = contentTreeQuery;
         }
 
-        public ContentTreeQuery ContentTreeQuery { get; set; }
+        public bool ExpandLastNode => ContentTreeQuery.ExpandLastNode;
+        public ContentTreeQuery ContentTreeQuery { get; }
         public ContentTree? ContentTree { get; set; }
     }
 }
