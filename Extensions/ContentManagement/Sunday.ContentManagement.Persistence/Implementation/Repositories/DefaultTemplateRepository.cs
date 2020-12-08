@@ -26,13 +26,11 @@ namespace Sunday.ContentManagement.Persistence.Implementation.Repositories
         }
 
         public Task<SearchResult<TemplateEntity>> QueryAsync(TemplateQueryParameter query)
-            => _dbRunner.ExecuteMultipleAsync<int, TemplateEntity>(ProcedureNames.Templates.Search, query.ToDapperParameters()).MapResultTo(
-                rs =>
-                    new SearchResult<TemplateEntity>
-                    {
-                        Result = rs.Item2.ToArray(),
-                        Total = rs.Item1.Single()
-                    });
+            => _dbRunner
+                .ExecuteMultipleAsync<int, TemplateEntity>(ProcedureNames.Templates.Search, query.ToDapperParameters())
+                .MapResultTo(
+                    rs =>
+                        new SearchResult<TemplateEntity>(rs.Item1.Single(), rs.Item2.ToArray()));
 
         public Task<Option<TemplateEntity>> GetByIdAsync(Guid templateId)
             => _dbRunner.ExecuteMultipleAsync<TemplateEntity, TemplateFieldEntity>(ProcedureNames.Templates.GetById, new { Id = templateId})

@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Threading.Tasks;
 using LanguageExt;
-using Sunday.ContentManagement.Models;
 using Sunday.ContentManagement.Persistence.Application;
 using Sunday.ContentManagement.Persistence.Entities;
 using Sunday.ContentManagement.Persistence.Models;
@@ -26,11 +25,7 @@ namespace Sunday.ContentManagement.Persistence.Implementation.Repositories
 
         public Task<SearchResult<RenderingEntity>> Search(RenderingQueryParameter query)
             => _dRunner.ExecuteMultipleAsync<int, RenderingEntity>(ProcedureNames.Renderings.Search, query)
-                .MapResultTo(rs => new SearchResult<RenderingEntity>
-                {
-                    Total = rs.Item1.First(),
-                    Result = rs.Item2.ToArray()
-                });
+                .MapResultTo(rs => new SearchResult<RenderingEntity>(rs.Item1.First(), rs.Item2.ToArray()));
 
         public Task<Option<RenderingEntity>> GetRenderingById(Guid id)
             => _dRunner.ExecuteAsync<RenderingEntity>(ProcedureNames.Renderings.GetById, new {Id = id}).MapResultTo(

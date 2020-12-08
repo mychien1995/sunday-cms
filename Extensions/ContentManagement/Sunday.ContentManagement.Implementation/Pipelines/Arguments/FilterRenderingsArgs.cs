@@ -7,7 +7,7 @@ namespace Sunday.ContentManagement.Implementation.Pipelines.Arguments
     public class FilterRenderingsArgs : PipelineArg
     {
         public RenderingQuery Query { get; }
-        public SearchResult<Rendering> Result { get; }
+        public SearchResult<Rendering> Result { get; set; }
 
         public FilterRenderingsArgs(RenderingQuery query, SearchResult<Rendering> result)
         {

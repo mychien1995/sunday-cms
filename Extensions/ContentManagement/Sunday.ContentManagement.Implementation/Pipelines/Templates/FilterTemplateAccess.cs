@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Sunday.ContentManagement.Domain;
 using Sunday.ContentManagement.Implementation.Pipelines.Arguments;
 using Sunday.ContentManagement.Services;
+using Sunday.Core.Models.Base;
 using Sunday.Core.Pipelines;
 using Sunday.Foundation.Application.Services;
 using Sunday.Foundation.Context;
@@ -20,7 +21,7 @@ namespace Sunday.ContentManagement.Implementation.Pipelines.Templates
         {
             var arg = (FilterTemplatesArg)pipelineArg;
             var filteredTemplates = await FilterEntities(arg.Result.Result, arg.Query.OrganizationId, arg.Query.WebsiteId, nameof(Template));
-            arg.Result.Result = filteredTemplates.ToArray();
+            arg.Result = new SearchResult<Template>(arg.Result.Total, filteredTemplates.ToArray());
         }
     }
 }

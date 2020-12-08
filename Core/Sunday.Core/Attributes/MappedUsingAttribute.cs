@@ -1,15 +1,16 @@
 ﻿using System;
 
+// ReSharper disable once CheckNamespace
 namespace Sunday.Core
 {
     public class MappedUsingAttribute : Attribute
     {
-        public Type ConverterType { get; set; }
-        public Type ReverseConverterType { get; set; }
-        public MappedUsingAttribute(Type converterType, Type reverseType = null)
+        public Type ConverterType { get; }
+        public Type? ReverseConverterType { get; }
+        public MappedUsingAttribute(Type converterType, Type? reverseType = null)
         {
-            this.ConverterType = converterType;
-            this.ReverseConverterType = reverseType;
+            ConverterType = converterType;
+            ReverseConverterType = reverseType;
         }
     }
 }

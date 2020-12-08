@@ -31,11 +31,7 @@ namespace Sunday.ContentManagement.Implementation.Services
         public async Task<SearchResult<Rendering>> Search(RenderingQuery query)
         {
             var renderings = await _renderingRepository.Search(query.MapTo<RenderingQueryParameter>())
-                .MapResultTo(rs => new SearchResult<Rendering>
-                {
-                    Result = rs.Result.Select(ToModel).ToArray(),
-                    Total = rs.Total
-                });
+                .MapResultTo(rs => new SearchResult<Rendering>(rs.Total, rs.Result.Select(ToModel).ToArray()));
             await ApplicationPipelines.RunAsync("cms.renderings.filter", new FilterRenderingsArgs(query, renderings));
             return renderings;
         }

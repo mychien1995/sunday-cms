@@ -27,11 +27,8 @@ namespace Sunday.Foundation.Implementation.Services
         }
 
         public Task<SearchResult<ApplicationOrganization>> QueryAsync(OrganizationQuery query)
-            => _organizationRepository.QueryAsync(query).MapResultTo(rs => new SearchResult<ApplicationOrganization>
-            {
-                Result = rs.Result.Select(ToDomainModel).ToArray(),
-                Total = rs.Total
-            });
+            => _organizationRepository.QueryAsync(query).MapResultTo(rs => new SearchResult<ApplicationOrganization>(rs.Total,
+                rs.Result.Select(ToDomainModel).ToArray()));
 
         public Task<Option<ApplicationOrganization>> GetOrganizationByIdAsync(Guid organizationId)
             => _organizationRepository.GetOrganizationByIdAsync(organizationId)

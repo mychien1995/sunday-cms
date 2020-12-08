@@ -9,7 +9,7 @@ namespace Sunday.ContentManagement.Implementation.Pipelines.Arguments
     public class FilterTemplatesArg : PipelineArg
     {
         public TemplateQuery Query { get; }
-        public SearchResult<Template> Result { get; }
+        public SearchResult<Template> Result { get; set; }
 
         public FilterTemplatesArg(TemplateQuery query, SearchResult<Template> result)
         {

@@ -29,10 +29,7 @@ namespace Sunday.ContentManagement.Implementation.Services
 
         public Task<SearchResult<ApplicationWebsite>> QueryAsync(WebsiteQuery query)
             => _websitesRepository.QueryAsync(query).MapResultTo(rs => new SearchResult<ApplicationWebsite>
-            {
-                Total = rs.Total,
-                Result = rs.Result.Select(ToDomainModel).ToArray()
-            });
+                (rs.Total, rs.Result.Select(ToDomainModel).ToArray()));
 
         public Task<Option<ApplicationWebsite>> GetByIdAsync(Guid websiteId)
             => _websitesRepository.GetByIdAsync(websiteId).MapResultTo(rs => rs.Map(ToDomainModel));

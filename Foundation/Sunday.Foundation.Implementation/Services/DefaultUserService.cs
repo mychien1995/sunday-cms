@@ -35,11 +35,8 @@ namespace Sunday.Foundation.Implementation.Services
         }
 
         public Task<SearchResult<ApplicationUser>> QueryAsync(UserQuery query)
-            => _userRepository.QueryAsync(query).MapResultTo(rs => new SearchResult<ApplicationUser>
-            {
-                Result = rs.Result.Select(ToDomainModel).ToArray(),
-                Total = rs.Total
-            });
+            => _userRepository.QueryAsync(query).MapResultTo(rs => new SearchResult<ApplicationUser>(rs.Total,
+                rs.Result.Select(ToDomainModel).ToArray()));
 
         public Task<Option<ApplicationUser>> GetUserByIdAsync(Guid userId)
             => _userRepository.GetUserByIdAsync(userId)

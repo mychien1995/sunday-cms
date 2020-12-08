@@ -17,7 +17,7 @@ namespace Sunday.Core.Models.Base
             List = list.ToList();
         }
 
-        public static ListApiResponse<T> From<T, T2>(SearchResult<T2> searchResult, Func<T2, T> converter) where T2 : class
-        => new ListApiResponse<T>(searchResult.Total, searchResult.Result.Select(converter).ToList());
+        public static ListApiResponse<T1> From<T1, T2>(SearchResult<T2> searchResult, Func<T2, T1> converter) where T2 : class
+        => new ListApiResponse<T1>(searchResult.Total, searchResult.Result.Select(converter).ToList());
     }
 }

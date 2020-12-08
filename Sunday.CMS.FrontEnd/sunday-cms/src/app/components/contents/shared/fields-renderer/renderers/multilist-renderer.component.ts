@@ -53,7 +53,10 @@ export class MultilistRendererComponent implements OnInit {
 
   ngOnInit(): void {
     this.contentTreeService
-      .getTreeByQuery({ WebsiteId: this.websiteId, Location: '/' })
+      .getTreeByQuery({
+        WebsiteId: this.websiteId,
+        Location: this.field.field.Properties,
+      })
       .subscribe((res) => {
         this.contentTree = res;
       });

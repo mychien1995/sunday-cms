@@ -1,5 +1,4 @@
-﻿using System;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace Sunday.Core.Extensions
 {
@@ -11,9 +10,9 @@ namespace Sunday.Core.Extensions
             {
                 value = JsonConvert.DeserializeObject<T>(stringValue);
             }
-            catch (Exception ex)
+            catch 
             {
-                value = default(T)!;
+                value = default!;
                 return false;
             }
             return true;

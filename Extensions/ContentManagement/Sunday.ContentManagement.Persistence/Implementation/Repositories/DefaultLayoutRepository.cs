@@ -24,11 +24,7 @@ namespace Sunday.ContentManagement.Persistence.Implementation.Repositories
             => _dbRunner.ExecuteMultipleAsync<int, LayoutEntity, OrganizationLayoutEntity>(ProcedureNames.Layout.Search,
                 query).MapResultTo(rs =>
             {
-                var result = new SearchResult<LayoutEntity>()
-                {
-                    Result = rs.Item2.ToArray(),
-                    Total = rs.Item1.Single()
-                };
+                var result = new SearchResult<LayoutEntity>(rs.Item1.Single(), rs.Item2.ToArray());
                 result.Result.Iter(layout =>
                 {
                     layout.OrganizationIds = rs.Item3.Where(o => o.LayoutId == layout.Id).Select(o => o.OrganizationId)

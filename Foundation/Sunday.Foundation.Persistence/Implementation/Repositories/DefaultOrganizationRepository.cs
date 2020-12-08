@@ -24,12 +24,9 @@ namespace Sunday.Foundation.Persistence.Implementation.Repositories
 
         public async Task<SearchResult<OrganizationEntity>> QueryAsync(OrganizationQuery query)
         {
-            var result = new SearchResult<OrganizationEntity>();
             var searchResult = await _dbRunner.ExecuteMultipleAsync<int, OrganizationEntity>(ProcedureNames.Organizations.Search,
                 DbQuery(query));
-            result.Total = searchResult.Item1.Single();
-            result.Result = searchResult.Item2.ToArray();
-            return result;
+            return new SearchResult<OrganizationEntity>(searchResult.Item1.Single(), searchResult.Item2.ToArray());
         }
 
         public async Task<Option<OrganizationEntity>> GetOrganizationByIdAsync(Guid organizationId)

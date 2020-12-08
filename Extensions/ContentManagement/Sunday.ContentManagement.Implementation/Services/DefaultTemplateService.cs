@@ -31,28 +31,10 @@ namespace Sunday.ContentManagement.Implementation.Services
 
         public async Task<SearchResult<Template>> QueryAsync(TemplateQuery query)
         {
-            async Task<SearchResult<Template>> DoQuery(TemplateQuery templateQuery)
-            {
-                var batch = await _templateRepository.QueryAsync(query.MapTo<TemplateQueryParameter>())
-                    .MapResultTo(rs => new SearchResult<Template>
-                    {
-                        Total = rs.Total,
-                        Result = rs.Result.Select(ToDomainModel).ToArray()
-                    });
-                await ApplicationPipelines.RunAsync("cms.templates.filter", new FilterTemplatesArg(templateQuery, batch));
-                return batch;
-            }
-            var result = SearchResult<Template>.Empty;
-            var tmpQuery = query.MapTo<TemplateQuery>();
-            while (result.Result.Length < query.PageSize)
-            {
-                var batch = await DoQuery(tmpQuery);
-                result.Append(batch);
-                if(result.Total < query.PageSize)break;
-                tmpQuery = query.MapTo<TemplateQuery>();
-                tmpQuery.PageIndex++;
-            }
-            return result;
+            var templates = await _templateRepository.QueryAsync(query.MapTo<TemplateQueryParameter>())
+                .MapResultTo(rs => new SearchResult<Template>(rs.Total, rs.Result.Select(ToDomainModel).ToArray()));
+            await ApplicationPipelines.RunAsync("cms.templates.filter", new FilterTemplatesArg(query, templates));
+            return templates;
         }
 
         public Task<Option<Template>> GetByIdAsync(Guid templateId)

@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Sunday.Core.Configuration;
+using Sunday.Core.Configuration.Nodes;
 using Sunday.Core.Framework.Helpers;
 using Sunday.Core.Pipelines;
 using Sunday.Core.Pipelines.Arguments;
@@ -111,8 +112,8 @@ namespace Sunday.Core.Framework
                 return;
             foreach (var service in configurationNode.Services.Where(x => !string.IsNullOrEmpty(x?.ServiceType) || !string.IsNullOrEmpty(x?.ImplementationType)))
             {
-                var serviceType = Type.GetType(service.ServiceType);
-                var implementType = Type.GetType(service.ImplementationType);
+                var serviceType = Type.GetType(service.ServiceType!);
+                var implementType = Type.GetType(service.ImplementationType!);
                 switch (service.LifetimeScope)
                 {
                     case "Singleton":
@@ -132,7 +133,7 @@ namespace Sunday.Core.Framework
             if (configurationNode?.Settings == null || !configurationNode.Settings.Any())
                 return;
             configurationNode.Settings.Where(x => !string.IsNullOrEmpty(x?.Key))
-                .Iter(setting => ApplicationSettings.Set(setting.Key, setting.Value));
+                .Iter(setting => ApplicationSettings.Set(setting.Key!, setting.Value!));
         }
 
         private static void AddPipelines(XmlDocument document)

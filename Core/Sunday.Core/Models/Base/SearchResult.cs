@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 
 namespace Sunday.Core.Models.Base
 {
@@ -10,15 +9,13 @@ namespace Sunday.Core.Models.Base
             Result = Array.Empty<T>();
             Total = 0;
         }
-        public int Total { get; set; }
-        public T[] Result { get; set; }
+        public int Total { get;  }
+        public T[] Result { get; }
 
-        public static SearchResult<T> Empty => new SearchResult<T>();
-
-        public void Append(SearchResult<T> other)
+        public SearchResult(int total, T[] result)
         {
-            Total = other.Total;
-            Result = Result.Concat(other.Result).ToArray();
+            Total = total;
+            Result = result;
         }
     }
 }

@@ -27,13 +27,11 @@ namespace Sunday.Foundation.Persistence.Implementation.Repositories
 
         public async Task<SearchResult<UserEntity>> QueryAsync(UserQuery query)
         {
-            var result = new SearchResult<UserEntity>();
-            var returnTypes = new List<Type>() { typeof(int), typeof(UserEntity) };
+            var returnTypes = new List<Type> { typeof(int), typeof(UserEntity) };
             if (query.IncludeRoles) returnTypes.Add(typeof(UserRoleEntity));
             if (query.IncludeOrganizations) returnTypes.Add(typeof(OrganizationUserEntity));
             if (query.IncludeVirtualRoles) returnTypes.Add(typeof(OrganizationUserRoleEntity));
             var searchResult = await _dbRunner.ExecuteMultipleAsync(ProcedureNames.Users.Search, returnTypes, DbQuery(query));
-            result.Total = (int)searchResult[0].Single();
             var users = searchResult[1].Select(u => (UserEntity)u).ToArray();
             var roles = new List<UserRoleEntity>();
             var organizationUsers = new List<OrganizationUserEntity>();
@@ -57,7 +55,7 @@ namespace Sunday.Foundation.Persistence.Implementation.Repositories
                             or.Role.RoleName))
                     .ToList();
             });
-            result.Result = users;
+            var result = new SearchResult<UserEntity>((int)searchResult[0].Single(), users);
             return result;
         }
 

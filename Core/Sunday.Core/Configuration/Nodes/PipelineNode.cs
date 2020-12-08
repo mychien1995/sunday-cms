@@ -1,17 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Xml.Serialization;
 
-namespace Sunday.Core.Configuration
+namespace Sunday.Core.Configuration.Nodes
 {
     public class PipelineNode
     {
-        public PipelineNode()
-        {
-            Processors = new List<ProcessorNode>();
-        }
-        [XmlAttribute("name")]
-        public string Name { get; set; }
+        [XmlAttribute("name")] 
+        public string Name { get; set; } = string.Empty;
         [XmlElement("processor")]
-        public List<ProcessorNode> Processors { get; set; }
+        public List<ProcessorNode> Processors { get; set; } = new List<ProcessorNode>();
     }
 }

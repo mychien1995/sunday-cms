@@ -25,11 +25,7 @@ namespace Sunday.ContentManagement.Persistence.Implementation.Repositories
 
         public Task<SearchResult<WebsiteEntity>> QueryAsync(WebsiteQuery query)
             => _dbRunner.ExecuteMultipleAsync<int, WebsiteEntity>(ProcedureNames.Websites.Search, query).MapResultTo(
-                rs => new SearchResult<WebsiteEntity>
-                {
-                    Total = rs.Item1.Single(),
-                    Result = rs.Item2.ToArray()
-                });
+                rs => new SearchResult<WebsiteEntity>(rs.Item1.Single(), rs.Item2.ToArray()));
 
         public Task<Option<WebsiteEntity>> GetByIdAsync(Guid layoutId)
             => _dbRunner.ExecuteAsync<WebsiteEntity>(ProcedureNames.Websites.GetById, new {Id = layoutId})

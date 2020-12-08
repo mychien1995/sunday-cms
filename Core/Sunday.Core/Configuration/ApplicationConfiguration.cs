@@ -1,4 +1,5 @@
 ﻿using System.Xml;
+using Sunday.Core.Configuration.Nodes;
 
 namespace Sunday.Core.Configuration
 {
