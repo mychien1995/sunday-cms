@@ -40,13 +40,21 @@ export class FieldsRendererComponent implements OnInit {
 
   isValid(field: ContentField): boolean {
     if (field.field.IsRequired) {
-      if (field.field.FieldType !== 6) {
-        return field.value && field.value.trim().length > 0;
+      if (field.field.FieldType === 6) {
+        return (
+          !this.emptyString(field.value.LinkText) &&
+          !this.emptyString(field.value.Url)
+        );
       }
-      return field.value;
+      if (field.field.FieldType === 9) {
+        return field.value && field.value.length > 0;
+      }
+      return !this.emptyString(field.value);
     }
     return true;
   }
+
+  emptyString = (str: any) => !str || str.trim().length === 0;
 
   ngOnInit(): void {}
 }

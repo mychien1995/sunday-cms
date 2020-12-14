@@ -25,7 +25,10 @@ export class LinkEditorDialogComponent implements OnInit {
     if (this.isValid(this.editLink)) {
       this.link = this.editLink;
       this.callback(this.editLink);
-      this.dialogService.closeAll();
+      const ref = this.dialogService.getDialogById('link_renderer');
+      if (ref) {
+        ref.close();
+      }
     }
   }
 

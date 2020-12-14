@@ -16,6 +16,7 @@ export class TemplateSelectorDialogComponent implements OnInit {
   showInsertOptions = false;
   hasInsertOptions = false;
   isLoading = true;
+  websiteId: string;
   onClose: (id: string) => any;
   constructor(
     private dialogService: MatDialog,
@@ -25,8 +26,13 @@ export class TemplateSelectorDialogComponent implements OnInit {
   ) {}
   ngOnInit(): void {}
 
-  load(parent: ContentTreeNode, onClose: (id: string) => any) {
+  load(
+    parent: ContentTreeNode,
+    websiteId: string,
+    onClose: (id: string) => any
+  ) {
     this.parent = parent;
+    this.websiteId = websiteId;
     this.onClose = onClose;
     if (this.parent.Type != 3) {
       this.isLoading = false;
@@ -65,6 +71,7 @@ export class TemplateSelectorDialogComponent implements OnInit {
       });
       ref.componentInstance.load(
         this.selectedTemplates[0],
+        this.websiteId,
         this.parent,
         this.onClose
       );

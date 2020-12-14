@@ -28,6 +28,7 @@ export class InitialContentCreatorComponent implements OnInit {
   displayName: string;
   isLoading = false;
   isSubmitted = false;
+  websiteId: string;
   onCreated: (id: string) => any;
   constructor(
     private templateService: TemplateManagementService,
@@ -41,9 +42,11 @@ export class InitialContentCreatorComponent implements OnInit {
 
   load(
     templateId: string,
+    websiteId: string,
     parent: ContentTreeNode,
     onClose: (id: string) => any
   ): void {
+    this.websiteId = websiteId;
     this.parent = parent;
     this.templateId = templateId;
     this.isLoading = true;

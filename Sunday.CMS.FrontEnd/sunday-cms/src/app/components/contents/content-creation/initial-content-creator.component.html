@@ -25,7 +25,8 @@
             <p [hidden]="fields.length ===0"><b>Please fill in required fields</b></p>
             <div class="content-creator" [hidden]="fields.length ===0">
                 <app-spinner [hidden]="!isLoading"></app-spinner>
-                <app-fields-renderer [(fields)]="fields" [formSubmitted]="isSubmitted"></app-fields-renderer>
+                <app-fields-renderer [(fields)]="fields" [formSubmitted]="isSubmitted" [websiteId]="websiteId">
+                </app-fields-renderer>
             </div>
             <div class="pull-right mt-3">
                 <button type="button" class="btn btn-primary" (click)="onSubmit()">Create Content</button>

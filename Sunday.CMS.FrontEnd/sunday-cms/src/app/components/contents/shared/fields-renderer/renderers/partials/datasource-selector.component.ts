@@ -38,7 +38,12 @@ export class DatasourceSelectorDialogComponent implements OnInit {
     const selectedContent = this.contentTreeRef.activeNode;
     if (selectedContent) {
       this.callback(selectedContent.Id);
-      this.dialogService.closeAll();
+      const ref = this.dialogService.getDialogById('datasource_selector');
+      if (ref) {
+        ref.close();
+      } else {
+        this.dialogService.closeAll();
+      }
     }
   }
   ngOnInit(): void {}

@@ -233,16 +233,20 @@ export class ContentTreeComponent implements OnInit {
           minWidth: 800,
           disableClose: true,
         });
-        ref.componentInstance.load(this.activeNode, (id) => {
-          this.reloadNode(this.activeNode, () => {
-            const activeItem = this.activeNode.ChildNodes.find(
-              (c) => c.Id === id
-            );
-            if (activeItem) {
-              this.activeNode = activeItem;
-            }
-          });
-        });
+        ref.componentInstance.load(
+          this.activeNode,
+          this.getWebsiteId(this.activeNode),
+          (id) => {
+            this.reloadNode(this.activeNode, () => {
+              const activeItem = this.activeNode.ChildNodes.find(
+                (c) => c.Id === id
+              );
+              if (activeItem) {
+                this.activeNode = activeItem;
+              }
+            });
+          }
+        );
         break;
       case 'deletecontent':
         this.modalService.open(this.deleteDialog);
@@ -288,6 +292,16 @@ export class ContentTreeComponent implements OnInit {
         }
       });
     }
+  }
+
+  getWebsiteId(node: ContentTreeNode): string {
+    if (node.Type == 2) {
+      return node.Id;
+    }
+    if (node.Type == 1) {
+      return null;
+    }
+    return this.getWebsiteId(node.ParentNode);
   }
 
   @HostListener('document:click', ['$event'])

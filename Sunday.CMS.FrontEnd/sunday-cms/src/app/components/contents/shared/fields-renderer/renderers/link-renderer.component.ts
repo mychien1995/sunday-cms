@@ -29,7 +29,9 @@ export class LinkRendererComponent implements OnInit {
   ngOnInit(): void {}
 
   openDialog(): void {
-    const ref = this.dialogService.open(LinkEditorDialogComponent);
+    const ref = this.dialogService.open(LinkEditorDialogComponent, {
+      id: 'link_renderer'
+    });
     ref.componentInstance.load(this.innerLink, (link) => {
       this.innerField.value = link;
       this.innerLink = link;

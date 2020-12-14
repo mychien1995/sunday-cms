@@ -44,10 +44,15 @@ export class DropTreeRendererComponent implements OnInit {
   openDialog(): void {
     const ref = this.dialogService.open(DatasourceSelectorDialogComponent, {
       minWidth: 600,
+      id: 'datasource_selector',
     });
-    ref.componentInstance.load(this.field.field.Properties, this.websiteId, (contentId) => {
-      this.innerField.value = contentId;
-      this.field = this.innerField;
-    });
+    ref.componentInstance.load(
+      this.field.field.Properties,
+      this.websiteId,
+      (contentId) => {
+        this.innerField.value = contentId;
+        this.field = this.innerField;
+      }
+    );
   }
 }

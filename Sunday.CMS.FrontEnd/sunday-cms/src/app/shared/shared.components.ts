@@ -32,6 +32,8 @@ import {
   TwoSideSelectWithSearchComponent,
   SpinnerComponent,
   PageDesignMappingComponent,
+  IconPickerDialogComponent,
+  IconPickerComponent,
 } from 'app/components';
 import {
   ApplicationLayoutComponent,
@@ -82,7 +84,9 @@ export const SharedComponents = [
   TemplateInfoComponent,
   TwoSideSelectWithSearchComponent,
   SpinnerComponent,
-  PageDesignMappingComponent
+  PageDesignMappingComponent,
+  IconPickerDialogComponent,
+  IconPickerComponent,
 ];
 import {
   UserResolver,

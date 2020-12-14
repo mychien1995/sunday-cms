@@ -13,18 +13,7 @@
         <div class="col-md-6">
             <div class="position-relative form-group">
                 <label>Template Icon<span class="red">*</span></label>
-                <ng-select [items]="iconLookup" formControlName="Icon" required bindValue="code" bindLabel="code"
-                    [(ngModel)]="template.Icon" [clearable]="false">
-                    <ng-template ng-option-tmp let-item="item">
-                        <div style="display: flex;">
-                            <i class="{{item.icon}}" style="font-size: 30px;"></i>
-                            &nbsp;&nbsp;
-                            <label><b>{{item.code}}</b></label>
-                        </div>
-                    </ng-template>
-                </ng-select>
-                <span class="text-danger" [hidden]="!(submitted && dataForm.controls['Icon'].hasError('required'))">This
-                    field is required</span>
+                <app-icon-picker [(value)]="this.template.Icon"></app-icon-picker>
             </div>
         </div>
     </div>
@@ -67,8 +56,9 @@
             <div class="position-relative form-group">
                 <label for="IsPageTemplate" class="">Is Page Template:</label>
                 <div class="custom-checkbox custom-control">
-                    <input type="checkbox" id="IsPageTemplate" class="custom-control-input" formControlName="IsPageTemplate"
-                        [checked]="template.IsPageTemplate" (change)="template.IsPageTemplate = !template.IsPageTemplate" />
+                    <input type="checkbox" id="IsPageTemplate" class="custom-control-input"
+                        formControlName="IsPageTemplate" [checked]="template.IsPageTemplate"
+                        (change)="template.IsPageTemplate = !template.IsPageTemplate" />
                     <label class="custom-control-label" for="IsPageTemplate">&nbsp;</label>
                 </div>
             </div>
