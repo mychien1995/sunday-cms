@@ -6,6 +6,7 @@ import { IconPickerDialogComponent } from './icon-picker-dialog.component';
 @Component({
   selector: 'app-icon-picker',
   templateUrl: './icon-picker.component.html',
+  styleUrls: ['./icon-picker.component.scss'],
 })
 export class IconPickerComponent implements OnInit {
   iconLookup: any[] = [];
@@ -32,13 +33,14 @@ export class IconPickerComponent implements OnInit {
   openDialog(): void {
     const ref = this.dialogService.open(IconPickerDialogComponent, {
       minWidth: 600,
+      maxWidth: 800,
     });
     ref.componentInstance.load(this.iconLookup, (icon) => {
       this.value = icon;
     });
   }
   getCurrentIcon(): any {
-    return this.iconLookup.find((i) => i.Code === this.innerValue);
+    return this.iconLookup.find((i) => i.code === this.innerValue);
   }
 
   ngOnInit(): void {}

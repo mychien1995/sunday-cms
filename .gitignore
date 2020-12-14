@@ -28,3 +28,4 @@ lib/*.pdb
 publishTemp/
 bin/
 obj/
+Logs/*

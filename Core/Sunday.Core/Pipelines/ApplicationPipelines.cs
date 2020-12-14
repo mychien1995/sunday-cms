@@ -6,17 +6,23 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Xml;
 using Microsoft.Extensions.DependencyInjection;
+using Serilog;
 using Sunday.Core.Pipelines.Arguments;
 
 namespace Sunday.Core.Pipelines
 {
     public class ApplicationPipelines
     {
+        private static readonly ILogger Logger = Log.Logger;
         private static readonly ConcurrentDictionary<string, List<Type>> PipelineTypes = new ConcurrentDictionary<string, List<Type>>();
         public static void Initialize(XmlDocument configFile)
         {
             var pipelinesNode = configFile.SelectSingleNode("/configuration/pipelines");
-            if (pipelinesNode == null || !pipelinesNode.HasChildNodes) return;
+            if (pipelinesNode == null || !pipelinesNode.HasChildNodes)
+            {
+                Logger.Warning("Start Loading CMS Pipelines. No pipelines found");
+                return;
+            }
             var childNodes = pipelinesNode.ChildNodes;
             foreach (var node in childNodes)
             {
@@ -41,8 +47,9 @@ namespace Sunday.Core.Pipelines
                 {
                     PipelineTypes.TryRemove(pipelineName, out _);
                 }
-                var executorTypes = processorList.Select(p =>  Type.GetType(p, true, true)!).ToList();
+                var executorTypes = processorList.Select(p => Type.GetType(p, true, true)!).ToList();
                 PipelineTypes.TryAdd(pipelineName, executorTypes);
+                Logger.Information($"Pipeline {pipelineName} loaded with {executorTypes.Count} processors");
             }
         }
 
@@ -51,6 +58,7 @@ namespace Sunday.Core.Pipelines
             using var scope = ServiceActivator.GetScope();
             if (PipelineTypes.TryGetValue(pipelineName, out var types))
             {
+                Logger.Debug($"Executing pipeline {pipelineName}");
                 foreach (var type in types)
                 {
                     var isAsync = false;

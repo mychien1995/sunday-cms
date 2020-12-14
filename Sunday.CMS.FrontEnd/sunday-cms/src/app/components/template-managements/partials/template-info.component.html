@@ -2,7 +2,7 @@
     <div class="form-row">
         <div class="col-md-6">
             <div class="position-relative form-group">
-                <label>Template Name<span class="red">*</span></label>
+                <label>Template Name: <span class="red">*</span></label>
                 <input name="TemplateName" placeholder="Template Name here..." type="text" class="form-control"
                     formControlName="TemplateName" autocomplete="no" required [(ngModel)]="template.TemplateName">
                 <span class="text-danger"
@@ -12,7 +12,7 @@
         </div>
         <div class="col-md-6">
             <div class="position-relative form-group">
-                <label>Template Icon<span class="red">*</span></label>
+                <label>Template Icon: <span class="red">*</span></label>
                 <app-icon-picker [(value)]="this.template.Icon"></app-icon-picker>
             </div>
         </div>
@@ -20,7 +20,7 @@
     <div class="form-row">
         <div class="col-md-6">
             <div class="position-relative form-group">
-                <label>Base Templates</label>
+                <label>Base Templates: </label>
                 <app-two-sides-select-search bindValue="Id" placeholder="Template ID or name"
                     [datasource]="templateLookup" [(values)]="template.BaseTemplateIds" [searchFn]="searchTemplate"
                     [childTemplate]="templateSelect">
@@ -29,7 +29,7 @@
         </div>
         <div class="col-md-6">
             <div class="position-relative form-group">
-                <label>Insert Options</label>
+                <label>Insert Options: </label>
                 <app-two-sides-select-search bindValue="Id" placeholder="Template ID or name"
                     [datasource]="templateLookupClone" [(values)]="template.InsertOptions" [searchFn]="searchTemplate"
                     [childTemplate]="templateSelect">
@@ -40,13 +40,13 @@
     <div class="form-row">
         <div class="col-md-6">
             <div class="position-relative form-group">
-                <label>Template Access:</label>
+                <label>Template Access: </label>
                 <app-entity-access-editor [(entityAccess)]="template.Access"></app-entity-access-editor>
             </div>
         </div>
         <div class="col-md-6">
             <div class="position-relative form-group">
-                <label for="IsAbstract" class="">Is Abstract Template:</label>
+                <label for="IsAbstract" class="">Is Abstract Template: </label>
                 <div class="custom-checkbox custom-control">
                     <input type="checkbox" id="IsAbstract" class="custom-control-input" formControlName="IsAbstract"
                         [checked]="template.IsAbstract" (change)="template.IsAbstract = !template.IsAbstract" />
@@ -54,7 +54,7 @@
                 </div>
             </div>
             <div class="position-relative form-group">
-                <label for="IsPageTemplate" class="">Is Page Template:</label>
+                <label for="IsPageTemplate" class="">Is Page Template: </label>
                 <div class="custom-checkbox custom-control">
                     <input type="checkbox" id="IsPageTemplate" class="custom-control-input"
                         formControlName="IsPageTemplate" [checked]="template.IsPageTemplate"

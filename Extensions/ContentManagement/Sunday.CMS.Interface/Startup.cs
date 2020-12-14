@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Serilog;
 using Sunday.Core.Framework;
 
 namespace Sunday.CMS.Interface
@@ -22,6 +23,10 @@ namespace Sunday.CMS.Interface
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            Log.Logger = new LoggerConfiguration()
+                .ReadFrom
+                .Configuration(Configuration)
+                .CreateLogger();
             services.AddControllers().AddNewtonsoftJson((option) =>
             {
                 option.UseMemberCasing();

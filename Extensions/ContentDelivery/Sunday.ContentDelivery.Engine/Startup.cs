@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Serilog;
 using Sunday.ContentDelivery.Framework.Middlewares;
 using Sunday.Core.Framework;
 
@@ -22,6 +23,10 @@ namespace Sunday.ContentDelivery.Engine
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            Log.Logger = new LoggerConfiguration()
+                .ReadFrom
+                .Configuration(Configuration)
+                .CreateLogger();
             services.AddRazorPages();
             services.Sunday()
                 .LoadConfiguration(Environment, Configuration)

@@ -1,12 +1,12 @@
 <h4 class="modal-title" mat-dialog-title>Select Icon</h4>
-<div class="modal-body" mat-dialog-content>
+<div class="modal-body icon-dialog" mat-dialog-content>
     <div class="form-row">
         <div class="col-md-12">
-            <div>
-                <div *ngFor="let icon of iconLookup" style="width: 10%; float: left; text-align: center; height: 65px;    padding: 5px;
-                border: 1px solid #000;">
-                    <i class="{{icon.icon}}" style="font-size: 30px; font-weight: bold;"></i>
-                    <label style="display: block;">{{icon.code}}</label>
+            <div class="row">
+                <div *ngFor="let icon of iconLookup; let i = index"
+                    class="col-2 icon-tile {{icon.code === selectedIcon ? 'active' : ''}}" (click)="select(icon)">
+                    <i class="{{icon.icon}}"></i>
+                    <label>{{icon.code}}</label>
                 </div>
             </div>
             <div class="pull-right">

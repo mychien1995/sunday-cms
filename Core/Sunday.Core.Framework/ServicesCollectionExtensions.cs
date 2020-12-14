@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Serilog;
 using Sunday.Core.Configuration;
 using Sunday.Core.Configuration.Nodes;
 using Sunday.Core.Framework.Helpers;
@@ -19,6 +20,7 @@ namespace Sunday.Core.Framework
 {
     public static class ServicesCollectionExtensions
     {
+        private static readonly ILogger Logger = Log.Logger;
         private static ConfigurationNode _configuration = new ConfigurationNode();
         public static ISundayServicesConfiguration Sunday(this IServiceCollection services)
         {
@@ -27,6 +29,7 @@ namespace Sunday.Core.Framework
 
         public static ISundayServicesConfiguration LoadConfiguration(this ISundayServicesConfiguration services, IWebHostEnvironment hostingEnv, IConfiguration configuration)
         {
+            Logger.Information("Start loading configuration");
             string configFolderPath;
             var configPath = configuration.GetValue<string>("SundayConfigPath");
             if (!string.IsNullOrEmpty(configPath))
@@ -38,8 +41,13 @@ namespace Sunday.Core.Framework
                 var configurationPath = "\\config";
                 configFolderPath = hostingEnv.WebRootPath + configurationPath;
             }
+            Logger.Information($"Config path specified at {configFolderPath}");
             var filePath = configFolderPath + "\\sunday.config";
-            if (!File.Exists(filePath)) return services;
+            if (!File.Exists(filePath))
+            {
+                Logger.Warning($"Main config path {filePath} not found !");
+                return services;
+            }
             var configFileContent = File.ReadAllText(filePath);
             var includeFolder = configFolderPath + "\\include";
             var includeFiles = Directory.GetFiles(includeFolder, "*.config");
@@ -59,12 +67,15 @@ namespace Sunday.Core.Framework
 
         public static IApplicationBuilder InitializeSunday(this IApplicationBuilder application)
         {
+            Logger.Information("Sunday Initializing...");
             ApplicationPipelines.RunAsync("initialize", new InitializationArg(application)).Wait();
+            Logger.Information("Sunday Initialization Completed!");
             return application;
         }
 
         public static ISundayServicesConfiguration LoadServices(this ISundayServicesConfiguration serviceConf)
         {
+            Logger.Information("Start loading CMS Services");
             var services = serviceConf.Services;
             var assemblies = AssemblyHelper.GetAllAssemblies(x => (!x.StartsWith("api-") && !x.StartsWith("Microsoft") && !x.StartsWith("System")) &&
             (x.Contains("Sunday") || x.Contains("Plugin"))).ToArray();
@@ -131,9 +142,13 @@ namespace Sunday.Core.Framework
         private static void AddSetting(ConfigurationNode configurationNode)
         {
             if (configurationNode?.Settings == null || !configurationNode.Settings.Any())
+            {
+                Logger.Information("Start loading CMS Settings. No values found");
                 return;
-            configurationNode.Settings.Where(x => !string.IsNullOrEmpty(x?.Key))
-                .Iter(setting => ApplicationSettings.Set(setting.Key!, setting.Value!));
+            }
+            var settings = configurationNode.Settings.Where(x => !string.IsNullOrEmpty(x?.Key)).ToArray();
+            Logger.Information($"Start loading CMS Settings. {settings.Length} values found");
+            settings.Iter(setting => ApplicationSettings.Set(setting.Key!, setting.Value!));
         }
 
         private static void AddPipelines(XmlDocument document)
