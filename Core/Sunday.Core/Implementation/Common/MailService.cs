@@ -1,10 +1,10 @@
-﻿using Sunday.Core.Application.Common;
-using Sunday.Core.Domain.Email;
+﻿using Sunday.Core.Domain.Email;
 using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
+using Sunday.Core.Application;
 
 namespace Sunday.Core.Implementation.Common
 {

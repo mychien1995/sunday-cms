@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Sunday.Core.Application.Common
+namespace Sunday.Core.Application
 {
     public interface IMailService
     {
