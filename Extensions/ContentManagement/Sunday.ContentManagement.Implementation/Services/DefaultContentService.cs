@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LanguageExt;
@@ -10,6 +9,7 @@ using Sunday.ContentManagement.Persistence.Application;
 using Sunday.ContentManagement.Persistence.Entities;
 using Sunday.ContentManagement.Services;
 using Sunday.Core;
+using Sunday.Core.Application;
 using Sunday.Core.Extensions;
 using Sunday.Core.Pipelines;
 using Sunday.Core.Pipelines.Arguments;
@@ -25,15 +25,19 @@ namespace Sunday.ContentManagement.Implementation.Services
         private readonly ISundayContext _sundayContext;
         private readonly IFieldTypesProvider _fieldTypesProvider;
         private readonly ITemplateService _templateService;
+        private readonly IContentLinkService _contentLinkService;
+        private readonly IRemoteEventHandler _remoteEventHandler;
 
         public DefaultContentService(ISundayContext sundayContext, IContentRepository contentRepository,
-            IFieldTypesProvider fieldTypesProvider, ITemplateService templateService, IContentOrderRepository contentOrderRepository)
+            IFieldTypesProvider fieldTypesProvider, ITemplateService templateService, IContentOrderRepository contentOrderRepository, IContentLinkService contentLinkService, IRemoteEventHandler remoteEventHandler)
         {
             _sundayContext = sundayContext;
             _contentRepository = contentRepository;
             _fieldTypesProvider = fieldTypesProvider;
             _templateService = templateService;
             _contentOrderRepository = contentOrderRepository;
+            _contentLinkService = contentLinkService;
+            _remoteEventHandler = remoteEventHandler;
         }
 
         public Task<Content[]> GetChildsAsync(Guid contentId, ContentType contentType)
@@ -51,6 +55,19 @@ namespace Sunday.ContentManagement.Implementation.Services
             return await ToModel(contentOpt.Get());
         }
 
+        public async Task<Option<Content>> GetFullContent(Guid contentId)
+        {
+            var contentOpt = await GetByIdAsync(contentId,
+                new GetContentOptions() {IncludeFields = true, IncludeVersions = true});
+            if (contentOpt.IsNone) return contentOpt;
+            var content = contentOpt.Get();
+            var template = await _templateService.GetByIdAsync(content.TemplateId).MapResultTo(rs => rs.Get());
+            var fields = await _templateService.LoadTemplateFields(content.TemplateId);
+            content.Template = template;
+            content.Template.Fields = fields;
+            return content;
+        }
+
         public async Task CreateAsync(Content content)
         {
             await ApplicationPipelines.RunAsync("cms.entity.beforeCreate", new BeforeCreateEntityArg(content));
@@ -61,6 +78,7 @@ namespace Sunday.ContentManagement.Implementation.Services
             createArg.CopyPropertyTo(moveArg);
             await ApplicationPipelines.RunAsync("cms.content.getSiblingsOrder", moveArg);
             await _contentOrderRepository.SaveOrder(moveArg.Orders);
+            await ApplicationPipelines.RunAsync("cms.content.afterUpdate", new AfterUpdateContentArg(content));
         }
 
         public async Task UpdateAsync(Content content)
@@ -68,6 +86,7 @@ namespace Sunday.ContentManagement.Implementation.Services
             await ApplicationPipelines.RunAsync("cms.entity.beforeUpdate", new BeforeUpdateEntityArg(content));
             await ApplicationPipelines.RunAsync("cms.content.beforeUpdate", new BeforeUpdateContentArg(content));
             await _contentRepository.UpdateAsync(await ToEntity(content));
+            await ApplicationPipelines.RunAsync("cms.content.afterUpdate", new AfterUpdateContentArg(content));
         }
 
         public async Task UpdateExplicitAsync(Content content)
@@ -87,8 +106,12 @@ namespace Sunday.ContentManagement.Implementation.Services
             => _contentRepository.CreateNewVersionAsync(contentId, fromVersionId, _sundayContext.CurrentUser!.UserName,
                 DateTime.Now);
 
-        public Task PublishAsync(Guid contentId)
-            => _contentRepository.PublishAsync(contentId, _sundayContext.CurrentUser!.UserName, DateTime.Now);
+        public async Task PublishAsync(Guid contentId)
+        {
+            await _contentRepository.PublishAsync(contentId, _sundayContext.CurrentUser!.UserName, DateTime.Now);
+            await _contentLinkService.Save(await GetFullContent(contentId).MapResultTo(c => c.Get()));
+            _remoteEventHandler.Send(new RemoteEventData("content:published", contentId));
+        }
 
 
 

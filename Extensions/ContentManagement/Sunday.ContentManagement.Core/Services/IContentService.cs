@@ -25,5 +25,6 @@ namespace Sunday.ContentManagement.Services
 
         Task MoveContent(MoveContentParameter moveContentParameter);
         Task UpdateExplicitAsync(Content content);
+        Task<Option<Content>> GetFullContent(Guid contentId);
     }
 }

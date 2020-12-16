@@ -106,6 +106,5 @@ namespace Sunday.ContentManagement.Implementation.Services
             return currentContent;
         }
 
-        private bool IsPage(Content content) => content.Name.Contains("page");
     }
 }

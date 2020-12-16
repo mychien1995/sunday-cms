@@ -35,5 +35,10 @@ namespace Sunday.Core.Implementation
                 return item ?? Option<T>.None;
             }
         }
+
+        public void Evict(string key)
+        {
+            _cache.Remove(key);
+        }
     }
 }

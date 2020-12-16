@@ -18,5 +18,6 @@ namespace Sunday.ContentManagement.Services
 
         Task DeleteAsync(Guid templateId);
         Task<TemplateField[]> LoadTemplateFields(Guid templateId);
+        Task<Template[]> GetAncestors(Guid templateId);
     }
 }

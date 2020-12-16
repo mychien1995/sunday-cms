@@ -48,5 +48,11 @@
             public const string Delete = "sp_renderings_delete";
             public const string GetById = "sp_renderings_getById";
         }
+        public class ContentLinks
+        {
+            public const string Save = "sp_contentLinks_save";
+            public const string GetReferencesTo = "sp_contentLinks_getReferenceTo";
+            public const string GetReferencesFrom = "sp_contentLinks_getReferenceFrom";
+        }
     }
 }

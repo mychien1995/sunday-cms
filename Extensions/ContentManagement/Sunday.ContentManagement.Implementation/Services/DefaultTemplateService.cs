@@ -58,6 +58,29 @@ namespace Sunday.ContentManagement.Implementation.Services
             await _templateRepository.SaveAsync(ToEntity(template, true), new SaveTemplateOptions { SaveProperties = true });
         }
 
+        public async Task<Template[]> GetAncestors(Guid templateId)
+        {
+            var templateOpt = await GetByIdAsync(templateId);
+            if (templateOpt.IsNone) return Array.Empty<Template>();
+            var template = templateOpt.Get();
+            var result = new List<Template>();
+            await InnerGetAncestor(template);
+            return result.ToArray();
+
+            async Task InnerGetAncestor(Template current)
+            {
+                var baseTemplateIds = current.BaseTemplateIds;
+                foreach (var tId in baseTemplateIds)
+                {
+                    if (result.Any(t => t.Id == tId)) continue;
+                    var baseTemplate = await GetByIdAsync(tId);
+                    if (!baseTemplate.IsSome) continue;
+                    result.Add(baseTemplate.Get());
+                    await InnerGetAncestor(baseTemplate.Get());
+                }
+            }
+        }
+
         public async Task<TemplateField[]> LoadTemplateFields(Guid templateId)
         {
             var fields = new List<TemplateField>();

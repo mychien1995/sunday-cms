@@ -351,3 +351,12 @@ BEGIN
 		[IsDeleted] [bit] NOT NULL
 	);
 END
+IF (NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'dbo' AND  TABLE_NAME = 'ContentLinks'))
+BEGIN
+	CREATE TABLE ContentLinks
+	(
+		ContentId uniqueidentifier,
+		ReferenceId uniqueidentifier,
+		PRIMARY KEY (ContentId, ReferenceId)
+	);
+END

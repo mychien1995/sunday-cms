@@ -2,12 +2,14 @@
 using System.Linq;
 using System.Threading.Tasks;
 using LanguageExt;
+using LanguageExt.UnitsOfMeasure;
 using Sunday.ContentDelivery.Core.Services;
 using Sunday.ContentManagement;
 using Sunday.ContentManagement.Extensions;
 using Sunday.ContentManagement.Models;
 using Sunday.ContentManagement.Services;
 using Sunday.Core;
+using Sunday.Core.Application;
 using Sunday.Core.Extensions;
 using static LanguageExt.Prelude;
 
@@ -19,12 +21,15 @@ namespace Sunday.ContentDelivery.Implementation.Services
         private readonly IContentPathResolver _contentPathResolver;
         private readonly IContentService _contentService;
         private readonly ITemplateService _templateService;
+        private readonly IEntityCacheManager _cacheManager;
 
-        public DefaultContentReader(IContentPathResolver contentPathResolver, IContentService contentService, ITemplateService templateService)
+        public DefaultContentReader(IContentPathResolver contentPathResolver, IContentService contentService, 
+            ITemplateService templateService, IEntityCacheManager cacheManager)
         {
             _contentPathResolver = contentPathResolver;
             _contentService = contentService;
             _templateService = templateService;
+            _cacheManager = cacheManager;
         }
 
         public async Task<Option<Content>> GetHomePage(Guid websiteId)
@@ -39,16 +44,23 @@ namespace Sunday.ContentDelivery.Implementation.Services
             return await Optional(siteRoots.FirstOrDefault(content => content.IsPublished &&
                                                                       templates.Result.Any(t =>
                                                                           t.Id == content.TemplateId &&
-                                                                          t.IsPageTemplate))).MatchAsync(async page =>
-            {
-                var fullPage =  await _contentService.GetByIdAsync(page!.Id,
-                    new GetContentOptions {IncludeFields = true}).MapResultTo(rs => rs.Get()); 
-                var fields = await _templateService.LoadTemplateFields(fullPage.TemplateId);
-                fullPage.Template.Fields = fields;
-                return Optional(fullPage);
-            }, () => Option<Content>.None);
+                                                                          t.IsPageTemplate)))
+                .MatchAsync(async page => await LoadContentFromCache(page!.Id), () => Option<Content>.None);
         }
 
+        private Task<Option<Content>> LoadContentFromCache(Guid contentId)
+        => _cacheManager.ReadThrough(contentId, () => LoadContent(contentId), 1.Hours());
+        private async Task<Option<Content>> LoadContent(Guid contentId)
+        {
+            var contentOpt = await _contentService.GetByIdAsync(contentId,
+                new GetContentOptions {IncludeFields = true});
+            if(contentOpt.IsNone) return Option<Content>.None;
+            var content = contentOpt.Get();
+            if(!content.IsPublished) return Option<Content>.None;
+            var fields = await _templateService.LoadTemplateFields(content.TemplateId);
+            content.Template.Fields = fields;
+            return Optional(content);
+        }
         public async Task<Option<Content>> GetPage(Guid websiteId, string path)
         {
             var homePage = await GetHomePage(websiteId);
@@ -58,15 +70,11 @@ namespace Sunday.ContentDelivery.Implementation.Services
             var fullPath = $"{homePage.Get().Name}/{formalizedPath}";
             var contentOpt = await _contentPathResolver.GetContentByNamePath(websiteId, fullPath);
             if (contentOpt.Some(c => c.IsPublished).None(true)) return Option<Content>.None;
-            var content = await _contentService.GetByIdAsync(contentOpt.Get().Id, new GetContentOptions { IncludeFields = true }).MapResultTo(rs => rs.Get());
-            if (!content.Template.IsPageTemplate) return Option<Content>.None;
-            var fields = await _templateService.LoadTemplateFields(content.TemplateId);
-            content.Template.Fields = fields;
+            var content = await GetContent(contentOpt.Get().Id);
             return content;
         }
 
         public Task<Option<Content>> GetContent(Guid contentId)
-            => _contentService.GetByIdAsync(contentId, new GetContentOptions { IncludeFields = true })
-                .MapResultTo(rs => rs.Bind(c => c.IsPublished ? c : Option<Content>.None));
+            => LoadContentFromCache(contentId);
     }
 }

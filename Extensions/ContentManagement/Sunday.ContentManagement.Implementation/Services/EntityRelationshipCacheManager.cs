@@ -28,7 +28,7 @@ namespace Sunday.ContentManagement.Implementation.Services
             _cacheKeyCreator = cacheKeyCreator;
         }
 
-        public async Task Set<T>(T value, TimeSpan? expiration) where T : IEntity
+        public async Task Set<T>(T value, TimeSpan? expiration = null) where T : IEntity
         {
             var cacheKey = _cacheKeyCreator.GetCacheKey<T>(value.Id);
             var dependants = await GetDependants(value);
@@ -40,6 +40,18 @@ namespace Sunday.ContentManagement.Implementation.Services
             var masters = await GetMasters(value);
             masters.Iter(key => _cacheDependencies.AppendIfNotExist(key, cacheKey));
             _cacheEngine.Set(cacheKey, value, expiration);
+        }
+
+        public async Task<Option<T>> ReadThrough<T>(Guid id, Func<Task<Option<T>>> creator, TimeSpan? expiration = null) where T : IEntity
+        {
+            var entry = Get<T>(id);
+            if (entry.IsSome) return entry;
+            var data = await creator();
+            if (data.IsSome)
+            {
+                await Set(data.Get());
+            }
+            return data;
         }
 
         public Option<T> Get<T>(Guid id) where T : IEntity
