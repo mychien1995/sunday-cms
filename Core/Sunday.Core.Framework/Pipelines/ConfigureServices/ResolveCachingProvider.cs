@@ -31,13 +31,10 @@ namespace Sunday.Core.Framework.Pipelines.ConfigureServices
             }
             var provider = cachingNode!.Attributes!["provider"].Value;
             _logger.LogInformation($"Caching provider is {provider}");
-            arg.ServicesCollection.AddSingleton<ICacheEngine>(sp =>
-            {
-                var type = Type.GetType(provider);
-                var cachingProvider =
-                    (ICacheEngine)ActivatorUtilities.CreateInstance(sp, type);
-                return cachingProvider;
-            });
+            var cachingProviderType = Type.GetType(provider);
+            var cachingProvider =
+                (ICacheEngine)ActivatorUtilities.CreateInstance(arg.ServicesCollection.BuildServiceProvider(), cachingProviderType);
+            arg.ServicesCollection.AddSingleton<ICacheEngine>(cachingProvider);
         }
     }
 }

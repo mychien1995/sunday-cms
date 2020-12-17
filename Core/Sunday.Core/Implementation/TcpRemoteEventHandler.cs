@@ -17,6 +17,7 @@ namespace Sunday.Core.Implementation
         private readonly Dictionary<TcpRemoteAddress, int> _renewAttempts;
         private readonly List<TcpRemoteAddress> _addresses;
         private readonly ILogger<TcpRemoteEventHandler> _logger;
+        private readonly object _lock = new object();
 
         public TcpRemoteEventHandler(ILogger<TcpRemoteEventHandler> logger, TcpRemoteEventConfiguration configuration)
         {
@@ -53,7 +54,7 @@ namespace Sunday.Core.Implementation
 
         public void Send(RemoteEventData message)
         {
-            Task.Run(() =>
+            lock (_lock)
             {
                 foreach (var address in _addresses)
                 {
@@ -70,21 +71,46 @@ namespace Sunday.Core.Implementation
                     if (client == null)
                     {
                         _renewAttempts[address] = _renewAttempts[address] + 1;
-                        if (_renewAttempts[address] > 5)
-                        {
-                            _addresses.Remove(address);
-                            _logger.LogError($"Maximum retry passed for {address}, drop this address");
-                        }
-
+                        if (_renewAttempts[address] <= 5) return;
+                        _addresses.Remove(address);
+                        _logger.LogError($"Maximum retry passed for {address}, drop this address");
                         return;
                     }
                     _openingClients[address] = client;
-                    var stream = client.GetStream();
                     var dataMessage = JsonConvert.SerializeObject(message);
                     var data = System.Text.Encoding.ASCII.GetBytes(dataMessage + Delimeter);
-                    stream.Write(data, 0, data.Length);
+                    var stream = client.GetStream();
+                    Retry(() =>
+                    {
+                        stream.Write(data, 0, data.Length);
+                    }, ex =>
+                    {
+                        _logger.LogError(ex, $"Error on reconnect to {address}");
+                        client = RenewClient(address)!;
+                        _openingClients[address] = client;
+                        stream = client.GetStream();
+                    });
+                    stream.Flush();
                 }
-            });
+            }
+        }
+
+        private void Retry(Action action, Action<Exception> onException)
+        {
+            var retryCount = 0;
+            while (retryCount < 2)
+            {
+                try
+                {
+                    action();
+                    break;
+                }
+                catch (Exception ex)
+                {
+                    onException(ex);
+                    retryCount++;
+                }
+            }
         }
 
         public void OnReceive(RemoteEventData action)
@@ -97,6 +123,6 @@ namespace Sunday.Core.Implementation
             this.OnReceiveEvent += (sender, arg) => { action(arg.Data); };
         }
 
-        event OnReceiveMessageHandler OnReceiveEvent;
+        event OnReceiveMessageHandler OnReceiveEvent = null!;
     }
 }

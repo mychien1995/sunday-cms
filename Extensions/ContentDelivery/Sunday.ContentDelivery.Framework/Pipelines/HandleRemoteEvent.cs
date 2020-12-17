@@ -28,7 +28,7 @@ namespace Sunday.ContentDelivery.Framework.Pipelines
                 {
                     if (data.EventName.Equals("content:published"))
                     {
-                        var guidId = (Guid)data.Data;
+                        var guidId = Guid.Parse(data.Data!.ToString()!);
                         var contentOpt = _contentService.GetByIdAsync(guidId).Result;
                         _entityCacheManager.Remove(contentOpt.Get());
                     }

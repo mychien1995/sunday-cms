@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -10,15 +11,15 @@ using Newtonsoft.Json;
 using Sunday.Core.Application;
 using Sunday.Core.Implementation;
 
-namespace Sunday.Core.Framework.Pipelines.Initialize
+namespace Sunday.Core.Framework
 {
-    public class TcpHandlerService : BackgroundService
+    public class TcpEventListener : BackgroundService
     {
-        private readonly ILogger<TcpHandlerService> _logger;
+        private readonly ILogger<TcpEventListener> _logger;
         private readonly IRemoteEventHandler _remoteEventHandler;
         private readonly TcpRemoteEventConfiguration _configuration;
 
-        public TcpHandlerService(ILogger<TcpHandlerService> logger, IRemoteEventHandler remoteEventHandler, TcpRemoteEventConfiguration configuration)
+        public TcpEventListener(ILogger<TcpEventListener> logger, IRemoteEventHandler remoteEventHandler, TcpRemoteEventConfiguration configuration)
         {
             _logger = logger;
             _remoteEventHandler = remoteEventHandler;
@@ -27,7 +28,6 @@ namespace Sunday.Core.Framework.Pipelines.Initialize
 
         protected override async Task ExecuteAsync(CancellationToken cancellationToken)
         {
-            _remoteEventHandler.Initialize();
             var delimeter = TcpRemoteEventHandler.Delimeter;
             var address = _configuration.ListeningAddress;
             TcpListener listener = new TcpListener(IPAddress.Any, address);
@@ -36,27 +36,27 @@ namespace Sunday.Core.Framework.Pipelines.Initialize
             TcpClient client = await listener.AcceptTcpClientAsync();
             Console.WriteLine("a new client connected");
             NetworkStream stream = client.GetStream();
+            var bufferCount = 0;
             var offset = 0;
-            var fullMessage = new StringBuilder();
+            var fullBuffer = new byte[512000];
             do
             {
                 byte[] buffer = new byte[1024];
                 int dataRead = await stream.ReadAsync(buffer, offset, buffer.Length, cancellationToken);
-                var message = Encoding.ASCII.GetString(buffer, 0, dataRead);
-                var dIndex = message.IndexOf(delimeter);
-                if (dIndex > -1)
+                Buffer.BlockCopy(buffer, 0, fullBuffer, bufferCount, dataRead);
+                bufferCount += dataRead;
+                var message = Encoding.ASCII.GetString(fullBuffer, 0, bufferCount);
+                var delimeterIndex = message.IndexOf(delimeter, StringComparison.OrdinalIgnoreCase);
+                if (delimeterIndex > -1)
                 {
-                    var beforeDelimeter = message.Substring(0, dIndex);
-                    fullMessage.Append(beforeDelimeter);
-                    var data = JsonConvert.DeserializeObject<RemoteEventData>(fullMessage.ToString());
+                    var dataPart = message.Substring(0, delimeterIndex);
+                    var data = JsonConvert.DeserializeObject<RemoteEventData>(dataPart);
                     _remoteEventHandler.OnReceive(data);
-                    fullMessage = new StringBuilder();
-                    offset = Encoding.ASCII.GetByteCount(beforeDelimeter + delimeter) - dataRead;
-                }
-                else
-                {
-                    fullMessage.Append(message);
                     offset = 0;
+                    bufferCount = message.Length - delimeterIndex - delimeter.Length;
+                    var leftOver = fullBuffer.Skip(delimeterIndex + delimeter.Length).Take(bufferCount).ToArray();
+                    fullBuffer = new byte[512000];
+                    Buffer.BlockCopy(leftOver, 0, fullBuffer, 0, bufferCount);
                 }
             } while (!cancellationToken.IsCancellationRequested);
         }

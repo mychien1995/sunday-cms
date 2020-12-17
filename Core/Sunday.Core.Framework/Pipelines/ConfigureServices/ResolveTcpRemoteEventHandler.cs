@@ -5,7 +5,6 @@ using Microsoft.Extensions.Logging;
 using Sunday.Core.Application;
 using Sunday.Core.Configuration;
 using Sunday.Core.Domain;
-using Sunday.Core.Framework.Pipelines.Initialize;
 using Sunday.Core.Implementation;
 using Sunday.Core.Pipelines;
 using Sunday.Core.Pipelines.Arguments;

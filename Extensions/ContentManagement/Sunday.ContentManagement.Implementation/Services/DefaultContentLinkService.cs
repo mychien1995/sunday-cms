@@ -25,7 +25,7 @@ namespace Sunday.ContentManagement.Implementation.Services
             var references = new List<Guid>();
             foreach (var field in content.Fields)
             {
-                if (field.FieldValue == null) return;
+                if (field.FieldValue == null) continue;
                 var fieldDef = content.Template.Fields.First(f => f.Id == field.TemplateFieldId);
                 switch (fieldDef.FieldType)
                 {
