@@ -8,6 +8,7 @@ namespace Sunday.Core.Application
         void Send(RemoteEventData message);
 
         void OnReceive(RemoteEventData action);
+        void Subscribe(Action<RemoteEventData> action);
     }
 
     public class RemoteEventData

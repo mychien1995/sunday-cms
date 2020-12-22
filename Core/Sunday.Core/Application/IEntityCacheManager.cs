@@ -13,6 +13,8 @@ namespace Sunday.Core.Application
 
         Task Remove(IEntity entity);
 
+        void Remove(Type entityType, Guid id);
+
         Task<Option<T>> ReadThrough<T>(Guid id, Func<Task<Option<T>>> creator, TimeSpan? expiration = null)
             where T : IEntity;
     }

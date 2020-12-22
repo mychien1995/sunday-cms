@@ -58,7 +58,7 @@ namespace Sunday.ContentManagement.Implementation.Services
         public async Task<Option<Content>> GetFullContent(Guid contentId)
         {
             var contentOpt = await GetByIdAsync(contentId,
-                new GetContentOptions() {IncludeFields = true, IncludeVersions = true});
+                new GetContentOptions() { IncludeFields = true, IncludeVersions = true });
             if (contentOpt.IsNone) return contentOpt;
             var content = contentOpt.Get();
             var template = await _templateService.GetByIdAsync(content.TemplateId).MapResultTo(rs => rs.Get());
@@ -78,7 +78,6 @@ namespace Sunday.ContentManagement.Implementation.Services
             createArg.CopyPropertyTo(moveArg);
             await ApplicationPipelines.RunAsync("cms.content.getSiblingsOrder", moveArg);
             await _contentOrderRepository.SaveOrder(moveArg.Orders);
-            await ApplicationPipelines.RunAsync("cms.content.afterUpdate", new AfterUpdateContentArg(content));
         }
 
         public async Task UpdateAsync(Content content)
@@ -86,7 +85,6 @@ namespace Sunday.ContentManagement.Implementation.Services
             await ApplicationPipelines.RunAsync("cms.entity.beforeUpdate", new BeforeUpdateEntityArg(content));
             await ApplicationPipelines.RunAsync("cms.content.beforeUpdate", new BeforeUpdateContentArg(content));
             await _contentRepository.UpdateAsync(await ToEntity(content));
-            await ApplicationPipelines.RunAsync("cms.content.afterUpdate", new AfterUpdateContentArg(content));
         }
 
         public async Task UpdateExplicitAsync(Content content)
@@ -98,7 +96,7 @@ namespace Sunday.ContentManagement.Implementation.Services
 
         public async Task DeleteAsync(Guid contentId)
         {
-            await ApplicationPipelines.RunAsync("cms.content.beforeDelete", new BeforeDeleteContentArg(contentId));
+            _ = Task.Run(() => _remoteEventHandler.Send(new RemoteEventData("content:deleted", contentId)));
             await _contentRepository.DeleteAsync(contentId);
         }
 
@@ -110,7 +108,7 @@ namespace Sunday.ContentManagement.Implementation.Services
         {
             await _contentRepository.PublishAsync(contentId, _sundayContext.CurrentUser!.UserName, DateTime.Now);
             await _contentLinkService.Save(await GetFullContent(contentId).MapResultTo(c => c.Get()));
-            _remoteEventHandler.Send(new RemoteEventData("content:published", contentId));
+            _ = Task.Run(() => _remoteEventHandler.Send(new RemoteEventData("content:published", contentId)));
         }
 
 

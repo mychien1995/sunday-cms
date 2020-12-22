@@ -49,7 +49,7 @@ namespace Sunday.ContentManagement.Implementation.Services
             var data = await creator();
             if (data.IsSome)
             {
-                await Set(data.Get());
+                _ = Set(data.Get());
             }
             return data;
         }
@@ -65,12 +65,28 @@ namespace Sunday.ContentManagement.Implementation.Services
         public async Task Remove(IEntity entity)
         {
             var cacheKey = _cacheKeyCreator.GetCacheKey(entity);
+            _cacheEngine.Evict(cacheKey);
             var dependants = await GetDependants(entity);
             foreach (var key in dependants)
             {
-                _cacheEngine.Evict(key);
+                Remove(key);
             }
-            _cacheEngine.Evict(cacheKey);
+        }
+        public void Remove(Type entityType, Guid id)
+        {
+            var cacheKey = _cacheKeyCreator.GetCacheKey(entityType, id);
+            Remove(cacheKey);
+        }
+
+        private void Remove(string masterKey)
+        {
+            var dependants = _cacheDependencies.Get(masterKey).IfNone(new List<string>());
+            _cacheDependencies.TryRemove(masterKey, out _);
+            _cacheEngine.Evict(masterKey);
+            foreach (var key in dependants)
+            {
+                Remove(key);
+            }
         }
 
         private async Task<string[]> GetDependants(IEntity entity)

@@ -10,31 +10,28 @@ namespace Sunday.Core.Framework.Pipelines.ConfigureServices
 {
     public class ResolveCachingProvider : IPipelineProcessor
     {
-        private readonly ILogger<ResolveCachingProvider> _logger;
-        private readonly ApplicationConfiguration _applicationConfiguration;
-
-        public ResolveCachingProvider(ILogger<ResolveCachingProvider> logger, ApplicationConfiguration applicationConfiguration)
-        {
-            _logger = logger;
-            _applicationConfiguration = applicationConfiguration;
-        }
-
+        private static ICacheEngine? _cacheEngine;
         public void Process(PipelineArg pipelineArg)
         {
             var arg = (ConfigureServicesArg)pipelineArg;
-            var configXml = _applicationConfiguration.ConfigurationXml;
-            var cachingNode = configXml.SelectSingleNode("/configuration/caching");
-            if (cachingNode == null)
+            arg.ServicesCollection.AddSingleton(sp =>
             {
-                _logger.LogInformation("No caching provider found");
-                return;
-            }
-            var provider = cachingNode!.Attributes!["provider"].Value;
-            _logger.LogInformation($"Caching provider is {provider}");
-            var cachingProviderType = Type.GetType(provider);
-            var cachingProvider =
-                (ICacheEngine)ActivatorUtilities.CreateInstance(arg.ServicesCollection.BuildServiceProvider(), cachingProviderType);
-            arg.ServicesCollection.AddSingleton<ICacheEngine>(cachingProvider);
+                if (_cacheEngine != null) return _cacheEngine;
+                var logger = sp.GetService<ILogger<ResolveCachingProvider>>();
+                var applicationConfiguration = sp.GetService<ApplicationConfiguration>();
+                var configXml = applicationConfiguration.ConfigurationXml;
+                var cachingNode = configXml.SelectSingleNode("/configuration/caching");
+                if (cachingNode == null)
+                {
+                    logger.LogInformation("No caching provider found");
+                    return null;
+                }
+                var provider = cachingNode!.Attributes!["provider"].Value;
+                logger.LogInformation($"Caching provider is {provider}");
+                var cachingProviderType = Type.GetType(provider);
+                _cacheEngine = (ICacheEngine)ActivatorUtilities.CreateInstance(sp, cachingProviderType);
+                return _cacheEngine;
+            });
         }
     }
 }

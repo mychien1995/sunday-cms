@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 using LanguageExt;
 using Microsoft.AspNetCore.Http;
@@ -13,28 +12,27 @@ using Sunday.ContentDelivery.Core;
 using Sunday.ContentDelivery.Core.Services;
 using Sunday.ContentManagement.Domain;
 using Sunday.ContentManagement.Models;
-using Sunday.ContentManagement.Services;
 using Sunday.Core.Extensions;
 
 namespace Sunday.ContentDelivery.Framework.Middlewares
 {
     public class ContentMiddleware
     {
-        private readonly IWebsiteService _websiteService;
+        private readonly IWebsiteLoader _websiteLoader;
         private readonly IContentReader _contentReader;
-        private readonly IRenderingService _renderingService;
+        private readonly IRenderingReader _renderingReader;
         private readonly IActionInvokerFactory _actionInvokerFactory;
         private readonly ILayoutReader _layoutReader;
         private readonly Dictionary<string, ControllerActionDescriptor> _actionDescriptorCache;
         private readonly RequestDelegate _next;
 
-        public ContentMiddleware(IWebsiteService websiteService, RequestDelegate next, IContentReader contentReader, IRenderingService renderingService
+        public ContentMiddleware(IWebsiteLoader websiteLoader, RequestDelegate next, IContentReader contentReader, IRenderingReader renderingReader
             , IActionInvokerFactory actionInvokerFactory, IActionDescriptorCollectionProvider actionDescriptorCollectionProvider, ILayoutReader layoutReader)
         {
-            _websiteService = websiteService;
+            _websiteLoader = websiteLoader;
             _next = next;
             _contentReader = contentReader;
-            _renderingService = renderingService;
+            _renderingReader = renderingReader;
             _actionInvokerFactory = actionInvokerFactory;
             _layoutReader = layoutReader;
             _actionDescriptorCache = actionDescriptorCollectionProvider.ActionDescriptors.Items
@@ -46,14 +44,14 @@ namespace Sunday.ContentDelivery.Framework.Middlewares
         {
             var requestPath = httpContext.Request.Path;
             var hostName = httpContext.Request.Host.Value;
-            var websiteOpt = await _websiteService.GetByHostNameAsync(hostName);
+            var websiteOpt = await _websiteLoader.GetWebsiteByHostName(hostName);
             if (websiteOpt.IsNone) goto NEXT;
             var website = websiteOpt.Get();
             var contentOpt = await _contentReader.GetPage(website.Id, requestPath);
             if (contentOpt.IsNone) goto NEXT;
             var content = contentOpt.Get();
             var renderingOpt = await website.PageDesignMappings.Get(content.TemplateId.ToString()).MatchAsync(
-                async renderingId => await _renderingService.GetRenderingById(Guid.Parse(renderingId)),
+                async renderingId => await _renderingReader.GetRendering(Guid.Parse(renderingId)),
                 () => Option<Rendering>.None);
             if (renderingOpt.IsNone) goto NEXT;
             var rendering = renderingOpt.Get();
@@ -73,7 +71,7 @@ namespace Sunday.ContentDelivery.Framework.Middlewares
             var descriptor = descriptorOption.Get();
             httpContext.Items.Add(RouteDataKey.Website, website);
             httpContext.Items.Add(RouteDataKey.Content, content);
-            httpContext.Items.Add(RouteDataKey.Layout, await _layoutReader.GetLayout(website));
+            httpContext.Items.Add(RouteDataKey.Layout, await _layoutReader.GetLayout(website.LayoutId));
             var routeData = new RouteData(new RouteValueDictionary(new Dictionary<string, object>
             {
                 {"action", descriptor.ActionName},

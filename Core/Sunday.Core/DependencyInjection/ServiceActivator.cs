@@ -6,7 +6,7 @@ namespace Sunday.Core
 {
     public class ServiceActivator
     {
-        internal static IServiceProvider ServiceProvider = null!;
+        internal static IServiceProvider? ServiceProvider = null!;
 
         /// <summary>
         /// Configure ServiceActivator with full serviceProvider
@@ -29,5 +29,7 @@ namespace Sunday.Core
                 .GetRequiredService<IServiceScopeFactory>()
                 .CreateScope();
         }
+
+        public static bool HasScope() => ServiceProvider != null;
     }
 }

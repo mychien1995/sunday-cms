@@ -1,12 +1,16 @@
-﻿namespace Sunday.Core.Pipelines.Arguments
+﻿using System;
+
+namespace Sunday.Core.Pipelines.Arguments
 {
     public class BeforeDeleteEntityArg : PipelineArg
     {
-        public int EntityId { get; set; }
-        public BeforeDeleteEntityArg(int id)
+        public Type EntityType { get; set; }
+        public Guid EntityId { get; set; }
+        public BeforeDeleteEntityArg(Guid id, Type entityType)
         {
-            this.EntityId = id;
-            this.AddProperty("EntityId", id);
+            EntityId = id;
+            EntityType = entityType;
+            AddProperty("EntityId", id);
         }
     }
 }

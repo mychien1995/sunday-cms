@@ -47,7 +47,11 @@ namespace Sunday.ContentManagement.Implementation.Services
             await _layoutRepository.UpdateAsync(layout.MapTo<LayoutEntity>());
         }
 
-        public Task DeleteAsync(Guid layoutId)
-            => _layoutRepository.DeleteAsync(layoutId);
+        public async Task DeleteAsync(Guid layoutId)
+        {
+            await ApplicationPipelines.RunAsync("cms.entity.beforeDelete",
+                new BeforeDeleteEntityArg(layoutId, typeof(ApplicationLayout)));
+            await _layoutRepository.DeleteAsync(layoutId);
+        }
     }
 }

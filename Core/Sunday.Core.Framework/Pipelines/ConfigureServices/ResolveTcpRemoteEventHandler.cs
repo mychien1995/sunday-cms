@@ -4,7 +4,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Sunday.Core.Application;
 using Sunday.Core.Configuration;
-using Sunday.Core.Domain;
 using Sunday.Core.Implementation;
 using Sunday.Core.Pipelines;
 using Sunday.Core.Pipelines.Arguments;
@@ -13,49 +12,54 @@ namespace Sunday.Core.Framework.Pipelines.ConfigureServices
 {
     public class ResolveTcpRemoteEventHandler : IPipelineProcessor
     {
-        private readonly ILogger<ResolveTcpRemoteEventHandler> _logger;
-        private readonly ApplicationConfiguration _applicationConfiguration;
-
-        public ResolveTcpRemoteEventHandler(ILogger<ResolveTcpRemoteEventHandler> logger, ApplicationConfiguration applicationConfiguration)
-        {
-            _logger = logger;
-            _applicationConfiguration = applicationConfiguration;
-        }
-
+        private static IRemoteEventHandler? _remoteEventHandler;
+        private static TcpRemoteEventConfiguration? _remoteEventConfiguration;
         public void Process(PipelineArg pipelineArg)
         {
             var arg = (ConfigureServicesArg)pipelineArg;
-            var configXml = _applicationConfiguration.ConfigurationXml;
-            var remoteEventNode = configXml.SelectSingleNode("/configuration/remoteEvent");
-            if (remoteEventNode == null)
+            arg.ServicesCollection.AddSingleton(sp =>
             {
-                _logger.LogInformation("No remove event handler found");
-                return;
-            }
-            var type = remoteEventNode!.Attributes!["handler"].Value;
-            if (!type.Equals("tcp", StringComparison.OrdinalIgnoreCase)) return;
-            _logger.LogInformation("Remote Event Handler is TCP");
-            var listeningAddress = string.Empty;
-            var publishingAddress = string.Empty;
-            foreach (XmlNode? child in remoteEventNode.ChildNodes)
+                if (_remoteEventConfiguration != null) return _remoteEventConfiguration;
+                var logger = sp.GetService<ILogger<ResolveTcpRemoteEventHandler>>();
+                var applicationConfiguration = sp.GetService<ApplicationConfiguration>();
+                var configXml = applicationConfiguration.ConfigurationXml;
+                var remoteEventNode = configXml.SelectSingleNode("/configuration/remoteEvent");
+                if (remoteEventNode == null)
+                {
+                    logger.LogInformation("No remove event handler found");
+                    return null!;
+                }
+                var type = remoteEventNode!.Attributes!["handler"].Value;
+                if (!type.Equals("tcp", StringComparison.OrdinalIgnoreCase)) return null!;
+                logger.LogInformation("Remote Event Handler is TCP");
+                var listeningAddress = string.Empty;
+                var publishingAddress = string.Empty;
+                foreach (XmlNode? child in remoteEventNode.ChildNodes)
+                {
+                    switch (child!.Name)
+                    {
+                        case "listening":
+                            listeningAddress = child.InnerText;
+                            break;
+                        case "publishing":
+                            publishingAddress = child.InnerText;
+                            break;
+                    }
+                }
+                _remoteEventConfiguration = new TcpRemoteEventConfiguration(listeningAddress, publishingAddress);
+                return _remoteEventConfiguration;
+            });
+            arg.ServicesCollection.AddSingleton<IRemoteEventHandler>(sp =>
             {
-                if (child!.Name == "listening")
-                {
-                    listeningAddress = child.InnerText;
-                }
-                else if(child!.Name == "publishing")
-                {
-                    publishingAddress = child.InnerText;
-                }
-            }
-            var configuration = new TcpRemoteEventConfiguration(listeningAddress, publishingAddress);
-            arg.ServicesCollection.AddSingleton(new RemoteEventConfiguration("TCP"));
-            arg.ServicesCollection.AddSingleton(configuration);
-            var remoteEventHandler =
-                (TcpRemoteEventHandler)ActivatorUtilities.CreateInstance(arg.ServicesCollection.BuildServiceProvider(), typeof(TcpRemoteEventHandler));
-            remoteEventHandler.Initialize();
-            arg.ServicesCollection.AddSingleton<IRemoteEventHandler>(remoteEventHandler);
-
+                if (_remoteEventHandler != null) return _remoteEventHandler;
+                var configuration = sp.GetService<TcpRemoteEventConfiguration>();
+                if (configuration == null) return null!;
+                var remoteEventHandler =
+                    (TcpRemoteEventHandler)ActivatorUtilities.CreateInstance(sp, typeof(TcpRemoteEventHandler));
+                remoteEventHandler.Initialize();
+                _remoteEventHandler = remoteEventHandler;
+                return _remoteEventHandler;
+            });
         }
     }
 }

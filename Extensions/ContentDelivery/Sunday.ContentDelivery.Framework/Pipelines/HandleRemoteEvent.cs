@@ -1,8 +1,6 @@
 ﻿using System;
-using Sunday.ContentManagement.Services;
+using Sunday.ContentManagement.Models;
 using Sunday.Core.Application;
-using Sunday.Core.Extensions;
-using Sunday.Core.Implementation;
 using Sunday.Core.Pipelines;
 
 namespace Sunday.ContentDelivery.Framework.Pipelines
@@ -11,29 +9,21 @@ namespace Sunday.ContentDelivery.Framework.Pipelines
     {
         private readonly IRemoteEventHandler _remoteEventHandler;
         private readonly IEntityCacheManager _entityCacheManager;
-        private readonly IContentService _contentService;
 
-        public HandleRemoteEvent(IRemoteEventHandler remoteEventHandler, IEntityCacheManager entityCacheManager, IContentService contentService)
+        public HandleRemoteEvent(IRemoteEventHandler remoteEventHandler, IEntityCacheManager entityCacheManager)
         {
             _remoteEventHandler = remoteEventHandler;
             _entityCacheManager = entityCacheManager;
-            _contentService = contentService;
         }
 
         public void Process(PipelineArg arg)
         {
-            if (_remoteEventHandler is TcpRemoteEventHandler tcpRemoteEventHandler)
+            _remoteEventHandler.Subscribe(data =>
             {
-                tcpRemoteEventHandler.Subscribe(data =>
-                {
-                    if (data.EventName.Equals("content:published"))
-                    {
-                        var guidId = Guid.Parse(data.Data!.ToString()!);
-                        var contentOpt = _contentService.GetByIdAsync(guidId).Result;
-                        _entityCacheManager.Remove(contentOpt.Get());
-                    }
-                });
-            }
+                if (!data.EventName.Equals("content:published") && !data.EventName.Equals("content:deleted")) return;
+                var guidId = Guid.Parse(data.Data!.ToString()!);
+                _entityCacheManager.Remove(typeof(Content), guidId);
+            });
         }
     }
 }

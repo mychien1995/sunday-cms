@@ -23,7 +23,7 @@ namespace Sunday.ContentManagement.Implementation.Pipelines.CacheDependencies
             var arg = (GetEntityDependantsArg)pipelineArg;
             if (arg.Entity.GetType() != typeof(Content)) return;
             var content = (arg.Entity as Content)!;
-            var dependants = new List<string> { content.ParentId.ToString() };
+            var dependants = new List<string>();
             var referencesFrom = await _contentLinkService.GetReferencesTo(content.Id);
             dependants.AddRange(referencesFrom.Select(r => _cacheKeyCreator.GetCacheKey(typeof(Content), r)));
             arg.Dependants.AddRange(dependants.Distinct());

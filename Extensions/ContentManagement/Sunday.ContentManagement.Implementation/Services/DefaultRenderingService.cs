@@ -57,8 +57,12 @@ namespace Sunday.ContentManagement.Implementation.Services
             await _renderingRepository.Save(ToEntity(rendering));
         }
 
-        public Task Delete(Guid id)
-            => _renderingRepository.Delete(id);
+        public async Task Delete(Guid id)
+        {
+            await ApplicationPipelines.RunAsync("cms.entity.beforeDelete",
+                new BeforeDeleteEntityArg(id, typeof(Rendering)));
+            await _renderingRepository.Delete(id);
+        }
 
         Rendering ToModel(RenderingEntity entity)
         {

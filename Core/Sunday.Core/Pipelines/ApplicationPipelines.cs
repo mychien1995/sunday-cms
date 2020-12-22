@@ -55,7 +55,7 @@ namespace Sunday.Core.Pipelines
 
         public static async Task RunAsync(string pipelineName, PipelineArg arg)
         {
-            using var scope = ServiceActivator.GetScope();
+            using var scope = ServiceActivator.HasScope() ? ServiceActivator.GetScope() : null;
             if (PipelineTypes.TryGetValue(pipelineName, out var types))
             {
                 Logger.Debug($"Executing pipeline {pipelineName}");
@@ -73,7 +73,7 @@ namespace Sunday.Core.Pipelines
                         isAsync = true;
                     }
                     else throw new InvalidOperationException($"Processor {type.Name} must be inherited from IPipelineProcessor or IAsyncPipelineProcessor");
-                    var executor = ActivatorUtilities.CreateInstance(scope.ServiceProvider, type);
+                    var executor = scope != null ? ActivatorUtilities.CreateInstance(scope.ServiceProvider, type) : Activator.CreateInstance(type);
                     if (!isAsync)
                         processMethod.Invoke(executor, new object?[] { arg });
                     else
