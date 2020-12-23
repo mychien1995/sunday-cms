@@ -51,7 +51,8 @@ namespace Sunday.Core.Framework
                 {
                     var dataPart = message.Substring(0, delimeterIndex);
                     var data = JsonConvert.DeserializeObject<RemoteEventData>(dataPart);
-                    _remoteEventHandler.OnReceive(data);
+                    _logger.LogInformation($"Received event for {data.EventName}");
+                    _ = Task.Run(() => _remoteEventHandler.OnReceive(data));
                     offset = 0;
                     bufferCount = message.Length - delimeterIndex - delimeter.Length;
                     var leftOver = fullBuffer.Skip(delimeterIndex + delimeter.Length).Take(bufferCount).ToArray();

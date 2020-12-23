@@ -45,6 +45,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sunday.CMS.Interface", "Ext
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sunday.CMS.Core", "Extensions\ContentManagement\Sunday.CMS.Core\Sunday.CMS.Core.csproj", "{0EA8F48D-6CA4-4BAB-AD7E-B47D273D1C1D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sunday.MediaServer", "Extensions\MediaServer\Sunday.MediaServer\Sunday.MediaServer.csproj", "{2BAFAB86-A8EC-430C-9588-A6FDCE65B010}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -119,6 +121,10 @@ Global
 		{0EA8F48D-6CA4-4BAB-AD7E-B47D273D1C1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0EA8F48D-6CA4-4BAB-AD7E-B47D273D1C1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0EA8F48D-6CA4-4BAB-AD7E-B47D273D1C1D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2BAFAB86-A8EC-430C-9588-A6FDCE65B010}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2BAFAB86-A8EC-430C-9588-A6FDCE65B010}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2BAFAB86-A8EC-430C-9588-A6FDCE65B010}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2BAFAB86-A8EC-430C-9588-A6FDCE65B010}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
