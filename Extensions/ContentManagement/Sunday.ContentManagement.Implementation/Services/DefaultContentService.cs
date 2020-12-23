@@ -115,6 +115,7 @@ namespace Sunday.ContentManagement.Implementation.Services
 
         public async Task MoveContent(MoveContentParameter moveContentParameter)
         {
+            _ = Task.Run(() => _remoteEventHandler.Send(new RemoteEventData("content:moved", moveContentParameter.ContentId)));
             var content = await GetByIdAsync(moveContentParameter.ContentId)
                 .MapResultTo(rs => rs.Get());
             if (moveContentParameter.Position == MovePosition.Inside)

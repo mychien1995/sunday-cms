@@ -151,7 +151,16 @@ CREATE OR ALTER PROCEDURE [dbo].[sp_contents_getByParents]
 )
 AS
 BEGIN
-	SELECT * FROM Contents WHERE IsDeleted = 0 AND ParentId = @ParentId AND ParentType = @ParentType ORDER BY SortOrder DESC
+	SELECT [Id]
+      ,[Name]
+      ,[DisplayName]
+      ,[Path]
+      ,[ParentId]
+      ,[ParentType]
+      ,[TemplateId]
+	  ,[IsPublished]
+      ,[SortOrder]
+	 FROM Contents WHERE IsDeleted = 0 AND ParentId = @ParentId AND ParentType = @ParentType ORDER BY SortOrder DESC
 END
 GO
 --------------------------------------------------------------------

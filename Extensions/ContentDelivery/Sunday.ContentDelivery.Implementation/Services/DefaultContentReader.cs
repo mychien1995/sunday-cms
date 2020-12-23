@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LanguageExt;
@@ -22,18 +24,31 @@ namespace Sunday.ContentDelivery.Implementation.Services
         private readonly IContentService _contentService;
         private readonly ITemplateService _templateService;
         private readonly IEntityCacheManager _cacheManager;
+        private readonly ConcurrentDictionary<Guid, Guid> _siteHomePageMappings = new ConcurrentDictionary<Guid, Guid>();
 
-        public DefaultContentReader(IContentPathResolver contentPathResolver, IContentService contentService, 
-            ITemplateService templateService, IEntityCacheManager cacheManager)
+        public DefaultContentReader(IContentPathResolver contentPathResolver, IContentService contentService,
+            ITemplateService templateService, IEntityCacheManager cacheManager, IRemoteEventHandler remoteEventHandler)
         {
             _contentPathResolver = contentPathResolver;
             _contentService = contentService;
             _templateService = templateService;
             _cacheManager = cacheManager;
+            remoteEventHandler.Subscribe(data =>
+            {
+                if (!data.EventName.Equals("content:moved") && !data.EventName.Equals("content:deleted")) return;
+                var contentId = Guid.Parse(data.Data.ToString()!);
+                if (_siteHomePageMappings.All(kv => kv.Value != contentId)) return;
+                var site = _siteHomePageMappings.FirstOrDefault(v => v.Value == contentId).Key;
+                _siteHomePageMappings.TryRemove(site, out _);
+            });
         }
 
         public async Task<Option<Content>> GetHomePage(Guid websiteId)
         {
+            if (_siteHomePageMappings.TryGetValue(websiteId, out var homePageId))
+            {
+                return await LoadContentFromCache(homePageId);
+            }
             var siteRoots = await _contentService.GetChildsAsync(websiteId, ContentType.Website);
             var templates = await _templateService.QueryAsync(new TemplateQuery
             {
@@ -45,7 +60,11 @@ namespace Sunday.ContentDelivery.Implementation.Services
                                                                       templates.Result.Any(t =>
                                                                           t.Id == content.TemplateId &&
                                                                           t.IsPageTemplate)))
-                .MatchAsync(async page => await LoadContentFromCache(page!.Id), () => Option<Content>.None);
+                .MatchAsync(async page =>
+                {
+                    _siteHomePageMappings[websiteId] = page!.Id;
+                    return await LoadContentFromCache(page!.Id);
+                }, () => Option<Content>.None);
         }
 
         private Task<Option<Content>> LoadContentFromCache(Guid contentId)
@@ -53,10 +72,10 @@ namespace Sunday.ContentDelivery.Implementation.Services
         private async Task<Option<Content>> LoadContent(Guid contentId)
         {
             var contentOpt = await _contentService.GetByIdAsync(contentId,
-                new GetContentOptions {IncludeFields = true});
-            if(contentOpt.IsNone) return Option<Content>.None;
+                new GetContentOptions { IncludeFields = true });
+            if (contentOpt.IsNone) return Option<Content>.None;
             var content = contentOpt.Get();
-            if(!content.IsPublished) return Option<Content>.None;
+            if (!content.IsPublished) return Option<Content>.None;
             var fields = await _templateService.LoadTemplateFields(content.TemplateId);
             content.Template.Fields = fields;
             return Optional(content);
