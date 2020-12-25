@@ -38,6 +38,9 @@
         </div>
     </div>
 </div>
-<section class="section about-me" data-section="section1">
+<section class="section about-me" data-section="aboutme">
     @{ await Html.RenderingAreaFor(Model.CurrentPage, "AboutMeSection"); }
+</section>
+<section class="section about-me" data-section="experience">
+    @{ await Html.RenderingAreaFor(Model.CurrentPage, "ExperiencesSection"); }
 </section>

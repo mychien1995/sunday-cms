@@ -88,6 +88,7 @@ namespace Sunday.CMS.Core.Implementation
 
         private Template ToDomainModel(TemplateItem template)
         {
+            template.Fields.Iter(field => { field.Id ??= Guid.NewGuid(); });
             var model = template.MapTo<Template>();
             return model;
         }

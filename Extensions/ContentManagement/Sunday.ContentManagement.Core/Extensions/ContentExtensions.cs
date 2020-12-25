@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Sunday.ContentManagement.Models;
@@ -10,49 +9,32 @@ namespace Sunday.ContentManagement.Extensions
     public static class ContentExtensions
     {
         public static Guid[] IdListValue(this Content content, string fieldName)
-            => ValueFor<List<string>>(content, fieldName, FieldTypes.Multilist).Select(Guid.Parse).ToArray();
+            => ValueFor<List<string>>(content, fieldName, new List<string>(), FieldTypes.Multilist).Select(Guid.Parse).ToArray();
 
         public static Guid? IdValue(this Content content, string fieldName)
-            => ValueFor<Guid?>(content, fieldName, FieldTypes.DropTree);
+            => ValueFor<Guid?>(content, fieldName, null, FieldTypes.DropTree);
         public static GeneralLinkValue? LinKValue(this Content content, string fieldName)
-            => ValueFor<GeneralLinkValue>(content, fieldName, FieldTypes.Link);
+            => ValueFor<GeneralLinkValue>(content, fieldName, null!, FieldTypes.Link);
         public static string? TextValue(this Content content, string fieldName)
-            => ValueFor<string>(content, fieldName, FieldTypes.RichText, FieldTypes.MultilineText, FieldTypes.SingleLineText);
+            => ValueFor<string>(content, fieldName, null!, FieldTypes.RichText, FieldTypes.MultilineText, FieldTypes.SingleLineText);
 
         public static string? BlobUriValue(this Content content, string fieldName)
-            => ValueFor<string>(content, fieldName, FieldTypes.Image);
+            => ValueFor<string>(content, fieldName, null!, FieldTypes.Image);
 
         public static RenderingAreaValue? RenderingAreaValue(this Content content, string fieldName)
-            => ValueFor<RenderingAreaValue>(content, fieldName, FieldTypes.RenderingArea);
+            => ValueFor<RenderingAreaValue>(content, fieldName, null!, FieldTypes.RenderingArea);
 
-        private static T ValueFor<T>(Content content, string fieldName, params FieldTypes[] fieldTypes)
+        private static T ValueFor<T>(Content content, string fieldName, T defaultValue, params FieldTypes[] fieldTypes)
         {
             var field = content[fieldName];
-            if (field == null) return GetDefaultValue<T>();
+            if (field == null) return defaultValue;
             var fieldType = (FieldTypes)field.TemplateFieldCode;
             if (fieldTypes.Contains(fieldType))
             {
                 return (T)field.FieldValue!;
             }
-            return GetDefaultValue<T>();
-        }
 
-        private static T GetDefaultValue<T>()
-        {
-            var isEnumerable = typeof(IEnumerable).IsAssignableFrom(typeof(T));
-            if (isEnumerable)
-            {
-                var innerType = typeof(T).GetGenericArguments()[0];
-                var isList = typeof(IList).IsAssignableFrom(typeof(T));
-                if (isList)
-                {
-                    var listType = typeof(List<>);
-                    var constructedListType = listType.MakeGenericType(innerType);
-                    return (T)Activator.CreateInstance(constructedListType)!;
-                }
-                return (T)(object)Array.CreateInstance(innerType, 0);
-            }
-            return default!;
+            return defaultValue;
         }
     }
 }

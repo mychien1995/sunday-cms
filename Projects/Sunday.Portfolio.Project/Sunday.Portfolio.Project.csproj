@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <Content Remove="Views\Shared\Components\AboutMe\Default.cshtml" />
+    <Content Remove="Views\Shared\Components\ExperiencesList\Default.cshtml" />
   </ItemGroup>
 
   <ItemGroup>

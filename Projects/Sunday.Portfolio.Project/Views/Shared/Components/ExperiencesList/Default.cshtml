@@ -1,0 +1,18 @@
+﻿@using Sunday.Portfolio.Project.Components
+@model ExperiencesListComponent.ExperienceListBlock
+<div class="container">
+    <div class="section-heading">
+        <h2>@Model.Heading</h2>
+        <div class="line-dec"></div>
+    </div>
+    @foreach (var exp in Model.Experiences)
+    {
+        <div class="experience-top">
+            <h5>@exp.TimeRange</h5>
+            <h4>@exp.Position</h4>
+            <p class="my-3 text-white">
+                @exp.Description
+            </p>
+        </div>
+    }
+</div>

@@ -28,7 +28,7 @@ namespace Sunday.CMS.Core.Models.Templates
     [MappedTo(typeof(TemplateField))]
     public class TemplateFieldItem
     {
-        public Guid Id { get; set; }
+        public Guid? Id { get; set; }
         public string FieldName { get; set; } = string.Empty;
         public string DisplayName { get; set; } = string.Empty;
         public int FieldType { get; set; }

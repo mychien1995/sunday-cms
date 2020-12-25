@@ -43,6 +43,7 @@ namespace Sunday.ContentDelivery.Framework.Middlewares
         public async Task Invoke(HttpContext httpContext)
         {
             var requestPath = httpContext.Request.Path;
+            if (requestPath.Value.Contains(".")) goto NEXT;
             var hostName = httpContext.Request.Host.Value;
             var websiteOpt = await _websiteLoader.GetWebsiteByHostName(hostName);
             if (websiteOpt.IsNone) goto NEXT;

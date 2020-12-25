@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Sockets;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Sunday.Core.Application;
@@ -86,9 +85,12 @@ namespace Sunday.Core.Implementation
                     }, ex =>
                     {
                         _logger.LogError(ex, $"Error on reconnect to {address}");
-                        client = RenewClient(address)!;
-                        _openingClients[address] = client;
-                        stream = client.GetStream();
+                        client = RenewClient(address);
+                        if (client != null)
+                        {
+                            _openingClients[address] = client;
+                            stream = client.GetStream();
+                        }
                     });
                     stream.Flush();
                 }

@@ -8,4 +8,17 @@
             @Model.Subheading
         </span>
     </div>
+    @Html.Raw(Model.Description)
+    <div class="skills">
+        @foreach (var skill in Model.Skills)
+        {
+
+            <div class="skill-item">
+                <div class="progress-title">@skill.Name</div>
+                <div class="progress">
+                    <div role="progressbar" style="width: @(skill.Level)%" aria-valuenow="0" aria-valuemin="60" aria-valuemax="100" class="progress-bar progress-bar-skill1"></div>
+                </div>
+            </div>
+        }
+    </div>
 </div>
