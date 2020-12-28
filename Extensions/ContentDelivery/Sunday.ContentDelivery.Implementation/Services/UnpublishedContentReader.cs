@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using LanguageExt;
+using Sunday.ContentManagement;
 using Sunday.ContentManagement.Models;
 using Sunday.ContentManagement.Services;
 using Sunday.Core.Extensions;
@@ -35,5 +37,13 @@ namespace Sunday.ContentDelivery.Implementation.Services
 
         public override Task<Option<Content>> GetContent(Guid contentId)
             => LoadContent(contentId);
+
+        public override async Task<Content[]> GetChilds(Guid parentId, ContentType contentType)
+        {
+            var contents = await ContentService.GetChildsAsync(parentId, contentType);
+            var fullContents = await Task.WhenAll(contents.Select(c => GetContent(c.Id)))
+                .MapResultTo(rs => rs.Where(c => c.IsSome).Select(c => c.Get()).ToArray());
+            return fullContents;
+        }
     }
 }

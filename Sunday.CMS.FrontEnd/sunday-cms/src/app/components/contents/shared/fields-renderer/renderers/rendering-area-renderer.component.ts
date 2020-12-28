@@ -54,8 +54,6 @@ export class RenderingAreaRenderComponent implements OnInit {
   ) {
     this.contextMenu = {
       hidden: true,
-      x: '0px',
-      y: '0px',
       element: {},
     };
     this.layoutService.layoutBus.subscribe((res) => {
@@ -84,8 +82,6 @@ export class RenderingAreaRenderComponent implements OnInit {
 
   openContextMenu(ev: any, rendering: RenderingValue): void {
     ev.preventDefault();
-    this.contextMenu.x = ev.clientX + 'px';
-    this.contextMenu.y = ev.clientY + 'px';
     this.contextMenu.hidden = false;
     this.contextMenu.element = ev.target;
     this.contextMenu.rendering = rendering;
@@ -106,7 +102,7 @@ export class RenderingAreaRenderComponent implements OnInit {
   closeContextMenu(event): void {
     if (
       this.contextMenu.element &&
-      !this.contextMenu.element.contains(event.target)
+      this.contextMenu.element != event.target
     ) {
       this.contextMenu.hidden = true;
       this.contextMenu.element = null;

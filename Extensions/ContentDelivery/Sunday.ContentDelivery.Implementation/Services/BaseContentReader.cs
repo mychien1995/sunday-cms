@@ -57,7 +57,7 @@ namespace Sunday.ContentDelivery.Implementation.Services
             throw new NotImplementedException();
         }
 
-        public Task<Content[]> GetChilds(Guid parentId, ContentType contentType)
+        public virtual Task<Content[]> GetChilds(Guid parentId, ContentType contentType)
             => ContentService.GetChildsAsync(parentId, contentType);
     }
 }

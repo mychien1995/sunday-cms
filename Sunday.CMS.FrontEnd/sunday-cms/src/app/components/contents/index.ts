@@ -18,6 +18,7 @@ export * from './shared/fields-renderer/renderers/partials/link-editor-dialog.co
 export * from './shared/fields-renderer/renderers/partials/rendering-selector-dialog.component';
 export * from './shared/fields-renderer/renderers/partials/datasource-selector.component';
 export * from './shared/fields-renderer/renderers/partials/rendering-editor-dialog.component';
+export * from './shared/fields-renderer/renderers/number-renderer.component';
 export * from './content-editing/content-detail.component';
 export * from './content-editing/content-resolver';
 export * from './content-editing/content-rename.component';

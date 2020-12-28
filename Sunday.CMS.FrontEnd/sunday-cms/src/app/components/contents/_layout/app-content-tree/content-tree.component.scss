@@ -1,5 +1,8 @@
 .content-tree {
   margin-top: 10px;
+  height: 100%;
+  overflow-y: scroll;
+  padding-bottom: 40px;
   ul.content-tree-main {
     padding-left: 0px;
     li {

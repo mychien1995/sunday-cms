@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LanguageExt;
 using LanguageExt.UnitsOfMeasure;
+using Sunday.ContentManagement;
 using Sunday.ContentManagement.Models;
 using Sunday.ContentManagement.Services;
 using Sunday.Core.Application;
@@ -16,6 +18,7 @@ namespace Sunday.ContentDelivery.Implementation.Services
     {
         private readonly IEntityCacheManager _cacheManager;
         private readonly ConcurrentDictionary<Guid, Guid> _siteHomePageMappings = new ConcurrentDictionary<Guid, Guid>();
+        private readonly ConcurrentDictionary<Guid, Guid[]> _childCache = new ConcurrentDictionary<Guid, Guid[]>();
 
         public DefaultContentReader(IContentPathResolver contentPathResolver, IContentService contentService,
             ITemplateService templateService, IEntityCacheManager cacheManager, IRemoteEventHandler remoteEventHandler) : base(contentPathResolver, contentService, templateService)
@@ -25,9 +28,13 @@ namespace Sunday.ContentDelivery.Implementation.Services
             {
                 if (!data.EventName.Equals("content:moved") && !data.EventName.Equals("content:deleted")) return;
                 var contentId = Guid.Parse(data.Data.ToString()!);
-                if (_siteHomePageMappings.All(kv => kv.Value != contentId)) return;
-                var site = _siteHomePageMappings.FirstOrDefault(v => v.Value == contentId).Key;
-                _siteHomePageMappings.TryRemove(site, out _);
+                new Dictionary<Guid, Guid>(_siteHomePageMappings).Where(kv => kv.Value == contentId)
+                    .Iter(kv => _siteHomePageMappings.TryRemove(kv.Key, out _));
+                _childCache.TryRemove(contentId, out _);
+                new Dictionary<Guid, Guid[]>(_childCache).Where(kv => kv.Value.Contains(contentId))
+                    .Iter(kv => _childCache.TryRemove(kv.Key, out _));
+                var content = ContentService.GetByIdAsync(contentId).Result;
+                content.IfSome(c => _childCache.TryRemove(c.ParentId, out _));
             });
         }
 
@@ -62,5 +69,20 @@ namespace Sunday.ContentDelivery.Implementation.Services
 
         public override Task<Option<Content>> GetContent(Guid contentId)
             => LoadContentFromCache(contentId);
+
+        public override async Task<Content[]> GetChilds(Guid parentId, ContentType contentType)
+        {
+            if (_childCache.ContainsKey(parentId))
+            {
+                var childIds = _childCache[parentId];
+                return await Task.WhenAll(childIds.Select(GetContent))
+                    .MapResultTo(rs => rs.Where(c => c.IsSome).Select(c => c.Get()).ToArray());
+            }
+            var contents = await ContentService.GetChildsAsync(parentId, contentType);
+            var fullContents = await Task.WhenAll(contents.Select(c => GetContent(c.Id)))
+                .MapResultTo(rs => rs.Where(c => c.IsSome).Select(c => c.Get()).ToArray());
+            _childCache[parentId] = contents.Select(c => c.Id).ToArray();
+            return fullContents;
+        }
     }
 }

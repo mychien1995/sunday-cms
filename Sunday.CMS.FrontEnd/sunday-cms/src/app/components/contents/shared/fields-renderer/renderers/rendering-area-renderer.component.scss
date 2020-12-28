@@ -34,7 +34,10 @@
     line-height: 30px;
   }
   .context-menu {
-    position: fixed;
+    position: relative;
+    top: 30px;
+    right: -130px;
+    position: absolute;
     z-index: 1000;
     ul {
       padding-left: 0px;

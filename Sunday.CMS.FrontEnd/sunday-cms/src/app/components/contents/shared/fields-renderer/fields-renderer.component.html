@@ -22,6 +22,9 @@
         <app-multilist-renderer *ngSwitchCase="'multilist'" [(field)]="innerFields[i]" [isEditable]="isEditable"
         [websiteId]="websiteId">
         </app-multilist-renderer>
+        <app-number-renderer *ngSwitchCase="'number'" [(field)]="innerFields[i]"
+        [isEditable]="isEditable">
+        </app-number-renderer>
         <div *ngSwitchDefault>
             Unrecognized Field Type: {{getTypeName(field.field?.FieldType)}}
         </div>

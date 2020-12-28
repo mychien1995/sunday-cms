@@ -31,6 +31,7 @@ import {
   DropTreeRendererComponent,
   MultilistRendererComponent,
   TemplateSelectorWidgetComponent,
+  NumberRendererComponent,
 } from 'app/components';
 export const ContentComponents = [
   ContentDashboardComponent,
@@ -61,7 +62,8 @@ export const ContentComponents = [
   RenderingEditorDialogComponent,
   DropTreeRendererComponent,
   MultilistRendererComponent,
-  TemplateSelectorWidgetComponent
+  TemplateSelectorWidgetComponent,
+  NumberRendererComponent
 ];
 
 export const ContentResolvers = [

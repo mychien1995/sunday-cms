@@ -1,0 +1,17 @@
+﻿@using Sunday.Portfolio.Project.Components
+@model MySkillsComponent.MySkillsBlock
+<div class="container">
+    <div class="section-heading">
+        <h2>@Model.Heading</h2>
+        <div class="line-dec"></div>
+    </div>
+</div>
+<div class="owl-carousel owl-theme">
+    @foreach (var img in Model.Images)
+    {
+        <div class="item">
+            <img src="@img.Source" alt="@img.Alt" />
+        </div>
+    }
+</div>
+@Html.Raw(Model.Description)

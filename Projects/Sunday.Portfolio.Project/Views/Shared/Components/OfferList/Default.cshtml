@@ -1,0 +1,22 @@
+﻿@using Sunday.Portfolio.Project.Components
+@model OfferListComponent.OfferListBlock
+<div class="container">
+    <div class="section-heading">
+        <h2>@Model.Heading</h2>
+        <div class="line-dec"></div>
+    </div>
+</div>
+<div class="row">
+    @foreach (var offer in Model.Offers)
+    {
+        <div class="col-md-6">
+            <div class="service-item">
+                <div class="@offer.Icon"></div>
+                <h4>@offer.Title</h4>
+                <p>
+                    @offer.Content
+                </p>
+            </div>
+        </div>
+    }
+</div>

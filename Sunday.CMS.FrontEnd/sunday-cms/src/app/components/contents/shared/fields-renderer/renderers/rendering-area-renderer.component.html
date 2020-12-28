@@ -10,8 +10,7 @@
             </div>
             <a href="javascript:void(0)" (click)="openDialog()" [hidden]="!isEditable">Add More</a>
         </div>
-        <div class="context-menu" [hidden]="contextMenu.hidden || !isEditable" [style.top]="contextMenu.y"
-            [style.left]="contextMenu.x">
+        <div class="context-menu" [hidden]="contextMenu.hidden || !isEditable">
             <ul>
                 <li (click)="editRendering()">
                     <i class="fa fa-pencil-alt"></i>
