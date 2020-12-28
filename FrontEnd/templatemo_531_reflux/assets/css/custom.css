@@ -19,3 +19,6 @@
 .owl-carousel .owl-item img{
 	height : 100px
 }
+.service-item{
+	height: calc(100% - 20px);
+}
