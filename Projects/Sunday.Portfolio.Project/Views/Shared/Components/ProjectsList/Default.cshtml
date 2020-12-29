@@ -1,0 +1,62 @@
+﻿@using Sunday.Portfolio.Project.Components
+@model ProjectsListComponent.ProjectListBlock;
+
+<div class="container">
+    <div class="section-heading">
+        <h2>@Model.Heading</h2>
+        <div class="line-dec"></div>
+        <span>
+            @Model.Subheading
+        </span>
+    </div>
+</div>
+@for (var i = 0; i < Model.Projects.Count; i++)
+{
+    var project = Model.Projects[i];
+    if (i % 2 == 0)
+    {
+        <div class="left-image-post">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="left-image">
+                        <img src="@project.ImageLink" alt="@project.Title" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="right-text">
+                        <h4>@project.Title</h4>
+                        <p>
+                            @project.Content
+                        </p>
+                        <div class="white-button">
+                            <a href="@project.Link" target="_blank">@project.LinkText</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="right-image-post">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="left-text">
+                        <h4>@project.Title</h4>
+                        <p>
+                            @project.Content
+                        </p>
+                        <div class="white-button">
+                            <a href="@project.Link" target="_blank">@project.LinkText</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="right-image">
+                        <img src="@project.ImageLink" alt="@project.Title" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}

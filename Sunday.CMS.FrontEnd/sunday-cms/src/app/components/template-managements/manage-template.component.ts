@@ -21,7 +21,7 @@ export class ManageTemplateComponent implements OnInit {
   ) {}
   templateList: TemplateList = new TemplateList();
   activeId: string;
-  query?: any = { PageSize: 20 };
+  query?: any = { PageSize: 40 };
   searchForm: FormGroup = new FormGroup({
     Text: new FormControl(this.query?.Text || ''),
     IsPageTemplate: new FormControl(this.query?.IsPageTemplate),

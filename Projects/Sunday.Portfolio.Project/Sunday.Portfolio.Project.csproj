@@ -14,9 +14,11 @@
 
   <ItemGroup>
     <Content Remove="Views\Shared\Components\AboutMe\Default.cshtml" />
+    <Content Remove="Views\Shared\Components\Contact\Default.cshtml" />
     <Content Remove="Views\Shared\Components\ExperiencesList\Default.cshtml" />
     <Content Remove="Views\Shared\Components\MySkills\Default.cshtml" />
     <Content Remove="Views\Shared\Components\OfferList\Default.cshtml" />
+    <Content Remove="Views\Shared\Components\ProjectsList\Default.cshtml" />
   </ItemGroup>
 
   <ItemGroup>

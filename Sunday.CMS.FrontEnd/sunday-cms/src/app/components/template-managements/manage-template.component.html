@@ -71,7 +71,7 @@
                         *matRowDef="let myRowData; columns: ['Icon', 'Name', 'CreatedBy', 'CreateDate', 'UpdatedBy', 'UpdatedDate', 'Action']">
                     </tr>
                 </table>
-                <mat-paginator [length]="templateList.Total" [pageSize]="20"
+                <mat-paginator [length]="templateList.Total" [pageSize]="40"
                     (page)="doSearch({PageIndex : $event.pageIndex})">
                 </mat-paginator>
             </div>

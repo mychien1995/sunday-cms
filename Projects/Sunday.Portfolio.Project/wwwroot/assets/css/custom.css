@@ -19,3 +19,9 @@
 .owl-carousel .owl-item img{
 	height : 100px
 }
+.service-item{
+	height: calc(100% - 20px);
+}
+.left-image-post .left-image, .right-image-post .right-image{
+	margin-top: 30px;
+}

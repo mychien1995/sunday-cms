@@ -160,7 +160,7 @@ BEGIN
       ,[TemplateId]
 	  ,[IsPublished]
       ,[SortOrder]
-	 FROM Contents WHERE IsDeleted = 0 AND ParentId = @ParentId AND ParentType = @ParentType ORDER BY SortOrder
+	 FROM Contents WHERE IsDeleted = 0 AND ParentId = @ParentId AND ParentType = @ParentType ORDER BY SortOrder, Name
 END
 GO
 --------------------------------------------------------------------
