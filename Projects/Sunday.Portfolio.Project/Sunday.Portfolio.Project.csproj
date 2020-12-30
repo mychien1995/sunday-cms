@@ -19,6 +19,7 @@
     <Content Remove="Views\Shared\Components\MySkills\Default.cshtml" />
     <Content Remove="Views\Shared\Components\OfferList\Default.cshtml" />
     <Content Remove="Views\Shared\Components\ProjectsList\Default.cshtml" />
+    <Content Remove="wwwroot\favicon.ico" />
   </ItemGroup>
 
   <ItemGroup>

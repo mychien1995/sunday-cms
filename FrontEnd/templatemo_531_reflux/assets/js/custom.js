@@ -81,9 +81,10 @@
                 topEdge = $this.offset().top - 80,
                 bottomEdge = topEdge + $this.height(),
                 wScroll = $(window).scrollTop();
-            if (topEdge < wScroll && bottomEdge > wScroll) {
-                var currentId = $this.data("section"),
-                    reqLink = $("a").filter("[href*=\\#" + currentId + "]");
+			var scrolledToBottom = $(window).scrollTop() + $(window).height() > $(document).height() - 100;
+			var currentId = $this.data("section");
+            if ((topEdge < wScroll && bottomEdge > wScroll) || (scrolledToBottom && currentId == 'contact')) {
+                var reqLink = $("a").filter("[href*=\\#" + currentId + "]");
                 reqLink
                     .closest("li")
                     .addClass("active")
