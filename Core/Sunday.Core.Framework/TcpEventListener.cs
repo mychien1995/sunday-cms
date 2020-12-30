@@ -18,22 +18,35 @@ namespace Sunday.Core.Framework
         private readonly ILogger<TcpEventListener> _logger;
         private readonly IRemoteEventHandler _remoteEventHandler;
         private readonly TcpRemoteEventConfiguration _configuration;
+        private TcpListener? _listener;
 
-        public TcpEventListener(ILogger<TcpEventListener> logger, IRemoteEventHandler remoteEventHandler, TcpRemoteEventConfiguration configuration)
+        public TcpEventListener(ILogger<TcpEventListener> logger, IRemoteEventHandler remoteEventHandler, IHostApplicationLifetime hostApplicationLifetime,
+            TcpRemoteEventConfiguration configuration)
         {
             _logger = logger;
             _remoteEventHandler = remoteEventHandler;
             _configuration = configuration;
+            hostApplicationLifetime.ApplicationStopping.Register(() =>
+            {
+                StopAsync(new CancellationToken()).Wait();
+            });
+        }
+
+        public override async Task StopAsync(CancellationToken cancellationToken)
+        {
+            await base.StopAsync(cancellationToken);
+            _listener?.Stop();
+            _logger.LogInformation("TCP Listener stopped");
         }
 
         protected override async Task ExecuteAsync(CancellationToken cancellationToken)
         {
             var delimeter = TcpRemoteEventHandler.Delimeter;
             var address = _configuration.ListeningAddress;
-            TcpListener listener = new TcpListener(IPAddress.Any, address);
-            listener.Start();
+            _listener = new TcpListener(IPAddress.Any, address);
+            _listener.Start();
             _logger.LogInformation($"Start listening at TCP port {address}");
-            TcpClient client = await listener.AcceptTcpClientAsync();
+            TcpClient client = await _listener.AcceptTcpClientAsync();
             Console.WriteLine("a new client connected");
             NetworkStream stream = client.GetStream();
             var bufferCount = 0;

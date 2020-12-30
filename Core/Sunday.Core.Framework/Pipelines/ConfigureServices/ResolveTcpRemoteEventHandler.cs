@@ -27,7 +27,7 @@ namespace Sunday.Core.Framework.Pipelines.ConfigureServices
                 if (remoteEventNode == null)
                 {
                     logger.LogInformation("No remove event handler found");
-                    return null!;
+                    return null;
                 }
                 var type = remoteEventNode!.Attributes!["handler"].Value;
                 if (!type.Equals("tcp", StringComparison.OrdinalIgnoreCase)) return null!;
@@ -49,11 +49,15 @@ namespace Sunday.Core.Framework.Pipelines.ConfigureServices
                 _remoteEventConfiguration = new TcpRemoteEventConfiguration(listeningAddress, publishingAddress);
                 return _remoteEventConfiguration;
             });
-            arg.ServicesCollection.AddSingleton<IRemoteEventHandler>(sp =>
+            arg.ServicesCollection.AddSingleton(sp =>
             {
                 if (_remoteEventHandler != null) return _remoteEventHandler;
                 var configuration = sp.GetService<TcpRemoteEventConfiguration>();
-                if (configuration == null) return null!;
+                if (configuration == null)
+                {
+                    _remoteEventHandler = new DummyRemoteEventHandler();
+                    return _remoteEventHandler;
+                }
                 var remoteEventHandler =
                     (TcpRemoteEventHandler)ActivatorUtilities.CreateInstance(sp, typeof(TcpRemoteEventHandler));
                 remoteEventHandler.Initialize();

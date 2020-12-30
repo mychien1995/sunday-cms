@@ -11,6 +11,25 @@ namespace Sunday.Core.Application
         void Subscribe(Action<RemoteEventData> action);
     }
 
+    public class DummyRemoteEventHandler : IRemoteEventHandler
+    {
+        public void Initialize()
+        {
+            
+        }
+
+        public void Send(RemoteEventData message)
+        {
+        }
+
+        public void OnReceive(RemoteEventData action)
+        {
+        }
+
+        public void Subscribe(Action<RemoteEventData> action)
+        {
+        }
+    }
     public class RemoteEventData
     {
         public RemoteEventData(string eventName, object data)

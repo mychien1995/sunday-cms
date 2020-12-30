@@ -24,7 +24,8 @@ namespace Sunday.Core.Framework.Pipelines.ConfigureServices
                 if (cachingNode == null)
                 {
                     logger.LogInformation("No caching provider found");
-                    return null;
+                    _cacheEngine = new DummyCacheEngine();
+                    return _cacheEngine;
                 }
                 var provider = cachingNode!.Attributes!["provider"].Value;
                 logger.LogInformation($"Caching provider is {provider}");

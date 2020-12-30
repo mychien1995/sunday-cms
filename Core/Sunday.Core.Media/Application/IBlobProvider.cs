@@ -14,4 +14,27 @@ namespace Sunday.Core.Media.Application
 
         void Delete(string identifier);
     }
+
+    public class DummyBlobProvider : IBlobProvider
+    {
+        public void Initialize()
+        {
+            
+        }
+
+        public string Name => "Dummy";
+        public ApplicationBlob CreateBlob(string containerIdentifier, string extension)
+        {
+            return null!;
+        }
+
+        public ApplicationBlob GetBlob(string identifier)
+        {
+            return null!;
+        }
+
+        public void Delete(string identifier)
+        {
+        }
+    }
 }
