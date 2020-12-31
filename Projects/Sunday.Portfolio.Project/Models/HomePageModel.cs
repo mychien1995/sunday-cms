@@ -41,9 +41,9 @@ namespace Sunday.Portfolio.Project.Models
             {
                 await contentReader.GetContent(linkItemId).ThenDo(linkOpt => linkOpt.IfSome(linkItem =>
                 {
-                    var link = linkItem.TextValue("Link")!;
+                    var link = linkItem.LinKValue("Link")!;
                     var icon = linkItem.TextValue("Icon")!;
-                    SocialLinks.Add(new SocialLinkModel(icon, link));
+                    SocialLinks.Add(new SocialLinkModel(icon, link.Url));
                 }));
             }
             var image = CurrentPage.IdValue("Avatar");
