@@ -20,11 +20,11 @@ gulp.task('css', function(){
 
 gulp.task('js', function(){
     gulp.src(['assets/js/*.js'])
-        .pipe(minify())
+        .pipe(minify({noSource:true}))
         .pipe(concat('site.min.js'))
         .pipe(gulp.dest('dist/js'));
     return gulp.src(['vendor/**/*.js'])
-        .pipe(minify())
+        .pipe(minify({noSource:true}))
         .pipe(concat('vendor.min.js'))
         .pipe(gulp.dest('dist/js'));
 });

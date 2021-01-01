@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Routing;
 using Sunday.ContentDelivery.Core;
 using Sunday.ContentDelivery.Core.Services;
+using Sunday.ContentDelivery.Framework.Extensions;
 using Sunday.ContentManagement.Domain;
 using Sunday.ContentManagement.Models;
 using Sunday.Core.Extensions;
@@ -45,12 +46,18 @@ namespace Sunday.ContentDelivery.Framework.Middlewares
             var requestPath = httpContext.Request.Path;
             if (requestPath.Value.Contains(".")) goto NEXT;
             var hostName = httpContext.Request.Host.Value;
-            var websiteOpt = await _websiteLoader.GetWebsiteByHostName(hostName);
-            if (websiteOpt.IsNone) goto NEXT;
-            var website = websiteOpt.Get();
+            var website = httpContext.CurrentWebsite();
+            if (website == null)
+            {
+                var websiteOpt = await _websiteLoader.GetWebsiteByHostName(hostName);
+                if (websiteOpt.IsNone) goto NEXT;
+                website = websiteOpt.Get();
+                httpContext.Items.Add(RouteDataKey.Website, website);
+            }
             var contentOpt = await _contentReader.GetPage(website.Id, requestPath);
             if (contentOpt.IsNone) goto NEXT;
             var content = contentOpt.Get();
+            httpContext.Items.Add(RouteDataKey.Content, content);
             var renderingOpt = await website.PageDesignMappings.Get(content.TemplateId.ToString()).MatchAsync(
                 async renderingId => await _renderingReader.GetRendering(Guid.Parse(renderingId)),
                 () => Option<Rendering>.None);
@@ -70,8 +77,6 @@ namespace Sunday.ContentDelivery.Framework.Middlewares
             var descriptorOption = _actionDescriptorCache.Get(actionKey);
             if (descriptorOption.IsNone) return;
             var descriptor = descriptorOption.Get();
-            httpContext.Items.Add(RouteDataKey.Website, website);
-            httpContext.Items.Add(RouteDataKey.Content, content);
             httpContext.Items.Add(RouteDataKey.Layout, await _layoutReader.GetLayout(website.LayoutId));
             var routeData = new RouteData(new RouteValueDictionary(new Dictionary<string, object>
             {

@@ -9,3 +9,4 @@ export * from './entity-access-editor/entity-access-dialog.component';
 export * from './entity-access-editor/entity-access-editor.component';
 export * from './icon-picker/icon-picker-dialog.component';
 export * from './icon-picker/icon-picker.component';
+export * from './dictionary-editor/dictionary-editor.component';

@@ -14,20 +14,23 @@ namespace Sunday.Portfolio.Project.Components
         {
             if (parameters.Datasource == null) return new ContentViewComponentResult(string.Empty);
             var datasource = parameters.Datasource!;
-            var model = new ContactBlock(datasource.TextValue("Heading")!, datasource.TextValue("Subheading")!);
+            var model = new ContactBlock(datasource.TextValue("Heading")!, datasource.TextValue("Subheading")!
+                , datasource.TextValue("ThankyouMessage")!);
             return View(model);
         }
 
         public class ContactBlock
         {
-            public ContactBlock(string heading, string subheading)
+            public ContactBlock(string heading, string subheading, string thankMsg)
             {
                 Heading = heading;
                 Subheading = subheading;
+                ThankMsg = thankMsg;
             }
 
             public string Heading { get;  }
             public string Subheading { get;  }
+            public string ThankMsg { get;  }
         }
     }
 }

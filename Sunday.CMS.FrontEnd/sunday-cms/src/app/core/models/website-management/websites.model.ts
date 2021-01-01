@@ -8,6 +8,7 @@ export class WebsiteItem extends ApiResponse {
   LayoutId: string;
   IsActive: boolean;
   PageDesignMappings: any;
+  Properties: any;
 }
 
 export class WebsiteList extends ApiResponse {

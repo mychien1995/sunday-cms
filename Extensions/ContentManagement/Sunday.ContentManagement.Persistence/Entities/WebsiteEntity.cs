@@ -5,7 +5,7 @@ using Sunday.DataAccess.SqlServer.Attributes;
 
 namespace Sunday.ContentManagement.Persistence.Entities
 {
-    [MappedTo(typeof(ApplicationWebsite), true, nameof(PageDesignMappings))]
+    [MappedTo(typeof(ApplicationWebsite), true, nameof(PageDesignMappings), nameof(Properties))]
     public class WebsiteEntity
     {
         public Guid Id { get; set; }
@@ -24,5 +24,7 @@ namespace Sunday.ContentManagement.Persistence.Entities
         public string UpdatedBy { get; set; } = string.Empty;
         [DapperIgnoreParam]
         public bool IsDeleted { get; set; }
+        public string Properties { get; set; } = string.Empty;
+
     }
 }

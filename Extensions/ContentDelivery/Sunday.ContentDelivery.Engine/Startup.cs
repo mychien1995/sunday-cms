@@ -54,6 +54,7 @@ namespace Sunday.ContentDelivery.Engine
 
             app.UseAuthorization();
 
+            app.UseMiddleware<SiteContextMiddleware>();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();

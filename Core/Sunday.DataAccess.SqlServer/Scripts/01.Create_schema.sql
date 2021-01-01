@@ -204,6 +204,7 @@ BEGIN
 		OrganizationId uniqueidentifier not null,
 		LayoutId uniqueidentifier not null,
 		PageDesignMappings nvarchar(MAX),
+		Properties nvarchar(MAX),
 		CONSTRAINT FK_Websites_Organization FOREIGN KEY (OrganizationId) REFERENCES Organizations(Id),
 		CONSTRAINT FK_Websites_Layout FOREIGN KEY (LayoutId) REFERENCES Layouts(Id),
 		IsActive bit not null default (1),

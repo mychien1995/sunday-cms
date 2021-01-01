@@ -6,6 +6,7 @@
 	,@OrganizationId uniqueidentifier
 	,@LayoutId uniqueidentifier
 	,@PageDesignMappings nvarchar(MAX)
+	,@Properties nvarchar(MAX)
 	,@IsActive bit
 	,@CreatedDate datetime
 	,@CreatedBy nvarchar(500)
@@ -21,6 +22,7 @@ BEGIN
            ,[OrganizationId]
            ,[LayoutId]
 		   ,[PageDesignMappings]
+		   ,[Properties]
            ,[IsActive]
            ,[CreatedDate]
            ,[CreatedBy]
@@ -34,6 +36,7 @@ BEGIN
 			,@OrganizationId
 			,@LayoutId
 			,@PageDesignMappings
+			,@Properties
 			,@IsActive
 			,@CreatedDate
 			,@CreatedBy
@@ -49,6 +52,7 @@ CREATE OR ALTER PROCEDURE sp_websites_update
 	,@WebsiteName nvarchar(1000)
 	,@HostNames nvarchar(max)
 	,@PageDesignMappings nvarchar(MAX)
+	,@Properties nvarchar(MAX)
 	,@LayoutId uniqueidentifier
 	,@IsActive bit
 	,@UpdatedDate datetime
@@ -58,7 +62,7 @@ AS
 BEGIN
 	UPDATE [dbo].[Websites] SET WebsiteName = @WebsiteName, HostNames = @HostNames,
 	LayoutId = @LayoutId, IsActive = @IsActive, UpdatedDate = @UpdatedDate, UpdatedBy = @UpdatedBy,
-	PageDesignMappings = @PageDesignMappings
+	PageDesignMappings = @PageDesignMappings, Properties = @Properties
 	WHERE Id = @Id
 END
 GO

@@ -34,6 +34,7 @@ import {
   PageDesignMappingComponent,
   IconPickerDialogComponent,
   IconPickerComponent,
+  DictionaryEditorComponent
 } from 'app/components';
 import {
   ApplicationLayoutComponent,
@@ -87,6 +88,7 @@ export const SharedComponents = [
   PageDesignMappingComponent,
   IconPickerDialogComponent,
   IconPickerComponent,
+  DictionaryEditorComponent
 ];
 import {
   UserResolver,

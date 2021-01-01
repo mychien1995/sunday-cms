@@ -1,0 +1,4 @@
+<div *ngFor="let kv of innerValue; let i = index;" class="d-flex">
+    <input type="text" class="form-control col-6" [(ngModel)]="innerValue[i].Key" (blur)="onBlur(innerValue[i])" />
+    <input type="text" class="form-control col-6" [(ngModel)]="innerValue[i].Value" (blur)="onBlur(innerValue[i])" />
+</div>

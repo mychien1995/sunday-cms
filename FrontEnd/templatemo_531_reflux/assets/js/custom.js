@@ -81,8 +81,8 @@
                 topEdge = $this.offset().top - 80,
                 bottomEdge = topEdge + $this.height(),
                 wScroll = $(window).scrollTop();
-			var scrolledToBottom = $(window).scrollTop() + $(window).height() > $(document).height() - 100;
-			var currentId = $this.data("section");
+            var scrolledToBottom = $(window).scrollTop() + $(window).height() > $(document).height() - 100;
+            var currentId = $this.data("section");
             if ((topEdge < wScroll && bottomEdge > wScroll) || (scrolledToBottom && currentId == 'contact')) {
                 var reqLink = $("a").filter("[href*=\\#" + currentId + "]");
                 reqLink
@@ -119,4 +119,24 @@
             }
         }
     })
+
+    var $contactForm = $('#contact');
+    if ($contactForm) {
+        $contactForm.on('submit', function(e) {
+			e.preventDefault();
+            var action = '/Contact/OnSubmit';
+            $.ajax({
+                type: "POST",
+                url: action,
+                data: $contactForm.serialize(), // serializes the form's elements.
+                success: function(data) {
+                    var $msg = $('#contactThankyou');
+                    var $section = $contactForm.closest('section');
+                    $section.find('span').remove();
+                    $section.find('h2').text($msg.val());
+                    $contactForm.remove();
+                }
+            });
+        });
+    }
 })(jQuery);

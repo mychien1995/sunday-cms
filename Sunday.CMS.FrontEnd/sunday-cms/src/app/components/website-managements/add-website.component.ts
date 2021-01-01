@@ -139,6 +139,7 @@ export class AddWebsiteComponent implements OnInit {
     data.HostNames = this.current.HostNames;
     data.Id = this.isEdit ? this.current.Id : '';
     data.PageDesignMappings = this.current.PageDesignMappings;
+    data.Properties = this.current.Properties;
     this.clientState.isBusy = true;
     const observ = this.isEdit
       ? this.WebsiteService.updateWebsite(data)
