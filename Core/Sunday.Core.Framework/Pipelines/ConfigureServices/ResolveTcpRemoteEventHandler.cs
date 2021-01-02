@@ -34,6 +34,7 @@ namespace Sunday.Core.Framework.Pipelines.ConfigureServices
                 logger.LogInformation("Remote Event Handler is TCP");
                 var listeningAddress = string.Empty;
                 var publishingAddress = string.Empty;
+                var allowedIps = string.Empty;
                 foreach (XmlNode? child in remoteEventNode.ChildNodes)
                 {
                     switch (child!.Name)
@@ -44,9 +45,12 @@ namespace Sunday.Core.Framework.Pipelines.ConfigureServices
                         case "publishing":
                             publishingAddress = child.InnerText;
                             break;
+                        case "allowedIps":
+                            allowedIps = child.InnerText;
+                            break;
                     }
                 }
-                _remoteEventConfiguration = new TcpRemoteEventConfiguration(listeningAddress, publishingAddress);
+                _remoteEventConfiguration = new TcpRemoteEventConfiguration(listeningAddress, publishingAddress, allowedIps);
                 return _remoteEventConfiguration;
             });
             arg.ServicesCollection.AddSingleton(sp =>

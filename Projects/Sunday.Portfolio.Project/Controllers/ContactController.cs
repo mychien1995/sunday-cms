@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Sunday.ContentDelivery.Framework.Extensions;
-using Sunday.Core;
 using Sunday.Core.Application;
 using Sunday.Core.Extensions;
 

@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Net.Http.Headers;
 using Sunday.Core.Media.Application;
 
 namespace Sunday.Core.Media.Extensions
@@ -26,6 +27,7 @@ namespace Sunday.Core.Media.Extensions
                     await stream.CopyToAsync(ms);
                     var bytes = ms.ToArray();
                     context.Response.ContentType = "image/jpeg";
+                    context.Response.Headers[HeaderNames.CacheControl] = "public,max-age=86400";
                     await context.Response.Body.WriteAsync(bytes, 0, bytes.Length);
                 }
             });

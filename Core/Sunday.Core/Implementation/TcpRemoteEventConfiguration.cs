@@ -5,17 +5,19 @@ namespace Sunday.Core.Implementation
 {
     public class TcpRemoteEventConfiguration
     {
-        public TcpRemoteEventConfiguration(string listeningAddress, string publishingAddress)
+        public TcpRemoteEventConfiguration(string listeningAddress, string publishingAddress, string allowedIps)
         {
+            AllowedIps = allowedIps.Split('|');
             if (!string.IsNullOrEmpty(listeningAddress))
                 ListeningAddress = int.Parse(listeningAddress);
-            if (!string.IsNullOrEmpty(publishingAddress))
-                PublishingAddresses = publishingAddress.Split('|').Select(p => new TcpRemoteAddress(p)).ToArray();
-            else PublishingAddresses = Array.Empty<TcpRemoteAddress>();
+            PublishingAddresses = !string.IsNullOrEmpty(publishingAddress)
+                ? publishingAddress.Split('|').Select(p => new TcpRemoteAddress(p)).ToArray()
+                : Array.Empty<TcpRemoteAddress>();
         }
 
         public int ListeningAddress { get; }
         public TcpRemoteAddress[] PublishingAddresses { get; }
+        public string[] AllowedIps { get; }
     }
 
     public class TcpRemoteAddress
