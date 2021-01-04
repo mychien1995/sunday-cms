@@ -17,7 +17,8 @@ import {
   WebsiteManagementService,
   TemplateManagementService,
   IconService,
-  FileService
+  FileService,
+  ResponseCachingService
 } from '@services/index';
 
 export const SharedServices = [
@@ -39,5 +40,6 @@ export const SharedServices = [
   WebsiteManagementService,
   TemplateManagementService,
   IconService,
-  FileService
+  FileService,
+  ResponseCachingService
 ];

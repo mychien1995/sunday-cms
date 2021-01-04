@@ -12,15 +12,24 @@ import {
 import { ApiUrl } from '@core/constants';
 import { Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
+import { ResponseCachingService } from '@services/cache.service';
 
 @Injectable()
 export class TemplateManagementService {
-  constructor(private apiService: ApiService) {}
+  constructor(
+    private apiService: ApiService,
+    private cachingService: ResponseCachingService
+  ) {}
 
   getTemplates(query?: any): Observable<TemplateList> {
-    return this.apiService
-      .post(ApiUrl.Templates.Search, query)
-      .pipe(map(ApiHelper.onSuccess), catchError(ApiHelper.onFail));
+    return this.cachingService.get(
+      `getTemplates_${JSON.stringify(query)}`,
+      () => {
+        return this.apiService
+          .post(ApiUrl.Templates.Search, query)
+          .pipe(map(ApiHelper.onSuccess), catchError(ApiHelper.onFail));
+      }
+    );
   }
 
   createTemplate(data: TemplateItem): Observable<ApiResponse> {

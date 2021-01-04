@@ -11,10 +11,14 @@ import { ApiUrl } from '@core/constants';
 import { ApiService } from '@services/api.service';
 import { ApiHelper } from '@services/api.helper';
 import { map, catchError } from 'rxjs/operators';
+import { ResponseCachingService } from '@services/cache.service';
 
 @Injectable()
 export class ContentTreeService {
-  constructor(private apiService: ApiService) {}
+  constructor(
+    private apiService: ApiService,
+    private cacheService: ResponseCachingService
+  ) {}
 
   getRoots(): Observable<ContentTree> {
     return this.apiService
@@ -41,9 +45,14 @@ export class ContentTreeService {
   }
 
   getTreeByQuery(query: any): Observable<ContentTree> {
-    return this.apiService
-      .post(`${ApiUrl.ContentTree.GetByQuery}`, query)
-      .pipe(map(ApiHelper.onSuccess), catchError(ApiHelper.onFail));
+    return this.cacheService.get(
+      `getTreeByQuery_${JSON.stringify(query)}`,
+      () => {
+        return this.apiService
+          .post(`${ApiUrl.ContentTree.GetByQuery}`, query)
+          .pipe(map(ApiHelper.onSuccess), catchError(ApiHelper.onFail));
+      }
+    );
   }
 
   withoutReference(node: ContentTreeNode) {

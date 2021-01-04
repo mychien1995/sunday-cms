@@ -5,15 +5,24 @@ import { ApiUrl } from '@core/constants';
 import { ApiService } from '@services/api.service';
 import { ApiHelper } from '@services/api.helper';
 import { map, catchError } from 'rxjs/operators';
+import { ResponseCachingService } from '@services/cache.service';
 
 @Injectable()
 export class RenderingService {
-  constructor(private apiService: ApiService) {}
+  constructor(
+    private apiService: ApiService,
+    private cacheService: ResponseCachingService
+  ) {}
 
   getRenderings(query?: any): Observable<ListApiResponse<Rendering>> {
-    return this.apiService
-      .post(ApiUrl.Renderings.Search, query)
-      .pipe(map(ApiHelper.onSuccess), catchError(ApiHelper.onFail));
+    return this.cacheService.get(
+      `getRenderings_${JSON.stringify(query)}`,
+      () => {
+        return this.apiService
+          .post(ApiUrl.Renderings.Search, query)
+          .pipe(map(ApiHelper.onSuccess), catchError(ApiHelper.onFail));
+      }
+    );
   }
 
   create(data: Rendering): Observable<ApiResponse> {

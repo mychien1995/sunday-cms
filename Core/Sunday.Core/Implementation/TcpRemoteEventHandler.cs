@@ -69,10 +69,6 @@ namespace Sunday.Core.Implementation
 
                     if (client == null)
                     {
-                        _renewAttempts[address] = _renewAttempts[address] + 1;
-                        if (_renewAttempts[address] <= 5) return;
-                        _addresses.Remove(address);
-                        _logger.LogError($"Maximum retry passed for {address}, drop this address");
                         return;
                     }
                     _openingClients[address] = client;
@@ -85,7 +81,7 @@ namespace Sunday.Core.Implementation
                     }, ex =>
                     {
                         _logger.LogError(ex, $"Error on reconnect to {address}");
-                        client = RenewClient(address);
+                        client = RenewClient(address)!;
                         if (client != null)
                         {
                             _openingClients[address] = client;
