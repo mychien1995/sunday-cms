@@ -2,13 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpHeaders, HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { environment } from '../../../environments/environment';
+import { default as Config } from 'app/../assets/config/config.json';
 
 @Injectable()
 export class ApiService {
   constructor(private http: HttpClient) {}
   get(path: string, params: HttpParams = new HttpParams()): Observable<any> {
-    return this.http.get(`${environment.apiUrl}${path}`, { params });
+    return this.http.get(`${Config.apiUrl}${path}`, { params });
   }
 
   put(path: string, body: Object = {}): Observable<any> {
@@ -17,7 +17,7 @@ export class ApiService {
       headers: headers,
     };
     return this.http.put(
-      `${environment.apiUrl}${path}`,
+      `${Config.apiUrl}${path}`,
       JSON.stringify(body),
       options
     );
@@ -28,7 +28,7 @@ export class ApiService {
     const options = {
       headers: headers,
     };
-    return this.http.post(`${environment.apiUrl}${path}`, body, options);
+    return this.http.post(`${Config.apiUrl}${path}`, body, options);
   }
 
   post(path: string, body: Object = {}): Observable<any> {
@@ -37,7 +37,7 @@ export class ApiService {
       headers: headers,
     };
     return this.http.post(
-      `${environment.apiUrl}${path}`,
+      `${Config.apiUrl}${path}`,
       JSON.stringify(body),
       options
     );
@@ -48,7 +48,7 @@ export class ApiService {
     const options = {
       headers: headers,
     };
-    return this.http.delete(`${environment.apiUrl}${path}`, options);
+    return this.http.delete(`${Config.apiUrl}${path}`, options);
   }
 
   private getHeaders = (isFormDataRequest: boolean = false): HttpHeaders => {
