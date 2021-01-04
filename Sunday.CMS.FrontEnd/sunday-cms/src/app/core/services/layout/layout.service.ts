@@ -8,6 +8,7 @@ import { map, catchError } from 'rxjs/operators';
 import { ApiResponse, LayoutModel, NavigationTree } from '@models/index';
 import { StorageKey } from 'app/core/constants';
 import { ClientState } from './clientstate.service';
+import { ResponseCachingService } from '@services/cache.service';
 
 @Injectable()
 export class LayoutService {
@@ -15,7 +16,8 @@ export class LayoutService {
 
   constructor(
     private apiService: ApiService,
-    private clientState: ClientState
+    private clientState: ClientState,
+    private cacheService: ResponseCachingService
   ) {}
 
   layoutUpdated(data: any): void {
@@ -87,14 +89,18 @@ export class LayoutService {
   }
 
   private getNavigationData(): Observable<ApiResponse> {
-    return this.apiService
-      .get(ApiUrl.Layout.GetNavigation)
-      .pipe(map(ApiHelper.onSuccess), catchError(ApiHelper.onFail));
+    return this.cacheService.get(`getNavigationData`, () => {
+      return this.apiService
+        .get(ApiUrl.Layout.GetNavigation)
+        .pipe(map(ApiHelper.onSuccess), catchError(ApiHelper.onFail));
+    });
   }
 
   private getLayoutData(): Observable<ApiResponse> {
-    return this.apiService
-      .get(ApiUrl.Layout.GetLayout)
-      .pipe(map(ApiHelper.onSuccess), catchError(ApiHelper.onFail));
+    return this.cacheService.get(`getLayoutData`, () => {
+      return this.apiService
+        .get(ApiUrl.Layout.GetLayout)
+        .pipe(map(ApiHelper.onSuccess), catchError(ApiHelper.onFail));
+    });
   }
 }
